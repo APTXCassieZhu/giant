@@ -48,13 +48,13 @@
                     </Dropdown>
                 </div>
                 <div class="topnav-box-link-a">
-                    <a onlick="gosoftware()">软件</a>
+                    <router-link to="/software">软件</router-link>
                 </div>
                 <div class="topnav-box-link-a">
-                    <a onlick="goknowledge()">知识</a>
+                    <router-link to="/knowledge">知识</router-link>
                 </div>
                 <div class="topnav-box-link-a">
-                    <a onlick="goQ&A()">问答</a>
+                    <router-link to="/Q&A">问答</router-link>
                 </div>
             </div>
             
@@ -66,16 +66,16 @@
                 </form>
             </div>
 
-            <div class="topnav-box-user">
+            <router-link to='/login' class="topnav-box-user">
                 <Icon type="ios-contact" size="48" onclick="gologin()"/>
                 <span class="topnav-tooltip">登录</span>
-            </div>
+            </router-link>
 
-            <div class="topnav-box-user-login">
+            <router-link to='/login' class="topnav-box-user-login">
                 <Tooltip content="登录" placement="top" style="position:fixed; z-index:1000;">
                     <Icon type="ios-contact" size="48"/>
                 </Tooltip>
-            </div>
+            </router-link>
         </div>
     </div>
 </template>
@@ -152,8 +152,7 @@ export default {
 
 .topnav-box-search{
     position: relative;
-    width: 25%;
-    /*display: inline-block;*/
+    width: 20%;
     float:left;
     font-size: 15px;
 }
@@ -162,6 +161,7 @@ export default {
     float: left;
     text-align: left;
     width:80%;
+    height: 54px;
     margin: 0;
     padding: 14px;
 }
