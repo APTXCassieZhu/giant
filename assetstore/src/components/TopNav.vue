@@ -14,9 +14,8 @@
             </div>
 
             <div class="topnav-box-link">
-                <div class="topnav-box-link-a">
-                    <router-link to="/home" active-class="active" exact>首页</router-link>
-                </div>
+                <router-link class="topnav-box-link-a" to="/home" active-class="active" exact>首页</router-link>
+               
                 <div class="topnav-box-link-a">
                     <Dropdown>
                         <a href="javascript:void(0)">资源
@@ -47,22 +46,15 @@
                         </DropdownMenu>
                     </Dropdown>
                 </div>
-                <div class="topnav-box-link-a">
-                    <router-link to="/software" active-class="active" exact>软件</router-link>
-                </div>
-                <div class="topnav-box-link-a">
-                    <router-link to="/knowledge" active-class="active" exact>知识</router-link>
-                </div>
-                <div class="topnav-box-link-a">
-                    <router-link to="/Q&A" active-class="active" exact>问答</router-link>
-                </div>
+                <router-link class="topnav-box-link-a" to="/software" active-class="active" exact>软件</router-link>
+                <router-link class="topnav-box-link-a" to="/knowledge" active-class="active" exact>知识</router-link>
+                <router-link class="topnav-box-link-a" to="/Q&A" active-class="active" exact>问答</router-link>
             </div>
             
             <!--提交搜索内容-->
             <form action="" id="keyword-search-form" class="topnav-box-search">
-                <Input size="large" id="keyword-search" type=search placeholder="输入关键词"/>
+                <Input size="large" class="topnav-box-search-input" id="keyword-search" type=search placeholder="输入关键词"/>
                 <button type="submit"><Icon type="ios-search" size="36"></Icon></button>
-                <!--<Input size="large" search enter-button placeholder="输入关键词"/>-->
             </form>
            
             <router-link to='/login' class="topnav-box-user">
@@ -105,6 +97,7 @@ export default {
     margin-top: 15px;
     width: 100%;
     height: 80px;
+    color:black;
     /*column-count: 4;*/
 }
 
@@ -148,8 +141,10 @@ export default {
     float: left;
     padding-right: 2%;
     text-align:center;    
+    color: black;
 }
-.topnav-box-link-a router-link{
+
+.topnav-box-link-a a{
     color: black;
 }
 
@@ -158,22 +153,22 @@ export default {
     width: 20%;
     float:left;
     font-size: 15px;
+    top: 8.5px;
 }
 
-/*.topnav-box-search-input{
+.topnav-box-search-input{
     float: left;
     text-align: left;
-    width:80%;
-    height: 54px;
+    width: 80%;
+    height: 36px;
     margin: 0;
-    padding: 14px;
-}*/
+}
 
 .topnav-box-search button{
     background-color: aliceblue;
     float: left;
-    width: 54px;
-    height: 54px;
+    width: 20%;
+    height: 36px;
     cursor: pointer;
 }
 
@@ -219,14 +214,14 @@ export default {
     z-index: 100;
 }
 
-.topnav-dropdown ul{
+/*.topnav-dropdown ul{
     padding: 8px;
 }
 
 .topnav-dropdown ul:hover{
     background-color: black;
     color: white;
-}
+}*/
 
 /*.topnav-dropdown-trigger:hover .topnav-dropdown-test{
     display: block;
