@@ -8,7 +8,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'Top Navigation',
       component: TopNav
     },
@@ -16,6 +16,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: login
+    },
+    {
+      path: '/software',
+      name: 'Software',
+      component: TopNav
     }
   ]
 })

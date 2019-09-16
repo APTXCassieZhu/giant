@@ -15,7 +15,7 @@
 
             <div class="topnav-box-link">
                 <div class="topnav-box-link-a">
-                    <router-link to="/" class="active">首页</router-link>
+                    <router-link to="/home" active-class="active" exact>首页</router-link>
                 </div>
                 <div class="topnav-box-link-a">
                     <Dropdown>
@@ -48,24 +48,23 @@
                     </Dropdown>
                 </div>
                 <div class="topnav-box-link-a">
-                    <router-link to="/software">软件</router-link>
+                    <router-link to="/software" active-class="active" exact>软件</router-link>
                 </div>
                 <div class="topnav-box-link-a">
-                    <router-link to="/knowledge">知识</router-link>
+                    <router-link to="/knowledge" active-class="active" exact>知识</router-link>
                 </div>
                 <div class="topnav-box-link-a">
-                    <router-link to="/Q&A">问答</router-link>
+                    <router-link to="/Q&A" active-class="active" exact>问答</router-link>
                 </div>
             </div>
             
-            <div class="topnav-box-search">
-                <!--提交搜索内容-->
-                <form action="" id="keyword-search-form">
-                    <Input id="keyword-search" type=search placeholder="输入关键词"/>
-                    <button type="submit"><Icon type="ios-search" size="36"></Icon></button>
-                </form>
-            </div>
-
+            <!--提交搜索内容-->
+            <form action="" id="keyword-search-form" class="topnav-box-search">
+                <Input size="large" id="keyword-search" type=search placeholder="输入关键词"/>
+                <button type="submit"><Icon type="ios-search" size="36"></Icon></button>
+                <!--<Input size="large" search enter-button placeholder="输入关键词"/>-->
+            </form>
+           
             <router-link to='/login' class="topnav-box-user">
                 <Icon type="ios-contact" size="48" onclick="gologin()"/>
                 <span class="topnav-tooltip">登录</span>
@@ -82,11 +81,13 @@
 
 <script>
 export default {
-    
+   path: '/',
+   redirect: '/home' 
 }
 </script>
 
 <style scoped>
+
 .topnav {
     overflow: hidden;
     width: 100%;
@@ -146,8 +147,10 @@ export default {
     width: 12%;
     float: left;
     padding-right: 2%;
-    color: black;
     text-align:center;    
+}
+.topnav-box-link-a router-link{
+    color: black;
 }
 
 .topnav-box-search{
@@ -157,14 +160,15 @@ export default {
     font-size: 15px;
 }
 
-.topnav-box-search input[type=search]{
+/*.topnav-box-search-input{
     float: left;
     text-align: left;
     width:80%;
     height: 54px;
     margin: 0;
     padding: 14px;
-}
+}*/
+
 .topnav-box-search button{
     background-color: aliceblue;
     float: left;
@@ -194,7 +198,7 @@ export default {
     cursor: pointer;
 }
 
-.topnav-box-link-a a.active{
+.topnav-box-link-a router-link.active{
     color: #BA55D3;
 }
 
@@ -257,14 +261,13 @@ export default {
     .topnav-box-image img {
         width: 50px;
         height: 50px;
-        border-radius: 50%;
+        /*border-radius: 50%;*/
         border-color: black;
         border-width: 0px;  
         border-style: solid;
-        left: 50%;
+        left: 0%;
         right: 50%;
         position: relative;
-        float: center;
     }
 
     .topnav-box-user-login {
