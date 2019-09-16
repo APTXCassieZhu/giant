@@ -22,14 +22,14 @@
                             <Icon type="ios-arrow-down"></Icon>
                         </a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
-                            <ul><DropdownItem>2D</DropdownItem></ul>
-                            <ul><DropdownItem>3D</DropdownItem></ul>
-                            <ul><DropdownItem>贴图与材质</DropdownItem></ul>
-                            <ul><DropdownItem>模板</DropdownItem></ul>
-                            <ul><DropdownItem>3D动画</DropdownItem></ul>
-                            <ul><DropdownItem>GUI界面</DropdownItem></ul>
-                            <ul><DropdownItem>特效</DropdownItem></ul>
-                            <ul><DropdownItem>音效</DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/资源/2D">2D</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/资源/3D">3D</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/资源/贴图与材质">贴图与材质</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/资源/模板">模板</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/资源/3D动画">3D动画</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/资源/GUI界面">GUI界面</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/资源/特效">特效</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/资源/音效">音效</router-link></DropdownItem></ul>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -37,12 +37,12 @@
                     <Dropdown>
                         <a href="javascript:void(0)">工具<Icon type="ios-arrow-down"></Icon></a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
-                            <ul><DropdownItem>可视化脚本</DropdownItem></ul>
-                            <ul><DropdownItem>地形</DropdownItem></ul>
-                            <ul><DropdownItem>动画编辑器</DropdownItem></ul>
-                            <ul><DropdownItem>粒子和效果</DropdownItem></ul>
-                            <ul><DropdownItem>其他工具</DropdownItem></ul>
-                            <ul><DropdownItem>AI</DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/工具/可视化脚本">可视化脚本</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/工具/地形">地形</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/工具/动画编辑器">动画编辑器</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/工具/粒子和效果">粒子和效果</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/工具/其他工具">其他工具</router-link></DropdownItem></ul>
+                            <ul><DropdownItem><router-link to="/工具/AI">AI</router-link></DropdownItem></ul>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -91,7 +91,7 @@ export default {
     border-width: 1px;  
 }
 
-.topnav-box{
+.topnav-box {
     overflow: hidden;
     position: fixed;
     margin-top: 15px;
@@ -99,6 +99,10 @@ export default {
     height: 80px;
     color:black;
     /*column-count: 4;*/
+}
+
+.topnav-box router-link{
+    color: black;
 }
 
 /*only show when the screen is small*/
@@ -183,6 +187,7 @@ export default {
     width: 7%;
     float:right;
     align-content: center;
+    color:black;
 }
 
 
@@ -190,6 +195,11 @@ export default {
 .topnav-box-link-a:hover, .topnav-box-user:hover{
     color: #6495ED;
     border-top: 5px solid #6495ED;
+    cursor: pointer;
+}
+
+.topnav-box-link-a a:hover {
+    color: #6495ED;
     cursor: pointer;
 }
 
@@ -214,11 +224,11 @@ export default {
     z-index: 100;
 }
 
-/*.topnav-dropdown ul{
-    padding: 8px;
+.topnav-dropdown router-link{
+    font-size: 18px;
 }
 
-.topnav-dropdown ul:hover{
+/*.topnav-dropdown ul:hover{
     background-color: black;
     color: white;
 }*/
