@@ -1,9 +1,15 @@
 <template>
+    <div>
+        <TopNavigation></TopNavigation>
+        <h1>软件</h1>
+    </div>
 </template>
-
-<script>
-export default {
     
+<script>
+import TopNavigation from '../components/TopNav.vue'
+export default {
+    name:"Software",
+    components:{TopNavigation}
 }
 </script>
 

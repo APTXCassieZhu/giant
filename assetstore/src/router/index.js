@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import TopNav from '@/components/TopNav'
 import login from '../pages/login'
+import search from '../pages/search'
+import software from '../pages/software'
 
 Vue.use(Router)
 
@@ -20,6 +22,11 @@ export default new Router({
     {
       path: '/software',
       name: 'Software',
+      component: software
+    },
+    {
+      path: '/search',
+      name: 'Search',
       component: TopNav
     }
   ]
