@@ -73,8 +73,9 @@
 
 <script>
 export default {
-   path: '/',
-   redirect: '/home' 
+    name: "TopNavigation",
+    path: '/',
+    redirect: '/home' 
 }
 </script>
 
@@ -203,7 +204,7 @@ export default {
     cursor: pointer;
 }
 
-.topnav-box-link-a router-link.active{
+.topnav-box-link-a router-link-active{
     color: #BA55D3;
 }
 
