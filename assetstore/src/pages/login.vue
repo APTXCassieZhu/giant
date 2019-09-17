@@ -3,23 +3,27 @@
         <div class="my-wrap-login"> 
             <div class="my-login-logo">
                 <!--<img src="../images/login.png">-->
-                <h1>LOGIN</h1>
+                <h1>LOGO</h1>
             </div>
             <br>
-            <form action>
-                <div class="my-wrap-login-input">
-                    <input type = "text" name = "ID" placeholder="请输入域账户" class="my-login-input"><br>
-                </div>
-                <div class="my-wrap-login-input">
-                    <input type = "password" name = "pwd" placeholder="请输入登录密码" class="my-login-input"><br>
-                </div>
-            </form>
+            
+            <div class="my-wrap-login-input">
+                <!--<input type = "text" placeholder="请输入域账户" class="my-login-input" v-bind:value="user.account" v-on:input="user.account=$event.target.value"><br>-->
+                <input type = "text" placeholder="请输入域账户" class="my-login-input" v-model="user.account"><br>
+            </div>
+            <div class="my-wrap-login-input">
+                <input type = "password" placeholder="请输入登录密码" class="my-login-input" v-model="user.password"><br>
+            </div>
+            
             <div class="my-container-login-btn">
-                <button onclick="window.location.href='home.html'" class="my-login-btn">Login </button>
+                <input type="submit" value="登录" class="my-login-btn"> 
             </div>
             <br>
-            <div class="text-center">Don't have an account?
-                <a onclick="window.location.href='register.html'"><u>Sign Up</u></a>
+            <br>
+            <div class="text-center"><!--Don't have an account?
+                <a onclick="window.location.href='register.html'"><u>Sign Up</u></a>-->
+                <Checkbox style="float:left;" v-model="single">记住登录状态</Checkbox>
+                <a style="float:right;" onclick="window.location.href='register.html'"><u>忘记密码？</u></a>
             </div>
         </div>
     </div>
@@ -27,7 +31,24 @@
 
 <script>
 export default {
-   
+   data(){
+       return {
+           single: false,
+           user: {
+               account: "",
+               password: ""
+           }
+       }
+   },
+   methods:{
+       submit:function(){
+           this.$http.post('/home',{account: this.account, password: this.password}).then((response)=>{
+                alert("提交成功^_^，刚刚提交内容是：" + response.body)
+            }, (response)=>{
+                alert("出错啦QAQ")
+            })
+       }
+   }
 }
 </script>
 

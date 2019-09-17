@@ -28,6 +28,11 @@ export default new Router({
       path: '/search',
       name: 'Search',
       component: TopNav
+    },
+    {
+      path: '/knowledge',
+      name: 'Knowledge',
+      component: TopNav
     }
   ]
 })
