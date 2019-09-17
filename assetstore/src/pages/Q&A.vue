@@ -1,14 +1,14 @@
 <template>
     <div>
         <TopNavigation></TopNavigation>
-        <h1>搜索</h1>
+        <h1>Q&A</h1>
     </div>
 </template>
 
 <script>
 import TopNavigation from '../components/TopNav.vue'
 export default {
-    name:"Software",
+    name:"Q&A",
     components:{TopNavigation}
 }
 </script>

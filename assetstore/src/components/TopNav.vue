@@ -52,7 +52,7 @@
             </div>
             
             <!--提交搜索内容-->
-            <form action="" id="keyword-search-form" class="topnav-box-search">
+            <form id="keyword-search-form" class="topnav-box-search">
                 <Input size="large" class="topnav-box-search-input" id="keyword-search" type=search placeholder="输入关键词"/>
                 <button type="submit"><Icon type="ios-search" size="36"></Icon></button>
             </form>
@@ -74,8 +74,20 @@
 <script>
 export default {
     name: "TopNavigation",
-    path: '/',
-    redirect: '/home' 
+    data: {
+        search:{}
+    }
+    /*methods: {
+        submit: funtion() {
+            this.$http.post('/search',{content: this.content}).then((response)=>{
+                alert("提交成功^_^，刚刚提交内容是：" + response.body.content)
+            }, (response)=>{
+                alert("出错啦QAQ")
+            })
+        }
+    }*/
+    //path: '/',
+    //redirect: '/home' 
 }
 </script>
 
