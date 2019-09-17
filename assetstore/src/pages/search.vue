@@ -1,14 +1,18 @@
 <template>
     <div>
         <TopNavigation></TopNavigation>
-        <h1>搜索</h1>
+        <Breadcrumb>
+            <BreadcrumbItem to="/home">首页</BreadcrumbItem>
+            <BreadcrumbItem to="/home/2D">2D</BreadcrumbItem>
+            <BreadcrumbItem>当前内容</BreadcrumbItem>
+        </Breadcrumb>
     </div>
 </template>
 
 <script>
 import TopNavigation from '../components/TopNav.vue'
 export default {
-    name:"Software",
+    name:"Search",
     components:{TopNavigation}
 }
 </script>
