@@ -27,7 +27,7 @@ export default new Router({
     {
       path: '/search',
       name: 'Search',
-      component: TopNav
+      component: search
     },
     {
       path: '/knowledge',

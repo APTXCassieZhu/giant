@@ -12,7 +12,7 @@
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
             </div>
-
+            
             <div class="topnav-box-link">
                 <router-link class="topnav-box-link-a" to="/home" active-class="active" exact>首页</router-link>
                
