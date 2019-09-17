@@ -73,11 +73,11 @@
 
 <script>
 export default {
-    name: "TopNavigation",
-    data: {
+    name: "TopNavigation"
+    /*data: {
         search:{}
     }
-    /*methods: {
+    methods: {
         submit: funtion() {
             this.$http.post('/search',{content: this.content}).then((response)=>{
                 alert("提交成功^_^，刚刚提交内容是：" + response.body.content)
