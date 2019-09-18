@@ -12,6 +12,7 @@
 
 <script>
 import TopNavigation from '../components/TopNav.vue'
+import TopSearch from '../components/TopSearch.vue'
 import Search from '../components/Search.vue'
 export default {
     name:"searchResult",
