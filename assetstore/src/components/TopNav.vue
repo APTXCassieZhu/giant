@@ -1,4 +1,5 @@
 <template>
+<div>
     <div id="top-nav" class="topnav">
         <div class="topnav-box">
             <div class="topnav-box-menu">
@@ -14,7 +15,7 @@
             </div>
             
             <div class="topnav-box-link">
-                <router-link class="topnav-box-link-a" to="/home" active-class="active" exact>首页</router-link>
+                <router-link class="topnav-box-link-a" to="/home" exact-active-class="router-active">首页</router-link>
                
                 <div class="topnav-box-link-a">
                     <Dropdown>
@@ -46,18 +47,14 @@
                         </DropdownMenu>
                     </Dropdown>
                 </div>
-                <router-link class="topnav-box-link-a" to="/software" active-class="active" exact>软件</router-link>
-                <router-link class="topnav-box-link-a" to="/knowledge" active-class="active" exact>知识</router-link>
-                <router-link class="topnav-box-link-a" to="/Q&A" active-class="active" exact>问答</router-link>
+                <router-link class="topnav-box-link-a" to="/software" exact-active-class="router-active">软件</router-link>
+                <router-link class="topnav-box-link-a" to="/knowledge" exact-active-class="router-active">知识</router-link>
+                <router-link class="topnav-box-link-a" to="/Q&A" exact-active-class="router-active">问答</router-link>
             </div>
             
             <!--提交搜索内容-->
-            <Form ref="searchForm" :model="searchForm" class="topnav-box-search">
-                <FormItem prop="content">
-                    <Input id="search" size="large" type="text" class="topnav-box-search-input" placeholder="输入关键词" v-model="searchForm.content"/></Input>
-                    <Button type="primary" to="/search" class="topnav-box-search-bt"><Icon type="ios-search" size="36"></Icon></Button>
-                </FormItem>
-            </Form>
+            <div class="topnav-box-search">
+            </div>
            
             <router-link to='/login' class="topnav-box-user">
                 <Icon type="ios-contact" size="48" onclick="gologin()"/>
@@ -71,6 +68,7 @@
             </router-link>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -87,22 +85,7 @@ document.getElementById("search").on('focus', function(){
 document.getElementById("search").on('blur', function(){
 })*/
 export default {
-    name: "TopNavigation",
-    data() {
-        return {
-            searchForm: {content:""}
-        }
-    },
-    methods: {
-        searchSubmit() {
-            console.log(this.search);
-            axios.post('/search',{search: this.search}).then((response)=>{
-                //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-            }, (response)=>{
-                //alert("出错啦QAQ")
-            })
-        }
-    }
+    name: "TopNavigation"
     //path: '/',
     //redirect: '/home' 
 }
@@ -188,29 +171,6 @@ export default {
     float:left;
     font-size: 15px;
     top: 8.5px;
-}
-
-.topnav-box-search-input{
-    float: left;
-    text-align: left;
-    width: 80%;
-    height: 36px;
-    margin: 0;
-}
-
-.topnav-box-search-bt{
-    background-color: #6495ED;
-    float: right;
-    width: 20%;
-    height: 36px;
-    cursor: pointer;
-}
-
-.topnav-box-search-bt:hover{
-    background-color: #BA55D3;
-    border-color: #BA55D3;
-    color: white;
-    border-width: 3px;
 }
 
 .topnav-box-user{
