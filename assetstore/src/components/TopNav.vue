@@ -52,10 +52,12 @@
             </div>
             
             <!--提交搜索内容-->
-            <form id="keyword-search-form" class="topnav-box-search">
-                <Input size="large" class="topnav-box-search-input" id="keyword-search" type=search placeholder="输入关键词"/>
-                <button type="submit"><Icon type="ios-search" size="36"></Icon></button>
-            </form>
+            <Form ref="searchForm" :model="searchForm" class="topnav-box-search">
+                <FormItem prop="content">
+                    <Input id="search" size="large" type="text" class="topnav-box-search-input" placeholder="输入关键词" v-model="searchForm.content"/></Input>
+                    <Button type="primary" to="/search" class="topnav-box-search-bt"><Icon type="ios-search" size="36"></Icon></Button>
+                </FormItem>
+            </Form>
            
             <router-link to='/login' class="topnav-box-user">
                 <Icon type="ios-contact" size="48" onclick="gologin()"/>
@@ -72,20 +74,35 @@
 </template>
 
 <script>
+import axios from 'axios'
+// 搜索框正在输入时
+/*document.getElementById("search").on('input', function(){
+    // TO DO 呈现联想输入的结果
+})
+// 搜索框得到焦点时
+document.getElementById("search").on('focus', function(){
+
+})
+// 搜索框失去焦点时
+document.getElementById("search").on('blur', function(){
+})*/
 export default {
-    name: "TopNavigation"
-    /*data: {
-        search:{}
-    }
+    name: "TopNavigation",
+    data() {
+        return {
+            searchForm: {content:""}
+        }
+    },
     methods: {
-        submit: funtion() {
-            this.$http.post('/search',{content: this.content}).then((response)=>{
-                alert("提交成功^_^，刚刚提交内容是：" + response.body.content)
+        searchSubmit() {
+            console.log(this.search);
+            axios.post('/search',{search: this.search}).then((response)=>{
+                //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
             }, (response)=>{
-                alert("出错啦QAQ")
+                //alert("出错啦QAQ")
             })
         }
-    }*/
+    }
     //path: '/',
     //redirect: '/home' 
 }
@@ -181,16 +198,17 @@ export default {
     margin: 0;
 }
 
-.topnav-box-search button{
-    background-color: aliceblue;
-    float: left;
+.topnav-box-search-bt{
+    background-color: #6495ED;
+    float: right;
     width: 20%;
     height: 36px;
     cursor: pointer;
 }
 
-.topnav-box-search button:hover{
-    background-color: #6495ED;
+.topnav-box-search-bt:hover{
+    background-color: #BA55D3;
+    border-color: #BA55D3;
     color: white;
     border-width: 3px;
 }
