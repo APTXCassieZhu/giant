@@ -14,15 +14,18 @@
 import TopNavigation from '../components/TopNav.vue'
 import Search from '../components/Search.vue'
 export default {
-    name:"Search",
+    name:"searchResult",
     components:{
         TopNavigation,
         Search
-        }
+    }
 }
 </script>
 
 <style scoped>
-
+.Breadcrumb {
+    left:20%;
+    top:20%;
+}
 </style>
 
