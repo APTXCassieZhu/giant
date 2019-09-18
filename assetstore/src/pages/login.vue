@@ -5,23 +5,22 @@
                 <!--<img src="../images/login.png">-->
                 <h1>LOGO</h1>
             </div>
-            <br>
-            
-            <div class="my-wrap-login-input">
-                <!--<input type = "text" placeholder="请输入域账户" class="my-login-input" v-bind:value="user.account" v-on:input="user.account=$event.target.value"><br>-->
-                <input type = "text" placeholder="请输入域账户" class="my-login-input" v-model="user.account"><br>
-            </div>
-            <div class="my-wrap-login-input">
-                <input type = "password" placeholder="请输入登录密码" class="my-login-input" v-model="user.password"><br>
-            </div>
-            
-            <div class="my-container-login-btn">
-                <input type="submit" value="登录" class="my-login-btn"> 
-            </div>
-            <br>
-            <br>
-            <div class="text-center"><!--Don't have an account?
-                <a onclick="window.location.href='register.html'"><u>Sign Up</u></a>-->
+            <Form :model="loginForm" :rules="loginRule">
+                <FormItem prop="account">
+                    <input type = "text" placeholder="请输入域账户" class="my-login-input" v-model="loginForm.account"><br>
+                </FormItem>
+                <FormItem prop="password">                    
+                    <input type = "password" placeholder="请输入登录密码" class="my-login-input" v-model="loginForm.password"><br>
+                </FormItem>
+                <FormItem>
+                    <div class="my-container-login-btn">
+                        <Button type="primary" @click="loginSubmit()" class="my-login-btn">登录</Button>
+                        <!--<input type="submit" class="my-login-btn" value="登录">-->
+                    </div>
+                </FormItem>
+            </Form>
+
+            <div class="text-center">
                 <Checkbox style="float:left;" v-model="single">记住登录状态</Checkbox>
                 <a style="float:right;" onclick="window.location.href='register.html'"><u>忘记密码？</u></a>
             </div>
@@ -31,24 +30,44 @@
 
 <script>
 export default {
-   data(){
+    data(){
        return {
            single: false,
-           user: {
+           loginForm: {
                account: "",
                password: ""
+           },
+           loginRule: {
+               account: [{required: true, message:'请填写您的域账号', trigger:'blur'}],
+               password:[{required: true, message:'请填写您的密码', trigger:'blur'},
+                         {type:'string', min: 6, message:'密码请不要太短', trigger:'blur'}]
            }
        }
    },
    methods:{
-       submit:function(){
-           this.$http.post('/home',{account: this.account, password: this.password}).then((response)=>{
+        /*submit:function(){
+        }*/
+        loginSubmit(loginForm){
+            console.log("lalalala");
+            console.log(this.loginForm);
+            this.$http.post('/home',loginForm,{emulateJSON:true}).then((response)=>{
                 alert("提交成功^_^，刚刚提交内容是：" + response.body)
             }, (response)=>{
-                alert("出错啦QAQ")
+                alert("出错啦QAQ"+response.status)
             })
-       }
-   }
+        }
+           /* this.$refs[name].validate((valid) => {
+                if(valid) {
+                    this.$http.post('/home',{account: this.account, password: this.password}).then((response)=>{
+                        alert("提交成功^_^，刚刚提交内容是：" + response.body)
+                    }, (response)=>{
+                        alert("出错啦QAQ")
+                    })
+            
+                }
+            })
+        }*/
+    }
 }
 </script>
 
