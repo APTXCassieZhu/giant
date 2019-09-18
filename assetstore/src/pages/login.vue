@@ -4,17 +4,20 @@
             <div class="my-login-logo">
                 <!--<img src="../images/login.png">-->
                 <h1>LOGO</h1>
+                <br>
             </div>
-            <Form :model="loginForm" :rules="loginRule">
+            <Form ref="loginForm" :model="loginForm" :rules="loginRule">
                 <FormItem prop="account">
-                    <input type = "text" placeholder="请输入域账户" class="my-login-input" v-model="loginForm.account"><br>
+                    <Input type = "text" placeholder="请输入域账户" v-model="loginForm.account">
+                    </Input>
                 </FormItem>
                 <FormItem prop="password">                    
-                    <input type = "password" placeholder="请输入登录密码" class="my-login-input" v-model="loginForm.password"><br>
+                    <Input type = "password" placeholder="请输入登录密码" v-model="loginForm.password">
+                    </Input>
                 </FormItem>
                 <FormItem>
                     <div class="my-container-login-btn">
-                        <Button type="primary" @click="loginSubmit()" class="my-login-btn">登录</Button>
+                        <Button type="primary" to="/home" @click="loginSubmit()" class="my-login-btn">登录</Button>
                         <!--<input type="submit" class="my-login-btn" value="登录">-->
                     </div>
                 </FormItem>
@@ -29,44 +32,44 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data(){
-       return {
-           single: false,
-           loginForm: {
-               account: "",
-               password: ""
-           },
-           loginRule: {
-               account: [{required: true, message:'请填写您的域账号', trigger:'blur'}],
-               password:[{required: true, message:'请填写您的密码', trigger:'blur'},
-                         {type:'string', min: 6, message:'密码请不要太短', trigger:'blur'}]
-           }
+        return {
+            single: false,
+            loginForm: {
+                account: "",
+                password: ""
+            },
+            loginRule: {
+                account: [{required: true, message:'请填写您的域账号', trigger:'blur'}],
+                password:[{required: true, message:'请填写您的密码', trigger:'blur'},
+                            {type:'string', min: 6, message:'密码请不要太短', trigger:'blur'}]
+            }
+        }
+   },
+    created(){
+   },
+    mounted(){
+       if(this.loginForm.account === '') {
+           this.$refs.account.focus()
+       } else if(this.loginForm.password === '') {
+           this.$refs.password.focus()
        }
    },
    methods:{
         /*submit:function(){
         }*/
-        loginSubmit(loginForm){
+        loginSubmit(){
             console.log("lalalala");
             console.log(this.loginForm);
-            this.$http.post('/home',loginForm,{emulateJSON:true}).then((response)=>{
-                alert("提交成功^_^，刚刚提交内容是：" + response.body)
+
+            axios.post('/home',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
+                //alert("提交成功^_^，刚刚提交内容是：" + response.body)
             }, (response)=>{
-                alert("出错啦QAQ"+response.status)
+                //alert("出错啦QAQ"+response.status)
             })
         }
-           /* this.$refs[name].validate((valid) => {
-                if(valid) {
-                    this.$http.post('/home',{account: this.account, password: this.password}).then((response)=>{
-                        alert("提交成功^_^，刚刚提交内容是：" + response.body)
-                    }, (response)=>{
-                        alert("出错啦QAQ")
-                    })
-            
-                }
-            })
-        }*/
     }
 }
 </script>
