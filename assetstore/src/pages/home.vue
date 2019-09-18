@@ -2,10 +2,10 @@
 <div>
     <TopNavigation></TopNavigation>
     <div class="home-search-wrapper">
-        <Form ref="searchForm" :model="searchForm">
+        <Form ref="searchForm" :model="searchForm" inline>
             <FormItem prop="content">
-                <Input id="search" size="large" type="text" placeholder="输入关键词" v-model="searchForm.content"/></Input>
-                <Button type="primary" to="/search"><Icon type="ios-search" size="30"></Icon></Button>
+                <Input id="search" size="large" type="text" class="search-input" placeholder="输入关键词" v-model="searchForm.content"/></Input>
+                <Button type="primary" to="/search" class="search-button"><Icon type="ios-search" size="30"></Icon></Button>
             </FormItem>
         </Form>
     </div>
@@ -41,5 +41,28 @@ export default {
     float: center;
     width: 80%;
     background-image: url("../assets/blue.jpg")
+}
+
+.search-input{
+    float: left;
+    text-align: left;
+    width: 80%;
+    height: 36px;
+    margin: 0;
+}
+
+.search-button {
+    background-color: #6495ED;
+    float: right;
+    width: 20%;
+    height: 36px;
+    cursor: pointer;
+}
+
+.search-bt:hover{
+    background-color: #BA55D3;
+    border-color: #BA55D3;
+    color: white;
+    border-width: 3px;
 }
 </style>
