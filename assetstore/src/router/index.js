@@ -2,12 +2,13 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import TopNav from '@/components/TopNav'
 import login from '../pages/login'
-import search from '../pages/search'
+import searchResult from '../pages/search'
 import software from '../pages/software'
 
 Vue.use(Router)
 
-export default new Router({
+export default new Router({ 
+  //mode: "history",
   routes: [
     {
       path: '/',
@@ -31,7 +32,7 @@ export default new Router({
     {
       path: '/search',
       name: 'Search',
-      component: search
+      component: searchResult
     },
     {
       path: '/knowledge',
