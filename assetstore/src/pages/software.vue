@@ -1,11 +1,14 @@
 <template>
     <div>
-        <TopNavigation></TopNavigation>        
-        <Breadcrumb>
-            <BreadcrumbItem to="/home">首页</BreadcrumbItem>
-            <BreadcrumbItem to="/home/software">软件</BreadcrumbItem>
-            <BreadcrumbItem>当前内容</BreadcrumbItem>
-        </Breadcrumb>
+        <TopNavigation></TopNavigation>  
+        <div class="bread-container"> 
+            <br>     
+            <Breadcrumb>
+                <BreadcrumbItem to="/home">首页</BreadcrumbItem>
+                <BreadcrumbItem to="/home/software">软件</BreadcrumbItem>
+                <BreadcrumbItem>当前内容</BreadcrumbItem>
+            </Breadcrumb>
+        </div>
         <br>
         <LeftSideMenu></LeftSideMenu>
     </div>
@@ -21,6 +24,9 @@ export default {
 </script>
 
 <style scoped>
-
+.bread-container {
+    position: relative;
+    left:25px;
+}
 </style>
 
