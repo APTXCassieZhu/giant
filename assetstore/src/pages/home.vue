@@ -2,17 +2,15 @@
 <div>
     <TopNavigation></TopNavigation>
     <div class="home-search-wrapper">
-        <!--<img src="../assets/blue.jpg" alt="backrground">-->
-        <Form ref="searchForm" :model="searchForm">
-            <ul>
-            <FormItem prop="content">
-                <Input id="search" size="large" type="text" class="search-input" placeholder="输入关键词" v-model="searchForm.content"/></Input>
-            </FormItem>
-            <FormItem>  
-                <Button type="primary" to="/search" class="search-button"><Icon type="ios-search" size="30"></Icon></Button>
-            </FormItem>
-            </ul>
-        </Form>
+        <div class="home-search-container">
+            <Form ref="searchForm" :model="searchForm">
+                <FormItem prop="content">
+                    <Input id="search" size="large" type="text" class="search-input" 
+                    placeholder="支持输入资源、用户、文章关键字" v-model="searchForm.content"/></Input>
+                    <Button type="primary" to="/search" class="search-button"><Icon type="ios-search" size="30"></Icon></Button>
+                </FormItem>
+            </Form>
+        </div>
     </div>
 </div>
 </template>
@@ -42,11 +40,27 @@ export default {
 
 <style scoped>
 .home-search-wrapper{
+    position: absolute;
     border-color:#6495ED;
+    border-width:5px;
+    height: 400px;
+    top: 80px;
+    float: none;
+    width: 100%;
+    background-image: url("../assets/blue.jpg")
+}
+
+.home-search-wrapper img{
     height: 400px;
     float: center;
     width: 80%;
-    background-image: url("../assets/blue.jpg")
+}
+
+.home-search-container {
+    position: absolute;
+    float: right;
+    width: 60%;
+    height: 48px;
 }
 
 .search-input{
@@ -64,7 +78,7 @@ export default {
     height: 36px;
 }
 
-.search-bt:hover{
+.search-button:hover{
     background-color: #BA55D3;
     border-color: #BA55D3;
     color: white;

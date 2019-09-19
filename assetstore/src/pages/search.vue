@@ -1,11 +1,13 @@
 <template>
     <div>
         <TopNavigation></TopNavigation>
-        <Breadcrumb>
-            <BreadcrumbItem to="/home">首页</BreadcrumbItem>
-            <BreadcrumbItem to="/home/2D">2D</BreadcrumbItem>
-            <BreadcrumbItem>当前内容</BreadcrumbItem>
-        </Breadcrumb>
+        <div class="bread-container">
+            <Breadcrumb>
+                <BreadcrumbItem to="/home">首页</BreadcrumbItem>
+                <BreadcrumbItem to="/home/2D">2D</BreadcrumbItem>
+                <BreadcrumbItem>当前内容</BreadcrumbItem>
+            </Breadcrumb>
+        </div>
         <Search></Search>
     </div>
 </template>
@@ -24,8 +26,8 @@ export default {
 </script>
 
 <style scoped>
-.Breadcrumb {
-    left:20%;
+.bread-container {
+    left:20px;
     top:20%;
 }
 </style>
