@@ -6,13 +6,13 @@
                 <h1>LOGO</h1>
                 <br>
             </div>
-            <Form ref="loginForm" :model="loginForm" :rules="loginRule">
+            <Form id="login" ref="loginForm" :model="loginForm" :rules="loginRule">
                 <FormItem prop="account">
-                    <Input type = "text" placeholder="请输入域账户" v-model="loginForm.account">
+                    <Input type = "text" placeholder="请输入域账户" v-model="loginForm.account" id="account">
                     </Input>
                 </FormItem>
                 <FormItem prop="password">                    
-                    <Input type = "password" placeholder="请输入登录密码" v-model="loginForm.password">
+                    <Input type = "password" placeholder="请输入登录密码" v-model="loginForm.password" id="password">
                     </Input>
                 </FormItem>
                 <FormItem>
@@ -64,10 +64,10 @@ export default {
             console.log("lalalala");
             console.log(this.loginForm);
 
-            axios.post('/home',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
-                //alert("提交成功^_^，刚刚提交内容是：" + response.body)
+            axios.post('/checklogin',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
+                alert("提交成功^_^，刚刚提交内容是：" + response.body)
             }, (response)=>{
-                //alert("出错啦QAQ"+response.status)
+                alert("出错啦QAQ"+response.status)
             })
         }
     }
