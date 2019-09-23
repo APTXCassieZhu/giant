@@ -3,13 +3,15 @@
         <Form ref="searchForm" :model="searchForm" :rules="searchRule">
             <FormItem prop="content">
                 <div class="home-search-container">
-                    <Input id="search" size="large" type="text" class="search-input" 
+                    <h1>GDRC研发资源中心</h1>
+                    <h1>望能成为您日常工作的好助力</h1>
+                    <Input id="search" size="large" type="text" clearable class="search-input" 
                     @focus.native.capture="changeAdvise()" @blur.native.capture="hideAdvise()"
                     placeholder="支持输入资源、用户、文章关键字" v-model="searchForm.content"/></Input>
-                    <Button type="primary" class="search-button">
+                    <Button type="primary" class="search-button" @click="searchSubmit()">
                         <Icon type="ios-search" size="30"></Icon>
                     </Button>
-                    <Card style="width:80%; top:40px;" id="content">
+                    <Card style="width:80%; top:40px; display:none;" id="content">
                         <span style="color: blue; font-size: 19px;">热门搜索</span>
                         <span>&emsp;</span>
                         <span v-for="(item,index) in tagList" :key="index">
@@ -17,10 +19,17 @@
                             <span>&emsp;</span>
                         </span>
                         <Divider/>
-                        <ul><Icon size="20" type="ios-time-outline"></Icon><Tag color="orange">历史搜索1</Tag></ul>
-                        <ul><Icon size="20" type="ios-time-outline"></Icon><Tag color="orange">历史搜索2</Tag></ul>
-                        <ul><Icon size="20" type="ios-time-outline"></Icon><Tag color="orange">历史搜索3</Tag></ul>
+                        <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索1</Tag></ul>
+                        <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索2</Tag></ul>
+                        <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索3</Tag></ul>
                     </Card>
+                    <div class="recommend-line">
+                        <span>&emsp;为您推荐&emsp;</span>
+                        <Tag color="purple">推荐搜索1</Tag>
+                        <span>&emsp;</span>
+                        <Tag color="purple">推荐搜索2</Tag>
+                        <span>&emsp;</span>
+                    </div>
                 </div>
             </FormItem>
         </Form>
@@ -62,7 +71,7 @@ export default {
         }
     },
     // 页面加载时就自动生成推荐内容
-    mounted() {
+    mounted() {        
         for(var i = 0; i < 5; i++) {
             this.tagList.push(this.data[i])
         }
@@ -70,6 +79,7 @@ export default {
     methods: {
         searchSubmit() {
             console.log(this.searchForm);
+            
             axios.post('/search',{searchForm: this.search}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
             }, (response)=>{
@@ -121,9 +131,9 @@ export default {
 
 .home-search-container {
     position: absolute;
-    float: right;
+    float: center;
     left: 20%;
-    top: 180px;
+    top: 100px;
     width: 60%;
     height: 400px;
     z-index: 0;
@@ -152,6 +162,14 @@ export default {
     color: white;
     border-width: 3px;
     z-index: 0;
+}
+
+.recommend-line {
+    font-size: 16px;
+    position: absolute;
+    float: left;
+    top: 100px;
+    z-index: -1;
 }
 
 .Card {
