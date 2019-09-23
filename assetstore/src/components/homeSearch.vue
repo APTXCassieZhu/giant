@@ -11,9 +11,8 @@
                     <Button type="primary" class="search-button" @click="searchSubmit()">
                         <Icon type="ios-search" size="30"></Icon>
                     </Button>
-                    <Card style="width:80%; top:40px; display:none;" id="content">
-                        <span style="color: blue; font-size: 19px;">热门搜索</span>
-                        <span>&emsp;</span>
+                    <div class="search-card" id="content">
+                        <ul class="hot-search">热门搜索</ul>
                         <span v-for="(item,index) in tagList" :key="index">
                             <Tag color="blue">{{item}}</Tag>
                             <span>&emsp;</span>
@@ -22,7 +21,7 @@
                         <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索1</Tag></ul>
                         <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索2</Tag></ul>
                         <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索3</Tag></ul>
-                    </Card>
+                    </div>
                     <div class="recommend-line">
                         <span>&emsp;为您推荐&emsp;</span>
                         <Tag color="purple">推荐搜索1</Tag>
@@ -164,6 +163,13 @@ export default {
     z-index: 0;
 }
 
+.hot-search {
+    position: absolute;
+    color: blue; 
+    font-size: 19px; 
+    height:28px; 
+    top:10px;
+}
 .recommend-line {
     font-size: 16px;
     position: absolute;
@@ -172,9 +178,22 @@ export default {
     z-index: -1;
 }
 
-.Card {
+.search-card {
     display: none;
+    border: 1px solid #dcdee2;
+    border-color: #e8eaec;
+    background: #fff;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    width: 80%; 
+    top: 40px; 
+    padding: 10px 20px 10px 20px;
     z-index: 10;
+}
+
+.Divider {
+    margin: 105px 0px 105px 0px;
 }
 .close {
     cursor: pointer;
