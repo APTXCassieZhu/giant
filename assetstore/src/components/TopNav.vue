@@ -73,17 +73,7 @@
 
 <script>
 import axios from 'axios'
-// 搜索框正在输入时
-/*document.getElementById("search").on('input', function(){
-    // TO DO 呈现联想输入的结果
-})
-// 搜索框得到焦点时
-document.getElementById("search").on('focus', function(){
 
-})
-// 搜索框失去焦点时
-document.getElementById("search").on('blur', function(){
-})*/
 export default {
     name: "TopNavigation"
     //path: '/',
@@ -219,32 +209,6 @@ export default {
 .topnav-dropdown router-link{
     font-size: 18px;
 }
-
-/*.topnav-dropdown ul:hover{
-    background-color: black;
-    color: white;
-}*/
-
-/*.topnav-dropdown-trigger:hover .topnav-dropdown-test{
-    display: block;
-}
-.topnav-dropdown-test{
-    display: none;
-    font-size: 18px;
-    position: fixed;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    background-color: rgba(255, 255, 255, 0.988);
-    z-index: 100;
-}
-
-.topnav-dropdown-test ul{
-    padding: 8px;
-}
-
-.topnav-dropdown-test ul:hover{
-    background-color: black;
-    color: white;
-}*/
 
 @media only screen and (max-width: 720px) {
     .topnav-box-image{
