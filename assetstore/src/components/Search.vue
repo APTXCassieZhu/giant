@@ -1,5 +1,5 @@
 <template>
-    <Card id="card">
+    <Card>
         <span slot="title" align="left" style="color: blue">热门搜索</span>
         <span slot="title" align="center" >&emsp;&emsp;&emsp;&emsp;&emsp;</span>
         <span slot="title" align="center" >&emsp;&emsp;&emsp;&emsp;&emsp;</span>
@@ -20,7 +20,6 @@
             <Icon size="20" type="ios-time-outline"></Icon><Tag color="orange">历史搜索2</Tag>
         </ul>
         <ul><Icon size="20" type="ios-time-outline"></Icon><Tag color="orange">历史搜索3</Tag></ul>
-        <Divider />
 
     </Card>
 
@@ -48,6 +47,7 @@ export default {
     methods: {
         // 每次点击换一批，更换推荐内容
         change() {
+            document.getElementById("content").style.display="block"
             // 清空之前的数据
             this.num = ''
             this.arr = []
@@ -55,7 +55,6 @@ export default {
             while(this.arr.length < 5) {
                 let num = parseInt(Math.random()*16)
                 if(this.arr.indexOf(num) == -1) {
-                    console.log("1111111")
                     this.arr.push(num)
                     this.num = num
                     this.tagList.push(this.data[this.num])
@@ -63,7 +62,7 @@ export default {
             }
         },
         close() {
-            document.getElementById("card").style.display="none";
+            document.getElementById("content").style.display="none";
         }
     }
 }
