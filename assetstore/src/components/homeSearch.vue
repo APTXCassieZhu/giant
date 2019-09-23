@@ -9,7 +9,7 @@
                     <Button type="primary" class="search-button">
                         <Icon type="ios-search" size="30"></Icon>
                     </Button>
-                    <Card style="width:80%; top:40px;">
+                    <Card style="width:80%; top:40px;" id="content">
                         <span style="color: blue; font-size: 19px;">热门搜索</span>
                         <span>&emsp;</span>
                         <span v-for="(item,index) in tagList" :key="index">
@@ -18,6 +18,7 @@
                         </span>
                         <Divider/>
                         <ul><Icon size="20" type="ios-time-outline"></Icon><Tag color="orange">历史搜索1</Tag></ul>
+                        <ul><Icon size="20" type="ios-time-outline"></Icon><Tag color="orange">历史搜索2</Tag></ul>
                         <ul><Icon size="20" type="ios-time-outline"></Icon><Tag color="orange">历史搜索3</Tag></ul>
                     </Card>
                 </div>
