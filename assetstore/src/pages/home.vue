@@ -6,12 +6,13 @@
             <FormItem prop="content">
                 <div class="home-search-container">
                     <Input id="search" size="large" type="text" class="search-input" 
+                    @blur.native.capture="hideAdvise()" @focus.native.capture="showAdvise()"
                     placeholder="支持输入资源、用户、文章关键字" v-model="searchForm.content"/></Input>
                     <Button type="primary" class="search-button">
                         <Icon type="ios-search" size="30"></Icon>
                     </Button>
-                    <div style="display: ">
-                    <Search style="width:80%; top:40px;"></Search>
+                    <div id="content" style="display:none;">
+                        <Search style="width:80%; top:40px;"></Search>
                     </div>
                 </div>
             </FormItem>
@@ -66,8 +67,29 @@ export default {
             }, (response)=>{
                 //alert("出错啦QAQ")
             })
+        },
+        showAdvise() {
+            console.log("now focus")
+            document.getElementById("content").style.display='block';
+        },
+        hideAdvise() {
+            console.log("now blur")
+            document.getElementById("content").style.display='none';
         }
-    }
+    },
+    /*directives: {
+        'mtfocus' (el, binding, vnode) {
+            let mtinput = el.querySelector('input')
+            mtinput.onfocus = function () {
+                console.log("now focus")
+                document.getElementById("content").style.display='block';
+            }
+            mtinput.onblur = function () {
+                console.log("now blur")
+                document.getElementById("content").style.display='none';
+            }
+        }
+    }*/
 }
 </script>
 
