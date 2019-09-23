@@ -12,15 +12,23 @@
                         <Icon type="ios-search" size="30"></Icon>
                     </Button>
                     <div class="search-card" id="content">
-                        <ul class="hot-search">热门搜索</ul>
+                        <ul class="hot-search-title">热门搜索</ul>
                         <span v-for="(item,index) in tagList" :key="index">
                             <Tag color="blue">{{item}}</Tag>
                             <span>&emsp;</span>
                         </span>
-                        <Divider/>
-                        <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索1</Tag></ul>
-                        <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索2</Tag></ul>
-                        <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索3</Tag></ul>
+                        <div id="history-search">
+                            <Divider/>
+                            <ul>
+                                <span class="history-search-title">历史搜索</span>
+                                <div class="clear-history" @click="clearHistory()">
+                                    <Icon size="30" type="ios-close"></Icon>清空
+                                </div>
+                            </ul>
+                            <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索1</Tag></ul>
+                            <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索2</Tag></ul>
+                            <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索3</Tag></ul>
+                        </div>
                     </div>
                     <div class="recommend-line">
                         <span>&emsp;为您推荐&emsp;</span>
@@ -103,6 +111,9 @@ export default {
         },
         hideAdvise() {
             document.getElementById("content").style.display='none';
+        },
+        clearHistory() {
+            document.getElementById("history-search").style.display='none';
         }
     }
 }
@@ -163,13 +174,31 @@ export default {
     z-index: 0;
 }
 
-.hot-search {
+.hot-search-title {
     position: absolute;
     color: blue; 
     font-size: 19px; 
     height:28px; 
     top:10px;
 }
+
+.history-search-title {
+    color: orange; 
+    font-size: 19px; 
+    height:28px;     
+}
+
+.clear-history {
+    cursor:pointer; 
+    color:grey;
+    display: inline-block;
+    float: right;
+}
+
+.clear-history:hover {
+    color: orangered;
+}
+
 .recommend-line {
     font-size: 16px;
     position: absolute;
