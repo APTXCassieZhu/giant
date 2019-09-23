@@ -2,28 +2,61 @@
 <div>
     <TopNavigation></TopNavigation>
     <div class="home-search-wrapper">
-        <div class="home-search-container">
-            <Form ref="searchForm" :model="searchForm">
-                <FormItem prop="content">
+        <Form ref="searchForm" :model="searchForm" :rules="searchRule">
+            <FormItem prop="content">
+                <div class="home-search-container">
                     <Input id="search" size="large" type="text" class="search-input" 
                     placeholder="支持输入资源、用户、文章关键字" v-model="searchForm.content"/></Input>
-                    <Button type="primary" to="/search" class="search-button"><Icon type="ios-search" size="30"></Icon></Button>
-                </FormItem>
-            </Form>
-        </div>
+                    <Button type="primary" class="search-button">
+                        <Icon type="ios-search" size="30"></Icon>
+                    </Button>
+                    <div style="display: ">
+                    <Search style="width:80%; top:40px;"></Search>
+                    </div>
+                </div>
+            </FormItem>
+        </Form>
     </div>
 </div>
 </template>
 
 <script>
 import TopNavigation from '../components/TopNav.vue'
+import Search from '../components/Search.vue'
+
+/*var searchContent = document.getElementById("search")
+addEventListener(searchContent, "focus", function() {
+
+})*/
+function contain(str, charset) {
+    var i;
+    for(i=0; i<charset.length; i++) {
+        if(str.indexOf(charset.charAt(i))>=0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 export default {
     name:"Home",
-    components:{TopNavigation},
+    components: {TopNavigation, Search},
     data() {
-        return {
-            searchForm: {content:""}
+        const validateContent = (rule, value, callback) => {
+            if(contain(value, "^[!@#$%&*()-+=.~`]_{}?/<>,")) {
+                callback(new Error("含有非法字符"))
+            } else {
+                callback();
+            }
         }
+        return {
+            searchForm: {content:""},
+            searchRule: {
+                content: [{required: true, trigger:'blur', validator: validateContent}
+                ]
+            }
+        }
+        
     },
     methods: {
         searchSubmit() {
@@ -59,8 +92,10 @@ export default {
 .home-search-container {
     position: absolute;
     float: right;
+    left: 20%;
+    top: 180px;
     width: 60%;
-    height: 48px;
+    height: 400px;
 }
 
 .search-input{
