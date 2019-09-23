@@ -69,27 +69,12 @@ export default {
             })
         },
         showAdvise() {
-            console.log("now focus")
             document.getElementById("content").style.display='block';
         },
         hideAdvise() {
-            console.log("now blur")
             document.getElementById("content").style.display='none';
         }
-    },
-    /*directives: {
-        'mtfocus' (el, binding, vnode) {
-            let mtinput = el.querySelector('input')
-            mtinput.onfocus = function () {
-                console.log("now focus")
-                document.getElementById("content").style.display='block';
-            }
-            mtinput.onblur = function () {
-                console.log("now blur")
-                document.getElementById("content").style.display='none';
-            }
-        }
-    }*/
+    }
 }
 </script>
 
