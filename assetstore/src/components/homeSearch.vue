@@ -21,7 +21,7 @@
                             <Divider/>
                             <ul>
                                 <span class="history-search-title">历史搜索</span>
-                                <div class="clear-history" @click="clearHistory()">
+                                <div class="clear-history" @mousedown="clearHistory()">
                                     <Icon size="30" type="ios-close"></Icon>清空
                                 </div>
                             </ul>
