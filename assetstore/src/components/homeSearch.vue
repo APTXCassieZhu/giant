@@ -6,7 +6,7 @@
                     <h1>GDRC研发资源中心</h1>
                     <h1>望能成为您日常工作的好助力</h1>
                     <Input id="search" size="large" type="text" clearable class="search-input" 
-                    @focus.native.capture="changeAdvise()" @blur.native.capture="hideAdvise()"
+                    @focus.native.capture="changeAdvise()" 
                     v-on:input="handleInput()" v-model.trim="searchForm.content"
                     placeholder="支持输入资源、用户、文章关键字" /></Input>
                     <Button type="primary" class="search-button" @click="searchSubmit()">
