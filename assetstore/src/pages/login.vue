@@ -68,11 +68,16 @@ export default {
             console.log("lalalala");
             console.log(this.loginForm);
 
-            axios.post('/home',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
-                //alert("提交成功^_^，刚刚提交内容是：" + response.body)
+            /*axios.post('http://localhost:8080/',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
+                alert("提交成功^_^，刚刚提交内容是：" + response.body)
             }, (response)=>{
-                //alert("出错啦QAQ"+response.status)
-            })
+                alert("出错啦QAQ"+response.status)
+            })*/
+            axios({
+                method: 'post',
+                url: '/',
+                data: {account: this.account, password: this.password}
+            });
         }
     }
 }
