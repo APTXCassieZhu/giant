@@ -52,7 +52,8 @@ import storage from 'good-storage'
 import axios from 'axios'
 // 判断是否含有string是否含有某个字符
 
-const historyFull = true;
+const   historyFull = true
+const   historyEmpty = true
 
 function contain(str, charset) {
     var i;
@@ -96,8 +97,11 @@ export default {
         // 页面加载时自动取出历史记录
         for(var i=0; i < 3; i++) {
             if(storage.has(i)) {
+                console.log(storage.get(i));
                 this.searchHistory.push(storage.get(i));
+                let historyEmpty = false;
             }else {
+                console.log("not full")
                 let historyFull = false;
             }
         }
@@ -106,8 +110,8 @@ export default {
         searchSubmit() {
             console.log(this.searchForm);
             // 清空
-            searchHistory = []
-            if(historyFull) {
+            this.searchHistory = []
+            if(historyFull || (storage.has(1)&&storage.has(2))) {
                 storage.set(3, storage.get(2))
                 storage.set(2, storage.get(1))
                 storage.set(1, this.searchForm.content)
@@ -115,7 +119,7 @@ export default {
                 this.searchHistory.push(storage.get(2))
                 this.searchHistory.push(storage.get(3));
             }else{
-                if(!storage.has(1)) {
+                if(historyEmpty) {
                     // empty history
                     storage.set(1, this.searchForm.content)
                     this.searchHistory.push(storage.get(1))
@@ -126,6 +130,7 @@ export default {
                     this.searchHistory.push(storage.get(2))
                 }
             }
+            let historyEmpty = false
             axios.post('/search',{searchcontent: this.searchForm.content}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
             }, (response)=>{
@@ -138,6 +143,11 @@ export default {
         },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
+            // 判断是否有历史搜索
+            if(historyEmpty) {
+                console.log("focus empty")
+                document.getElementById("history-search").style.display="none"
+            }
             // 延迟500ms显示推荐内容
             setTimeout(function(){
                 document.getElementById("content").style.display="block"
@@ -160,7 +170,9 @@ export default {
         },
         clearHistory() {
             document.getElementById("history-search").style.display='none';
-
+            storage.clear();
+            let historyEmpty = false;
+            let historyFull = false;
         }
     }
 }
