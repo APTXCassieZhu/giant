@@ -26,9 +26,12 @@
                                     <Icon size="30" type="ios-close"></Icon>清空
                                 </div>
                             </ul>
-                            <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索1</Tag></ul>
+                            <ul v-for="(item,index) in searchHistory" :key="index">
+                                <Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">{{item}}</Tag>
+                            </ul>
+                            <!--<ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索1</Tag></ul>
                             <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索2</Tag></ul>
-                            <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索3</Tag></ul>
+                            <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索3</Tag></ul>-->
                         </div>
                     </div>
                     <div class="recommend-line">
@@ -48,6 +51,9 @@
 import storage from 'good-storage'
 import axios from 'axios'
 // 判断是否含有string是否含有某个字符
+
+const historyFull = true;
+
 function contain(str, charset) {
     var i;
     for(i=0; i<charset.length; i++) {
@@ -71,27 +77,56 @@ export default {
             data: ['three.js', 'jiaFu', 'juju', 'ruirui', 'candy', '仙侠', 
             'lala', 'detective', '凑数', '饿了', '好饿', '饿的不行了', '再编几个', 
             '想编几个编几个','conan', 'sos'], // total: 16
-            tagList: [],     //存放每次点击换一批放出来的5个对象
-            arr: [],         //存放从原来的data array抽选的index，确保不重复
-            num: '',         //随机index
+            tagList: [],                    //存放每次点击换一批放出来的5个对象
+            arr: [],                        //存放从原来的data array抽选的index，确保不重复
+            num: '',                        //随机index,以便从data list中抽取
+            searchHistory: [],              //存放历史搜索
             searchForm: {content:""},
             searchRule: {
                 content: [{required: true, trigger:'blur', validator: validateContent}
                 ]
             }
         }
-    },
-    // 页面加载时就自动生成推荐内容
-    mounted() {        
+    },    
+    mounted() {      
+        // 页面加载时就自动生成推荐内容  
         for(var i = 0; i < 5; i++) {
             this.tagList.push(this.data[i])
+        }
+        // 页面加载时自动取出历史记录
+        for(var i=0; i < 3; i++) {
+            if(storage.has(i)) {
+                this.searchHistory.push(storage.get(i));
+            }else {
+                let historyFull = false;
+            }
         }
     },
     methods: {
         searchSubmit() {
             console.log(this.searchForm);
-            
-            axios.post('/search',{searchForm: this.search}).then((response)=>{
+            // 清空
+            searchHistory = []
+            if(historyFull) {
+                storage.set(3, storage.get(2))
+                storage.set(2, storage.get(1))
+                storage.set(1, this.searchForm.content)
+                this.searchHistory.push(storage.get(1))
+                this.searchHistory.push(storage.get(2))
+                this.searchHistory.push(storage.get(3));
+            }else{
+                if(!storage.has(1)) {
+                    // empty history
+                    storage.set(1, this.searchForm.content)
+                    this.searchHistory.push(storage.get(1))
+                } else {
+                    storage.set(2, storage.get(1))
+                    storage.set(1, this.searchForm.content)
+                    this.searchHistory.push(storage.get(1))
+                    this.searchHistory.push(storage.get(2))
+                }
+            }
+            axios.post('/search',{searchcontent: this.searchForm.content}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
             }, (response)=>{
                 //alert("出错啦QAQ")
