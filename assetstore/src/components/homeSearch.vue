@@ -144,7 +144,7 @@ export default {
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
             // 判断是否有历史搜索
-            if(historyEmpty) {
+            if(this.searchHistory.length == 0) {
                 console.log("focus empty")
                 document.getElementById("history-search").style.display="none"
             }
