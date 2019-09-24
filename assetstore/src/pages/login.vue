@@ -17,11 +17,15 @@
                 </FormItem>
                 <FormItem>
                     <div class="my-container-login-btn">
-                        <Button type="primary" to="/home" @click="loginSubmit()" class="my-login-btn">登录</Button>
-                        <!--<input type="submit" class="my-login-btn" value="登录">-->
+                        <Button type="primary" @click="loginSubmit()" class="my-login-btn">登录</Button>
                     </div>
                 </FormItem>
             </Form>
+            <!--<form id="login" action="/checklogin" method="post">
+                <input id="account" type="text" placeholder="请输入域账户" name="account">
+                <input id="password" type="password" placeholder="请输入登录密码" name="password">
+                <button type="submit" class="my-login-btn"></button>
+            </form>-->
 
             <div class="text-center">
                 <Checkbox style="float:left;" v-model="single">记住登录状态</Checkbox>
@@ -64,10 +68,10 @@ export default {
             console.log("lalalala");
             console.log(this.loginForm);
 
-            axios.post('/checklogin',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
-                alert("提交成功^_^，刚刚提交内容是：" + response.body)
+            axios.post('/home',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
+                //alert("提交成功^_^，刚刚提交内容是：" + response.body)
             }, (response)=>{
-                alert("出错啦QAQ"+response.status)
+                //alert("出错啦QAQ"+response.status)
             })
         }
     }

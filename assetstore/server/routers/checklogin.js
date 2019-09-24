@@ -9,6 +9,7 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.post('/checklogin', jsonParser,function(req,res){
+    console.log("checklogin")
     res.cookie('session', { current_user: req.body.account });
     res.json({'status':"OK"});
 })
