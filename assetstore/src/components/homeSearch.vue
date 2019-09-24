@@ -7,7 +7,8 @@
                     <h1>望能成为您日常工作的好助力</h1>
                     <Input id="search" size="large" type="text" clearable class="search-input" 
                     @focus.native.capture="changeAdvise()" @blur.native.capture="hideAdvise()"
-                    placeholder="支持输入资源、用户、文章关键字" v-model="searchForm.content"/></Input>
+                    v-on:input="handleInput()" v-model.trim="searchForm.content"
+                    placeholder="支持输入资源、用户、文章关键字" /></Input>
                     <Button type="primary" class="search-button" @click="searchSubmit()">
                         <Icon type="ios-search" size="30"></Icon>
                     </Button>
@@ -44,6 +45,9 @@
 </template>
 
 <script>
+import storage from 'good-storage'
+import axios from 'axios'
+// 判断是否含有string是否含有某个字符
 function contain(str, charset) {
     var i;
     for(i=0; i<charset.length; i++) {
@@ -93,6 +97,10 @@ export default {
                 //alert("出错啦QAQ")
             })
         },
+        handleInput() {
+            document.getElementById("content").style.display="none"
+            console.log("start input")
+        },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
             // 延迟500ms显示推荐内容
@@ -117,6 +125,7 @@ export default {
         },
         clearHistory() {
             document.getElementById("history-search").style.display='none';
+
         }
     }
 }
