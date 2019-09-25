@@ -8,9 +8,8 @@ var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-router.post('/checklogin', jsonParser,function(req,res){
-    console.log("checklogin")
-    res.cookie('session', { current_user: req.body.account });
+router.post('/search', jsonParser,function(req,res){
+    console.log("search")
     res.json({'status':"OK"});
 })
 //export this router to use in our index.js
