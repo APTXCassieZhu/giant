@@ -68,12 +68,7 @@ export default {
             console.log("lalalala");
             console.log(this.loginForm);
 
-            /*axios.post('http://localhost:8080/',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
-                alert("提交成功^_^，刚刚提交内容是：" + response.body)
-            }, (response)=>{
-                alert("出错啦QAQ"+response.status)
-            })*/
-            axios.get('/home').then((response)=>{
+            axios.post('/users/login',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
                 alert("提交成功^_^，刚刚提交内容是：" + response.body)
             }, (response)=>{
                 alert("出错啦QAQ"+response.status)
