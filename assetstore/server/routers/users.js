@@ -12,6 +12,7 @@ router.post('/login', jsonParser, function(req,res){
     console.log("back-end account: "+req.body.account)
     console.log("pwd: " +req.body.password)
     res.cookie('session', { current_user: req.body.account });
+    // TO DO check if the user exists
     res.json({'status':"OK"});
 })
 //export this router to use in our index.js

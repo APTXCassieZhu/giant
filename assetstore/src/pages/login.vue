@@ -69,7 +69,8 @@ export default {
             console.log(this.loginForm);
 
             axios.post('/users/login',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
-                alert("提交成功^_^，刚刚提交内容是：" + response.body)
+                //alert("提交成功^_^，刚刚提交内容是：" + response.body)
+                window.location.href='/'
             }, (response)=>{
                 alert("出错啦QAQ"+response.status)
             })
