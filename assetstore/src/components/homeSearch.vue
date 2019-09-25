@@ -127,9 +127,9 @@ export default {
                 }
             }
             let historyEmpty = false
-            this.$http.post('/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
+            this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                window.location.href='/'
+                window.location.href='/search'
             }, (response)=>{
                 //alert("出错啦QAQ")
             })
