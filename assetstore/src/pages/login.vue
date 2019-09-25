@@ -65,6 +65,7 @@ export default {
             console.log(this.loginForm);
             this.$http.post('/users/login',{account:this.loginForm.account, password:this.loginForm.password},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body)
+                this.$store.commit('ADD_COUNT', json.data.token);
                 window.location.href='/'
             }, (response)=>{
                 alert("出错啦QAQ"+response.status)
