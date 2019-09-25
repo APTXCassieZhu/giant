@@ -64,12 +64,13 @@ export default {
    methods:{
         loginSubmit(){
             console.log(this.loginForm);
-            this.$http.post('/users/login',{account:this.loginForm.account, password:this.loginForm.password},{emulateJSON:true}).then((response)=>{
+            this.$http.post('/users/login',{account:this.loginForm.account, password:this.loginForm.password},{emulateJSON:true}).then((res)=>{
                 // 登录成功
-                this.$store.dispatch("userLogin", true)
-                localStorage.setItem("Flag", "requireAuth")
+                //this.$store.dispatch("userLogin", true)
+                //localStorage.setItem("Flag", "requireAuth")
+                 this.$store.commit('ADD_COUNT', this.loginForm.account);
                 this.$router.push('/')
-            }, (response)=>{
+            }, (res)=>{
                 // 登录失败
                 alert("出错啦QAQ"+response.status)
             })

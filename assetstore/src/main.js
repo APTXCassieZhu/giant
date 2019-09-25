@@ -25,7 +25,7 @@ const ADD_COUNT = 'ADD_COUNT'; // 用常量代替事件类型，使得代码更�
 const REMOVE_COUNT = 'REMOVE_COUNT';
 // 注册状态管理全局参数
 var store = new Vuex.Store({
-  /*state:{
+  state:{
     token:'',
     userID:'',
   },
@@ -40,22 +40,6 @@ var store = new Vuex.Store({
       sessionStorage.removeItem("token", token);
       state.token = token;
     }
-  }*/
-  state:{
-    requireAuth: false
-  },
-  getters:{
-    requireAuth: state => state.requireAuth
-  },
-  mutations:{
-    userStatus(state, flag) {
-      state.requireAuth = flag
-    }
-  },
-  actions:{
-    setUser({commit}, flag) {
-      commit("userStatus", flag)
-    }
   }
 })
 
@@ -63,26 +47,17 @@ router.beforeEach((to,from,next) => {
   // loading 效果
   iView.LoadingBar.start();
   // 获取本地存储的token
-  /*store.state.token = sessionStorage.getItem("token");
+  store.state.token = sessionStorage.getItem("token");
   // 判断这个url是否需要登录权限
   if(to.meta.requireAuth) {
-    if(store.state.token !== "") {
+    if(store.state.token !== "" && store.state.token !== null) {
+      console.log("login or not: "+store.state.token)
       next();
     }else{
       next({path:'/login', query:{redirect: to.fullPath}});
     }
   }else{
     next();
-  }*/
-  let getFlag = localStorage.getItem("Flag")
-  if(getFlag === "requireAuth"){
-    // 已登录
-    store.state.requireAuth = true
-    next()
-  }else{
-    // 未登录
-    next({path: '/login'})
-    iView.Message.info("请您先登录")
   }
 })
 router.afterEach(route => {

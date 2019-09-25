@@ -58,7 +58,7 @@
            
             <router-link to='/login' class="topnav-box-user">
                 <Icon type="ios-contact" size="48" onclick="gologin()"/>
-                <span class="topnav-tooltip">登录</span>
+                <!--<span class="topnav-tooltip">登录</span>-->
             </router-link>
 
             <router-link to='/login' class="topnav-box-user-login">
