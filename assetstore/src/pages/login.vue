@@ -65,10 +65,12 @@ export default {
         loginSubmit(){
             console.log(this.loginForm);
             this.$http.post('/users/login',{account:this.loginForm.account, password:this.loginForm.password},{emulateJSON:true}).then((response)=>{
-                //alert("提交成功^_^，刚刚提交内容是：" + response.body)
-                this.$store.commit('ADD_COUNT', this.loginForm.account);
-                window.location.href='/'
+                // 登录成功
+                this.$store.dispatch("userLogin", true)
+                localStorage.setItem("Flag", "requireAuth")
+                this.$router.push('/')
             }, (response)=>{
+                // 登录失败
                 alert("出错啦QAQ"+response.status)
             })
         }
