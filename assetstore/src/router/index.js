@@ -27,7 +27,10 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
-      component: login
+      component: login,
+      meta: {
+        requireAuth: false
+      }
     },
     {
       path: '/software',
