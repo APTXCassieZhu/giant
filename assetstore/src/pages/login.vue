@@ -73,11 +73,11 @@ export default {
             }, (response)=>{
                 alert("出错啦QAQ"+response.status)
             })*/
-            axios({
-                method: 'post',
-                url: '/',
-                data: {account: this.account, password: this.password}
-            });
+            axios.get('/home').then((response)=>{
+                alert("提交成功^_^，刚刚提交内容是：" + response.body)
+            }, (response)=>{
+                alert("出错啦QAQ"+response.status)
+            })
         }
     }
 }
