@@ -26,7 +26,6 @@
                 <input id="password" type="password" placeholder="请输入登录密码" name="password">
                 <button type="submit" class="my-login-btn"></button>
             </form>-->
-
             <div class="text-center">
                 <Checkbox style="float:left;" v-model="single">记住登录状态</Checkbox>
                 <a style="float:right;" onclick="window.location.href='register.html'"><u>忘记密码？</u></a>
