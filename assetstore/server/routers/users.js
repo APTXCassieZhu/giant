@@ -15,5 +15,10 @@ router.post('/login', jsonParser, function(req,res){
     // TO DO check if the user exists
     res.json({'status':"OK"});
 })
+
+router.post('/search', jsonParser,function(req,res){
+    console.log("search"+req.body.content);
+    res.json({'status':"OK"});
+})
 //export this router to use in our index.js
 module.exports = router;

@@ -11,10 +11,10 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      "/users/*" : {
+      "/search" : {
         target: "http://localhost:3000"
       },
-      "/search" : {
+      "/users/*" : {
         target: "http://localhost:3000"
       }
     },
