@@ -19,7 +19,10 @@ export default new Router({
     {
       path: '/home',
       name: 'Home',
-      component: home
+      component: home,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/login',
@@ -29,22 +32,34 @@ export default new Router({
     {
       path: '/software',
       name: 'Software',
-      component: software
+      component: software,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/search',
       name: 'Search',
-      component: searchResult
+      component: searchResult,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/knowledge',
       name: 'Knowledge',
-      component: TopNav
+      component: TopNav,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/Q&A',
       name: 'Q&A',
-      component: discussion
+      component: discussion,
+      meta: {
+        requireAuth: true
+      }
     }
   ]
 })
