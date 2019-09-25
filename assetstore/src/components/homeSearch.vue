@@ -1,11 +1,11 @@
 <template>
     <div class="home-search-wrapper">
-        <Form ref="searchForm" :model="searchForm" :rules="searchRule">
+        <Form id="search" ref="searchForm" :model="searchForm" :rules="searchRule">
             <FormItem prop="content">
                 <div class="home-search-container">
                     <h1>GDRC研发资源中心</h1>
                     <h1>望能成为您日常工作的好助力</h1>
-                    <Input id="search" size="large" type="text" clearable class="search-input" 
+                    <Input id="searchcontent" size="large" type="text" clearable class="search-input" 
                     @focus.native.capture="changeAdvise()" @blur.native.capture="hideAdvise()"
                     v-on:input="handleInput()" v-model.trim="searchForm.content"
                     placeholder="支持输入资源、用户、文章关键字" /></Input>
@@ -73,7 +73,7 @@ export default {
         return {
             data: ['three.js', 'jiaFu', 'juju', 'ruirui', 'candy', '仙侠', 
             'lala', 'detective', '凑数', '饿了', '好饿', '饿的不行了', '再编几个', 
-            '想编几个编几个','conan', 'sos'], // total: 16
+            '想编几个编几个','conan', 'sos'], // 热门搜索 total: 16
             tagList: [],                    //存放每次点击换一批放出来的5个对象
             arr: [],                        //存放从原来的data array抽选的index，确保不重复
             num: '',                        //随机index,以便从data list中抽取
@@ -127,7 +127,7 @@ export default {
                 }
             }
             let historyEmpty = false
-            this.$http.post('/search',{searchcontent: this.searchForm.content}).then((response)=>{
+            this.$http.post('/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
                 window.location.href='/'
             }, (response)=>{
