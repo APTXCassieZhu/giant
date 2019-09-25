@@ -37,6 +37,7 @@
 
 <script>
 import axios from 'axios'
+import VueResource from 'vue-resource' 
 export default {
     data(){
         return {
@@ -48,7 +49,7 @@ export default {
             loginRule: {
                 account: [{required: true, message:'请填写您的域账号', trigger:'blur'}],
                 password:[{required: true, message:'请填写您的密码', trigger:'blur'},
-                            {type:'string', min: 6, message:'密码请不要太短', trigger:'blur'}]
+                            {type:'string', min: 1, message:'密码请不要太短', trigger:'blur'}]
             }
         }
    },
@@ -62,13 +63,9 @@ export default {
        }
    },
    methods:{
-        /*submit:function(){
-        }*/
         loginSubmit(){
-            console.log("lalalala");
             console.log(this.loginForm);
-
-            axios.post('/users/login',{account:this.account, password:this.password},{emulateJSON:true}).then((response)=>{
+            this.$http.post('/users/login',{account:this.loginForm.account, password:this.loginForm.password},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body)
                 window.location.href='/'
             }, (response)=>{
