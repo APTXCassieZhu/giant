@@ -40,7 +40,7 @@ import Vuex from 'vuex'
 export default {
     data(){
         return {
-            single: false,
+            single: true,
             loginForm: {
                 account: "",
                 password: ""
@@ -68,7 +68,7 @@ export default {
                 // 登录成功
                 //this.$store.dispatch("userLogin", true)
                 //localStorage.setItem("Flag", "requireAuth")
-                 this.$store.commit('ADD_COUNT', this.loginForm.account);
+                this.$store.commit('ADD_COUNT', this.loginForm.account, this.single);
                 this.$router.push('/')
             }, (res)=>{
                 // 登录失败
