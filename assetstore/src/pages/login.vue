@@ -36,6 +36,7 @@
 
 <script>
 import VueResource from 'vue-resource' 
+import Vuex from 'vuex' 
 export default {
     data(){
         return {
@@ -65,7 +66,7 @@ export default {
             console.log(this.loginForm);
             this.$http.post('/users/login',{account:this.loginForm.account, password:this.loginForm.password},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body)
-                this.$store.commit('ADD_COUNT', json.data.token);
+                this.$store.commit('ADD_COUNT', this.loginForm.account);
                 window.location.href='/'
             }, (response)=>{
                 alert("出错啦QAQ"+response.status)
