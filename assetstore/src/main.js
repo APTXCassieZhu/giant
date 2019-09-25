@@ -2,11 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
-import iView from 'iview'
+import router from './router' 
 import axios from 'axios'
 import Vuex from 'vuex'
 import VueResource from 'vue-resource'
+import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 
 Vue.config.productionTip = false
@@ -31,13 +31,20 @@ var store = new Vuex.Store({
   },
   mutations:{
     // login
-    [ADD_COUNT] (state, token) {
-      sessionStorage.setItem("token", token);
+    [ADD_COUNT] (state, token, single) {
+      if(!single){
+        // 用户未勾选记住登录状态
+        var localstorage = require('./localstorage')
+        localstorage.setAge(30*24*60*60*1000).set("token", token);
+      }else{
+        // 用户勾选记住登录状态
+        localStorage.setItem("token", token);
+      }  
       state.token = token;
     },
     // logout
     [REMOVE_COUNT] (state, token) {
-      sessionStorage.removeItem("token", token);
+      localStorage.removeItem("token", token);
       state.token = token;
     }
   }
