@@ -29,9 +29,6 @@
                             <ul v-for="(item,index) in searchHistory" :key="index">
                                 <Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">{{item}}</Tag>
                             </ul>
-                            <!--<ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索1</Tag></ul>
-                            <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索2</Tag></ul>
-                            <ul><Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">历史搜索3</Tag></ul>-->
                         </div>
                     </div>
                     <div class="recommend-line">
@@ -49,12 +46,11 @@
 
 <script>
 import storage from 'good-storage'
-import axios from 'axios'
-// 判断是否含有string是否含有某个字符
+import VueResource from 'vue-resource' 
 
 const   historyFull = true
 const   historyEmpty = true
-
+// 判断是否含有string是否含有某个字符
 function contain(str, charset) {
     var i;
     for(i=0; i<charset.length; i++) {
@@ -131,8 +127,9 @@ export default {
                 }
             }
             let historyEmpty = false
-            axios.post('/search',{searchcontent: this.searchForm.content}).then((response)=>{
+            this.$http.post('/search',{searchcontent: this.searchForm.content}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
+                window.location.href='/'
             }, (response)=>{
                 //alert("出错啦QAQ")
             })

@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import VueResource from 'vue-resource' 
 export default {
     data(){
@@ -48,7 +47,7 @@ export default {
             loginRule: {
                 account: [{required: true, message:'请填写您的域账号', trigger:'blur'}],
                 password:[{required: true, message:'请填写您的密码', trigger:'blur'},
-                            {type:'string', min: 1, message:'密码请不要太短', trigger:'blur'}]
+                            {type:'string', min: 6, message:'密码请不要太短', trigger:'blur'}]
             }
         }
    },
