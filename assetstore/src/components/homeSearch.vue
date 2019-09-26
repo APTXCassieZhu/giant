@@ -63,20 +63,6 @@ function contain(str, charset) {
     return false;
 }
 
-function aa(data) {
-    console.log("Aa")
-    var list = data.s;
-    var str = '';
-    if (list.length > 0) {
-        list.forEach(function (ele, index) {
-            str += '<li><a href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele + '</li>';
-        })
-        document.getElementById("associate").innerHTML = str;
-    }else { 
-        document.getElementById("associate").style.display = 'none';
-    }
-}
-
 export default {
     name:"HomeSearch",
     data() {
@@ -119,6 +105,19 @@ export default {
         }
     },
     methods: {
+        result(data) {
+            console.log("Aa")
+            var list = data.s;
+            var str = '';
+            if (list.length > 0) {
+                list.forEach(function (ele, index) {
+                    str += '<li><a href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele + '</li>';
+                })
+                document.getElementById("associate").innerHTML = str;
+            }else { 
+                document.getElementById("associate").style.display = 'none';
+            }
+        },
         searchSubmit() {
             console.log(this.searchForm);
             // 清空
@@ -154,10 +153,24 @@ export default {
             document.getElementById("content").style.display="none"
             document.getElementById("associate").style.display="block"
             console.log(this.searchForm.content)
-            var oScript = document.createElement('script');
-            var value = this.searchForm.content
-            oScript.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + value + '&cb=result'
-            document.body.appendChild(oScript)
+            //useBaidu(this.searchForm.content)  
+            this.$http.jsonp("https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su", 
+            {wd:this.searchForm.content},{jsonp:"cb"}).then(function(res){
+                console.log("weisha "+res.data)
+                var result = res.data.s
+            },function(res){
+              alert(res.status);
+            }}
+            console.log("联想搜索 "+result)
+            var str = '';
+            if (result.length > 0) {
+                result.forEach(function (ele, index) {
+                    str += '<li><a href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele + '</li>';
+                })
+                document.getElementById("associate").innerHTML = str;
+            }else { 
+                document.getElementById("associate").style.display = 'none';
+            }    
         },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
