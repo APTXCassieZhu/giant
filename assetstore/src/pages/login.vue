@@ -21,11 +21,7 @@
                     </div>
                 </FormItem>
             </Form>
-            <!--<form id="login" action="/checklogin" method="post">
-                <input id="account" type="text" placeholder="请输入域账户" name="account">
-                <input id="password" type="password" placeholder="请输入登录密码" name="password">
-                <button type="submit" class="my-login-btn"></button>
-            </form>-->
+
             <div class="text-center">
                 <Checkbox style="float:left;" v-model="single">记住登录状态</Checkbox>
                 <a style="float:right;" onclick="window.location.href='register.html'"><u>忘记密码？</u></a>
@@ -66,8 +62,6 @@ export default {
             console.log(this.loginForm);
             this.$http.post('/users/login',{account:this.loginForm.account, password:this.loginForm.password},{emulateJSON:true}).then((res)=>{
                 // 登录成功
-                //this.$store.dispatch("userLogin", true)
-                //localStorage.setItem("Flag", "requireAuth")
                 this.$store.commit('REMEM_COUNT', this.single)
                 this.$store.commit('ADD_COUNT', this.loginForm.account);
                 this.$router.push('/')
