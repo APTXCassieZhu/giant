@@ -31,6 +31,8 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="search-card" id="associate" style="display:none">
+                    </div>
                     <div class="recommend-line">
                         <span>&emsp;为您推荐&emsp;</span>
                         <Tag color="purple">推荐搜索1</Tag>
@@ -60,6 +62,21 @@ function contain(str, charset) {
     }
     return false;
 }
+
+function aa(data) {
+    console.log("Aa")
+    var list = data.s;
+    var str = '';
+    if (list.length > 0) {
+        list.forEach(function (ele, index) {
+            str += '<li><a href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele + '</li>';
+        })
+        document.getElementById("associate").innerHTML = str;
+    }else { 
+        document.getElementById("associate").style.display = 'none';
+    }
+}
+
 export default {
     name:"HomeSearch",
     data() {
@@ -80,8 +97,7 @@ export default {
             searchHistory: [],              //存放历史搜索
             searchForm: {content:""},
             searchRule: {
-                content: [{required: true, trigger:'blur', validator: validateContent}
-                ]
+                content: [{required: true, trigger:'blur', validator: validateContent}]
             }
         }
     },    
@@ -134,9 +150,14 @@ export default {
                 //alert("出错啦QAQ")
             })
         },
-        handleInput() {
+        handleInput(e) {
             document.getElementById("content").style.display="none"
-            console.log("start input")
+            document.getElementById("associate").style.display="block"
+            console.log(this.searchForm.content)
+            var oScript = document.createElement('script');
+            var value = this.searchForm.content
+            oScript.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + value + '&cb=result'
+            document.body.appendChild(oScript)
         },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
@@ -164,6 +185,7 @@ export default {
         },
         hideAdvise() {
             document.getElementById("content").style.display='none';
+            document.getElementById("associate").style.display='none';
         },
         clearHistory() {
             document.getElementById("history-search").style.display='none';

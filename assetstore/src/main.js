@@ -41,11 +41,9 @@ var store = new Vuex.Store({
     [ADD_COUNT] (state, token) {
       if(state.single){
         // 用户勾选记住登录状态
-        console.log("记住登录30天")
         localstorage.setAge(30*24*60*60*1000).set("token", token)
       }else{
         // 用户未勾选记住登录状态
-        console.log("不记住")
         sessionStorage.setItem("token", token)
       }  
       state.token = token
@@ -71,10 +69,8 @@ router.beforeEach((to,from,next) => {
   // 判断这个url是否需要登录权限
   if(to.meta.requireAuth) {
     if(store.state.token !== "" && store.state.token !== null) {
-      console.log("login or not: "+store.state.token)
       next();
     }else{
-      console.log("not login")
       next({path:'/login', query:{redirect: to.fullPath}});
     }
   }else{

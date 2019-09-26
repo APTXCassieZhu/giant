@@ -76,9 +76,6 @@ import axios from 'axios'
 
 export default {
     name: "TopNavigation"
-    //path: '/',
-    //redirect: '/home' 
-    
 }
 </script>
 
@@ -102,7 +99,6 @@ export default {
     width: 100%;
     height: 80px;
     color:black;
-    /*column-count: 4;*/
 }
 
 .topnav-box router-link{
@@ -188,15 +184,6 @@ export default {
 .topnav-box-link-a router-link-active{
     color: #BA55D3;
 }
-
-/*text-decoration: none;
-    width: 12%;
-    float: left;
-    padding-right: 2%;
-    color: black;
-        
-    border-right-color: grey;
-    border-right-width: 2px;*/
 
 .topnav-dropdown{
     font-size: 18px;
