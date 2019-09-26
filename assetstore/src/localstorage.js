@@ -1,21 +1,21 @@
-module.exports = {
+//module.exports = {
     // 过期时间，默认30天
-    age: 30*24*60*60*1000,
+    //age: 30*24*60*60*1000,
     /**
      * 设置过期时间
      * @param age
      * @returns {exports}
      */
-    setAge: function(age){
+    export function setAge(age){
         this.age = age;
         return this;
-    },
+    }
     /**
      * 设置 localStorage
      * @param key
      * @param value
      */
-    set: function(key, value){
+    export function set(key, value){
         localStorage.removeItem(key);
         var isObject = value instanceof Object,
             _time = new Date().getTime(),
@@ -35,13 +35,13 @@ module.exports = {
         value._isObject = isObject;
         localStorage.setItem(key, JSON.stringify(value));
         return this;
-    },
+    }
     /**
      * 判断一个 localStorage 是否过期
      * @param key
      * @returns {boolean}
      */
-    isExpire: function(key) {
+    export function isExpire(key) {
 
         var isExpire = true,
             value = localStorage.getItem(key),
@@ -55,13 +55,13 @@ module.exports = {
             // 没有值也是过期
         }
         return isExpire;
-    },
+    }
     /**
      * 获取某个 localStorage 值
      * @param key
      * @returns {*}
      */
-    get: function(key) {
+    export function get(key) {
         var isExpire = this.isExpire(key),
             value = null;
         if(!isExpire) {
@@ -73,4 +73,3 @@ module.exports = {
         }
         return value;
     }
-};

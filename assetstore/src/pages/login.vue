@@ -68,7 +68,8 @@ export default {
                 // 登录成功
                 //this.$store.dispatch("userLogin", true)
                 //localStorage.setItem("Flag", "requireAuth")
-                this.$store.commit('ADD_COUNT', this.loginForm.account, this.single);
+                this.$store.commit('REMEM_COUNT', this.single)
+                this.$store.commit('ADD_COUNT', this.loginForm.account);
                 this.$router.push('/')
             }, (res)=>{
                 // 登录失败
