@@ -51,6 +51,7 @@ var store = new Vuex.Store({
     // logout
     [REMOVE_COUNT] (state, token) {
       if(state.single) {
+        console.log(token+" logout.")
         localStorage.removeItem("token", token)
       } else {
         sessionStorage.removeItem("token", token)

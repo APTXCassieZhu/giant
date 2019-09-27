@@ -60,15 +60,15 @@
             
             <div class="topnav-box-user">
                 <span>欢迎回来，{{getUser}}</span>
-                <Dropdown>
+                <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <Icon type="ios-contact" size="48"/>
                     </a>
-                    <DropdownMenu slot="list" style="z-index:1000;">
+                    <DropdownMenu slot="list" class="topnav-dropdown">
                         <ul><DropdownItem><router-link to="/personal">个人中心</router-link></DropdownItem></ul>
                         <ul><DropdownItem><router-link to="/personal">我的关注</router-link></DropdownItem></ul>
                         <ul><DropdownItem><router-link to="/personal">修改资料</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><router-link to="/personal">退出登录</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><span @click="logout()">退出登录</span></DropdownItem></ul>
                     </DropdownMenu>
                 </Dropdown>
                 
@@ -93,7 +93,13 @@ export default {
         getUser(){
             return this.$store.state.token;
         }
-    }
+    },
+    methods:{
+        logout(){
+            this.$store.commit('REMOVE_COUNT', this.$store.state.token);
+            this.$router.push('/login')
+        }
+    }   
 }
 </script>
 
@@ -180,7 +186,7 @@ export default {
 
 .topnav-box-user{
     position: relative;
-    width: 7%;
+    width: 10%;
     float:right;
     align-content: center;
     color:black;
