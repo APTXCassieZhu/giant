@@ -56,10 +56,22 @@
             <div class="topnav-box-search">
             </div>
            
+            
+            
             <div class="topnav-box-user">
                 <span>欢迎回来，{{getUser}}</span>
-                <Icon type="ios-contact" size="48" onclick="gologin()"/>
-                <!--<span class="topnav-tooltip">登录</span>-->
+                <Dropdown>
+                    <a href="javascript:void(0)">
+                        <Icon type="ios-contact" size="48"/>
+                    </a>
+                    <DropdownMenu slot="list" style="z-index:1000;">
+                        <ul><DropdownItem><router-link to="/personal">个人中心</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link to="/personal">我的关注</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link to="/personal">修改资料</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link to="/personal">退出登录</router-link></DropdownItem></ul>
+                    </DropdownMenu>
+                </Dropdown>
+                
             </div>
 
             <div to='/login' class="topnav-box-user-login">
@@ -176,9 +188,9 @@ export default {
 
 
 
-.topnav-box-link-a:hover, .topnav-box-user:hover{
+.topnav-box-link-a:hover, .topnav-box-user Icon:hover{
     color: #6495ED;
-    border-top: 5px solid #6495ED;
+    /*border-top: 5px solid #6495ED;*/
     cursor: pointer;
 }
 
