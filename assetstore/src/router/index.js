@@ -33,6 +33,14 @@ export default new Router({
       }
     },
     {
+      path: '/personal',
+      name: 'Personal',
+      component: login,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
       path: '/software',
       name: 'Software',
       component: software,
