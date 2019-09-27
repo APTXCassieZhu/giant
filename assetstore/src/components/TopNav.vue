@@ -114,7 +114,7 @@ export default {
     float:left;
     left: 5%;
     top: 10px;
-    width: 60%;
+    width: 40%;
     height: 80px;
     font-size: 18px;
     color: black;

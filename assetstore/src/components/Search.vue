@@ -30,13 +30,7 @@
             </div>
             <div class="associate-card" id="associate" style="display:none">     
             </div>
-            <div class="recommend-line">
-                <span>&emsp;为您推荐&emsp;</span>
-                <Tag color="purple">推荐搜索1</Tag>
-                <span>&emsp;</span>
-                <Tag color="purple">推荐搜索2</Tag>
-                <span>&emsp;</span>
-            </div>
+            
         </FormItem>
     </Form>
 
@@ -252,14 +246,6 @@ export default {
     color: orangered;
 }
 
-.recommend-line {
-    font-size: 16px;
-    position: absolute;
-    float: left;
-    top: 100px;
-    z-index: -1;
-}
-
 .search-card{
     display: none;
     border: 1px solid #dcdee2;
@@ -271,7 +257,7 @@ export default {
     width: 80%; 
     top: 40px; 
     padding: 10px 20px 10px 20px;
-    z-index: 10;
+    z-index: 10000;
 }
 
 .associate-card {
@@ -285,7 +271,7 @@ export default {
     width: 80%; 
     top: 40px; 
     padding: 0px 20px 0px 20px;
-    z-index: 10;
+    z-index: 10000;
 }
 
 .Divider {
