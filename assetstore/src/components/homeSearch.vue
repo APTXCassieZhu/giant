@@ -96,18 +96,15 @@ export default {
         // 页面加载时自动取出历史记录
         for(var i=0; i < 3; i++) {
             if(storage.has(i)) {
-                console.log(storage.get(i));
                 this.searchHistory.push(storage.get(i));
                 let historyEmpty = false;
             }else {
-                console.log("not full")
                 let historyFull = false;
             }
         }
     },
     methods: {
         searchSubmit() {
-            console.log(this.searchForm);
             // 清空
             this.searchHistory = []
             if(historyFull || (storage.has(1)&&storage.has(2))) {
