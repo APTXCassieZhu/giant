@@ -219,7 +219,7 @@ export default {
     float: none;
     width: 100%;
     z-index: -10;
-    background-image: url("../assets/blue.jpg")
+    background-image: url("../assets/11111.jpg")
 }
 
 .home-search-wrapper img{
