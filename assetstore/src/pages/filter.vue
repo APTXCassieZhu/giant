@@ -8,18 +8,15 @@
                 <BreadcrumbItem>当前内容</BreadcrumbItem>
             </Breadcrumb>
         </div>
-        <Search></Search>
     </div>
 </template>
 
 <script>
 import TopNavigation from '../components/TopNav.vue'
-import Search from '../components/Search.vue'
 export default {
     name:"Filter",
     components:{
         TopNavigation,
-        Search
     }
 }
 </script>
