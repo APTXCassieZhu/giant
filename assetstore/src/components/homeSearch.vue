@@ -32,9 +32,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="associate-card" id="associate" style="display:none">
-                        <span class="associate-title"> <a  href ="https://www.baidu.com/s?wd=ele">ele</a> </span>                  
-                        <a style="display:block;" href ="https://www.baidu.com/s?wd=ele">ele</a>                   
+                    <div class="associate-card" id="associate" style="display:none">                
                     </div>
                     <div class="recommend-line">
                         <span>&emsp;为您推荐&emsp;</span>
@@ -143,7 +141,6 @@ export default {
             document.getElementById("content").style.display="none"
             document.getElementById("associate").style.display="block"
             console.log(this.searchForm.content)
-            //useBaidu(this.searchForm.content)  
             this.$http.jsonp("https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su", 
             {params:{wd:this.searchForm.content},jsonp:"cb"}).then(function(res){
                 console.log("weisha "+res.data.s)
@@ -161,7 +158,7 @@ export default {
                     })
                     document.getElementById("associate").innerHTML = str;
                 }else { 
-                    //document.getElementById("associate").style.display = 'none';
+                    document.getElementById("associate").style.display = 'none';
                 }    
             }, function(res){
                 //alert(res.status)
@@ -170,7 +167,7 @@ export default {
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
             if(this.searchForm.content == ""){
-                //document.getElementById("associate").style.display = 'none';
+                document.getElementById("associate").style.display = 'none';
             }
             // 判断是否有历史搜索
             if(this.searchHistory.length == 0) {
@@ -196,10 +193,10 @@ export default {
         },
         hideAdvise() {
             document.getElementById("content").style.display='none';
-            //document.getElementById("associate").style.display='none';
+            document.getElementById("associate").style.display='none';
         },
         hideAssociate() {
-            //document.getElementById("associate").style.display='none';
+            document.getElementById("associate").style.display='none';
             document.getElementById("searchcontent").focus();
         },
         clearHistory() {
