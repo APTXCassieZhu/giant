@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import TopNav from '@/components/TopNav'
 import login from '../pages/login'
 import home from '../pages/home'
-import searchResult from '../pages/search'
+import filter from '../pages/filter'
 import software from '../pages/software'
 import discussion from '../pages/Q&A'
+import personal from '../pages/Personal'
+import knowledge from '../pages/Knowledge'
 
 Vue.use(Router)
 
@@ -35,7 +36,7 @@ export default new Router({
     {
       path: '/personal',
       name: 'Personal',
-      component: login,
+      component: personal,
       meta: {
         requireAuth: true
       }
@@ -49,9 +50,9 @@ export default new Router({
       }
     },
     {
-      path: '/search',
-      name: 'Search',
-      component: searchResult,
+      path: '/filter',
+      name: 'Filter',
+      component: filter,
       meta: {
         requireAuth: true
       }
@@ -59,7 +60,7 @@ export default new Router({
     {
       path: '/knowledge',
       name: 'Knowledge',
-      component: TopNav,
+      component: knowledge,
       meta: {
         requireAuth: true
       }

@@ -32,7 +32,9 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="associate-card" id="associate" style="display:none">                
+                    <div class="associate-card" id="associate" style="display:none">     
+                        <!--<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='???'">??????????</a>         
+                        <a style="display:block;" href ="https://www.baidu.com/s?wd='???'">??????????</a> -->        
                     </div>
                     <div class="recommend-line">
                         <span>&emsp;为您推荐&emsp;</span>
@@ -129,7 +131,7 @@ export default {
             let historyEmpty = false
             this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                this.$router.push('/search')
+                this.$router.push('/filter')
             }, (response)=>{
                 //alert("出错啦QAQ")
             })
@@ -164,7 +166,7 @@ export default {
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
             if(this.searchForm.content == ""){
-                document.getElementById("associate").style.display = 'none';
+                document.getElementById("associate").style.display = "none";
             }
             // 判断是否有历史搜索
             if(this.searchHistory.length == 0) {
