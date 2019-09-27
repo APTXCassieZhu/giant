@@ -16,21 +16,21 @@
             
             <div class="topnav-box-link">
                 <Search></Search>
-                <div class="topnav-box-user">
-                    <span>欢迎回来，{{getUser}}</span>
-                    <Dropdown placement="bottom-start">
-                        <a href="javascript:void(0)">
-                            <Icon type="ios-contact" size="48" class="topnav-user"/>
-                        </a>
-                        <DropdownMenu slot="list" class="topnav-dropdown">
-                            <ul><DropdownItem><router-link style="color:black;" to="/personal">个人中心</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link style="color:black;" to="/personal">我的关注</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link style="color:black;" to="/personal">修改资料</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><span style="color:black;" @click="logout()">退出登录</span></DropdownItem></ul>
-                        </DropdownMenu>
-                    </Dropdown>
-                </div>
-            </div>  
+            </div>
+            <div class="topnav-box-user">
+                <span>欢迎回来，{{getUser}}</span>
+                <Dropdown placement="bottom-start">
+                    <a href="javascript:void(0)">
+                        <Icon type="ios-contact" size="48" class="topnav-user"/>
+                    </a>
+                    <DropdownMenu slot="list" class="topnav-dropdown">
+                        <ul><DropdownItem><router-link style="color:black;" to="/personal">个人中心</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link style="color:black;" to="/personal">我的关注</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link style="color:black;" to="/personal">修改资料</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><span style="color:black;" @click="logout()">退出登录</span></DropdownItem></ul>
+                    </DropdownMenu>
+                </Dropdown>
+            </div>
 
             <div to='/login' class="topnav-box-user-login">
                 <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
