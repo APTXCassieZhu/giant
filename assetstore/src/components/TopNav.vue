@@ -56,16 +56,17 @@
             <div class="topnav-box-search">
             </div>
            
-            <router-link to='/login' class="topnav-box-user">
+            <div class="topnav-box-user">
+                <span>欢迎回来，{{getUser}}</span>
                 <Icon type="ios-contact" size="48" onclick="gologin()"/>
                 <!--<span class="topnav-tooltip">登录</span>-->
-            </router-link>
+            </div>
 
-            <router-link to='/login' class="topnav-box-user-login">
-                <Tooltip content="登录" placement="top" style="position:fixed; z-index:1000;">
+            <div to='/login' class="topnav-box-user-login">
+                <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
                     <Icon type="ios-contact" size="48"/>
                 </Tooltip>
-            </router-link>
+            </div>
         </div>
     </div>
 </div>
@@ -75,7 +76,12 @@
 import axios from 'axios'
 
 export default {
-    name: "TopNavigation"
+    name: "TopNavigation",
+    computed:{
+        getUser(){
+            return this.$store.state.token;
+        }
+    }
 }
 </script>
 
@@ -118,9 +124,9 @@ export default {
 }
 
 .topnav-box-logo img {
-    width: 50px;
+    width: 70px;
     height: 50px;
-    /*border-radius: 50%;*/
+    border-radius: 5%;
     border-color: black;
     border-width: 0px;  
     border-style: solid;
