@@ -7,6 +7,7 @@
                     <h1>望能成为您日常工作的好助力</h1>
                     <Input id="searchcontent" size="large" type="text" clearable class="search-input" 
                     @focus.native.capture="changeAdvise()" @blur.native.capture="hideAdvise()"
+                    @on-clear="hideAssociate()"
                     v-on:input="handleInput()" v-model.trim="searchForm.content"
                     placeholder="支持输入资源、用户、文章关键字" /></Input>
                     <Button type="primary" class="search-button" @click="searchSubmit()">
@@ -31,7 +32,8 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="search-card" id="associate" style="display:none">
+                    <div class="associate-card" id="associate" style="display:none">
+                        <a class="hot-search-title" style="display:block;" href ="https://www.baidu.com/s?wd=ele">ele</a>                   
                     </div>
                     <div class="recommend-line">
                         <span>&emsp;为您推荐&emsp;</span>
@@ -105,19 +107,6 @@ export default {
         }
     },
     methods: {
-        result(data) {
-            console.log("Aa")
-            var list = data.s;
-            var str = '';
-            if (list.length > 0) {
-                list.forEach(function (ele, index) {
-                    str += '<li><a href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele + '</li>';
-                })
-                document.getElementById("associate").innerHTML = str;
-            }else { 
-                document.getElementById("associate").style.display = 'none';
-            }
-        },
         searchSubmit() {
             console.log(this.searchForm);
             // 清空
@@ -159,20 +148,29 @@ export default {
                 console.log("weisha "+res.data.s)
                 var result = res.data.s
                 var str = '';
+                var count = 0;
                 if (result.length > 0) {
                     result.forEach(function (ele, index) {
-                        str += '<li><a href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele + '</li>';
+                        if(count == 0){
+                            str += '<a class="hot-search-title" href ="https://www.baidu.com/s?wd='+ ele +  '">' + ele+'</a>';
+                        } else {
+                            str += '<a style="display:block;" href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele+'</a>';
+                        }
+                        count += 1;
                     })
-                    document.getElementById("associate").innerHTML = str;
+                    //document.getElementById("associate").innerHTML = str;
                 }else { 
-                    document.getElementById("associate").style.display = 'none';
+                    //document.getElementById("associate").style.display = 'none';
                 }    
-            }, function(res){alert(res.status)})
-            console.log("联想搜索 "+result)
-            
+            }, function(res){
+                //alert(res.status)
+            })
         },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
+            if(this.searchForm.content == ""){
+                //document.getElementById("associate").style.display = 'none';
+            }
             // 判断是否有历史搜索
             if(this.searchHistory.length == 0) {
                 console.log("focus empty")
@@ -197,7 +195,11 @@ export default {
         },
         hideAdvise() {
             document.getElementById("content").style.display='none';
-            document.getElementById("associate").style.display='none';
+            //document.getElementById("associate").style.display='none';
+        },
+        hideAssociate() {
+            //document.getElementById("associate").style.display='none';
+            document.getElementById("searchcontent").focus();
         },
         clearHistory() {
             document.getElementById("history-search").style.display='none';
@@ -297,7 +299,7 @@ export default {
     z-index: -1;
 }
 
-.search-card {
+.search-card{
     display: none;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
@@ -308,6 +310,20 @@ export default {
     width: 80%; 
     top: 40px; 
     padding: 10px 20px 10px 20px;
+    z-index: 10;
+}
+
+.associate-card {
+    display: none;
+    border: 1px solid #dcdee2;
+    border-color: #e8eaec;
+    background: #fff;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    width: 80%; 
+    top: 40px; 
+    padding: 0px 20px 0px 20px;
     z-index: 10;
 }
 
