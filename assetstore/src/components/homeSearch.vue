@@ -33,7 +33,8 @@
                         </div>
                     </div>
                     <div class="associate-card" id="associate" style="display:none">
-                        <a class="hot-search-title" style="display:block;" href ="https://www.baidu.com/s?wd=ele">ele</a>                   
+                        <span class="associate-title"> <a  href ="https://www.baidu.com/s?wd=ele">ele</a> </span>                  
+                        <a style="display:block;" href ="https://www.baidu.com/s?wd=ele">ele</a>                   
                     </div>
                     <div class="recommend-line">
                         <span>&emsp;为您推荐&emsp;</span>
@@ -152,13 +153,13 @@ export default {
                 if (result.length > 0) {
                     result.forEach(function (ele, index) {
                         if(count == 0){
-                            str += '<a class="hot-search-title" href ="https://www.baidu.com/s?wd='+ ele +  '">' + ele+'</a>';
+                            str += '<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='+ ele +  '">' + ele+'</a>';
                         } else {
                             str += '<a style="display:block;" href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele+'</a>';
                         }
                         count += 1;
                     })
-                    //document.getElementById("associate").innerHTML = str;
+                    document.getElementById("associate").innerHTML = str;
                 }else { 
                     //document.getElementById("associate").style.display = 'none';
                 }    
