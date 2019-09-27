@@ -1,12 +1,12 @@
 <template>
 <div>
-    <TopNavigation></TopNavigation>
+    <HomeTopNavigation></HomeTopNavigation>
     <HomeSearch></HomeSearch>
 </div>
 </template>
 
 <script>
-import TopNavigation from '../components/TopNav.vue'
+import HomeTopNavigation from '../components/HomeTopNav.vue'
 import HomeSearch from '../components/homeSearch.vue'
 /*var searchContent = document.getElementById("search")
 addEventListener(searchContent, "focus", function() {
@@ -15,7 +15,7 @@ addEventListener(searchContent, "focus", function() {
 
 export default {
     name:"Home",
-    components: {TopNavigation,HomeSearch},
+    components: {HomeTopNavigation,HomeSearch},
 }
 </script>
 
