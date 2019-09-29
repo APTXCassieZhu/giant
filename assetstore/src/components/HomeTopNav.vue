@@ -14,12 +14,10 @@
                 <img src="../assets/logo.png" alt="logo">
             </div>
             
-            <div class="topnav-box-link">
-                <router-link class="topnav-box-link-a" to="/home" exact-active-class="router-active">首页</router-link>
-               
+            <div class="topnav-box-link">               
                 <div class="topnav-box-link-a">
-                    <Dropdown>
-                        <a href="javascript:void(0)">资源
+                    <Dropdown placement="bottom-start">
+                        <a href="javascript:void(0)">美术类资源
                             <Icon type="ios-arrow-down"></Icon>
                         </a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
@@ -35,8 +33,8 @@
                     </Dropdown>
                 </div>
                 <div class="topnav-box-link-a">
-                    <Dropdown>
-                        <a href="javascript:void(0)">工具<Icon type="ios-arrow-down"></Icon></a>
+                    <Dropdown placement="bottom-start">
+                        <a href="javascript:void(0)">研发工具<Icon type="ios-arrow-down"></Icon></a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
                             <ul><DropdownItem><router-link to="/工具/可视化脚本">可视化脚本</router-link></DropdownItem></ul>
                             <ul><DropdownItem><router-link to="/工具/地形">地形</router-link></DropdownItem></ul>
@@ -47,9 +45,7 @@
                         </DropdownMenu>
                     </Dropdown>
                 </div>
-                <router-link class="topnav-box-link-a" to="/software" exact-active-class="router-active">软件</router-link>
-                <router-link class="topnav-box-link-a" to="/knowledge" exact-active-class="router-active">知识</router-link>
-                <router-link class="topnav-box-link-a" to="/Q&A" exact-active-class="router-active">问答</router-link>
+                <router-link class="topnav-box-link-a" to="/software" exact-active-class="router-active">常用软件</router-link>
             </div>
             
             <!--提交搜索内容-->

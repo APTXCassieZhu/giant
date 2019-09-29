@@ -26,7 +26,7 @@ export default {
 <style scoped>
 .bread-container {
     position: relative;
-    left:25px;
+    left:3%;
 }
 </style>
 

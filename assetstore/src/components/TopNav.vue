@@ -43,7 +43,8 @@
         </div>
     </div>
     <Divider style="margin: 0px 0px; z-index: -1;"/>
-    <Menu mode="horizontal" :theme="light" :active-name="activenum" >
+    <div class="submenu">
+        <Menu mode="horizontal" :theme="light" :active-name="activenum" class="nav-menu">
             <MenuItem name="1">
                 <Icon type="ios-paper" />
                 <router-link style="color:black; cursor:pointer;" to='/source'>美术类资源</router-link>
@@ -57,12 +58,6 @@
                 <router-link style="color:black; cursor:pointer;" to='/software'>常用软件</router-link>
             </MenuItem>
         </Menu>
-    <div class="submenu">
-        <div class="nav-menu">
-            <router-link style="color:black; cursor:pointer;" to='/source'>美术类资源</router-link>
-            <router-link style="color:black; cursor:pointer;" to='/tools'>研发工具</router-link>
-            <router-link style="color:black; cursor:pointer;" to='/software'>常用软件</router-link>
-        </div>
     </div>
 </div>
 </template>
@@ -191,10 +186,8 @@ export default {
     width: 100%;
     position: relative;
     height: 60px;
-    z-index: -1;
 }
 .nav-menu{
-    z-index:-1;
     float: right;
     width: 98%;
     background-color:aliceblue;
