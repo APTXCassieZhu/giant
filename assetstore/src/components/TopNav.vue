@@ -44,18 +44,18 @@
     </div>
     <Divider style="margin: 0px 0px"/>
     <div class="submenu">
-        <Menu mode="horizontal" :theme="light" active-name="1" class="nav-menu">
+        <Menu mode="horizontal" :theme="light" :active-name="activenum" class="nav-menu">
             <MenuItem name="1">
                 <Icon type="ios-paper" />
-                美术类资源
+                <router-link style="cursor:pointer;" to='/source'>美术类资源</router-link>
             </MenuItem>
             <MenuItem name="2">
                 <Icon type="ios-construct" />
-                研发工具
+                <router-link style="color:black; cursor:pointer;" to='/tools'>研发工具</router-link>
             </MenuItem>
             <MenuItem name="3">
                 <Icon type="ios-people" />
-                常用软件
+                <router-link style="color:black; cursor:pointer;" to='/software'>常用软件</router-link>
             </MenuItem>
         </Menu>
         <br>
@@ -68,6 +68,12 @@ import Search from '../components/Search.vue'
 export default {
     name: "TopNavigation",
     components: {Search},
+    data(){
+        return{
+            // TO DO 根据搜索内容判断当前active number
+            activenum: '1'
+        }
+    },
     computed:{
         getUser(){
             return this.$store.state.token;
@@ -92,8 +98,6 @@ export default {
     padding: 0;
     border-color: grey;
     background-color: aliceblue;
-    border-bottom: 5px, solid, #6495ED;
-
 }
 
 .topnav-box {
