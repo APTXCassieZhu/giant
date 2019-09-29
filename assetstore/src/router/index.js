@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import login from '../pages/login'
+import login from '../pages/users/login'
 import home from '../pages/home'
-import filter from '../pages/filter'
+import filter from '../pages/search/filter'
 import software from '../pages/software'
 import discussion from '../pages/Q&A'
-import personal from '../pages/Personal'
-import knowledge from '../pages/Knowledge'
+import personal from '../pages/users/personal'
+import knowledge from '../pages/knowledge'
 
 Vue.use(Router)
 

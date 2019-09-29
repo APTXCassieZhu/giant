@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import TopNavigation from '../components/TopNav.vue'
+import TopNavigation from '../../components/TopNav.vue'
 export default {
     name:"Personal",
     components:{TopNavigation}
