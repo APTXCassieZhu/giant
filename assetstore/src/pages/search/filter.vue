@@ -8,7 +8,11 @@
                 <Tag color="purple">推荐搜索1</Tag>
                 <span>&emsp;</span>
                 <Tag color="purple">推荐搜索2</Tag>
-                <span>&emsp;</span>  
+                <span>&emsp;</span> 
+                <Tag color="purple">推荐搜索3</Tag>
+                <span>&emsp;</span> 
+                <Tag color="purple">推荐搜索4</Tag>
+                <span>&emsp;</span> 
             </div>
         </div>
         <div class="bread-container">
@@ -46,20 +50,18 @@ export default {
     width: 100%;
     height: 50px;
     background-color:rgb(210, 234, 255);
-    z-index: -1;
 }
 .advise-container {
     position: relative;
     left:2.5%;
     top:15px;
     height: 20px;
-    z-index: -1;
 }
 .bread-container {
     position: relative;
     left:3%;
     top:20px;
-    z-index: -1;
+    /*z-index: -1;*/
 }
 </style>
 

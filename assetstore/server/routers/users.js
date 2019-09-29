@@ -17,7 +17,7 @@ router.post('/login', jsonParser, function(req,res){
 })
 
 router.post('/search', jsonParser,function(req,res){
-    console.log("search"+req.body.content);
+    console.log("search"+req.body.searchcontent);
     res.json({'status':"OK"});
 })
 //export this router to use in our index.js
