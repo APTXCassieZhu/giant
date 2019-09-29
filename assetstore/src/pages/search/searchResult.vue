@@ -20,7 +20,7 @@
         </div>
         <div class="button-wrapper">
             <Dropdown placement="bottom-start" trigger="custom" :visible="artVisible" @on-clickoutside="handleArtClose()">
-                <Button id="art" style="width: 200px; font-size: 15px;" href="javascript:void(0)" @click="handleArtOpen()"><strong>美术资源<Icon type="md-arrow-dropdown" size="20"/></strong></Button>
+                <Button id="art" style="width: 200px; font-size: 15px" href="javascript:void(0)" @click="handleArtOpen()"><strong>美术资源<Icon type="md-arrow-dropdown" size="20"/></strong></Button>
                 <DropdownMenu slot="list" style="width:200px;" >
                     <CheckboxGroup v-model="artGroup" @on-change="checkAllArtGroupChange()">
                         <!--TO DO 此处数字应与后端互动拿到-->
@@ -86,16 +86,20 @@ export default {
             }
         },
         checkAllArtGroupChange (data) {
+            // data is undefined ???????????????
+            console.log(data);
             if (data.length === 6) {
                 this.artNotFull = false;
                 this.checkArtAll = true;
             } else if (data.length > 0) {
                 this.artNotFull = true;
                 this.checkArtAll = false;
+                // 子件里面有一个选中则当前父button高亮
                 document.getElementById("art").style.active = true;
             } else {
                 this.artNotFull = false;
                 this.checkArtAll = false;
+                // 子件里面没有一个选中则当前父button不高亮
                 document.getElementById("art").style.active = false;
             }
         }
