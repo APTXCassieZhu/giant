@@ -5,8 +5,8 @@
             <div class="topnav-box-menu">
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
-            <div class="topnav-box-logo">
-                <img src="../assets/logo.png" alt="logo">
+            <div class="topnav-box-logo" >
+                <img src="../assets/logo.png" alt="首页" @click="gohome()">
             </div>
 
             <!--不知道怎么清除之前div css-->
@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <Divider style="margin: 0px 0px"/>
+    <Divider style="margin: 0px 0px; z-index: -1;"/>
     <div class="submenu">
         <Menu mode="horizontal" :theme="light" :active-name="activenum" class="nav-menu">
             <MenuItem name="1">
@@ -83,6 +83,9 @@ export default {
         logout(){
             this.$store.commit('REMOVE_COUNT', this.$store.state.token);
             this.$router.push('/login')
+        },
+        gohome(){
+            this.$router.push('/')
         }
     }   
 }
@@ -120,6 +123,7 @@ export default {
 
 .topnav-box-logo{
     position: relative;
+    cursor: pointer;
     width: 5%;
     left: 4%;
     float:left;

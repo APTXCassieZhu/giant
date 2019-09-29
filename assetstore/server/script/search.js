@@ -5,7 +5,7 @@ $(document).ready(function () {
         e.preventDefault();
         $.ajax({
             type: 'post',
-            url: 'http://localhost/filter',
+            url: 'http://localhost/searchresult',
             contentType: "application/json; charset=utf-8",
             headers: {
                 Accept: "application/json; charset=utf-8"

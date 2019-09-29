@@ -6,7 +6,7 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo">
-                <img src="../assets/logo.png" alt="logo">
+                <img src="../assets/logo.png" alt="logo" @click="gohome()">
             </div>
 
             <!--不知道怎么清除之前div css-->
@@ -96,6 +96,9 @@ export default {
         logout(){
             this.$store.commit('REMOVE_COUNT', this.$store.state.token);
             this.$router.push('/login')
+        },
+        gohome(){
+            this.$router.push('/')
         }
     }   
 }
@@ -133,6 +136,7 @@ export default {
 
 .topnav-box-logo{
     position: relative;
+    cursor: pointer;
     width: 5%;
     left: 4%;
     float:left;
