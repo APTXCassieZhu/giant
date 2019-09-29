@@ -43,11 +43,10 @@
         </div>
     </div>
     <Divider style="margin: 0px 0px; z-index: -1;"/>
-    <div class="submenu">
-        <Menu mode="horizontal" :theme="light" :active-name="activenum" class="nav-menu">
+    <Menu mode="horizontal" :theme="light" :active-name="activenum" >
             <MenuItem name="1">
                 <Icon type="ios-paper" />
-                <router-link style="cursor:pointer;" to='/source'>美术类资源</router-link>
+                <router-link style="color:black; cursor:pointer;" to='/source'>美术类资源</router-link>
             </MenuItem>
             <MenuItem name="2">
                 <Icon type="ios-construct" />
@@ -58,7 +57,12 @@
                 <router-link style="color:black; cursor:pointer;" to='/software'>常用软件</router-link>
             </MenuItem>
         </Menu>
-        <br>
+    <div class="submenu">
+        <div class="nav-menu">
+            <router-link style="color:black; cursor:pointer;" to='/source'>美术类资源</router-link>
+            <router-link style="color:black; cursor:pointer;" to='/tools'>研发工具</router-link>
+            <router-link style="color:black; cursor:pointer;" to='/software'>常用软件</router-link>
+        </div>
     </div>
 </div>
 </template>
@@ -194,6 +198,15 @@ export default {
     float: right;
     width: 98%;
     background-color:aliceblue;
+    height: 60px;
+    line-height: 60px;
+    display: block;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    font-size: 14px;
+    position: relative;
+
 }
 </style>
 
