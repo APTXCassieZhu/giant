@@ -109,9 +109,8 @@ export default {
     height: 80px;
     margin: 0;
     padding: 0;
-    border-color: grey;
     background-color: aliceblue;
-    border-width: 1px;  
+    border-bottom: 1px, solid, rgb(181, 198, 230);
 }
 
 .topnav-box {

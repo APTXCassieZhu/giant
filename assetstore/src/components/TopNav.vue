@@ -18,7 +18,10 @@
                 <Search></Search>
             </div>
             <div class="topnav-box-user">
-                <span>欢迎回来，{{getUser}}</span>
+                <Icon type="md-cloud-upload" size="36"/>
+                <Icon type="md-notifications" size="36"/>
+                <Icon type="md-settings" size="36"/>
+                <span>&emsp; {{getUser}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <Icon type="ios-contact" size="48" class="topnav-user"/>
@@ -38,6 +41,24 @@
                 </Tooltip>
             </div>
         </div>
+    </div>
+    <Divider style="margin: 0px 0px"/>
+    <div class="submenu">
+        <Menu mode="horizontal" :theme="light" active-name="1" class="nav-menu">
+            <MenuItem name="1">
+                <Icon type="ios-paper" />
+                美术类资源
+            </MenuItem>
+            <MenuItem name="2">
+                <Icon type="ios-construct" />
+                研发工具
+            </MenuItem>
+            <MenuItem name="3">
+                <Icon type="ios-people" />
+                常用软件
+            </MenuItem>
+        </Menu>
+        <br>
     </div>
 </div>
 </template>
@@ -71,7 +92,8 @@ export default {
     padding: 0;
     border-color: grey;
     background-color: aliceblue;
-    border-width: 1px;  
+    border-bottom: 5px, solid, #6495ED;
+
 }
 
 .topnav-box {
@@ -118,33 +140,12 @@ export default {
     height: 80px;
     font-size: 18px;
     color: black;
-}
-
-.topnav-box-link-a{
-    position: relative;
-    text-decoration: none;
-    width: 12%;
-    float: left;
-    padding-right: 2%;
-    text-align:center;    
-    color: black;
-}
-
-.topnav-box-link-a a{
-    color: black;
-}
-
-.topnav-box-search{
-    position: relative;
-    width: 20%;
-    float:left;
-    font-size: 15px;
-    top: 8.5px;
+    z-index: 10000;
 }
 
 .topnav-box-user{
     position: relative;
-    width: 10%;
+    width: 15%;
     float:right;
     align-content: center;
     color:black;
@@ -154,19 +155,10 @@ export default {
     color:black;
 }
 
-.topnav-box-link-a:hover, .topnav-user:hover{
+.topnav-user:hover{
     color: #6495ED;
     /*border-top: 5px solid #6495ED;*/
     cursor: pointer;
-}
-
-.topnav-box-link-a a:hover {
-    color: #6495ED;
-    cursor: pointer;
-}
-
-.topnav-box-link-a router-link-active{
-    color: #BA55D3;
 }
 
 .topnav-dropdown{
@@ -181,5 +173,19 @@ export default {
     font-size: 18px;
 }
 
+.submenu{
+    border-top:1px, solid, #6495ED;
+    background-color:aliceblue;
+    width: 100%;
+    position: relative;
+    height: 60px;
+    z-index: -1;
+}
+.nav-menu{
+    z-index:-1;
+    float: right;
+    width: 98%;
+    background-color:aliceblue;
+}
 </style>
 
