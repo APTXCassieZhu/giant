@@ -53,8 +53,6 @@
 import storage from 'good-storage'
 import VueResource from 'vue-resource' 
 
-const   historyFull = true
-const   historyEmpty = true
 // 判断是否含有string是否含有某个字符
 function contain(str, charset) {
     var i;
@@ -96,12 +94,9 @@ export default {
             this.tagList.push(this.data[i])
         }
         // 页面加载时自动取出历史记录
-        for(var i=0; i < 3; i++) {
+        for(var i=1; i <= 3; i++) {
             if(storage.has(i)) {
                 this.searchHistory.push(storage.get(i));
-                let historyEmpty = false;
-            }else {
-                let historyFull = false;
             }
         }
     },
@@ -109,7 +104,7 @@ export default {
         searchSubmit() {
             // 清空
             this.searchHistory = []
-            if(historyFull || (storage.has(1)&&storage.has(2))) {
+            if((storage.has(1)&&storage.has(2))) {
                 storage.set(3, storage.get(2))
                 storage.set(2, storage.get(1))
                 storage.set(1, this.searchForm.content)
@@ -117,7 +112,7 @@ export default {
                 this.searchHistory.push(storage.get(2))
                 this.searchHistory.push(storage.get(3));
             }else{
-                if(historyEmpty) {
+                if(!storage.has(1)) {
                     // empty history
                     storage.set(1, this.searchForm.content)
                     this.searchHistory.push(storage.get(1))
