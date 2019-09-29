@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import login from '../pages/users/login'
 import home from '../pages/home'
 import filter from '../pages/search/filter'
+import searchresult from '../pages/search/searchResult'
 import software from '../pages/software'
 import discussion from '../pages/Q&A'
 import personal from '../pages/users/personal'
@@ -50,6 +51,14 @@ export default new Router({
       }
     },
     {
+      path: '/knowledge',
+      name: 'Knowledge',
+      component: knowledge,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
       path: '/filter',
       name: 'Filter',
       component: filter,
@@ -58,9 +67,9 @@ export default new Router({
       }
     },
     {
-      path: '/knowledge',
-      name: 'Knowledge',
-      component: knowledge,
+      path: '/searchresult',
+      name: 'SearchResult',
+      component: searchresult,
       meta: {
         requireAuth: true
       }

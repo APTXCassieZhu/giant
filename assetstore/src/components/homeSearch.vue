@@ -131,7 +131,8 @@ export default {
             let historyEmpty = false
             this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                this.$router.push('/filter')
+                this.$store.commit('SEARCH_COUNT', this.searchForm.content)
+                this.$router.push('/searchresult')
             }, (response)=>{
                 //alert("出错啦QAQ")
             })
