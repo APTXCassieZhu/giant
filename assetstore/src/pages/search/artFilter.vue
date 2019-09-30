@@ -26,7 +26,9 @@
             <div class="title-wrapper">
                 <strong>美术类资源</strong>
             </div>
-            <source-card style="position:relative"></source-card>
+            <div class="card-wrapper">
+                <source-card style="position:relative"></source-card>
+            </div>
         </div>
     </div>
 </template>
@@ -68,10 +70,17 @@ export default {
     top:15px;
     height: 20px;
 }
+.card-wrapper {
+    position: relative;
+    left: 3%;
+
+}
+
 .bread-container {
     position: relative;
     left:3%;
     top:20px;
+    padding: 10px;
 }
 </style>
 

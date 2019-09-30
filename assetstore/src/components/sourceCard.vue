@@ -1,5 +1,5 @@
 <template>
-    <Card style="width:250px">
+    <Card style="width:250px; height: 300px;">
         <span>
             <Icon type="ios-star" v-for="n in 4" :key="n"></Icon>
             <Icon type="ios-star" v-if="item.rate >= 9.5"></Icon>
