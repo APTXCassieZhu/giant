@@ -91,6 +91,8 @@ export default {
                 let historyFull = false;
             }
         }
+        // 页面加载时自动填充前一个页面search input
+        this.searchForm.content = this.$store.state.searchContent;
     },
     methods: {
         searchSubmit() {

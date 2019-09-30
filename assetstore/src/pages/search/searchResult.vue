@@ -140,7 +140,6 @@ export default {
             }
         },
         checkAllArtGroupChange (data) {
-            // data is undefined ???????????????
             console.log(data);
             if (data.length === 6) {
                 this.artNotFull = false;
@@ -149,11 +148,13 @@ export default {
                 this.artNotFull = true;
                 this.checkArtAll = false;
                 // 子件里面有一个选中则当前父button高亮
+                console.log("高亮")
                 document.getElementById("art").style.active = true;
             } else {
                 this.artNotFull = false;
                 this.checkArtAll = false;
                 // 子件里面没有一个选中则当前父button不高亮 
+                 console.log("取消高亮")
                 document.getElementById("art").style.active = false;
             }
         },
