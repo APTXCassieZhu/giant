@@ -1,6 +1,8 @@
 # giantVue
 asset store
 
+
+``` bash
 // use complete framework
 
 npm install -g vue-cli
