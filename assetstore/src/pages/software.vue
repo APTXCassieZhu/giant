@@ -10,7 +10,7 @@
             </Breadcrumb>
         </div>
         <br>
-        <LeftSideMenu></LeftSideMenu>
+        <LeftSideMenu style="position:absolute; top:180px; z-index:0"></LeftSideMenu>
     </div>
 </template>
     
@@ -25,8 +25,9 @@ export default {
 
 <style scoped>
 .bread-container {
-    position: relative;
-    left:3%;
+    position: fixed;
+    top: 130px;
+    left:1.5%;
 }
 </style>
 

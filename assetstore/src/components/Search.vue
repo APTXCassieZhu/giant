@@ -16,7 +16,7 @@
                     <span>&emsp;</span>
                 </span>
                 <div id="history-search">
-                    <Divider/>
+                    <Divider style="margin: 8px;"/>
                     <ul>
                         <span class="history-search-title">历史搜索</span>
                         <div class="clear-history" @mousedown="clearHistory()">
@@ -28,7 +28,9 @@
                     </ul>
                 </div>
             </div>
-            <div class="associate-card" id="associate" style="display:none">     
+            <div class="associate-card" id="associate" style="display:none">
+                <div class="position: relative; top: 28px;">
+                </div>     
             </div>
             
         </FormItem>
@@ -138,7 +140,7 @@ export default {
                 if (result.length > 0) {
                     result.forEach(function (ele, index) {
                         if(count == 0){
-                            str += '<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='+ ele +  '">' + ele+'</a>';
+                            str += '<a style="position:relative;top:0px;" href ="https://www.baidu.com/s?wd='+ ele +  '">' + ele+'</a>';
                         } else {
                             str += '<a style="display:block;" href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele+'</a>';
                         }
@@ -224,11 +226,11 @@ export default {
 }
 
 .hot-search-title {
-    position: absolute;
+    position: relative;
     color: blue; 
     font-size: 19px; 
-    height:28px; 
-    top:10px;
+    height:30px; 
+    top:0px;
 }
 
 .history-search-title {
@@ -254,12 +256,11 @@ export default {
     border-color: #e8eaec;
     background: #fff;
     border-radius: 4px;
-    position: relative;
+    position: fixed;
     transition: all 0.2s ease-in-out;
-    width: 80%; 
-    top: 40px; 
+    width: 32%; 
+    top: 65px; 
     padding: 10px 20px 10px 20px;
-    z-index: 10000;
 }
 
 .associate-card {
@@ -268,12 +269,11 @@ export default {
     border-color: #e8eaec;
     background: #fff;
     border-radius: 4px;
-    position: relative;
+    position: fixed;
     transition: all 0.2s ease-in-out;
-    width: 80%; 
-    top: 40px; 
+    width: 32%; 
+    top: 65px; 
     padding: 0px 20px 0px 20px;
-    z-index: 10000;
 }
 
 .Divider {

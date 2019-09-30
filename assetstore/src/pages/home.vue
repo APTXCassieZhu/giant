@@ -1,7 +1,7 @@
 <template>
 <div>
-    <HomeTopNavigation></HomeTopNavigation>
-    <HomeSearch></HomeSearch>
+    <HomeTopNavigation></HomeTopNavigation>   
+    <HomeSearch></HomeSearch>  
 </div>
 </template>
 
