@@ -15,7 +15,7 @@
             </div>
             
             <div class="topnav-box-link">
-                <Search></Search>
+                <Search style="z-index: 1000;"></Search>
             </div>
             <div class="topnav-box-user">
                 <Icon type="md-cloud-upload" size="36"/>
@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <Divider style="margin: 0px 0px; z-index: -1;"/>
+    <Divider style="margin: 0px 0px; z-index:10"/>
     <div class="submenu">
         <Menu mode="horizontal" :theme="light" :active-name="activenum" class="nav-menu">
             <MenuItem name="1">
@@ -94,12 +94,14 @@ export default {
 
 .topnav {
     overflow: hidden;
+    position: fixed;
     width: 100%;
     height: 80px;
     margin: 0;
     padding: 0;
     border-color: grey;
     background-color: aliceblue;
+    z-index: 100;
 }
 
 .topnav-box {
@@ -109,10 +111,12 @@ export default {
     width: 100%;
     height: 80px;
     color:black;
+    z-index:inherit;
 }
 
 .topnav-box router-link{
     color: black;
+    z-index:inherit;
 }
 
 /*only show when the screen is small*/
@@ -126,6 +130,7 @@ export default {
     width: 5%;
     left: 4%;
     float:left;
+    z-index:inherit;
 }
 
 .topnav-box-logo img {
@@ -136,6 +141,7 @@ export default {
     border-width: 0px;  
     border-style: solid;
     align-content: center;
+    z-index:inherit;
 }
 
 .topnav-box-link {
@@ -147,7 +153,7 @@ export default {
     height: 80px;
     font-size: 18px;
     color: black;
-    z-index: 10000;
+    z-index:inherit;
 }
 
 .topnav-box-user{
@@ -156,10 +162,12 @@ export default {
     float:right;
     align-content: center;
     color:black;
+    z-index:inherit;
 }
 
 .topnav-user{
     color:black;
+    z-index:inherit;
 }
 
 .topnav-user:hover{
@@ -172,20 +180,24 @@ export default {
     font-size: 18px;
     position: fixed;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.988);
-    z-index: 100;
+    z-index:inherit;
 }
 
 .topnav-dropdown router-link{
     font-size: 18px;
+    z-index:inherit;
 }
 
 .submenu{
     border-top:1px, solid, #6495ED;
     background-color:aliceblue;
     width: 100%;
-    position: relative;
+    position: absolute;
     height: 60px;
+    top: 80px;
+    z-index: 0;
 }
 .nav-menu{
     float: right;
@@ -198,8 +210,6 @@ export default {
     padding: 0;
     outline: 0;
     font-size: 14px;
-    position: relative;
-
 }
 </style>
 
