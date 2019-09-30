@@ -47,7 +47,7 @@
         <Menu mode="horizontal" :theme="light" :active-name="activenum" class="nav-menu">
             <MenuItem name="1">
                 <Icon type="ios-paper" />
-                <router-link style="color:black; cursor:pointer;" to='/source'>美术类资源</router-link>
+                <router-link style="color:black; cursor:pointer;" to='/artFilter'>美术类资源</router-link>
             </MenuItem>
             <MenuItem name="2">
                 <Icon type="ios-construct" />

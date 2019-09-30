@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '../pages/users/login'
 import home from '../pages/home'
-import filter from '../pages/search/filter'
+import artfilter from '../pages/search/artFilter'
 import searchresult from '../pages/search/searchResult'
 import software from '../pages/software'
 import discussion from '../pages/Q&A'
@@ -59,9 +59,9 @@ export default new Router({
       }
     },
     {
-      path: '/filter',
-      name: 'Filter',
-      component: filter,
+      path: '/artFilter',
+      name: 'ArtFilter',
+      component: artfilter,
       meta: {
         requireAuth: true
       }
