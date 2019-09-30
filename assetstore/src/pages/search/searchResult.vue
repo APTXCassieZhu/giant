@@ -23,7 +23,7 @@
             <Dropdown placement="bottom-start" trigger="custom" :visible="artVisible" @on-clickoutside="handleArtClose()">
                 <Button id="art" style="width: 200px; font-size: 15px" href="javascript:void(0)" @click="handleArtOpen()"><strong>美术资源<Icon type="md-arrow-dropdown" size="20"/></strong></Button>
                 <DropdownMenu slot="list" style="width:200px;" >
-                    <CheckboxGroup v-model="artGroup" @on-change="checkAllArtGroupChange()">
+                    <CheckboxGroup v-model="artGroup" @on-change="checkAllArtGroupChange">
                         <!--TO DO 此处数字应与后端互动拿到-->
                         <DropdownItem><Checkbox label="动画" style="font-size:15px">动画 (987)</Checkbox></DropdownItem>
                         <DropdownItem><Checkbox label="角色" style="font-size:15px">角色 (876)</Checkbox></DropdownItem>
@@ -45,7 +45,7 @@
             <Dropdown placement="bottom-start" trigger="custom" :visible="toolVisible" @on-clickoutside="handleToolClose()">
                 <Button id="tool" style="width: 200px; font-size: 15px" href="javascript:void(0)" @click="handleToolOpen()"><strong>研发工具<Icon type="md-arrow-dropdown" size="20"/></strong></Button>
                 <DropdownMenu slot="list" style="width:200px;" >
-                    <CheckboxGroup v-model="toolGroup" @on-change="checkAllToolGroupChange()">
+                    <CheckboxGroup v-model="toolGroup" @on-change="checkAllToolGroupChange">
                         <!--TO DO 此处数字应与后端互动拿到-->
                         <DropdownItem><Checkbox label="???" style="font-size:15px">???</Checkbox></DropdownItem>
                     </CheckboxGroup>
@@ -62,7 +62,7 @@
             <Dropdown placement="bottom-start" trigger="custom" :visible="engineVisible" @on-clickoutside="handleEngineClose()">
                 <Button id="engine" style="width: 200px; font-size: 15px" href="javascript:void(0)" @click="handleEngineOpen()"><strong>引擎<Icon type="md-arrow-dropdown" size="20"/></strong></Button>
                 <DropdownMenu slot="list" style="width:200px;" >
-                    <CheckboxGroup v-model="engineGroup" @on-change="checkAllEngineGroupChange()">
+                    <CheckboxGroup v-model="engineGroup" @on-change="checkAllEngineGroupChange">
                         <!--TO DO 此处数字应与后端互动拿到-->
                         <DropdownItem><Checkbox label="Unity" style="font-size:15px">Unity</Checkbox></DropdownItem>
                         <DropdownItem><Checkbox label="Unreal" style="font-size:15px">Unreal</Checkbox></DropdownItem>
