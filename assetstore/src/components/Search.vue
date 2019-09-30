@@ -255,6 +255,7 @@ export default {
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     background: #fff;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 4px;
     position: fixed;
     transition: all 0.2s ease-in-out;
@@ -268,6 +269,7 @@ export default {
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     background: #fff;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 4px;
     position: fixed;
     transition: all 0.2s ease-in-out;
