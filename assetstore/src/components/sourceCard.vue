@@ -1,24 +1,47 @@
 <template>
-    <Card style="width:250px; height: 300px;">
+    <div class="source-card">
+        <img src="../assets/1111.jpg" style="height: 150px; width: 250px;">
+        <div class="source-content">
+            <h3>{{sourceTitle}}</h3>
+            <span>{{sourceDescription}}</span>
+        </div>
+        <Divider style="margin: 15px 0px 5px 0px;"/>
         <span>
-            <Icon type="ios-star" v-for="n in 4" :key="n"></Icon>
-            <Icon type="ios-star" v-if="item.rate >= 9.5"></Icon>
-            <Icon type="ios-star-half" v-else></Icon>
+            <Rate disabled allow-half v-model="rate"/>
+            <Icon type="ios-eye" size="20" /> {{viewCount}}&emsp;
+            <Icon type="md-chatboxes" size="20"/> {{chatCount}}
         </span>
-    </Card>
+    </div>
 </template>
 <script>
 export default {
     name: "SourceCard",
     data() {
-        return{
-            item: {
-                rate: 10,
-            }
+        return {
+            rate: 3.5,
+            viewCount: 2019,
+            chatCount: 12,
+            sourceTitle: '资源名称',
+            sourceDescription: '描述文字帮助用户对资源快速预览以及理解文字',
+
         }
     },
 }
 </script>
 <style scoped>
+.source-card{
+    width: 250px; 
+    height: 280px;
+    border: 1px solid #ffffff;
+    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2)
+}
 
+.source-content{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.ivu-rate-star{
+    margin-right: 0px;
+}
 </style>

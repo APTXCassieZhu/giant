@@ -73,7 +73,8 @@ export default {
 .card-wrapper {
     position: relative;
     left: 3%;
-
+    top: 25px;
+    border: 2px bold gray;
 }
 
 .bread-container {
