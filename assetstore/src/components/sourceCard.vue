@@ -1,7 +1,12 @@
 <template>
     <div class="source-card">
-        <img src="../assets/1111.jpg" style="height: 150px; width: 250px;">
+        <div class="image">
+            <strong class="heart">
+                <Icon id="heart" size="30" type="md-heart-outline" @click="addFavorite()" />
+            </strong>
+        </div>
         <div class="source-content">
+            <br>
             <h3>{{sourceTitle}}</h3>
             <span>{{sourceDescription}}</span>
         </div>
@@ -26,9 +31,30 @@ export default {
 
         }
     },
+    methods:{
+        addFavorite(){
+            // TO DO add user favourite to favorite list so that they can check in personal
+            console.log('favorite')
+            document.getElementById('heart');
+        }
+    }
 }
 </script>
 <style scoped>
+.image {
+    height: 150px; 
+    width: 250px;
+    background-image: url("../assets/1111.jpg");
+    background-size: 250px 150px;
+    background-repeat: no-repeat;
+}
+.heart{
+    position: relative; 
+    float: right; 
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
 .source-card{
     width: 250px; 
     height: 280px;
