@@ -213,7 +213,7 @@ export default {
     top: 80px;
     float: none;
     width: 100%;
-    z-index: -10;
+    z-index: 10;
     background-image: url("../assets/11111.jpg")
 }
 
