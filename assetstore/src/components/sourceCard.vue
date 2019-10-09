@@ -1,8 +1,9 @@
 <template>
     <div class="source-card">
         <div class="image">
-            <strong class="heart">
-                <Icon id="heart" size="30" type="md-heart-outline" @click="addFavorite()" />
+            <strong class="heart" id="heart" @click="addFavorite()">
+                <Icon size="30" type="md-heart-outline" v-show="!favoriteIcon"/>
+                <Icon size="30" type="md-heart" v-show="favoriteIcon"/>
             </strong>
         </div>
         <div class="source-content">
@@ -28,14 +29,14 @@ export default {
             chatCount: 12,
             sourceTitle: '资源名称',
             sourceDescription: '描述文字帮助用户对资源快速预览以及理解文字',
-
+            favoriteIcon: false,            // defalut favourite is false
         }
     },
     methods:{
         addFavorite(){
             // TO DO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
-            document.getElementById('heart');
+            this.favoriteIcon = !this.favoriteIcon
         }
     }
 }
