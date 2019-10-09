@@ -194,10 +194,11 @@ export default {
     border-top:1px, solid, #6495ED;
     background-color:aliceblue;
     width: 100%;
-    position: absolute;
+    overflow: hidden;
+    position: fixed;
     height: 60px;
     top: 80px;
-    z-index: 0;
+    z-index: 10;
 }
 .nav-menu{
     float: right;

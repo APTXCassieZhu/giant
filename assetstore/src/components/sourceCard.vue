@@ -7,15 +7,14 @@
             </strong>
         </div>
         <div class="source-content">
-            <br>
             <h3>{{sourceTitle}}</h3>
             <span>{{sourceDescription}}</span>
         </div>
         <Divider style="margin: 15px 0px 5px 0px;"/>
         <span>
             <Rate disabled allow-half v-model="rate"/>
-            <Icon type="ios-eye" size="20" /> {{viewCount}}&emsp;
-            <Icon type="md-chatboxes" size="20"/> {{chatCount}}
+            <Icon type="ios-eye" size="20" />{{viewCount}}&emsp;
+            <Icon type="md-chatboxes" size="18"/>{{chatCount}}
         </span>
     </div>
 </template>

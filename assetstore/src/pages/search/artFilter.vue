@@ -1,93 +1,92 @@
 <template>
     <div>
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
-        
-            <div class="advise-wrapper">
-                <div class="advise-container">
-                    <span>&emsp;推荐搜索&emsp;</span>
-                    <!--TO DO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
-                    <Tag color="purple">推荐搜索1</Tag>
-                    <span>&emsp;</span>
-                    <Tag color="purple">推荐搜索2</Tag>
-                    <span>&emsp;</span> 
-                    <Tag color="purple">推荐搜索3</Tag>
-                    <span>&emsp;</span> 
-                    <Tag color="purple">推荐搜索4</Tag>
-                    <span>&emsp;</span> 
+        <div class="advise-wrapper">
+            <div class="advise-container">
+                <span>&emsp;推荐搜索&emsp;</span>
+                <!--TO DO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
+                <Tag color="purple">推荐搜索1</Tag>
+                <span>&emsp;</span>
+                <Tag color="purple">推荐搜索2</Tag>
+                <span>&emsp;</span> 
+                <Tag color="purple">推荐搜索3</Tag>
+                <span>&emsp;</span> 
+                <Tag color="purple">推荐搜索4</Tag>
+                <span>&emsp;</span> 
+            </div>
+        </div>
+        <div class="bread-container">
+            <Breadcrumb>
+                <BreadcrumbItem to="/home">首页</BreadcrumbItem>
+                <BreadcrumbItem to="/home/resource">美术类资源</BreadcrumbItem>
+                <BreadcrumbItem>当前内容</BreadcrumbItem>
+            </Breadcrumb>
+        </div>
+        <div class="title-wrapper">
+            <strong>美术类资源</strong>
+        </div>
+        <div class="button-wrapper">
+            <Dropdown placement="bottom-start" trigger="custom" :visible="threeDVisible" @on-clickoutside="handle3DClose()">
+                <Button id="3D" style="width: 200px; font-size: 15px" href="javascript:void(0)" @click="handle3DOpen()"><strong>3D<Icon type="md-arrow-dropdown" size="20"/></strong></Button>
+                <DropdownMenu slot="list" style="width:200px;" >
+                    <CheckboxGroup v-model="threeDGroup" @on-change="checkAll3DGroupChange">
+                        <!--TO DO 此处数字应与后端互动拿到-->
+                        <DropdownItem><Checkbox label="动画" style="font-size:15px">动画 (987)</Checkbox></DropdownItem>
+                        <DropdownItem><Checkbox label="角色" style="font-size:15px">角色 (876)</Checkbox></DropdownItem>
+                        <DropdownItem><Checkbox label="环境" style="font-size:15px">环境 (765)</Checkbox></DropdownItem>
+                        <DropdownItem><Checkbox label="道具" style="font-size:15px">道具 (665)</Checkbox></DropdownItem>
+                        <DropdownItem><Checkbox label="植物" style="font-size:15px">植物 (890)</Checkbox></DropdownItem>
+                        <DropdownItem><Checkbox label="交通工具" style="font-size:15px">交通工具 (1000)</Checkbox></DropdownItem>
+                    </CheckboxGroup>
+                    <Divider style="margin:0"/>
+                    <DropdownItem><Checkbox
+                        :indeterminate="threeDNotFull"
+                        :value="check3DAll"
+                        @click.prevent.native="handleCheck3DAll()">全选</Checkbox>
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+            <span>&emsp;&emsp;&emsp;</span>
+            <Dropdown placement="bottom-start" trigger="custom" :visible="twoDVisible" @on-clickoutside="handle2DClose()">
+                <Button id="2D" style="width: 200px; font-size: 15px" href="javascript:void(0)" @click="handle2DOpen()"><strong>2D<Icon type="md-arrow-dropdown" size="20"/></strong></Button>
+                <DropdownMenu slot="list" style="width:200px;" >
+                    <CheckboxGroup v-model="twoDGroup" @on-change="checkAll2DGroupChange">
+                        <!--TO DO 此处数字应与后端互动拿到-->
+                        <DropdownItem><Checkbox label="???" style="font-size:15px">????</Checkbox></DropdownItem>
+                    </CheckboxGroup>
+                    <Divider style="margin:0"/>
+                    <DropdownItem><Checkbox
+                        :indeterminate="twoDNotFull"
+                        :value="check2DAll"
+                        @click.prevent.native="handleCheck2DAll()">全选</Checkbox>
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+            <span>&emsp;&emsp;&emsp;</span>
+        </div>
+        <div class="card-wrapper">
+            <ul>
+                <span style="color: blue;">{{resultCount}}</span>条搜索结果
+                <div style="float: right; margin-right: 60px;">
+                    <Dropdown style="margin-left: 20px">
+                        <span href="javascript:void(0)" style="cursor:pointer;">默认排序
+                            <Icon type="md-arrow-dropdown" size="20"/>
+                        </span>
+                        <DropdownMenu slot="list">
+                            <DropdownItem>推荐</DropdownItem>
+                            <DropdownItem>热度</DropdownItem>
+                            <DropdownItem>时间</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </div>
-            </div>
-            <div class="bread-container">
-                <Breadcrumb>
-                    <BreadcrumbItem to="/home">首页</BreadcrumbItem>
-                    <BreadcrumbItem to="/home/resource">美术类资源</BreadcrumbItem>
-                    <BreadcrumbItem>当前内容</BreadcrumbItem>
-                </Breadcrumb>
-            </div>
-            <div class="title-wrapper">
-                <strong>美术类资源</strong>
-            </div>
-            <div class="button-wrapper">
-                <Dropdown placement="bottom-start" trigger="custom" :visible="threeDVisible" @on-clickoutside="handle3DClose()">
-                    <Button id="3D" style="width: 200px; font-size: 15px" href="javascript:void(0)" @click="handle3DOpen()"><strong>3D<Icon type="md-arrow-dropdown" size="20"/></strong></Button>
-                    <DropdownMenu slot="list" style="width:200px;" >
-                        <CheckboxGroup v-model="threeDGroup" @on-change="checkAll3DGroupChange">
-                            <!--TO DO 此处数字应与后端互动拿到-->
-                            <DropdownItem><Checkbox label="动画" style="font-size:15px">动画 (987)</Checkbox></DropdownItem>
-                            <DropdownItem><Checkbox label="角色" style="font-size:15px">角色 (876)</Checkbox></DropdownItem>
-                            <DropdownItem><Checkbox label="环境" style="font-size:15px">环境 (765)</Checkbox></DropdownItem>
-                            <DropdownItem><Checkbox label="道具" style="font-size:15px">道具 (665)</Checkbox></DropdownItem>
-                            <DropdownItem><Checkbox label="植物" style="font-size:15px">植物 (890)</Checkbox></DropdownItem>
-                            <DropdownItem><Checkbox label="交通工具" style="font-size:15px">交通工具 (1000)</Checkbox></DropdownItem>
-                        </CheckboxGroup>
-                        <Divider style="margin:0"/>
-                        <DropdownItem><Checkbox
-                            :indeterminate="threeDNotFull"
-                            :value="check3DAll"
-                            @click.prevent.native="handleCheck3DAll()">全选</Checkbox>
-                        </DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
-                <span>&emsp;&emsp;&emsp;</span>
-                <Dropdown placement="bottom-start" trigger="custom" :visible="twoDVisible" @on-clickoutside="handle2DClose()">
-                    <Button id="2D" style="width: 200px; font-size: 15px" href="javascript:void(0)" @click="handle2DOpen()"><strong>2D<Icon type="md-arrow-dropdown" size="20"/></strong></Button>
-                    <DropdownMenu slot="list" style="width:200px;" >
-                        <CheckboxGroup v-model="twoDGroup" @on-change="checkAll2DGroupChange">
-                            <!--TO DO 此处数字应与后端互动拿到-->
-                            <DropdownItem><Checkbox label="???" style="font-size:15px">????</Checkbox></DropdownItem>
-                        </CheckboxGroup>
-                        <Divider style="margin:0"/>
-                        <DropdownItem><Checkbox
-                            :indeterminate="twoDNotFull"
-                            :value="check2DAll"
-                            @click.prevent.native="handleCheck2DAll()">全选</Checkbox>
-                        </DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
-                <span>&emsp;&emsp;&emsp;</span>
-            </div>
-            <div class="card-wrapper">
-                <ul>
-                    <span style="color: blue;">{{resultCount}}</span>条搜索结果
-                    <div style="float: right; margin-right: 60px;">
-                        <Dropdown style="margin-left: 20px">
-                            <span href="javascript:void(0)" style="cursor:pointer;">默认排序
-                                <Icon type="md-arrow-dropdown" size="20"/>
-                            </span>
-                            <DropdownMenu slot="list">
-                                <DropdownItem>推荐</DropdownItem>
-                                <DropdownItem>热度</DropdownItem>
-                                <DropdownItem>时间</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </div>
-                </ul>
-                <br>
-                <source-card style="display: inline-block; margin-right: 50px; margin-bottom: 40px;"></source-card>
-                <source-card v-for="n in 23" :key="n" style="display: inline-block; margin-right: 50px; margin-bottom: 40px;"></source-card>
-                <Page style="margin-left: 30%;" :total="100" show-elevator />
-                <br>
-            </div>
-       
+            </ul>
+            <br>
+            <source-card v-for="n in 20" :key="n" style="display: inline-block; margin-right: 50px; margin-bottom: 40px;"></source-card>
+            <Page style="position: relative; margin-left: 30%;" :total="100" show-elevator />
+            
+        </div>
+        <corner></corner>
+        <br><br><br><br><br>        
         <Footer style="position:relative;"></Footer>
     </div>
 </template>
@@ -96,12 +95,14 @@
 import TopNavigation from '../../components/TopNav.vue'
 import SourceCard from '../../components/sourceCard.vue'
 import Footer from '../../components/footer.vue'
+import Corner from '../../components/corner.vue'
 export default {
     name:"ArtFilter",
     components:{
         TopNavigation,
         SourceCard,
         Footer,
+        Corner,
     },
     data() {
         return {
