@@ -1,5 +1,4 @@
 <template>
-<div>
     <div id="top-nav" class="topnav">
         <div class="topnav-box">
             <div class="topnav-box-menu">
@@ -77,7 +76,6 @@
             </div>
         </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -103,7 +101,6 @@ export default {
 <style scoped>
 
 .topnav {
-    overflow: hidden;
     width: 100%;
     height: 80px;
     margin: 0;
@@ -113,9 +110,8 @@ export default {
 }
 
 .topnav-box {
-    overflow: hidden;
-    position: fixed;
-    margin-top: 15px;
+    position: relative;
+    top: 15px;
     width: 100%;
     height: 80px;
     color:black;
