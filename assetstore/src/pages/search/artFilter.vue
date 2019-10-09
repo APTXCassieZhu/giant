@@ -1,7 +1,7 @@
 <template>
     <div>
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
-        <div class="body-style" :style="{minHeight:minHeight + 'px'}">
+        
             <div class="advise-wrapper">
                 <div class="advise-container">
                     <span>&emsp;推荐搜索&emsp;</span>
@@ -68,16 +68,27 @@
             <div class="card-wrapper">
                 <ul>
                     <span style="color: blue;">{{resultCount}}</span>条搜索结果
-                    <span style="float: right; margin-right: 60px;">默认排序</span>
+                    <div style="float: right; margin-right: 60px;">
+                        <Dropdown style="margin-left: 20px">
+                            <span href="javascript:void(0)" >默认排序
+                                <Icon type="md-arrow-dropdown" size="20"/>
+                            </span>
+                            <DropdownMenu slot="list">
+                                <DropdownItem>推荐</DropdownItem>
+                                <DropdownItem>热度</DropdownItem>
+                                <DropdownItem>时间</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
                 </ul>
-                <source-card style="display: inline-block; margin-right: 30px; margin-bottom: 30px;"></source-card>
-                <source-card v-for="n in 23" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 30px;"></source-card>
+                <br>
+                <source-card style="display: inline-block; margin-right: 50px; margin-bottom: 40px;"></source-card>
+                <source-card v-for="n in 23" :key="n" style="display: inline-block; margin-right: 50px; margin-bottom: 40px;"></source-card>
+                <Page style="margin-left: 30%;" :total="100" show-elevator />
+                <br>
             </div>
-            <div class="elevator-wrapper">
-                <Page :total="100" show-elevator />
-            </div>
-        </div>
-        <Footer style="position:relative; height: 200px; bottom: 0px;"></Footer>
+       
+        <Footer style="position:relative;"></Footer>
     </div>
 </template>
 
@@ -94,6 +105,7 @@ export default {
     },
     data() {
         return {
+            minHeight: 0,
             resultCount: 7021,
             threeDVisible: false,
             threeDNotFull: true,
@@ -106,11 +118,12 @@ export default {
         }
     },
     mounted(){
-        // top(140px) + bottom(200px) = 340
-        this.minHeight = document.documentElement.clientHeight - 340
+        // top(140px) + bottom(300px) = 440
+        this.minHeight = document.documentElement.clientHeight - 440
+        console.log(this.minHeight)
         var that = this
         window.onresize = function(){
-            this.minHeight = document.documentElement.clientHeight - 340
+            this.minHeight = document.documentElement.clientHeight - 440
         }
     },
     methods:{
@@ -198,15 +211,9 @@ export default {
 </script>
 
 <style scoped>
-.body-style{
-    position: relative;
-    width: 100%;
-    z-index: 0;
-    /*top: 140px;*/
-}
 .title-wrapper{
     position: relative;
-    left:3%;
+    left: 3%;
     top: 30px;
     font-size: 30px;
 }
@@ -225,20 +232,19 @@ export default {
 
 .bread-container {
     position: relative;
-    left:2.5%;
+    left: 3%;
     top:20px;
-    padding: 10px;
 }
 
 .button-wrapper{
     position: relative;
-    left: 2.5%;
+    left: 3%;
     top: 45px;
 }
 
 .card-wrapper {
     position: relative;
-    left: 2.5%;
+    left: 3%;
     top: 80px;
     width: 92%;
     margin-right: 18px;
