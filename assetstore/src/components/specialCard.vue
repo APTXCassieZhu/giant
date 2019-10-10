@@ -1,13 +1,12 @@
 <template>
     <div class="source-card">
-        <div id="special" :class="special" style="height: 150px;width: 306px;">
+        <div id="special" :class="special" style="height: 184px;width: 306px;">
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon size="30" type="md-heart-outline" v-show="!favoriteIcon"/>
                 <Icon size="30" type="md-heart" v-show="favoriteIcon"/>
             </strong>
         </div>
         <div class="source-content">
-            <br>
             <h3>{{sourceTitle}}</h3>
             <span>{{sourceDescription}}</span>
             <br>
@@ -44,47 +43,47 @@ export default {
 <style scoped>
 .image {
     background-image: url("../assets/绿.jpg");
-    background-size: 306px 150px;
+    background-size: 306px 184px;
     background-repeat: no-repeat;
 }
 .image-02 {
     background-image: url("../assets/tool-02.png");
-    background-size: 306px 150px;
+    background-size: 306px 184px;
     background-repeat: no-repeat;
 }
 .image-03 {
     background-image: url("../assets/tool-03.png");
-    background-size: 306px 150px;
+    background-size: 306px 184px;
     background-repeat: no-repeat;
 }
 .image-04 {
     background-image: url("../assets/tool-04.png");
-    background-size: 306px 150px;
+    background-size: 306px 184px;
     background-repeat: no-repeat;
 }
 .image-05 {
     background-image: url("../assets/tool-05.png");
-    background-size: 306px 150px;
+    background-size: 306px 184px;
     background-repeat: no-repeat;
 }
 .image-06 {
     background-image: url("../assets/tool-06.png");
-    background-size: 306px 150px;
+    background-size: 306px 184px;
     background-repeat: no-repeat;
 }
 .image-07 {
     background-image: url("../assets/tool-07.png");
-    background-size: 306px 150px;
+    background-size: 306px 184px;
     background-repeat: no-repeat;
 }
 .image-08 {
     background-image: url("../assets/tool-08.png");
-    background-size: 306px 150px;
+    background-size: 306px 184px;
     background-repeat: no-repeat;
 }
 .image-09 {
     background-image: url("../assets/tool-09.png");
-    background-size: 306px 150px;
+    background-size: 306px 184px;
     background-repeat: no-repeat;
 }
 .heart{
@@ -104,6 +103,7 @@ export default {
 .source-content{
     margin-left: 10px;
     margin-right: 5px;
+    margin-top: 7px;
 }
 
 .ivu-rate-star{

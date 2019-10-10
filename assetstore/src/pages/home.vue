@@ -12,11 +12,15 @@
         <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
     </div>
     <br><br>
-    <h1 style="position: relative; text-align: center; color: #0066FF">推荐资源</h1>
+    <h1 style="position: relative; text-align: center; color: #0066FF">推荐分类</h1>
     <div style="position: relative; text-align: center; color: gray;">-各类高实用性的项目集合-</div>
     <strong><div class="more">查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
     <div class="card-wrapper">
-        <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
+        <div class="advise-card"><span class="advise-des">3D</span></div>
+        <div class="advise-card"><span class="advise-des">2D</span></div>
+        <div class="advise-card"><span class="advise-des">贴图与材质</span></div>
+        <div class="advise-card"><span class="advise-des">模板</span></div>
+        <div class="advise-card"><span class="advise-des">人物</span></div>
     </div>
     <br><br>
     <h1 style="position: relative; text-align: center; color: #0066FF">精选美术资源</h1>
@@ -102,5 +106,24 @@ export default {
     left: 81%;
     color: #0066FF;
     cursor: pointer;
+}
+.advise-card{
+    display: inline-block; 
+    margin-right: 30px; 
+    margin-bottom: 40px;
+    width: 240px;
+    height: 275px;
+    background-image: url('../assets/彩色.jpg');
+    background-size: 240px 275px;
+    background-repeat: no-repeat;
+    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
+    color: white;
+}
+.advise-des{
+    position:relative;
+    float: left;
+    top: 230px;
+    left: 10px;
+    font-size: 28px;
 }
 </style>
