@@ -67,7 +67,7 @@
         <div class="card-wrapper">
             <ul>
                 <span style="color: blue;">{{resultCount}}</span>条搜索结果
-                <div style="float: right; margin-right: 60px;">
+                <div style="float: right; margin-right: 335px;">
                     <Dropdown style="margin-left: 20px">
                         <span href="javascript:void(0)" style="cursor:pointer;">默认排序
                             <Icon type="md-arrow-dropdown" size="20"/>

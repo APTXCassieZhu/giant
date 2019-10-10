@@ -4,14 +4,46 @@
         <HomeTopNavigation></HomeTopNavigation>   
         <HomeSearch></HomeSearch>  
     </div>
+    <br><br>
+    <h1 style="position: relative; text-align: center; color: #0066FF">美术类资源</h1>
+    <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目集合-</div>
+    <strong><div class="more" @click='goArtFilter()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
     <div class="card-wrapper">
-        <br>
-        <h1 style="position: relative; margin-left: 39%;">-推荐资源-</h1>
-        <h3 style="position: relative; margin-left: 39%;">recommendation</h3>
-        <br><br>
-        <source-card v-for="n in 24" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
-        <Page style="margin-left: 35%;" :total="100" show-elevator />
-        <br>
+        <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
+    </div>
+    <br><br>
+    <h1 style="position: relative; text-align: center; color: #0066FF">推荐资源</h1>
+    <div style="position: relative; text-align: center; color: gray;">-各类高实用性的项目集合-</div>
+    <strong><div class="more">查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+    <div class="card-wrapper">
+        <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
+    </div>
+    <br><br>
+    <h1 style="position: relative; text-align: center; color: #0066FF">精选美术资源</h1>
+    <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
+    <Carousel autoplay arrow="always" trigger="click" dots="none" autoplay-speed="5000" loop style="text-align:center; width: 80%; left: 10%">
+        <CarouselItem>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        </CarouselItem>
+        <CarouselItem>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+        </CarouselItem>
+        <CarouselItem>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+        </CarouselItem>
+    </Carousel>
+    <br><br>
+    <h1 style="position: relative; text-align: center; color: #0066FF">研发类资源</h1>
+    <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
+    <div class="card-wrapper">
+        <special-card v-for="n in 8" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <br><br><br>
     </div>
     <corner></corner>
     <Footer style="position: relative;"></Footer>
@@ -22,6 +54,7 @@
 import HomeTopNavigation from '../components/HomeTopNav.vue'
 import HomeSearch from '../components/homeSearch.vue'
 import SourceCard from '../components/sourceCard.vue'
+import SpecialCard from '../components/specialCard.vue'
 import Footer from '../components/footer.vue'
 import Corner from '../components/corner.vue'
 /*var searchContent = document.getElementById("search")
@@ -31,7 +64,12 @@ addEventListener(searchContent, "focus", function() {
 
 export default {
     name:"Home",
-    components: {HomeTopNavigation,HomeSearch,SourceCard,Footer,Corner},
+    components: {HomeTopNavigation,HomeSearch,SourceCard,SpecialCard,Footer,Corner},
+    methods:{
+        goArtFilter(){
+            this.$router.push('/artFilter')
+        },
+    }
 }
 
 </script>
@@ -41,5 +79,11 @@ export default {
     position: relative;
     left: 15%;
     width:80%;
+}
+.more{
+    position: relative; 
+    left: 81%;
+    color: #0066FF;
+    cursor: pointer;
 }
 </style>
