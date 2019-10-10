@@ -12,7 +12,8 @@
         </div>
         <Divider style="margin: 15px 0px 5px 0px;"/>
         <span>
-            <Rate disabled allow-half v-model="rate"/>
+            <Icon size="18" v-for="n in 4" :key="n" type="md-star" style="color: #FF9933" />
+            <Icon size="18" type="ios-star-half" style="color: #FF9933"/>&emsp;&emsp;
             <Icon type="ios-eye" size="20" />{{viewCount}}&emsp;
             <Icon type="md-chatboxes" size="18"/>{{chatCount}}
         </span>
@@ -45,19 +46,19 @@ export default {
     height: 150px; 
     width: 250px;
     background-image: url("../assets/1111.jpg");
-    background-size: 250px 150px;
+    background-size: 240px 150px;
     background-repeat: no-repeat;
 }
 .heart{
     position: relative; 
     float: right; 
     top: 10px;
-    right: 10px;
+    right: 20px;
     cursor: pointer;
 }
 .source-card{
-    width: 250px; 
-    height: 280px;
+    width: 240px; 
+    height: 275px;
     border: 1px solid #ffffff;
     box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2)
 }

@@ -6,13 +6,14 @@
     </div>
     <div class="card-wrapper">
         <br>
-        <h1 style="position: relative; margin-left: 43%;">-推荐资源-</h1>
-        <h3 style="position: relative; margin-left: 43%;">recommendation</h3>
+        <h1 style="position: relative; margin-left: 39%;">-推荐资源-</h1>
+        <h3 style="position: relative; margin-left: 39%;">recommendation</h3>
         <br><br>
-        <source-card v-for="n in 24" :key="n" style="display: inline-block; margin-right: 50px; margin-bottom: 40px;"></source-card>
+        <source-card v-for="n in 24" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
         <Page style="margin-left: 35%;" :total="100" show-elevator />
         <br>
     </div>
+    <corner></corner>
     <Footer style="position: relative;"></Footer>
 </div>
 </template>
@@ -22,6 +23,7 @@ import HomeTopNavigation from '../components/HomeTopNav.vue'
 import HomeSearch from '../components/homeSearch.vue'
 import SourceCard from '../components/sourceCard.vue'
 import Footer from '../components/footer.vue'
+import Corner from '../components/corner.vue'
 /*var searchContent = document.getElementById("search")
 addEventListener(searchContent, "focus", function() {
 
@@ -29,7 +31,7 @@ addEventListener(searchContent, "focus", function() {
 
 export default {
     name:"Home",
-    components: {HomeTopNavigation,HomeSearch,SourceCard,Footer},
+    components: {HomeTopNavigation,HomeSearch,SourceCard,Footer,Corner},
 }
 
 </script>
@@ -37,6 +39,7 @@ export default {
 <style scoped>
 .card-wrapper{
     position: relative;
-    left: 5%;
+    left: 15%;
+    width:80%;
 }
 </style>
