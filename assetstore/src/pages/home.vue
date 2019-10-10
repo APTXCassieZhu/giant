@@ -42,7 +42,14 @@
     <h1 style="position: relative; text-align: center; color: #0066FF">研发类资源</h1>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
     <div class="card-wrapper">
-        <special-card v-for="n in 8" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card ref="child" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card ref="child3" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card ref="child4" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card ref="child5" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card ref="child6" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card ref="child7" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card ref="child8" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card ref="child9" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <br><br><br>
     </div>
     <corner></corner>
@@ -65,6 +72,16 @@ addEventListener(searchContent, "focus", function() {
 export default {
     name:"Home",
     components: {HomeTopNavigation,HomeSearch,SourceCard,SpecialCard,Footer,Corner},
+    mounted() {
+        this.$refs.child.special = "image-02";
+        this.$refs.child3.special = "image-03";
+        this.$refs.child4.special = "image-04";
+        this.$refs.child5.special = "image-05";
+        this.$refs.child6.special = "image-06";
+        this.$refs.child7.special = "image-07";
+        this.$refs.child8.special = "image-08";
+        this.$refs.child9.special = "image-09";
+    },
     methods:{
         goArtFilter(){
             this.$router.push('/artFilter')
