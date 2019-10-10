@@ -3,6 +3,7 @@
         <div style="margin-left: 10px; padding: 10px;">
             <h1>GDRC</h1>
             <span>巨人网络公司 - 前沿技术部门开发</span>
+            <br><br>
             <Row>
                 <Col span="6">
                     <h3>发现</h3>
@@ -37,6 +38,7 @@
         </div>
         <Divider />
         <span style="margin-left: 10px;">Copyright © 上海巨人网络科技有限公司（Giant Interactive Group Inc.）</span>
+        <br><br>
     </div>
 </template>
 
@@ -48,7 +50,7 @@ export default {
 
 <style scoped>
 .footer{
-    height: 300px;
+    height: 350px;
     width: 100%;
     background-color: rgb(5, 65, 93);
     color: white;

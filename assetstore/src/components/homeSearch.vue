@@ -247,7 +247,7 @@ export default {
     float: left;
     width: 20%;
     cursor: pointer;
-    height: 36px;
+    height: 39px;
     z-index: 0;
 }
 
