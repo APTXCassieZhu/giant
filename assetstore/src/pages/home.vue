@@ -30,15 +30,18 @@
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         </CarouselItem>
         <CarouselItem>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
         </CarouselItem>
         <CarouselItem>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
         </CarouselItem>
     </Carousel>
@@ -50,6 +53,8 @@
         <special-card ref="child3" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child4" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child5" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+    </div>
+    <div class="card-wrapper">    
         <special-card ref="child6" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child7" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child8" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
@@ -98,8 +103,9 @@ export default {
 <style scoped>
 .card-wrapper{
     position: relative;
-    left: 15%;
-    width:80%;
+    /*left: 15%;*/
+    text-align:center;
+    /*width:80%;*/
 }
 .more{
     position: relative; 
