@@ -56,6 +56,7 @@ function contain(str, charset) {
 
 export default {
     name:"Search",
+    inject: ['reload'],
     data() {
         const validateContent = (rule, value, callback) => {
             if(contain(value, "^[!@#$%&*()-+=.~`]_{}?/<>,")) {
@@ -88,9 +89,7 @@ export default {
         for(var i=0; i < 3; i++) {
             if(storage.has(i)) {
                 this.searchHistory.push(storage.get(i));
-                let historyEmpty = false;
             }else {
-                let historyFull = false;
             }
         }
         // 页面加载时自动填充前一个页面search input
@@ -100,7 +99,7 @@ export default {
         searchSubmit() {
             // 清空
             this.searchHistory = []
-            if(historyFull || (storage.has(1)&&storage.has(2))) {
+            if((storage.has(1)&&storage.has(2))) {
                 storage.set(3, storage.get(2))
                 storage.set(2, storage.get(1))
                 storage.set(1, this.searchForm.content)
@@ -108,7 +107,7 @@ export default {
                 this.searchHistory.push(storage.get(2))
                 this.searchHistory.push(storage.get(3));
             }else{
-                if(historyEmpty) {
+                if(!storage.has(1)) {
                     // empty history
                     storage.set(1, this.searchForm.content)
                     this.searchHistory.push(storage.get(1))
@@ -121,7 +120,8 @@ export default {
             }
             this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                this.$router.go(0)
+                this.$store.commit('SEARCH_COUNT', this.searchForm.content)
+                this.reload()
             }, (response)=>{
                 //alert("出错啦QAQ")
             })

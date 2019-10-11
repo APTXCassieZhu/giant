@@ -6,26 +6,26 @@
                 <div class="advise-container">
                     <span>&emsp;推荐搜索&emsp;</span>
                     <!--TO DO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
-                    <Tag color="purple">推荐搜索1</Tag>
+                    <Tag color="purple" class="tag-style">推荐搜索1</Tag>
                     <span>&emsp;</span>
-                    <Tag color="purple">推荐搜索2</Tag>
+                    <Tag color="purple" class="tag-style">推荐搜索2</Tag>
                     <span>&emsp;</span>  
-                    <Tag color="purple">推荐搜索3</Tag>
+                    <Tag color="purple" class="tag-style">推荐搜索3</Tag>
                     <span>&emsp;</span> 
-                    <Tag color="purple">推荐搜索4</Tag>
+                    <Tag color="purple" class="tag-style">推荐搜索4</Tag>
                     <span>&emsp;&emsp;&emsp;&emsp;</span>
                     <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" /> 
                 </div>
             </div>
             <div class="title-wrapper">
                 <strong>"{{getSearchContent}}"在
-                    <Dropdown>
-                        <a herf="javascript:void(0)"><u>美术类资源</u></a>
+                    <Dropdown @on-click="changeFilter">
+                        <a herf="javascript:void(0)" name="所有" v-html='this.currentFilter'></a>
                             <DropdownMenu slot="list">
                             <!--TO DO () 内所有数字都是从后端得到的-->
-                            <DropdownItem>所有(19871)</DropdownItem>
-                            <DropdownItem>美术类资源(10071)</DropdownItem>
-                            <DropdownItem>研发类工具(9800)</DropdownItem>
+                            <DropdownItem name="所有">所有(19871)</DropdownItem>
+                            <DropdownItem name="美术类资源">美术类资源(10071)</DropdownItem>
+                            <DropdownItem name="研发类工具">研发类工具(9800)</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <Icon type="ios-arrow-down" />下的搜索结果</strong>
@@ -76,12 +76,22 @@ export default {
     data() {
         return {
             resultCount: 7021,
+            currentFilter: "所有",              // 由用户选择需要什么类别的搜索结果
         }
     },
     methods:{
         closeAdvise(){
-            console.log("not shown")
             document.getElementById("advise").style.display = 'none'
+        },
+        changeFilter(name){
+            // TO DO 根据用户选择的筛选，重新加载searchresult page显示资源
+            if(name === "所有"){
+                this.currentFilter = "所有"
+            }else if(name === "美术类资源"){
+                this.currentFilter = "美术类资源"
+            }else{
+                this.currentFilter = "研发类工具"
+            }
         },
     },
     computed:{
@@ -143,6 +153,9 @@ export default {
     position: relative;
     margin-left: 30%;
     top: 80px;
+}
+.tag-style{
+    cursor:pointer;
 }
 </style>
 

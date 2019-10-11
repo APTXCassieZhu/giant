@@ -112,7 +112,6 @@ export default {
     methods: {
         searchSubmit() {
             // 清空
-            console.log("search submitting..........")
             this.searchHistory = []
             if((storage.has(1)&&storage.has(2))) {
                 storage.set(3, storage.get(2))
