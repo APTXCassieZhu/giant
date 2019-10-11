@@ -6,9 +6,9 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo" >
-                <img src="../assets/logo.png" alt="首页" @click="gohome()">
+                <img src="../assets/logo.png" style="width:50px; height: 50px;" alt="首页" @click="gohome()">
             </div>
-
+            <span class="logo-text">GDRC</span>
             <!--不知道怎么清除之前div css-->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
@@ -142,6 +142,17 @@ export default {
     border-style: solid;
     align-content: center;
     z-index:inherit;
+}
+
+.logo-text{
+    position: relative;
+    float:left;
+    left: 2%;
+    top: 7px;
+    font-size: 25px;
+    font-family: 微软雅黑;
+    font-weight: bold;
+    align-content: center;
 }
 
 .topnav-box-link {

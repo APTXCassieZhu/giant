@@ -12,7 +12,7 @@
                 <div class="search-card" id="content">
                     <ul class="hot-search-title">热门搜索</ul>
                     <span v-for="(item,index) in tagList" :key="index">
-                        <Tag color="blue" class="tag-style">{{item}}</Tag>
+                        <Tag color="blue" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                         <span>&emsp;</span>
                     </span>
                     <div id="history-search">
@@ -25,7 +25,7 @@
                         </ul>
                         <ul v-for="(item,index) in searchHistory" :key="index">
                             <Icon size="20" type="ios-time-outline" color="orange"></Icon>
-                            <Tag color="orange" class="tag-style">{{item}}</Tag>
+                            <Tag color="orange" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                         </ul>
                     </div>
                 </div>
@@ -121,7 +121,7 @@ export default {
             }
             this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                this.$router.push('/searchResult')
+                this.$router.go(0)
             }, (response)=>{
                 //alert("出错啦QAQ")
             })
@@ -180,6 +180,10 @@ export default {
                     }
                 }
             },500);
+        },
+        searchTag(val) {
+            this.searchForm.content = val;
+            this.$options.methods.searchSubmit.bind(this)();
         },
         hideAdvise() {
             this.searchVisible = false;

@@ -2,7 +2,7 @@
     <div>
         <TopNavigation style="z-index: 100"></TopNavigation>
         <div class="body-style">
-            <div class="advise-wrapper">
+            <div class="advise-wrapper" id="advise">
                 <div class="advise-container">
                     <span>&emsp;推荐搜索&emsp;</span>
                     <!--TO DO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
@@ -13,17 +13,22 @@
                     <Tag color="purple">推荐搜索3</Tag>
                     <span>&emsp;</span> 
                     <Tag color="purple">推荐搜索4</Tag>
-                    <span>&emsp;</span> 
+                    <span>&emsp;&emsp;&emsp;&emsp;</span>
+                    <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" /> 
                 </div>
             </div>
             <div class="title-wrapper">
                 <strong>"{{getSearchContent}}"在
                     <Dropdown>
-                        // TO DO
-                        <a>美术类资源</a>
-
+                        <a herf="javascript:void(0)"><u>美术类资源</u></a>
+                            <DropdownMenu slot="list">
+                            <!--TO DO () 内所有数字都是从后端得到的-->
+                            <DropdownItem>所有(19871)</DropdownItem>
+                            <DropdownItem>美术类资源(10071)</DropdownItem>
+                            <DropdownItem>研发类工具(9800)</DropdownItem>
+                        </DropdownMenu>
                     </Dropdown>
-                    下的搜索结果</strong>
+                    <Icon type="ios-arrow-down" />下的搜索结果</strong>
             </div>
             <div class="button-wrapper">
                 <choice></choice>
@@ -74,6 +79,10 @@ export default {
         }
     },
     methods:{
+        closeAdvise(){
+            console.log("not shown")
+            document.getElementById("advise").style.display = 'none'
+        },
     },
     computed:{
         getSearchContent(){
@@ -101,12 +110,21 @@ export default {
     width: 100%;
     height: 50px;
     background-color:rgb(210, 234, 255);
+    box-shadow: inset 0px 8px 8px 5px rgba(0,0,0,0.2); 
 }
 .advise-container {
     position: relative;
     left:2.5%;
     top:15px;
     height: 20px;
+}
+.advise-close{
+    position: relative;
+    top: 3px;
+}
+.advise-close:hover{
+    color:silver;
+    cursor: pointer;
 }
 .button-wrapper{
     position: relative;

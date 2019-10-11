@@ -5,9 +5,9 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo">
-                <img src="../assets/logo.png" alt="logo" @click="gohome()">
+                <img src="../assets/logo.png" style="width:50px; height: 50px;" alt="logo" @click="gohome()">      
             </div>
-
+            <span class="logo-text">GDRC</span>
             <!--不知道怎么清除之前div css-->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
@@ -131,7 +131,7 @@ export default {
     cursor: pointer;
     width: 5%;
     left: 4%;
-    float:left;
+    float: left;
 }
 
 .topnav-box-logo img {
@@ -141,6 +141,17 @@ export default {
     border-color: black;
     border-width: 0px;  
     border-style: solid;
+    align-content: center;
+}
+
+.logo-text{
+    position: relative;
+    float:left;
+    left: 2%;
+    top: 7px;
+    font-size: 25px;
+    font-family: 微软雅黑;
+    font-weight: bold;
     align-content: center;
 }
 
@@ -221,9 +232,9 @@ export default {
     .topnav-box-image{
         display: block;
         position: relative;
-        width: 80%;
+        text-align: center;
         height: 55px;
-        float: left;
+        float: center;
     }
 
     .topnav-box-image img {
@@ -233,22 +244,17 @@ export default {
         border-color: black;
         border-width: 0px;  
         border-style: solid;
-        left: 0%;
-        right: 50%;
+        text-align: center;
         position: relative;
     }
 
     .topnav-box-user-login {
         display: block;
-        width:10%;
-        margin-right: auto;
-        margin-left: 0px;
         position: relative;
-        float: left;
+        float: right;
     }
 
     .topnav-box-menu {
-        width:10%;
         display: block;
         position: relative;
         margin-left: auto;
@@ -256,7 +262,7 @@ export default {
         float: left;
     }
 
-    .topnav-box-link, .topnav-box-search, .topnav-box-user, .topnav-box-logo{
+    .topnav-box-link, .topnav-box-search, .topnav-box-user, .topnav-box-logo, .logo-text{
         display: none;
     }
 }
