@@ -119,13 +119,7 @@ export default {
         }
     },
     mounted(){
-        // top(140px) + bottom(300px) = 440
-        this.minHeight = document.documentElement.clientHeight - 440
-        console.log(this.minHeight)
-        var that = this
-        window.onresize = function(){
-            this.minHeight = document.documentElement.clientHeight - 440
-        }
+        
     },
     methods:{
         handle3DOpen () {

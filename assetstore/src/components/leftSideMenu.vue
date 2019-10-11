@@ -1,5 +1,6 @@
 <template>
     <Menu active-name="1">
+        <!--TODO 未完成，仅有样式-->
         <MenuItem name="1">
             通用软件
         </MenuItem>

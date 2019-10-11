@@ -10,6 +10,7 @@
                     <Icon type="ios-search" size="30"></Icon>
                 </Button>
                 <div class="search-card" id="content">
+                    <!--TODO 热门搜索的内容暂不知-->
                     <ul class="hot-search-title">热门搜索</ul>
                     <span v-for="(item,index) in tagList" :key="index">
                         <Tag color="blue" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
@@ -29,6 +30,7 @@
                         </ul>
                     </div>
                 </div>
+                <!--TODO 推荐内容的库后端还没建立-->
                 <div class="associate-card" id="associate" style="display:none">
                     <div class="position: relative; top: 28px;">
                     </div>     

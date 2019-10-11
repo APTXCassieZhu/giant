@@ -5,7 +5,7 @@
             <div class="advise-wrapper" id="advise">
                 <div class="advise-container">
                     <span>&emsp;推荐搜索&emsp;</span>
-                    <!--TO DO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
+                    <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
                     <Tag color="purple" class="tag-style">推荐搜索1</Tag>
                     <span>&emsp;</span>
                     <Tag color="purple" class="tag-style">推荐搜索2</Tag>
@@ -22,7 +22,7 @@
                     <Dropdown @on-click="changeFilter">
                         <a herf="javascript:void(0)" name="所有" v-html='this.currentFilter'></a>
                             <DropdownMenu slot="list">
-                            <!--TO DO () 内所有数字都是从后端得到的-->
+                            <!--TODO () 内所有数字都是从后端得到的-->
                             <DropdownItem name="所有">所有(19871)</DropdownItem>
                             <DropdownItem name="美术类资源">美术类资源(10071)</DropdownItem>
                             <DropdownItem name="研发类工具">研发类工具(9800)</DropdownItem>
@@ -75,6 +75,7 @@ export default {
     },
     data() {
         return {
+            // TODO resultcount 需后端互动得到
             resultCount: 7021,
             currentFilter: "所有",              // 由用户选择需要什么类别的搜索结果
         }
@@ -84,7 +85,7 @@ export default {
             document.getElementById("advise").style.display = 'none'
         },
         changeFilter(name){
-            // TO DO 根据用户选择的筛选，重新加载searchresult page显示资源
+            // TODO 根据用户选择的筛选，重新加载searchresult page显示资源
             if(name === "所有"){
                 this.currentFilter = "所有"
             }else if(name === "美术类资源"){
@@ -98,6 +99,15 @@ export default {
         getSearchContent(){
             return this.$store.state.searchContent;
         }
+    },
+    mouted(){
+        // top(140px) + bottom(300px) = 440
+        /*this.minHeight = document.documentElement.clientHeight - 440
+        console.log(this.minHeight)
+        var that = this
+        window.onresize = function(){
+            this.minHeight = document.documentElement.clientHeight - 440
+        }*/
     },
 }
 </script>

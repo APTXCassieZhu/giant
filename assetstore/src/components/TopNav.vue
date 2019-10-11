@@ -49,6 +49,7 @@
                 <Icon type="ios-paper" />
                 <router-link style="color:black; cursor:pointer;" to='/artFilter'>美术类资源</router-link>
             </MenuItem>
+            <!--TODO menuitem 2 3的网页还没建，to的地址可能会改变-->
             <MenuItem name="2">
                 <Icon type="ios-construct" />
                 <router-link style="color:black; cursor:pointer;" to='/tools'>研发工具</router-link>

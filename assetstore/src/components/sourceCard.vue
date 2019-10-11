@@ -24,6 +24,7 @@ export default {
     name: "SourceCard",
     data() {
         return {
+            // TODO data里面的数据均需从后端拿到
             rate: 3.5,
             viewCount: 2019,
             chatCount: 12,
@@ -34,7 +35,7 @@ export default {
     },
     methods:{
         addFavorite(){
-            // TO DO add user favourite to favorite list so that they can check in personal
+            //TODO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
             this.favoriteIcon = !this.favoriteIcon
         }

@@ -7,7 +7,7 @@
             </Button>
             <DropdownMenu slot="list" style="width:200px;" >
                 <CheckboxGroup v-model="artGroup" @on-change="checkAllArtGroupChange">
-                    <!--TO DO 此处数字应与后端互动拿到-->
+                    <!--TODO 此处数字应与后端互动拿到-->
                     <DropdownItem><Checkbox label="动画" style="font-size:15px">动画 (987)</Checkbox></DropdownItem>
                     <DropdownItem><Checkbox label="角色" style="font-size:15px">角色 (876)</Checkbox></DropdownItem>
                     <DropdownItem><Checkbox label="环境" style="font-size:15px">环境 (765)</Checkbox></DropdownItem>
@@ -31,7 +31,7 @@
             </Button>
             <DropdownMenu slot="list" style="width:200px;" >
                 <CheckboxGroup v-model="toolGroup" @on-change="checkAllToolGroupChange">
-                    <!--TO DO 此处数字应与后端互动拿到-->
+                    <!--TODO 此处数字应与后端互动拿到-->
                     <DropdownItem><Checkbox label="???" style="font-size:15px">???</Checkbox></DropdownItem>
                 </CheckboxGroup>
                 <Divider style="margin:0"/>
@@ -50,7 +50,7 @@
             </Button>
             <DropdownMenu slot="list" style="width:200px;" >
                 <CheckboxGroup v-model="engineGroup" @on-change="checkAllEngineGroupChange">
-                    <!--TO DO 此处数字应与后端互动拿到-->
+                    <!--TODO 此处数字应与后端互动拿到-->
                     <DropdownItem><Checkbox label="Unity" style="font-size:15px">Unity</Checkbox></DropdownItem>
                     <DropdownItem><Checkbox label="Unreal" style="font-size:15px">Unreal</Checkbox></DropdownItem>
                     <DropdownItem><Checkbox label="Cocos" style="font-size:15px">Cocos</Checkbox></DropdownItem>
@@ -148,7 +148,7 @@ export default {
             this.toolNotFull = false;
 
             if (this.checkToolAll) {
-                // TO DO []填上所有研发工具
+                // TODO []填上所有研发工具
                 this.toolGroup = [];
             } else {
                 this.toolGroup = [];
@@ -157,7 +157,7 @@ export default {
         checkAllToolGroupChange (data) {
             // data is undefined ???????????????
             console.log(data);
-            // TO DO 6 改成 研发工具的种类总数
+            // TODO 6 改成 研发工具的种类总数
             if (data.length === 6) {
                 this.toolNotFull = false;
                 this.checkToolAll = true;

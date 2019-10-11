@@ -19,6 +19,7 @@
                             <Icon type="ios-search" size="30"></Icon>
                         </Button>
                         <div class="search-card" id="content">
+                            <!--TODO 热门搜索的内容暂不知-->
                             <ul class="hot-search-title">热门搜索</ul>
                             <span v-for="(item,index) in tagList" :key="index">
                                 <Tag color="blue" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
@@ -38,6 +39,7 @@
                                 </ul>
                             </div>
                         </div>
+                        <!--TODO 目前借用了百度的库实现联想搜索，未来要用自己的库-->
                         <div class="associate-card" id="associate" style="display:none">     
                             <!--<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='???'">??????????</a>         
                             <a style="display:block;" href ="https://www.baidu.com/s?wd='???'">??????????</a> -->        
@@ -45,6 +47,7 @@
                     </Dropdown>
 
                     <div class="recommend-line">
+                        <!-- TODO 推荐内容暂不知-->
                         <span>为您推荐&emsp;</span>
                         <Tag color="purple" class="tag-style" @click.native="searchTag('推荐搜索1')">推荐搜索1</Tag>
                         <span>&emsp;</span>

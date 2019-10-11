@@ -16,6 +16,7 @@
     <div style="position: relative; text-align: center; color: gray;">-各类高实用性的项目集合-</div>
     <strong><div class="more">查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
     <div class="card-wrapper">
+        <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
         <div class="advise-card"><span class="advise-des">3D</span></div>
         <div class="advise-card"><span class="advise-des">2D</span></div>
         <div class="advise-card"><span class="advise-des">贴图与材质</span></div>

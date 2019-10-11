@@ -20,6 +20,7 @@
                             <Icon type="ios-arrow-down"></Icon>
                         </a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
+                            <!--TODO 超链接导向的网页还没建-->
                             <ul><DropdownItem><router-link to="/资源/2D">2D</router-link></DropdownItem></ul>
                             <ul><DropdownItem><router-link to="/资源/3D">3D</router-link></DropdownItem></ul>
                             <ul><DropdownItem><router-link to="/资源/贴图与材质">贴图与材质</router-link></DropdownItem></ul>
@@ -35,6 +36,7 @@
                     <Dropdown placement="bottom-start">
                         <a href="javascript:void(0)">研发工具<Icon type="ios-arrow-down"></Icon></a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
+                            <!--TODO 超链接导向的网页还没建-->
                             <ul><DropdownItem><router-link to="/工具/可视化脚本">可视化脚本</router-link></DropdownItem></ul>
                             <ul><DropdownItem><router-link to="/工具/地形">地形</router-link></DropdownItem></ul>
                             <ul><DropdownItem><router-link to="/工具/动画编辑器">动画编辑器</router-link></DropdownItem></ul>
