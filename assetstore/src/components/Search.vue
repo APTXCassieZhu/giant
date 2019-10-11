@@ -155,6 +155,7 @@ export default {
         },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
+            this.searchVisible = true
             if(this.searchForm.content == ""){
                 document.getElementById("associate").style.display = "none";
             }
@@ -201,7 +202,8 @@ export default {
 .search-input{
     text-align: left;
     float: left;
-    width: 80%;
+    /*width: 80%;*/
+    width: 610px;
     height: 48px;
     z-index: 0;
 }
@@ -209,7 +211,8 @@ export default {
 .search-button{
     background-color: #6495ED;
     float: left;
-    width: 20%;
+    /*width: 20%;*/
+    width: 150px;
     cursor: pointer;
     height: 40px;
     z-index: 0;

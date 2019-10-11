@@ -21,7 +21,7 @@
                         <div class="search-card" id="content">
                             <ul class="hot-search-title">热门搜索</ul>
                             <span v-for="(item,index) in tagList" :key="index">
-                                <Tag color="blue" class="tag-style" @mousedown="searchTag()">{{item}}</Tag>
+                                <Tag color="blue" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                                 <span>&emsp;</span>
                             </span>
                             <div id="history-search">
@@ -34,7 +34,7 @@
                                 </ul>
                                 <ul v-for="(item,index) in searchHistory" :key="index">
                                     <Icon size="20" type="ios-time-outline" color="orange"></Icon>
-                                    <Tag color="orange" class="tag-style">{{item}}</Tag>
+                                    <Tag color="orange" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                                 </ul>
                             </div>
                         </div>
@@ -42,14 +42,15 @@
                             <!--<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='???'">??????????</a>         
                             <a style="display:block;" href ="https://www.baidu.com/s?wd='???'">??????????</a> -->        
                         </div>
-                        <div class="recommend-line">
-                            <span>&emsp;为您推荐&emsp;</span>
-                            <Tag color="purple" class="tag-style" @click.native="searchTag()">推荐搜索1</Tag>
-                            <span>&emsp;</span>
-                            <Tag color="purple" class="tag-style" @click.native="searchTag()">推荐搜索2</Tag>
-                            <span>&emsp;</span>
-                        </div>
                     </Dropdown>
+
+                    <div class="recommend-line">
+                        <span>为您推荐&emsp;</span>
+                        <Tag color="purple" class="tag-style" @click.native="searchTag('推荐搜索1')">推荐搜索1</Tag>
+                        <span>&emsp;</span>
+                        <Tag color="purple" class="tag-style" @click.native="searchTag('推荐搜索2')">推荐搜索2</Tag>
+                        <span>&emsp;</span>
+                    </div>
                 </div>
             </FormItem>
         </Form>
@@ -111,6 +112,7 @@ export default {
     methods: {
         searchSubmit() {
             // 清空
+            console.log("search submitting..........")
             this.searchHistory = []
             if((storage.has(1)&&storage.has(2))) {
                 storage.set(3, storage.get(2))
@@ -195,11 +197,9 @@ export default {
             },500);
         },
         // user click the recommend tag and directly go to searchresult page
-        searchTag() {
-            //this.searchForm.content = 
-            //searchSubmit();
-            console.log("lalalal")
-            this.$router.push('/searchresult')
+        searchTag(val) {
+            this.searchForm.content = val;
+            this.$options.methods.searchSubmit.bind(this)();
         },
         hideAdvise() {
             this.searchVisible = false;
@@ -306,7 +306,7 @@ export default {
     font-size: 16px;
     position: absolute;
     float: left;
-    top: 100px;
+    top: 115px;
     z-index: -1;
 }
 
