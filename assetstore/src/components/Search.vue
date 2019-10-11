@@ -1,38 +1,39 @@
 <template>
     <Form id="search" ref="searchForm" :model="searchForm" :rules="searchRule">
         <FormItem prop="content">
-            <Input id="searchcontent" size="large" type="text" clearable class="search-input" 
-            @focus.native.capture="changeAdvise()" @blur.native.capture="hideAdvise()"
-            @on-clear="hideAssociate()"
-            v-on:input="handleInput()" v-model.trim="searchForm.content"
-            placeholder="支持输入资源、用户、文章关键字" /></Input>
-            <Button type="primary" class="search-button" @click="searchSubmit()">
-                <Icon type="ios-search" size="30"></Icon>
-            </Button>
-            <div class="search-card" id="content">
-                <ul class="hot-search-title">热门搜索</ul>
-                <span v-for="(item,index) in tagList" :key="index">
-                    <Tag color="blue">{{item}}</Tag>
-                    <span>&emsp;</span>
-                </span>
-                <div id="history-search">
-                    <Divider style="margin: 8px;"/>
-                    <ul>
-                        <span class="history-search-title">历史搜索</span>
-                        <div class="clear-history" @mousedown="clearHistory()">
-                            <Icon size="30" type="ios-close"></Icon>清空
-                        </div>
-                    </ul>
-                    <ul v-for="(item,index) in searchHistory" :key="index">
-                        <Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">{{item}}</Tag>
-                    </ul>
+            <Dropdown placement="bottom-start" trigger="custom" :visible="searchVisible" @on-clickoutside="hideAdvise()">
+                <Input id="searchcontent" size="large" type="text" clearable class="search-input" 
+                @click.native="changeAdvise()" @on-clear="hideAssociate()"
+                v-on:input="handleInput()" v-model.trim="searchForm.content"
+                placeholder="支持输入资源、用户、文章关键字" /></Input>
+                <Button type="primary" class="search-button" @click="searchSubmit()">
+                    <Icon type="ios-search" size="30"></Icon>
+                </Button>
+                <div class="search-card" id="content">
+                    <ul class="hot-search-title">热门搜索</ul>
+                    <span v-for="(item,index) in tagList" :key="index">
+                        <Tag color="blue" class="tag-style">{{item}}</Tag>
+                        <span>&emsp;</span>
+                    </span>
+                    <div id="history-search">
+                        <Divider style="margin: 8px;"/>
+                        <ul>
+                            <span class="history-search-title">历史搜索</span>
+                            <div class="clear-history" @mousedown="clearHistory()">
+                                <Icon size="30" type="ios-close"></Icon>清空
+                            </div>
+                        </ul>
+                        <ul v-for="(item,index) in searchHistory" :key="index">
+                            <Icon size="20" type="ios-time-outline" color="orange"></Icon>
+                            <Tag color="orange" class="tag-style">{{item}}</Tag>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="associate-card" id="associate" style="display:none">
-                <div class="position: relative; top: 28px;">
-                </div>     
-            </div>
-            
+                <div class="associate-card" id="associate" style="display:none">
+                    <div class="position: relative; top: 28px;">
+                    </div>     
+                </div>
+            </Dropdown>    
         </FormItem>
     </Form>
 
@@ -42,8 +43,6 @@
 import storage from 'good-storage'
 import VueResource from 'vue-resource' 
 
-const   historyFull = true
-const   historyEmpty = true
 // 判断是否含有string是否含有某个字符
 function contain(str, charset) {
     var i;
@@ -76,7 +75,8 @@ export default {
             searchForm: {content:""},
             searchRule: {
                 content: [{required: true, trigger:'blur', validator: validateContent}]
-            }
+            },
+            searchVisible: false,
         }
     },    
     mounted() {      
@@ -119,7 +119,6 @@ export default {
                     this.searchHistory.push(storage.get(2))
                 }
             }
-            let historyEmpty = false
             this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
                 this.$router.push('/searchResult')
@@ -182,6 +181,7 @@ export default {
             },500);
         },
         hideAdvise() {
+            this.searchVisible = false;
             document.getElementById("content").style.display='none';
             document.getElementById("associate").style.display='none';
         },
@@ -192,8 +192,6 @@ export default {
         clearHistory() {
             document.getElementById("history-search").style.display='none';
             storage.clear();
-            let historyEmpty = false;
-            let historyFull = false;
         }
     }
 }
@@ -248,6 +246,10 @@ export default {
 
 .clear-history:hover {
     color: orangered;
+}
+
+.tag-style{
+    cursor:pointer;
 }
 
 .search-card{

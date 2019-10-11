@@ -5,44 +5,51 @@
                 <div class="home-search-container">
                     <h1>GDRC研发资源中心</h1>
                     <h1>望能成为您日常工作的好助力</h1>
-                    <Input id="searchcontent" size="large" type="text" clearable class="search-input" 
+                    <!--<Input id="searchcontent" size="large" type="text" clearable class="search-input" 
                     @focus.native.capture="changeAdvise()" @blur.native.capture="hideAdvise()"
                     @on-clear="hideAssociate()"
                     v-on:input="handleInput()" v-model.trim="searchForm.content"
-                    placeholder="支持输入资源、用户、文章关键字" /></Input>
-                    <Button type="primary" class="search-button" @click="searchSubmit()">
-                        <Icon type="ios-search" size="30"></Icon>
-                    </Button>
-                    <div class="search-card" id="content">
-                        <ul class="hot-search-title">热门搜索</ul>
-                        <span v-for="(item,index) in tagList" :key="index">
-                            <Tag color="blue">{{item}}</Tag>
-                            <span>&emsp;</span>
-                        </span>
-                        <div id="history-search">
-                            <Divider/>
-                            <ul>
-                                <span class="history-search-title">历史搜索</span>
-                                <div class="clear-history" @mousedown="clearHistory()">
-                                    <Icon size="30" type="ios-close"></Icon>清空
-                                </div>
-                            </ul>
-                            <ul v-for="(item,index) in searchHistory" :key="index">
-                                <Icon size="20" type="ios-time-outline" color="orange"></Icon><Tag color="orange">{{item}}</Tag>
-                            </ul>
+                    placeholder="支持输入资源、用户、文章关键字" /></Input>-->
+                    <Dropdown placement="bottom-start" trigger="custom" :visible="searchVisible" @on-clickoutside="hideAdvise()">
+                        <Input id="searchcontent" size="large" type="text" clearable class="search-input" 
+                        @click.native="changeAdvise()" @on-clear="hideAssociate()"
+                        v-on:input="handleInput()" v-model.trim="searchForm.content"
+                        placeholder="支持输入资源、用户、文章关键字" /></Input>
+                        <Button type="primary" class="search-button" @click="searchSubmit()">
+                            <Icon type="ios-search" size="30"></Icon>
+                        </Button>
+                        <div class="search-card" id="content">
+                            <ul class="hot-search-title">热门搜索</ul>
+                            <span v-for="(item,index) in tagList" :key="index">
+                                <Tag color="blue" class="tag-style" @mousedown="searchTag()">{{item}}</Tag>
+                                <span>&emsp;</span>
+                            </span>
+                            <div id="history-search">
+                                <Divider/>
+                                <ul>
+                                    <span class="history-search-title">历史搜索</span>
+                                    <div class="clear-history" @mousedown="clearHistory()">
+                                        <Icon size="30" type="ios-close"></Icon>清空
+                                    </div>
+                                </ul>
+                                <ul v-for="(item,index) in searchHistory" :key="index">
+                                    <Icon size="20" type="ios-time-outline" color="orange"></Icon>
+                                    <Tag color="orange" class="tag-style">{{item}}</Tag>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class="associate-card" id="associate" style="display:none">     
-                        <!--<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='???'">??????????</a>         
-                        <a style="display:block;" href ="https://www.baidu.com/s?wd='???'">??????????</a> -->        
-                    </div>
-                    <div class="recommend-line">
-                        <span>&emsp;为您推荐&emsp;</span>
-                        <Tag color="purple">推荐搜索1</Tag>
-                        <span>&emsp;</span>
-                        <Tag color="purple">推荐搜索2</Tag>
-                        <span>&emsp;</span>
-                    </div>
+                        <div class="associate-card" id="associate" style="display:none">     
+                            <!--<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='???'">??????????</a>         
+                            <a style="display:block;" href ="https://www.baidu.com/s?wd='???'">??????????</a> -->        
+                        </div>
+                        <div class="recommend-line">
+                            <span>&emsp;为您推荐&emsp;</span>
+                            <Tag color="purple" class="tag-style" @click.native="searchTag()">推荐搜索1</Tag>
+                            <span>&emsp;</span>
+                            <Tag color="purple" class="tag-style" @click.native="searchTag()">推荐搜索2</Tag>
+                            <span>&emsp;</span>
+                        </div>
+                    </Dropdown>
                 </div>
             </FormItem>
         </Form>
@@ -85,7 +92,8 @@ export default {
             searchForm: {content:""},
             searchRule: {
                 content: [{required: true, trigger:'blur', validator: validateContent}]
-            }
+            },
+            searchVisible: false,
         }
     },    
     mounted() {      
@@ -123,7 +131,6 @@ export default {
                     this.searchHistory.push(storage.get(2))
                 }
             }
-            let historyEmpty = false
             this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
                 this.$store.commit('SEARCH_COUNT', this.searchForm.content)
@@ -161,6 +168,7 @@ export default {
         },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
+            this.searchVisible = true;
             if(this.searchForm.content == ""){
                 document.getElementById("associate").style.display = "none";
             }
@@ -186,7 +194,15 @@ export default {
                 }
             },500);
         },
+        // user click the recommend tag and directly go to searchresult page
+        searchTag() {
+            //this.searchForm.content = 
+            //searchSubmit();
+            console.log("lalalal")
+            this.$router.push('/searchresult')
+        },
         hideAdvise() {
+            this.searchVisible = false;
             document.getElementById("content").style.display='none';
             document.getElementById("associate").style.display='none';
         },
@@ -197,8 +213,6 @@ export default {
         clearHistory() {
             document.getElementById("history-search").style.display='none';
             storage.clear();
-            let historyEmpty = false;
-            let historyFull = false;
         }
     }
 }
@@ -237,7 +251,8 @@ export default {
 .search-input{
     text-align: left;
     float: left;
-    width: 80%;
+    /*width: 80%;*/
+    width: 800px;
     height: 48px;
     z-index: 0;
 }
@@ -245,7 +260,8 @@ export default {
 .search-button{
     background-color: #6495ED;
     float: left;
-    width: 20%;
+    /*width: 20%;*/
+    width: 200px;
     cursor: pointer;
     height: 39px;
     z-index: 0;
@@ -279,7 +295,9 @@ export default {
     display: inline-block;
     float: right;
 }
-
+.tag-style{
+    cursor: pointer;
+}
 .clear-history:hover {
     color: orangered;
 }
@@ -301,7 +319,8 @@ export default {
     border-radius: 4px;
     position: relative;
     transition: all 0.2s ease-in-out;
-    width: 80%; 
+    /*width: 80%;*/
+    width: 800px; 
     top: 40px; 
     padding: 10px 20px 10px 20px;
     z-index: 10;
@@ -316,7 +335,8 @@ export default {
     border-radius: 4px;
     position: relative;
     transition: all 0.2s ease-in-out;
-    width: 80%; 
+    /*width: 80%;*/
+    width: 800px; 
     top: 40px; 
     padding: 0px 20px 0px 20px;
     z-index: 10;
