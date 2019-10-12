@@ -230,6 +230,7 @@ export default {
     float: none;
     width: 100%;
     z-index: 10;
+    font-family: MicrosoftYaHei;
     background-image: url("../assets/11111.jpg")
 }
 

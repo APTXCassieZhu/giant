@@ -53,8 +53,6 @@
             <div class="topnav-box-search">
             </div>
            
-            
-            
             <div class="topnav-box-user">
                 <span>欢迎回来，{{getUser}}</span>
                 <Dropdown placement="bottom-start">
@@ -107,6 +105,7 @@ export default {
     height: 80px;
     margin: 0;
     padding: 0;
+    font-family: MicrosoftYaHei;
     background-color: aliceblue;
     border-bottom: 1px, solid, rgb(181, 198, 230);
 }
@@ -152,7 +151,7 @@ export default {
     left: 2%;
     top: 7px;
     font-size: 25px;
-    font-family: 微软雅黑;
+    font-family: MicrosoftYaHei;
     font-weight: bold;
     align-content: center;
 }
@@ -170,6 +169,7 @@ export default {
 
 .topnav-box-link-a{
     position: relative;
+    font-family: MicrosoftYaHei;
     text-decoration: none;
     width: 12%;
     float: left;
@@ -192,6 +192,7 @@ export default {
 
 .topnav-box-user{
     position: relative;
+    font-family: MicrosoftYaHei;
     width: 10%;
     float:right;
     align-content: center;
@@ -219,6 +220,7 @@ export default {
 
 .topnav-dropdown{
     font-size: 18px;
+    font-family: MicrosoftYaHei;
     position: fixed;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     background-color: rgba(255, 255, 255, 0.988);

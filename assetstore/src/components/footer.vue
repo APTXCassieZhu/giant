@@ -56,5 +56,6 @@ export default {
     background-color: rgb(5, 65, 93);
     color: white;
     font-size: 15px;
+    font-family: MicrosoftYaHei;
 }
 </style>

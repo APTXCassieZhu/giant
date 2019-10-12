@@ -356,5 +356,6 @@ export default {
 .button-style{
     width: 200px; 
     font-size: 15px;
+    font-family: MicrosoftYaHei;
 }
 </style>

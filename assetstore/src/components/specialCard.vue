@@ -97,6 +97,7 @@ export default {
 .source-card{
     width: 306px; 
     height: 265px;
+    font-family: MicrosoftYaHei;
     border: 1px solid #ffffff;
     box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2)
 }
@@ -105,6 +106,7 @@ export default {
     margin-left: 10px;
     margin-right: 5px;
     margin-top: 7px;
+    font-family: MicrosoftYaHei;
 }
 
 .ivu-rate-star{

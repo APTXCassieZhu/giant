@@ -207,6 +207,7 @@ export default {
 .search-input{
     text-align: left;
     float: left;
+    font-family: MicrosoftYaHei;
     /*width: 80%;*/
     width: 610px;
     height: 48px;
@@ -215,6 +216,7 @@ export default {
 
 .search-button{
     background-color: #6495ED;
+    font-family: MicrosoftYaHei;
     float: left;
     /*width: 20%;*/
     width: 150px;
@@ -235,6 +237,7 @@ export default {
     position: relative;
     color: blue; 
     font-size: 19px; 
+    font-family: MicrosoftYaHei;
     height:30px; 
     top:0px;
 }
@@ -242,6 +245,7 @@ export default {
 .history-search-title {
     color: orange; 
     font-size: 19px; 
+    font-family: MicrosoftYaHei;
     height:28px;     
 }
 
@@ -258,6 +262,7 @@ export default {
 
 .tag-style{
     cursor:pointer;
+    font-family: MicrosoftYaHei;
 }
 
 .search-card{
@@ -268,6 +273,7 @@ export default {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 4px;
     position: fixed;
+    font-family: MicrosoftYaHei;
     transition: all 0.2s ease-in-out;
     width: 32%; 
     top: 65px; 
@@ -282,6 +288,7 @@ export default {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 4px;
     position: fixed;
+    font-family: MicrosoftYaHei;
     transition: all 0.2s ease-in-out;
     width: 32%; 
     top: 65px; 

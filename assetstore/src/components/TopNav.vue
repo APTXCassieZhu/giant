@@ -112,6 +112,7 @@ export default {
     border-color: grey;
     background-color: aliceblue;
     z-index: 100;
+    font-family: MicrosoftYaHei;
 }
 
 .topnav-box {
@@ -121,12 +122,14 @@ export default {
     width: 100%;
     height: 80px;
     color:black;
+    font-family: MicrosoftYaHei;
     z-index:inherit;
 }
 
 .topnav-box router-link{
     color: black;
     z-index:inherit;
+    font-family: MicrosoftYaHei;
 }
 
 /*only show when the screen is small*/
@@ -160,7 +163,7 @@ export default {
     left: 2%;
     top: 7px;
     font-size: 25px;
-    font-family: 微软雅黑;
+    font-family: MicrosoftYaHei;
     font-weight: bold;
     align-content: center;
 }
@@ -173,6 +176,7 @@ export default {
     width: 40%;
     height: 80px;
     font-size: 18px;
+    font-family: MicrosoftYaHei;
     color: black;
     z-index:inherit;
 }
@@ -183,12 +187,14 @@ export default {
     float:right;
     align-content: center;
     color:black;
+    font-family: MicrosoftYaHei;
     z-index:inherit;
 }
 
 .topnav-user{
     color:black;
     z-index:inherit;
+    font-family: MicrosoftYaHei;
 }
 
 .topnav-user:hover{
@@ -199,6 +205,7 @@ export default {
 
 .topnav-dropdown{
     font-size: 18px;
+    font-family: MicrosoftYaHei;
     position: fixed;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 4px;
@@ -208,6 +215,7 @@ export default {
 
 .topnav-dropdown router-link{
     font-size: 18px;
+    font-family: MicrosoftYaHei;
     z-index:inherit;
 }
 .divide{
@@ -223,6 +231,7 @@ export default {
     width: 100%;
     overflow: hidden;
     position: fixed;
+    font-family: MicrosoftYaHei;
     height: 60px;
     top: 80px;
     z-index: 10;
@@ -238,6 +247,7 @@ export default {
     padding: 0;
     outline: 0;
     font-size: 14px;
+    font-family: MicrosoftYaHei;
 }
 </style>
 
