@@ -99,7 +99,8 @@ export default {
     height: 265px;
     font-family: MicrosoftYaHei;
     border: 1px solid #ffffff;
-    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2)
+    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
+    background-color: #ffffff;
 }
 
 .source-content{

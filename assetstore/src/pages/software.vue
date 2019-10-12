@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TopNavigation></TopNavigation>  
+        <TopNavigation style="position:relative; height: 140px;"></TopNavigation>  
         <div class="bread-container"> 
             <br>     
             <Breadcrumb>
@@ -10,24 +10,26 @@
             </Breadcrumb>
         </div>
         <br>
-        <LeftSideMenu style="position:absolute; top:180px; z-index:0"></LeftSideMenu>
+        <LeftSideMenu style="position:relative; z-index:0"></LeftSideMenu>
+        <br><br><br><br>
+        <footer style="position:fixed; bottom: 0px;"></footer>
     </div>
 </template>
     
 <script>
 import TopNavigation from '../components/TopNav.vue'
 import LeftSideMenu from '../components/leftSideMenu.vue'
+import Footer from '../components/footer.vue'
 export default {
     name:"software",
-    components:{TopNavigation, LeftSideMenu}
+    components:{TopNavigation, LeftSideMenu, Footer}
 }
 </script>
 
 <style scoped>
 .bread-container {
-    position: fixed;
-    top: 130px;
-    left:1.5%;
+    position: relative;
+    left: 3%;
 }
 </style>
 

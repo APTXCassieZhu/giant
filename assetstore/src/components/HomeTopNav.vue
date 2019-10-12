@@ -7,7 +7,7 @@
             <div class="topnav-box-logo">
                 <img src="../assets/logo.png" style="width:50px; height: 50px;" alt="logo" @click="gohome()">      
             </div>
-            <span class="logo-text">GDRC</span>
+            <span class="logo-text" @click="gohome()">GDRC</span>
             <!--不知道怎么清除之前div css-->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
@@ -106,7 +106,7 @@ export default {
     margin: 0;
     padding: 0;
     font-family: MicrosoftYaHei;
-    background-color: aliceblue;
+    background-color: #eef2f5;
     border-bottom: 1px, solid, rgb(181, 198, 230);
 }
 
@@ -153,6 +153,7 @@ export default {
     font-size: 25px;
     font-family: MicrosoftYaHei;
     font-weight: bold;
+    cursor: pointer;
     align-content: center;
 }
 

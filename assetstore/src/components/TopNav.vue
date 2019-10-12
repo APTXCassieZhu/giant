@@ -8,7 +8,7 @@
             <div class="topnav-box-logo" >
                 <img src="../assets/logo.png" style="width:50px; height: 50px;" alt="首页" @click="goPage('/')">
             </div>
-            <span class="logo-text">GDRC</span>
+            <span class="logo-text" @click="goPage('/')">GDRC</span>
             <!--不知道怎么清除之前div css-->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
@@ -110,7 +110,7 @@ export default {
     margin: 0;
     padding: 0;
     border-color: grey;
-    background-color: aliceblue;
+    background-color: #ffffff;
     z-index: 100;
     font-family: MicrosoftYaHei;
 }
@@ -165,6 +165,7 @@ export default {
     font-size: 25px;
     font-family: MicrosoftYaHei;
     font-weight: bold;
+    cursor: pointer;
     align-content: center;
 }
 
@@ -187,14 +188,12 @@ export default {
     float:right;
     align-content: center;
     color:black;
-    font-family: MicrosoftYaHei;
     z-index:inherit;
 }
 
 .topnav-user{
     color:black;
     z-index:inherit;
-    font-family: MicrosoftYaHei;
 }
 
 .topnav-user:hover{
@@ -227,7 +226,7 @@ export default {
 }
 .submenu{
     border-top:1px, solid, #6495ED;
-    background-color:aliceblue;
+    background-color:#ffffff;
     width: 100%;
     overflow: hidden;
     position: fixed;
@@ -239,7 +238,7 @@ export default {
 .nav-menu{
     float: right;
     width: 98%;
-    background-color:aliceblue;
+    background-color:#ffffff;
     height: 60px;
     line-height: 60px;
     display: block;
