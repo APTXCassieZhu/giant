@@ -124,6 +124,7 @@ export default {
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
                 this.$store.commit('SEARCH_COUNT', this.searchForm.content)
                 this.reload()
+                this.$router.push('/searchResult')
             }, (response)=>{
                 //alert("出错啦QAQ")
             })

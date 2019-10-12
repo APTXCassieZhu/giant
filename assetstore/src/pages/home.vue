@@ -5,16 +5,16 @@
         <HomeSearch></HomeSearch>  
     </div>
     <br><br>
-    <h1 style="position: relative; text-align: center; color: #0066FF">美术类资源</h1>
+    <h1 style="position: relative; text-align: center; color: rgb(0, 140, 255)">美术类资源</h1>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目集合-</div>
-    <strong><div class="more" @click='goArtFilter()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+    <strong><div class="more" @click='goArtShow()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
     <div class="card-wrapper">
         <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
     </div>
     <br><br>
-    <h1 style="position: relative; text-align: center; color: #0066FF">推荐分类</h1>
+    <h1 style="position: relative; text-align: center; color: rgb(0, 140, 255)">推荐分类</h1>
     <div style="position: relative; text-align: center; color: gray;">-各类高实用性的项目集合-</div>
-    <strong><div class="more">查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+    <strong><div class="more" @click='goArtFilter()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
     <div class="card-wrapper">
         <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
         <div class="advise-card"><span class="advise-des">3D</span></div>
@@ -24,7 +24,7 @@
         <div class="advise-card"><span class="advise-des">人物</span></div>
     </div>
     <br><br>
-    <h1 style="position: relative; text-align: center; color: #0066FF">精选美术资源</h1>
+    <h1 style="position: relative; text-align: center; color: rgb(0, 140, 255)">精选美术资源</h1>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
     <Carousel autoplay arrow="always" trigger="click" dots="none" autoplay-speed="5000" loop style="text-align:center; width: 80%; left: 10%">
         <CarouselItem>
@@ -47,7 +47,7 @@
         </CarouselItem>
     </Carousel>
     <br><br>
-    <h1 style="position: relative; text-align: center; color: #0066FF">研发类资源</h1>
+    <h1 style="position: relative; text-align: center; color: rgb(0, 140, 255)">研发类资源</h1>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
     <div class="card-wrapper">
         <special-card ref="child" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
@@ -93,6 +93,9 @@ export default {
         this.$refs.child9.special = "image-09";
     },
     methods:{
+        goArtShow(){
+            this.$router.push('/artShow')
+        },
         goArtFilter(){
             this.$router.push('/artFilter')
         },
@@ -111,7 +114,7 @@ export default {
 .more{
     position: relative; 
     left: 81%;
-    color: #0066FF;
+    color: rgb(0, 140, 255);
     cursor: pointer;
 }
 .advise-card{

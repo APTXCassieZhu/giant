@@ -6,7 +6,7 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo" >
-                <img src="../assets/logo.png" style="width:50px; height: 50px;" alt="首页" @click="gohome()">
+                <img src="../assets/logo.png" style="width:50px; height: 50px;" alt="首页" @click="goPage('/')">
             </div>
             <span class="logo-text">GDRC</span>
             <!--不知道怎么清除之前div css-->
@@ -42,21 +42,21 @@
             </div>
         </div>
     </div>
-    <Divider style="margin: 0px 0px; z-index:10"/>
+    <Divider class="divide"/>
     <div class="submenu">
         <Menu mode="horizontal" :theme="light" :active-name="activenum" class="nav-menu">
-            <MenuItem name="1">
+            <MenuItem name="1" @click.native="goPage('/artFilter')">
                 <Icon type="ios-paper" />
-                <router-link style="color:black; cursor:pointer;" to='/artFilter'>美术类资源</router-link>
+                美术类资源
             </MenuItem>
             <!--TODO menuitem 2 3的网页还没建，to的地址可能会改变-->
-            <MenuItem name="2">
+            <MenuItem name="2" @click.native="goPage('/toolFilter')">
                 <Icon type="ios-construct" />
-                <router-link style="color:black; cursor:pointer;" to='/tools'>研发工具</router-link>
+                研发工具
             </MenuItem>
-            <MenuItem name="3">
+            <MenuItem name="3" @click.native="goPage('/software')">
                 <Icon type="ios-people" />
-                <router-link style="color:black; cursor:pointer;" to='/software'>常用软件</router-link>
+                常用软件
             </MenuItem>
         </Menu>
     </div>
@@ -70,8 +70,7 @@ export default {
     components: {Search},
     data(){
         return{
-            // TO DO 根据搜索内容判断当前active number
-            activenum: '1'
+            activenum: 0,
         }
     },
     computed:{
@@ -84,9 +83,19 @@ export default {
             this.$store.commit('REMOVE_COUNT', this.$store.state.token);
             this.$router.push('/login')
         },
-        gohome(){
-            this.$router.push('/')
-        }
+        goPage(url){
+            if(url === '/artFilter'){
+                this.activenum = 1
+                this.$store.commit('NOW_ACTIVE', this.activenum)
+            }else if(url === '/toolFilter'){
+                this.activenum = 2
+                this.$store.commit('NOW_ACTIVE', this.activenum)
+            }else if(url === '/software'){
+                this.activenum = 3
+                this.$store.commit('NOW_ACTIVE', this.activenum)
+            }
+            this.$router.push(url)
+        },
     }   
 }
 </script>
@@ -201,7 +210,13 @@ export default {
     font-size: 18px;
     z-index:inherit;
 }
-
+.divide{
+    position: fixed;
+    top: 80px;
+    margin: 0px 0px; 
+    z-index: 20; 
+    color: gray;
+}
 .submenu{
     border-top:1px, solid, #6495ED;
     background-color:aliceblue;

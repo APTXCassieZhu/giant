@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import login from '../pages/users/login'
 import home from '../pages/home'
 import artfilter from '../pages/search/artFilter'
+import artshow from '../pages/search/artShow'
+import toolfilter from '../pages/search/toolFilter'
 import searchresult from '../pages/search/searchResult'
 import software from '../pages/software'
 import discussion from '../pages/Q&A'
@@ -62,6 +64,22 @@ export default new Router({
       path: '/artFilter',
       name: 'ArtFilter',
       component: artfilter,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/artShow',
+      name: 'ArtShow',
+      component: artshow,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/toolFilter',
+      name: 'ToolFilter',
+      component: toolfilter,
       meta: {
         requireAuth: true
       }

@@ -2,7 +2,7 @@
     <div>
         <!--美术资源art-->
         <Dropdown placement="bottom-start" trigger="custom" :visible="artVisible" @on-clickoutside="handleArtClose()">
-            <Button id="art" class="button-style" href="javascript:void(0)" @click="handleArtOpen()">
+            <Button id="art" class="button-style" :class="{active: artActiveButton}" href="javascript:void(0)" @click="handleArtOpen()">
                 <strong>美术资源<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
             <DropdownMenu slot="list" style="width:200px;" >
@@ -26,7 +26,7 @@
         <span>&emsp;&emsp;&emsp;</span>
         <!--研发工具-->
         <Dropdown placement="bottom-start" trigger="custom" :visible="toolVisible" @on-clickoutside="handleToolClose()">
-            <Button id="tool" class="button-style" href="javascript:void(0)" @click="handleToolOpen()">
+            <Button id="tool" class="button-style" :class="{active: toolActiveButton}" href="javascript:void(0)" @click="handleToolOpen()">
                 <strong>研发工具<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
             <DropdownMenu slot="list" style="width:200px;" >
@@ -45,7 +45,7 @@
         <span>&emsp;&emsp;&emsp;</span> 
         <!--引擎engine-->
         <Dropdown placement="bottom-start" trigger="custom" :visible="engineVisible" @on-clickoutside="handleEngineClose()">
-            <Button id="engine" class="button-style" href="javascript:void(0)" @click="handleEngineOpen()">
+            <Button id="engine" class="button-style" :class="{active: engineActiveButton}" href="javascript:void(0)" @click="handleEngineOpen()">
                 <strong>引擎<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
             <DropdownMenu slot="list" style="width:200px;" >
@@ -82,7 +82,10 @@ export default {
             engineVisible: false,
             engineNotFull: true,
             checkEngineAll: false,
-            engineGroup:[],        // 存放用户选取的引擎筛选   
+            engineGroup:[],        // 存放用户选取的引擎筛选 
+            artActiveButton: false, 
+            toolActiveButton: false, 
+            engineActiveButton: false,
         }
     },
     methods:{
@@ -115,8 +118,10 @@ export default {
             this.artNotFull = false;
 
             if (this.checkArtAll) {
+                this.artActiveButton = true;
                 this.artGroup = ['动画', '角色', '环境', '道具', '植物', '交通工具'];
             } else {
+                this.artActiveButton = false;
                 this.artGroup = [];
             }
         },
@@ -128,15 +133,14 @@ export default {
             } else if (data.length > 0) {
                 this.artNotFull = true;
                 this.checkArtAll = false;
-                // 子件里面有一个选中则当前父button高亮
-                console.log("高亮")
-                document.getElementById("art").style.active;
+                // art子件里面有一个选中则当前父button高亮
+                this.artActiveButton = 1;
             } else {
                 this.artNotFull = false;
                 this.checkArtAll = false;
                 // 子件里面没有一个选中则当前父button不高亮 
-                 console.log("取消高亮")
-                document.getElementById("art").style.active = false;
+                console.log("取消高亮")
+                this.artActiveButton = 0;
             }
         },
         handleCheckToolAll () {
@@ -148,9 +152,11 @@ export default {
             this.toolNotFull = false;
 
             if (this.checkToolAll) {
+                this.toolActiveButton = true;
                 // TODO []填上所有研发工具
                 this.toolGroup = [];
             } else {
+                this.toolActiveButton = false;
                 this.toolGroup = [];
             }
         },
@@ -165,12 +171,12 @@ export default {
                 this.toolNotFull = true;
                 this.checkToolAll = false;
                 // 子件里面有一个选中则当前父button高亮
-                document.getElementById("tool").style.active = true;
+                this.toolActiveButton = true;
             } else {
                 this.toolNotFull = false;
                 this.checkToolAll = false;
                 // 子件里面没有一个选中则当前父button不高亮 
-                document.getElementById("tool").style.active = false;
+                this.toolActiveButton = false;
             }
         },
         handleCheckEngineAll () {
@@ -182,8 +188,10 @@ export default {
             this.engineNotFull = false;
 
             if (this.checkEngineAll) {
+                this.engineActiveButton = true;
                 this.engineGroup = ['Unity', 'Unreal', 'Cocos'];
             } else {
+                this.engineActiveButton = false;
                 this.engineGroup = [];
             }
         },
@@ -197,12 +205,12 @@ export default {
                 this.engineNotFull = true;
                 this.checkEngineAll = false;
                 // 子件里面有一个选中则当前父button高亮
-                document.getElementById("engine").style.active = true;
+                this.engineActiveButton = true;
             } else {
                 this.engineNotFull = false;
                 this.checkEngineAll = false;
                 // 子件里面没有一个选中则当前父button不高亮 
-                document.getElementById("engine").style.active = false;
+                this.engineActiveButton = false;
             }
         },
     },

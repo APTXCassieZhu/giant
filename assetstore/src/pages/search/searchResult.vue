@@ -6,20 +6,20 @@
                 <div class="advise-container">
                     <span>&emsp;推荐搜索&emsp;</span>
                     <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
-                    <Tag color="purple" class="tag-style">推荐搜索1</Tag>
+                    <Tag color="purple" class="tag-style" @click.native="searchTag(item)">推荐搜索1</Tag>
                     <span>&emsp;</span>
-                    <Tag color="purple" class="tag-style">推荐搜索2</Tag>
+                    <Tag color="purple" class="tag-style" @click.native="searchTag(item)">推荐搜索2</Tag>
                     <span>&emsp;</span>  
-                    <Tag color="purple" class="tag-style">推荐搜索3</Tag>
+                    <Tag color="purple" class="tag-style" @click.native="searchTag(item)">推荐搜索3</Tag>
                     <span>&emsp;</span> 
-                    <Tag color="purple" class="tag-style">推荐搜索4</Tag>
+                    <Tag color="purple" class="tag-style" @click.native="searchTag(item)">推荐搜索4</Tag>
                     <span>&emsp;&emsp;&emsp;&emsp;</span>
                     <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" /> 
                 </div>
             </div>
             <div class="title-wrapper">
                 <strong>"{{getSearchContent}}"在
-                    <Dropdown @on-click="changeFilter">
+                    <Dropdown @on-click="changeFilter" trigger="click">
                         <a herf="javascript:void(0)" name="所有" v-html='this.currentFilter'></a>
                             <DropdownMenu slot="list">
                             <!--TODO () 内所有数字都是从后端得到的-->
@@ -36,7 +36,7 @@
             <div class="card-wrapper">
                 <ul>
                     <span style="color: blue;">{{resultCount}}</span>条搜索结果
-                    <div style="float: right; margin-right: 60px;">
+                    <div style="float: right; margin-right: 125px;">
                         <Dropdown style="margin-left: 20px">
                             <span href="javascript:void(0)" style="cursor:pointer;">默认排序
                                 <Icon type="md-arrow-dropdown" size="20"/>
@@ -50,7 +50,7 @@
                     </div>
                 </ul>
                 <br>
-                <source-card v-for="n in 18" :key="n" style="display: inline-block; margin-right: 50px; margin-bottom: 40px;"></source-card>
+                <source-card v-for="n in 15" :key="n" class="card-style"></source-card>
                 <Page style="position: relative; margin-left: 35%;" :total="100" show-elevator />
             </div>
             <corner></corner>
@@ -155,10 +155,15 @@ export default {
     position: relative;
     left: 3%;
     top: 80px;
-    width: 92%;
+    width: 80%;
     margin-right: 18px;
 }
-
+.card-style{
+    display: inline-block; 
+    margin-right: 50px; 
+    margin-bottom: 40px;
+    text-align: center;
+}
 .elevator-wrapper{
     position: relative;
     margin-left: 30%;
