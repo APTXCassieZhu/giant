@@ -6,13 +6,13 @@
                 <div class="advise-container">
                     <span>&emsp;推荐搜索&emsp;</span>
                     <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
-                    <Tag color="purple" class="tag-style" @click.native="searchTag(item)">推荐搜索1</Tag>
+                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
                     <span>&emsp;</span>
-                    <Tag color="purple" class="tag-style" @click.native="searchTag(item)">推荐搜索2</Tag>
+                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
                     <span>&emsp;</span>  
-                    <Tag color="purple" class="tag-style" @click.native="searchTag(item)">推荐搜索3</Tag>
+                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
                     <span>&emsp;</span> 
-                    <Tag color="purple" class="tag-style" @click.native="searchTag(item)">推荐搜索4</Tag>
+                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
                     <span>&emsp;&emsp;&emsp;&emsp;</span>
                     <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" /> 
                 </div>
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import storage from 'good-storage'
 import TopNavigation from '../../components/TopNav.vue'
 import Search from '../../components/Search.vue'
 import SourceCard from '../../components/sourceCard.vue'
@@ -69,6 +70,7 @@ import Choice from '../../components/choice.vue'
 import Footer from '../../components/footer.vue'
 export default {
     name:"SearchResult",
+    inject: ['reload'],
     components:{
         TopNavigation, Corner,
         Choice, SourceCard,
@@ -79,6 +81,8 @@ export default {
             // TODO resultcount 需后端互动得到
             resultCount: 7021,
             currentFilter: "所有",              // 由用户选择需要什么类别的搜索结果
+            searchHistory: [],              //存放历史搜索
+            searchForm: {content:""},
         }
     },
     methods:{
@@ -95,9 +99,41 @@ export default {
                 this.currentFilter = "研发类工具"
             }
         },
-        searchTag(val){
+        searchAdviseTag(val){
             console.log('爷爷call 孙子的method')
-            eventHub.$emit('translate', val)
+            this.searchForm.content = val;
+            /* TODO 下面这种可以直接call其他组件的method，但是不知道为什么一直说content not defined
+               所有直接把要call的method 复制过来了，待解决。。。
+               Search.methods.searchSubmit()*/
+
+            this.searchHistory = []
+            if((storage.has(1)&&storage.has(2))) {
+                storage.set(3, storage.get(2))
+                storage.set(2, storage.get(1))
+                storage.set(1, this.searchForm.content)
+                this.searchHistory.push(storage.get(1))
+                this.searchHistory.push(storage.get(2))
+                this.searchHistory.push(storage.get(3));
+            }else{
+                if(!storage.has(1)) {
+                    // empty history
+                    storage.set(1, this.searchForm.content)
+                    this.searchHistory.push(storage.get(1))
+                } else {
+                    storage.set(2, storage.get(1))
+                    storage.set(1, this.searchForm.content)
+                    this.searchHistory.push(storage.get(1))
+                    this.searchHistory.push(storage.get(2))
+                }
+            }
+            this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
+                //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
+                this.$store.commit('SEARCH_COUNT', this.searchForm.content)
+                this.reload()
+                this.$router.push('/searchResult')
+            }, (response)=>{
+            })
+
         },
     },
     computed:{

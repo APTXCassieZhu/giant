@@ -97,7 +97,7 @@ router.afterEach(route => {
   iView.LoadingBar.finish();
 })
 /* eslint-disable no-new */
-var eventHub = new Vue({
+new Vue({
   el: '#app',
   router,
   store,

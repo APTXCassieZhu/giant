@@ -88,19 +88,13 @@ export default {
             this.tagList.push(this.data[i])
         }
         // 页面加载时自动取出历史记录
-        for(var i=0; i < 3; i++) {
+        for(var i=1; i <= 3; i++) {
             if(storage.has(i)) {
                 this.searchHistory.push(storage.get(i));
-            }else {
             }
         }
         // 页面加载时自动填充前一个页面search input
         this.searchForm.content = this.$store.state.searchContent;
-    },
-    created(){
-        eventHub.$on('translate', function (data) {
-            that.searchTag(data);
-        });
     },
     methods: {
         searchSubmit() {
@@ -131,7 +125,6 @@ export default {
                 this.reload()
                 this.$router.push('/searchResult')
             }, (response)=>{
-                //alert("出错啦QAQ")
             })
         },
         handleInput(e) {
