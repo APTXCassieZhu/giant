@@ -1,12 +1,12 @@
 <template>
     <div>
-        <!--美术资源art-->
-        <Dropdown placement="bottom-start" trigger="custom" :visible="artVisible" @on-clickoutside="handleArtClose()">
-            <Button id="art" class="button-style" :class="{active: artActiveButton}" href="javascript:void(0)" @click="handleArtOpen()">
-                <strong>美术资源<Icon type="md-arrow-dropdown" size="20"/></strong>
+        <!--资源分类part-->
+        <Dropdown placement="bottom-start" trigger="custom" :visible="typeVisible" @on-clickoutside="handleTypeClose()">
+            <Button id="type" class="button-style" :class="{active: typeActiveButton}" href="javascript:void(0)" @click="handleTypeOpen()">
+                <strong>资源分类<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
             <DropdownMenu slot="list" style="width:200px;" >
-                <CheckboxGroup v-model="artGroup" @on-change="checkAllArtGroupChange">
+                <CheckboxGroup v-model="typeGroup" @on-change="checkAllTypeGroupChange">
                     <!--TODO 此处数字应与后端互动拿到-->
                     <DropdownItem><Checkbox label="动画" style="font-size:15px">动画 (987)</Checkbox></DropdownItem>
                     <DropdownItem><Checkbox label="角色" style="font-size:15px">角色 (876)</Checkbox></DropdownItem>
@@ -17,22 +17,24 @@
                 </CheckboxGroup>
                 <Divider style="margin:0"/>
                 <DropdownItem><Checkbox
-                    :indeterminate="artNotFull"
-                    :value="checkArtAll"
-                    @click.prevent.native="handleCheckArtAll()">全选</Checkbox>
+                    :indeterminate="typeNotFull"
+                    :value="checkTypeAll"
+                    @click.prevent.native="handleCheckTypeAll()">全选</Checkbox>
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>
         <span>&emsp;&emsp;&emsp;</span>
-        <!--研发工具-->
+        <!--资源类别-->
         <Dropdown placement="bottom-start" trigger="custom" :visible="toolVisible" @on-clickoutside="handleToolClose()">
             <Button id="tool" class="button-style" :class="{active: toolActiveButton}" href="javascript:void(0)" @click="handleToolOpen()">
-                <strong>研发工具<Icon type="md-arrow-dropdown" size="20"/></strong>
+                <strong>资源类别<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
             <DropdownMenu slot="list" style="width:200px;" >
                 <CheckboxGroup v-model="toolGroup" @on-change="checkAllToolGroupChange">
                     <!--TODO 此处数字应与后端互动拿到-->
-                    <DropdownItem><Checkbox label="???" style="font-size:15px">???</Checkbox></DropdownItem>
+                    <DropdownItem><Checkbox label="S级别" style="font-size:15px">S级别</Checkbox></DropdownItem>
+                    <DropdownItem><Checkbox label="A级别" style="font-size:15px">A级别</Checkbox></DropdownItem>
+                    <DropdownItem><Checkbox label="B级别" style="font-size:15px">B级别</Checkbox></DropdownItem>
                 </CheckboxGroup>
                 <Divider style="margin:0"/>
                 <DropdownItem><Checkbox
@@ -43,7 +45,50 @@
             </DropdownMenu>
         </Dropdown>
         <span>&emsp;&emsp;&emsp;</span> 
-        <!--引擎engine-->
+        <!--资源风格 part-->
+        <Dropdown placement="bottom-start" trigger="custom" :visible="styleVisible" @on-clickoutside="handleStyleClose()">
+            <Button id="style" class="button-style" :class="{active: styleActiveButton}" href="javascript:void(0)" @click="handleStyleOpen()">
+                <strong>资源风格<Icon type="md-arrow-dropdown" size="20"/></strong>
+            </Button>
+            <DropdownMenu slot="list" style="width:200px;" >
+                <CheckboxGroup v-model="styleGroup" @on-change="checkAllStyleGroupChange">
+                    <!--TODO 此处数字应与后端互动拿到-->
+                    <DropdownItem><Checkbox label="小清新" style="font-size:15px">小清新</Checkbox></DropdownItem>
+                    <DropdownItem><Checkbox label="慵懒" style="font-size:15px">慵懒</Checkbox></DropdownItem>
+                    <DropdownItem><Checkbox label="狂野" style="font-size:15px">狂野</Checkbox></DropdownItem>
+                </CheckboxGroup>
+                <Divider style="margin:0"/>
+                <DropdownItem><Checkbox
+                    :indeterminate="styleNotFull"
+                    :value="checkStyleAll"
+                    @click.prevent.native="handleCheckStyleAll()">全选</Checkbox>
+                </DropdownItem>
+            </DropdownMenu>
+        </Dropdown>
+        <span>&emsp;&emsp;&emsp;</span> 
+        <!--项目 part-->
+        <Dropdown placement="bottom-start" trigger="custom" :visible="programVisible" @on-clickoutside="handleProgramClose()">
+            <Button id="program" class="button-style" :class="{active: programActiveButton}" href="javascript:void(0)" @click="handleProgramOpen()">
+                <strong>项目<Icon type="md-arrow-dropdown" size="20"/></strong>
+            </Button>
+            <DropdownMenu slot="list" style="width:200px;" >
+                <CheckboxGroup v-model="programGroup" @on-change="checkAllProgramGroupChange">
+                    <!--TODO 此处数字应与后端互动拿到-->
+                    <DropdownItem><Checkbox label="征途" style="font-size:15px">征途</Checkbox></DropdownItem>
+                    <DropdownItem><Checkbox label="球球大作战" style="font-size:15px">球球大作战</Checkbox></DropdownItem>
+                    <DropdownItem><Checkbox label="月圆之夜" style="font-size:15px">月圆之夜</Checkbox></DropdownItem>
+                    <DropdownItem><Checkbox label="犬夜叉" style="font-size:15px">犬夜叉</Checkbox></DropdownItem>
+                </CheckboxGroup>
+                <Divider style="margin:0"/>
+                <DropdownItem><Checkbox
+                    :indeterminate="programNotFull"
+                    :value="checkProgramAll"
+                    @click.prevent.native="handleCheckProgramAll()">全选</Checkbox>
+                </DropdownItem>
+            </DropdownMenu>
+        </Dropdown>
+        <span>&emsp;&emsp;&emsp;</span> 
+        <!--引擎engine part-->
         <Dropdown placement="bottom-start" trigger="custom" :visible="engineVisible" @on-clickoutside="handleEngineClose()">
             <Button id="engine" class="button-style" :class="{active: engineActiveButton}" href="javascript:void(0)" @click="handleEngineOpen()">
                 <strong>引擎<Icon type="md-arrow-dropdown" size="20"/></strong>
@@ -71,30 +116,40 @@ export default {
     name:"Choice",
     data() {
         return {
-            artVisible: false,
-            artNotFull: true,
-            checkArtAll: false,
-            artGroup:[],        // 存放用户选取的美术资源筛选
+            typeVisible: false,
+            typeNotFull: true,
+            checkTypeAll: false,
+            typeGroup:[],        
             toolVisible: false,
             toolNotFull: true,
             checkToolAll: false,
-            toolGroup:[],        // 存放用户选取的研发工具筛选
+            toolGroup:[],
+            styleVisible: false,
+            styleNotFull: true,
+            checkStyleAll: false,
+            styleGroup:[], 
+            programVisible: false,
+            programNotFull: true,
+            checkProgramAll: false,
+            programGroup:[],         
             engineVisible: false,
             engineNotFull: true,
             checkEngineAll: false,
-            engineGroup:[],        // 存放用户选取的引擎筛选 
-            artActiveButton: false, 
+            engineGroup:[],        
+            typeActiveButton: false, 
             toolActiveButton: false, 
+            styleActiveButton: false,
+            programActiveButton: false,
             engineActiveButton: false,
         }
     },
     methods:{
         // handleXXXOpen 和 handleXXXClose 是为了下拉栏能够在更合适的时间关闭
-        handleArtOpen () {
-            this.artVisible = true;
-            },
-        handleArtClose () {
-            this.artVisible = false;
+        handleTypeOpen () {
+            this.typeVisible = true;
+        },
+        handleTypeClose () {
+            this.typeVisible = false;
         },
         handleToolOpen () {
             this.toolVisible = true;
@@ -102,45 +157,57 @@ export default {
         handleToolClose () {
             this.toolVisible = false;
         },
+        handleStyleOpen () {
+            this.styleVisible = true;
+            },
+        handleStyleClose () {
+            this.styleVisible = false;
+        },
+        handleProgramOpen () {
+            this.programVisible = true;
+            },
+        handleProgramClose () {
+            this.programVisible = false;
+        },
         handleEngineOpen () {
             this.engineVisible = true;
             },
         handleEngineClose () {
             this.engineVisible = false;
         },
-        // handleCheckArtAll 和 checkAllArtGroupChange是为了用户能够更快速全选或取消全选
-        handleCheckArtAll () {
-            if (this.artNotFull) {
-                this.checkArtAll = false;
+        // handleCheckXXXXAll 和 checkAllXXXXGroupChange是为了用户能够更快速全选或取消全选
+        handleCheckTypeAll () {
+            if (this.typeNotFull) {
+                this.checkTypeAll = false;
             } else {
-                this.checkArtAll = !this.checkArtAll;
+                this.checkTypeAll = !this.checkTypeAll;
             }
-            this.artNotFull = false;
+            this.typeNotFull = false;
 
-            if (this.checkArtAll) {
-                this.artActiveButton = true;
-                this.artGroup = ['动画', '角色', '环境', '道具', '植物', '交通工具'];
+            if (this.checkTypeAll) {
+                this.typeActiveButton = true;
+                this.typeGroup = ['动画', '角色', '环境', '道具', '植物', '交通工具'];
             } else {
-                this.artActiveButton = false;
-                this.artGroup = [];
+                this.typeActiveButton = false;
+                this.typeGroup = [];
             }
         },
-        checkAllArtGroupChange (data) {
+        checkAllTypeGroupChange (data) {
             console.log(data);
             if (data.length === 6) {
-                this.artNotFull = false;
-                this.checkArtAll = true;
+                this.typeNotFull = false;
+                this.checkTypeAll = true;
             } else if (data.length > 0) {
-                this.artNotFull = true;
-                this.checkArtAll = false;
-                // art子件里面有一个选中则当前父button高亮
-                this.artActiveButton = 1;
+                this.typeNotFull = true;
+                this.checkTypeAll = false;
+                // 子件里面有一个选中则当前父button高亮
+                this.typeActiveButton = true;
             } else {
-                this.artNotFull = false;
-                this.checkArtAll = false;
+                this.typeNotFull = false;
+                this.checkTypeAll = false;
                 // 子件里面没有一个选中则当前父button不高亮 
                 console.log("取消高亮")
-                this.artActiveButton = 0;
+                this.typeActiveButton = false;
             }
         },
         handleCheckToolAll () {
@@ -154,14 +221,13 @@ export default {
             if (this.checkToolAll) {
                 this.toolActiveButton = true;
                 // TODO []填上所有研发工具
-                this.toolGroup = [];
+                this.toolGroup = ['S级别', 'A级别', 'B级别'];
             } else {
                 this.toolActiveButton = false;
                 this.toolGroup = [];
             }
         },
         checkAllToolGroupChange (data) {
-            // data is undefined ???????????????
             console.log(data);
             // TODO 6 改成 研发工具的种类总数
             if (data.length === 6) {
@@ -177,6 +243,76 @@ export default {
                 this.checkToolAll = false;
                 // 子件里面没有一个选中则当前父button不高亮 
                 this.toolActiveButton = false;
+            }
+        },
+        handleCheckStyleAll () {
+            if (this.styleNotFull) {
+                this.checkStyleAll = false;
+            } else {
+                this.checkStyleAll = !this.checkStyleAll;
+            }
+            this.styleNotFull = false;
+
+            if (this.checkStyleAll) {
+                this.styleActiveButton = true;
+                // TODO []填上所有研发工具
+                this.styleGroup = ['小清新', '狂野', '慵懒'];
+            } else {
+                this.styleActiveButton = false;
+                this.styleGroup = [];
+            }
+        },
+        checkAllStyleGroupChange (data) {
+            console.log(data);
+            // TODO 6 改成 style的种类总数
+            if (data.length === 6) {
+                this.styleNotFull = false;
+                this.checkStyleAll = true;
+            } else if (data.length > 0) {
+                this.styleNotFull = true;
+                this.checkStyleAll = false;
+                // 子件里面有一个选中则当前父button高亮
+                this.styleActiveButton = true;
+            } else {
+                this.styleNotFull = false;
+                this.checkStyleAll = false;
+                // 子件里面没有一个选中则当前父button不高亮 
+                this.styleActiveButton = false;
+            }
+        },
+        handleCheckProgramAll () {
+            if (this.programNotFull) {
+                this.checkProgramAll = false;
+            } else {
+                this.checkProgramAll = !this.checkProgramAll;
+            }
+            this.programNotFull = false;
+
+            if (this.checkProgramAll) {
+                this.programActiveButton = true;
+                // TODO []填上所有研发工具
+                this.programGroup = ['征途', '球球大作战', '月圆之夜', '犬夜叉'];
+            } else {
+                this.programActiveButton = false;
+                this.programGroup = [];
+            }
+        },
+        checkAllProgramGroupChange (data) {
+            console.log(data);
+            // TODO 6 改成 style的种类总数
+            if (data.length === 6) {
+                this.programNotFull = false;
+                this.checkProgramAll = true;
+            } else if (data.length > 0) {
+                this.programNotFull = true;
+                this.checkProgramAll = false;
+                // 子件里面有一个选中则当前父button高亮
+                this.programActiveButton = true;
+            } else {
+                this.programNotFull = false;
+                this.checkProgramAll = false;
+                // 子件里面没有一个选中则当前父button不高亮 
+                this.programActiveButton = false;
             }
         },
         handleCheckEngineAll () {
