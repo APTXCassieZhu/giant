@@ -62,6 +62,7 @@
 
 <script>
 import TopNavigation from '../../components/TopNav.vue'
+import Search from '../../components/Search.vue'
 import SourceCard from '../../components/sourceCard.vue'
 import Corner from '../../components/corner.vue'
 import Choice from '../../components/choice.vue'
@@ -93,6 +94,10 @@ export default {
             }else{
                 this.currentFilter = "研发类工具"
             }
+        },
+        searchTag(val){
+            console.log('爷爷call 孙子的method')
+            eventHub.$emit('translate', val)
         },
     },
     computed:{
