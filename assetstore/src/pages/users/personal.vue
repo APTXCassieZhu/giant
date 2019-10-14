@@ -4,17 +4,24 @@
         <div class="self-card">
             <div class="self">
                 <img src="../../assets/鲸.jpg" style="border-radius: 50%; width: 104px; height:104px;">
+                <Icon size="20" style="edit-self" type="md-create" />
                 <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
                 <!-- TODO 属于哪个部门从amt那里得到-->
                 <ul style="font-size: 14px; color: #7f7f7f;">前沿技术部门</ul>
             </div>
             <br>
-            <!-- TODO 具体的座右铭用户自己输入-->
+            <!-- TODO 用户自己输入-->
             <ul style="font-size: 14px; color: #7f7f7f;">
-                啦啦啦啦啦啦啦啦啦啦啦这一段是瞎写的座右铭：今天明天和后天，坐着不如躺着
+                啦啦啦啦啦啦啦啦啦啦啦这一段是瞎写的座右铭：今天明天和后天，一直快乐单身狗╮(╯▽╰)╭
             </ul>
             <Divider />
+            <!-- TODO 从后端数据库读取-->
             <ul style="font-size: 16px; font-weight: bold">标签</ul>
+            <Tag size="large">小天使</Tag><Tag size="large">小棉袄</Tag>
+            <Tag size="large">小甜饼</Tag><Tag size="large">柯南骨灰粉</Tag>
+            <Tag size="large">正义使者</Tag><Tag size="large">未来的大佬</Tag>
+            <Divider />
+            <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul>
         </div>
         <br><br><br><br>
         <Footer style="position:relative; bottom: 0px;"></Footer>
@@ -51,6 +58,10 @@ export default {
     position: relative;
     font-family: MicrosoftYaHei;
     text-align: center;
+}
+.edit-self{
+    color: rgb(0, 140, 255);
+    cursor: pointer;
 }
 </style>
 

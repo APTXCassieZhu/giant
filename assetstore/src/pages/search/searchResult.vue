@@ -28,7 +28,7 @@
                             <DropdownItem name="研发类工具">研发类工具(9800)</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
-                    <Icon type="ios-arrow-down" />下的搜索结果</strong>
+                下的搜索结果</strong>
             </div>
             <div class="button-wrapper">
                 <choice></choice>
@@ -175,7 +175,7 @@ export default {
 }
 .advise-container {
     position: relative;
-    left:2.5%;
+    left:3%;
     top:15px;
     height: 20px;
 }
@@ -189,7 +189,7 @@ export default {
 }
 .button-wrapper{
     position: relative;
-    left: 2.5%;
+    left: 3%;
     top: 30px;
 }
 .card-wrapper {
