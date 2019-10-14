@@ -182,7 +182,7 @@ export default {
     position: relative;
     float:left;
     left: 5%;
-    top: 10px;
+    top: 5px;
     width: 40%;
     height: 80px;
     font-size: 18px;

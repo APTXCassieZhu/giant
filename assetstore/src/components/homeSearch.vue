@@ -3,8 +3,8 @@
         <Form id="search" ref="searchForm" :model="searchForm" :rules="searchRule">
             <FormItem prop="content">
                 <div class="home-search-container">
-                    <h1>GDRC研发资源中心</h1>
-                    <h1>望能成为您日常工作的好助力</h1>
+                    <div class=search-title>GDRC研发资源中心</div>
+                    <div class="search-title">望能成为您日常工作的好助力</div>
                     <!--<Input id="searchcontent" size="large" type="text" clearable class="search-input" 
                     @focus.native.capture="changeAdvise()" @blur.native.capture="hideAdvise()"
                     @on-clear="hideAssociate()"
@@ -223,7 +223,7 @@ export default {
 <style scoped>
 .home-search-wrapper{
     position: absolute;
-    border-color:#6495ED;
+    background-color: #eef2f5;
     border-width:5px;
     height: 400px;
     top: 80px;
@@ -246,31 +246,39 @@ export default {
 .home-search-container {
     position: absolute;
     float: center;
-    left: 20%;
+    left: 15%;
     top: 100px;
     width: 60%;
     height: 400px;
     z-index: 0;
 }
-
+.search-title{
+    font-family: MicrosoftYaHei;
+    font-size: 24px;
+    font-weight: 900;
+}
 .search-input{
+    position: relative;
     text-align: left;
     float: left;
     /*width: 80%;*/
-    width: 800px;
+    width: 460px;
     height: 48px;
+    top: 23px;
     z-index: 0;
 }
 
 .search-button{
     /*background-color: #6495ED;*/
+    position: relative;
     background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);
     border-width: 0px;
     float: left;
     /*width: 20%;*/
-    width: 200px;
+    width: 54px;
     cursor: pointer;
     height: 39px;
+    top:23px;
     z-index: 0;
 }
 
@@ -305,6 +313,7 @@ export default {
     float: right;
 }
 .tag-style{
+    height: 24px;
     cursor: pointer;
 }
 .clear-history:hover {
@@ -315,7 +324,7 @@ export default {
     font-size: 16px;
     position: absolute;
     float: left;
-    top: 115px;
+    top: 145px;
     z-index: -1;
 }
 
@@ -329,8 +338,8 @@ export default {
     position: relative;
     transition: all 0.2s ease-in-out;
     /*width: 80%;*/
-    width: 800px; 
-    top: 40px; 
+    width: 460px; 
+    top: 66px; 
     padding: 10px 20px 10px 20px;
     z-index: 10;
 }
@@ -345,8 +354,8 @@ export default {
     position: relative;
     transition: all 0.2s ease-in-out;
     /*width: 80%;*/
-    width: 800px; 
-    top: 40px; 
+    width: 460px; 
+    top: 66px; 
     padding: 0px 20px 0px 20px;
     z-index: 10;
 }

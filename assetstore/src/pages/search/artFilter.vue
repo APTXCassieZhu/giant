@@ -3,7 +3,7 @@
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         
         <div class="title-wrapper">
-            <ul><h1 style="color:rgb(0, 140, 255)">美术类资源</h1></ul>
+            <ul><div class="title">美术类资源</div></ul>
             <ul><span style="color:gray">-最具创意的美术项目集合-</span></ul>
         </div>
         <div class="card-wrapper">
@@ -59,7 +59,12 @@ export default {
     text-align: center;
     top: 20px;
 }
-
+.title{
+    font-family: MicrosoftYaHei;
+    font-size: 24px;
+    font-weight: 600;
+    color:#1ebf73;
+}
 .card-wrapper {
     position: relative;
     text-align: center;

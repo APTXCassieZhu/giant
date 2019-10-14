@@ -3,7 +3,7 @@
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <div class="self-card">
             <div class="self">
-                <ul><img src="../../assets/鲸.jpg" class="avatar">
+                <ul><img src="../../assets/绿头像.jpg" class="avatar">
                 <Icon size="20" class="edit-self" type="md-create" /></ul>
                 <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
                 <!-- TODO 属于哪个部门从amt那里得到-->
@@ -19,7 +19,7 @@
             <ul style="font-size: 16px; font-weight: bold">标签</ul>
             <Tag size="large">小天使</Tag><Tag size="large">小棉袄</Tag>
             <Tag size="large">小甜饼</Tag><Tag size="large">柯南骨灰粉</Tag>
-            <Tag size="large">正义使者</Tag><Tag size="large">未来的大佬</Tag>
+            <Tag size="large">正义使者</Tag><Tag size="large">你老爸</Tag>
             <Divider />
             <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul>
             
@@ -70,7 +70,8 @@ export default {
     position: absolute;
     top: 0px;
     right: 15px;
-    color: rgb(0, 140, 255);
+    /*color: rgb(0, 140, 255);*/
+    color: #1ebf73;
     cursor: pointer;
 }
 </style>

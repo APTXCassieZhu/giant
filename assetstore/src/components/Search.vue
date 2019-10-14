@@ -209,7 +209,7 @@ export default {
     float: left;
     font-family: MicrosoftYaHei;
     /*width: 80%;*/
-    width: 610px;
+    width: 333px;
     height: 48px;
     z-index: 0;
 }
@@ -220,7 +220,7 @@ export default {
     font-family: MicrosoftYaHei;
     float: left;
     /*width: 20%;*/
-    width: 150px;
+    width: 60px;
     cursor: pointer;
     height: 40px;
     z-index: 0;

@@ -8,11 +8,11 @@
             </div>
             <Form id="login" ref="loginForm" :model="loginForm" :rules="loginRule">
                 <FormItem prop="account">
-                    <Input type = "text" placeholder="请输入域账户" v-model="loginForm.account" id="account">
+                    <Input type = "text" placeholder="请输入域账户" v-model="loginForm.account" id="account" style="background-color:white;">
                     </Input>
                 </FormItem>
                 <FormItem prop="password">                    
-                    <Input type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password">
+                    <Input type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password" style="background-color:white;">
                     </Input>
                 </FormItem>
                 <FormItem>
@@ -109,9 +109,9 @@ export default {
     .my-container-login-btn{display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-ms-flexbox;display:flex;flex-wrap:wrap;justify-content:center;padding-top:13px}
     .my-login-btn{   
     background-size: 200% auto;
-    background-image: linear-gradient(to right, #fbc2eb 0%, #a6c1ee 51%, #fbc2eb 100%);
+    background-image: linear-gradient(to right, #ffe81a 0%, #6ada60 51%, #ffe81a 100%);
     color: #354354;
-    border: 2px solid #7392B7;
+    border: 2px solid rgb(115, 183, 124);
     transition: 0.5s;
     text-align: center;
     border-radius:10px;

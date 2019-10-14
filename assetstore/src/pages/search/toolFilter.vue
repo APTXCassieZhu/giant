@@ -2,7 +2,7 @@
     <div>
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>     
         <div class="title-wrapper">
-            <ul><h1 style="color:rgb(0, 140, 255)">研发类资源</h1></ul>
+            <ul><div class="title">研发类资源</div></ul>
             <ul><span style="color:gray">-程序员哥哥们的好伴侣-</span></ul>
         </div>
         <div class="card-wrapper">
@@ -51,7 +51,12 @@ export default {
     text-align: center;
     top: 20px;
 }
-
+.title{
+    font-family: MicrosoftYaHei;
+    font-size: 24px;
+    font-weight: 600;
+    color:#1ebf73;
+}
 .card-wrapper {
     position: relative;
     text-align: center;
