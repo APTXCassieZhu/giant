@@ -3,8 +3,8 @@
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <div class="self-card">
             <div class="self">
-                <img src="../../assets/鲸.jpg" style="border-radius: 50%; width: 104px; height:104px;">
-                <Icon size="20" style="edit-self" type="md-create" />
+                <ul><img src="../../assets/鲸.jpg" class="avatar">
+                <Icon size="20" class="edit-self" type="md-create" /></ul>
                 <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
                 <!-- TODO 属于哪个部门从amt那里得到-->
                 <ul style="font-size: 14px; color: #7f7f7f;">前沿技术部门</ul>
@@ -22,6 +22,7 @@
             <Tag size="large">正义使者</Tag><Tag size="large">未来的大佬</Tag>
             <Divider />
             <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul>
+            
         </div>
         <br><br><br><br>
         <Footer style="position:relative; bottom: 0px;"></Footer>
@@ -47,7 +48,7 @@ export default {
     position: relative;
     font-family: MicrosoftYaHei;
     width: 360px;
-    left: 30px;
+    left: 50px;
     top: 30px;
     padding: 30px 20px 30px 25px;
     border: 1px solid lightgrey;
@@ -59,7 +60,16 @@ export default {
     font-family: MicrosoftYaHei;
     text-align: center;
 }
+.avatar{
+    border-radius: 50%; 
+    width: 104px; 
+    height:104px;
+    text-align: center;
+}
 .edit-self{
+    position: absolute;
+    top: 0px;
+    right: 15px;
     color: rgb(0, 140, 255);
     cursor: pointer;
 }
