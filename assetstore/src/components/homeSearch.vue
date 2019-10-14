@@ -231,7 +231,7 @@ export default {
     width: 100%;
     z-index: 10;
     font-family: MicrosoftYaHei;
-    background-image: url("../assets/白灰.jpg");
+    background-image: url("../assets/搜索.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }

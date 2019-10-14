@@ -88,7 +88,7 @@ export default {
     width:390px;
     overflow:hidden;
     border-style: solid;
-    border-color:#7392B7; 
+    border-color:rgb(115, 183, 124); 
     border-radius:10px;
     padding:30px ;
     box-shadow:0 5px 10px 0 rgba(0,0,0,.1);-moz-box-shadow:0 5px 10px 0 rgba(0,0,0,.1);-webkit-box-shadow:0 5px 10px 0 rgba(0,0,0,.1);-o-box-shadow:0 5px 10px 0 rgba(0,0,0,.1);-ms-box-shadow:0 5px 10px 0 rgba(0,0,0,.1)
