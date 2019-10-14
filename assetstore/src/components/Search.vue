@@ -13,7 +13,7 @@
                     <!--TODO 热门搜索的内容暂不知-->
                     <ul class="hot-search-title">热门搜索</ul>
                     <span v-for="(item,index) in tagList" :key="index">
-                        <Tag color="blue" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
+                        <Tag color="red" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                         <span>&emsp;</span>
                     </span>
                     <div id="history-search">
@@ -215,7 +215,8 @@ export default {
 }
 
 .search-button{
-    background-color: #6495ED;
+    background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);
+    border-width: 0px;
     font-family: MicrosoftYaHei;
     float: left;
     /*width: 20%;*/
@@ -226,8 +227,8 @@ export default {
 }
 
 .search-button:hover{
-    background-color: #BA55D3;
-    border-color: #BA55D3;
+    background-image: linear-gradient(to bottom, aquamarine, #40e1ab,#1ebf73);
+    border-color:aquamarine;
     color: white;
     border-width: 3px;
     z-index: 0;
@@ -235,7 +236,7 @@ export default {
 
 .hot-search-title {
     position: relative;
-    color: blue; 
+    color: red; 
     font-size: 19px; 
     font-family: MicrosoftYaHei;
     height:30px; 

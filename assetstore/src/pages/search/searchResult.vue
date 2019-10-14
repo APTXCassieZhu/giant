@@ -170,7 +170,7 @@ export default {
     position: relative;
     width: 100%;
     height: 50px;
-    background-color:rgb(210, 234, 255);
+    background-color:rgba(0, 0, 0, 0.05);
     box-shadow: inset 0px 8px 8px 5px rgba(0,0,0,0.2); 
 }
 .advise-container {

@@ -5,7 +5,7 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo">
-                <img src="../assets/logo.png" style="width:50px; height: 50px;" alt="logo" @click="gohome()">      
+                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="logo" @click="gohome()">      
             </div>
             <span class="logo-text" @click="gohome()">GDRC</span>
             <!--不知道怎么清除之前div css-->
@@ -60,10 +60,10 @@
                         <Icon type="ios-contact" size="48" class="topnav-user"/>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown">
-                        <ul><DropdownItem><router-link style="color:black;" to="/personal">个人中心</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><router-link style="color:black;" to="/personal">我的关注</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><router-link style="color:black;" to="/personal">修改资料</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><span style="color:black;" @click="logout()">退出登录</span></DropdownItem></ul>
+                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">个人中心</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">我的关注</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">修改资料</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
                     </DropdownMenu>
                 </Dropdown>
                 
@@ -106,7 +106,7 @@ export default {
     margin: 0;
     padding: 0;
     font-family: MicrosoftYaHei;
-    background-color: #eef2f5;
+    background-color: #ffffff;
     border-bottom: 1px, solid, rgb(181, 198, 230);
 }
 
@@ -132,6 +132,7 @@ export default {
     cursor: pointer;
     width: 5%;
     left: 4%;
+    top: 6px;
     float: left;
 }
 
@@ -148,13 +149,21 @@ export default {
 .logo-text{
     position: relative;
     float:left;
-    left: 2%;
+    left: 20px;
     top: 7px;
-    font-size: 25px;
-    font-family: MicrosoftYaHei;
+    text-align: center;
+    font-size: 22px;
+    font-family: MicrosoftYaHeiHeavy;
     font-weight: bold;
     cursor: pointer;
-    align-content: center;
+    width: 62px;
+    height: 30px;
+    font-weight: 900;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #2f2f2f;
 }
 
 .topnav-box-link {
@@ -200,26 +209,29 @@ export default {
     color:black;
 }
 
-.topnav-user{
+.topnav-user, .user-box-link-a{
     color:black;
 }
 
-.topnav-box-link-a:hover, .topnav-user:hover{
-    color: #6495ED;
-    /*border-top: 5px solid #6495ED;*/
+.topnav-box-link-a:hover, .topnav-user:hover, .user-box-link-a:hover{
+    /*color: #6495ED;
+    border-top: 5px solid #6495ED;*/
+    color: #1ebf73;
     cursor: pointer;
 }
 
 .topnav-box-link-a a:hover {
-    color: #6495ED;
+    color: #1ebf73;
     cursor: pointer;
 }
 
 .topnav-box-link-a router-link-active{
-    color: #BA55D3;
+    /*color: #BA55D3;*/
+    color:seagreen;
 }
 
 .topnav-dropdown{
+    color: black;
     font-size: 18px;
     font-family: MicrosoftYaHei;
     position: fixed;

@@ -6,7 +6,7 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo" >
-                <img src="../assets/logo.png" style="width:50px; height: 50px;" alt="首页" @click="goPage('/')">
+                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="首页" @click="goPage('/')">
             </div>
             <span class="logo-text" @click="goPage('/')">GDRC</span>
             <!--不知道怎么清除之前div css-->
@@ -142,6 +142,7 @@ export default {
     cursor: pointer;
     width: 5%;
     left: 4%;
+    top: 10px;
     float:left;
     z-index:inherit;
 }
@@ -160,13 +161,21 @@ export default {
 .logo-text{
     position: relative;
     float:left;
-    left: 2%;
-    top: 7px;
-    font-size: 25px;
-    font-family: MicrosoftYaHei;
+    left: 20px;
+    top: 11px;
+    text-align: center;
+    font-size: 22px;
+    font-family: MicrosoftYaHeiHeavy;
     font-weight: bold;
     cursor: pointer;
-    align-content: center;
+    width: 62px;
+    height: 30px;
+    font-weight: 900;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #2f2f2f;
 }
 
 .topnav-box-link {
@@ -197,7 +206,7 @@ export default {
 }
 
 .topnav-user:hover{
-    color: #6495ED;
+    color: #1ebf73;
     /*border-top: 5px solid #6495ED;*/
     cursor: pointer;
 }

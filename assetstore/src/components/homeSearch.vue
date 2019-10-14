@@ -22,7 +22,7 @@
                             <!--TODO 热门搜索的内容暂不知-->
                             <ul class="hot-search-title">热门搜索</ul>
                             <span v-for="(item,index) in tagList" :key="index">
-                                <Tag color="blue" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
+                                <Tag color="red" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                                 <span>&emsp;</span>
                             </span>
                             <div id="history-search">
@@ -48,10 +48,10 @@
 
                     <div class="recommend-line">
                         <!-- TODO 推荐内容暂不知-->
-                        <span>为您推荐&emsp;</span>
-                        <Tag color="purple" class="tag-style" @click.native="searchTag('推荐搜索1')">推荐搜索1</Tag>
+                        <span style="color:#1ebf73; font-weight:600;">大伙儿都在搜&emsp;</span>
+                        <Tag class="tag-style" @click.native="searchTag('推荐搜索1')">推荐搜索1</Tag>
                         <span>&emsp;</span>
-                        <Tag color="purple" class="tag-style" @click.native="searchTag('推荐搜索2')">推荐搜索2</Tag>
+                        <Tag class="tag-style" @click.native="searchTag('推荐搜索2')">推荐搜索2</Tag>
                         <span>&emsp;</span>
                     </div>
                 </div>
@@ -231,7 +231,9 @@ export default {
     width: 100%;
     z-index: 10;
     font-family: MicrosoftYaHei;
-    background-image: url("../assets/11111.jpg")
+    background-image: url("../assets/白灰.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 .home-search-wrapper img{
@@ -261,7 +263,9 @@ export default {
 }
 
 .search-button{
-    background-color: #6495ED;
+    /*background-color: #6495ED;*/
+    background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);
+    border-width: 0px;
     float: left;
     /*width: 20%;*/
     width: 200px;
@@ -271,8 +275,10 @@ export default {
 }
 
 .search-button:hover{
-    background-color: #BA55D3;
-    border-color: #BA55D3;
+    /*background-color: #BA55D3;
+    border-color: #BA55D3;*/
+    background-image: linear-gradient(to bottom, aquamarine, #40e1ab,#1ebf73);
+    border-color:aquamarine;
     color: white;
     border-width: 3px;
     z-index: 0;
@@ -280,7 +286,7 @@ export default {
 
 .hot-search-title {
     position: absolute;
-    color: blue; 
+    color: red; 
     font-size: 19px; 
     height:28px; 
     top:10px;

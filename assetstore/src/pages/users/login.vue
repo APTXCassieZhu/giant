@@ -12,7 +12,7 @@
                     </Input>
                 </FormItem>
                 <FormItem prop="password">                    
-                    <Input type = "password" placeholder="请输入登录密码" v-model="loginForm.password" id="password">
+                    <Input type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password">
                     </Input>
                 </FormItem>
                 <FormItem>

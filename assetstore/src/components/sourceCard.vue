@@ -46,7 +46,7 @@ export default {
 .image {
     height: 150px; 
     width: 250px;
-    background-image: url("../assets/1111.jpg");
+    background-image: url("../assets/白绿.jpg");
     background-size: 240px 150px;
     background-repeat: no-repeat;
 }

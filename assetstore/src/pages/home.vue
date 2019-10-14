@@ -5,14 +5,14 @@
         <HomeSearch></HomeSearch>  
     </div>
     <br><br>
-    <h1 style="position: relative; text-align: center; color: rgb(0, 140, 255)">美术类资源</h1>
+    <div class="type-title">美术类资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目集合-</div>
     <strong><div class="more" @click='goArtShow()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
     <div class="card-wrapper">
         <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
     </div>
     <br><br>
-    <h1 style="position: relative; text-align: center; color: rgb(0, 140, 255)">推荐分类</h1>
+    <div class="type-title">推荐分类</div>
     <div style="position: relative; text-align: center; color: gray;">-各类高实用性的项目集合-</div>
     <strong><div class="more" @click='goArtFilter()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
     <div class="card-wrapper">
@@ -24,7 +24,7 @@
         <div class="advise-card"><span class="advise-des">人物</span></div>
     </div>
     <br><br>
-    <h1 style="position: relative; text-align: center; color: rgb(0, 140, 255)">精选美术资源</h1>
+    <div class="type-title">精选美术资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
     <Carousel autoplay arrow="always" trigger="click" dots="none" autoplay-speed="5000" loop style="text-align:center; width: 80%; left: 10%">
         <CarouselItem>
@@ -47,7 +47,7 @@
         </CarouselItem>
     </Carousel>
     <br><br>
-    <h1 style="position: relative; text-align: center; color: rgb(0, 140, 255)">研发类资源</h1>
+    <div class="type-title">研发类资源</div>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
     <div class="card-wrapper">
         <special-card ref="child" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
@@ -111,10 +111,19 @@ export default {
     text-align:center;
     /*width:80%;*/
 }
+.type-title{
+    position: relative; 
+    text-align: center; 
+    color: #1ebf73;
+    font-family: MicrosoftYaHei;
+    font-size: 22px;
+    font-weight: 600;
+}
 .more{
     position: relative; 
     left: 81%;
-    color: rgb(0, 140, 255);
+    /*color: rgb(0, 140, 255);*/
+    color: #1ebf73;
     cursor: pointer;
 }
 .advise-card{

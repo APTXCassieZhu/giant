@@ -6,13 +6,13 @@
                 <div class="advise-container">
                     <span>&emsp;推荐搜索&emsp;</span>
                     <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
-                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
+                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
                     <span>&emsp;</span>
-                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
+                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
                     <span>&emsp;</span> 
-                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
+                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
                     <span>&emsp;</span> 
-                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
+                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
                     <span>&emsp;&emsp;&emsp;&emsp;</span>
                     <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" />  
                 </div>
@@ -32,7 +32,7 @@
             </div>
             <div class="card-wrapper">
                 <ul>
-                    <span style="color: blue;">{{resultCount}}</span>条搜索结果
+                    <span style="color: #1ebf73;">{{resultCount}}</span>条搜索结果
                     <div style="float: right; margin-right: 60px;">
                         <Dropdown style="margin-left: 20px">
                             <span href="javascript:void(0)" style="cursor:pointer;">默认排序
@@ -144,7 +144,7 @@ export default {
     position: relative;
     width: 100%;
     height: 50px;
-    background-color:rgb(210, 234, 255);
+    background-color:rgba(0, 0, 0, 0.05);
     box-shadow: inset 0px 8px 8px 5px rgba(0,0,0,0.2); 
 }
 .advise-container {

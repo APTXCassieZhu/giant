@@ -3,12 +3,15 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router' 
-//import axios from 'axios'
 import Vuex from 'vuex'
 import VueResource from 'vue-resource'
-import iView from 'iview'
-import 'iview/dist/styles/iview.css'
+import ViewUI from 'view-design';
+// import style
+import 'view-design/dist/styles/iview.css';
 
+import '../my-theme/index.less';       // change theme color
+
+Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
@@ -18,7 +21,6 @@ global.axios=axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 Vue.prototype.$axios = axios*/
-Vue.use(iView)
 Vue.use(VueResource)
 
 // 用常量代替事件类型，使得代码更清晰
@@ -79,7 +81,7 @@ var store = new Vuex.Store({
 
 router.beforeEach((to,from,next) => {
   // loading 效果
-  iView.LoadingBar.start();
+  ViewUI.LoadingBar.start();
   // 获取本地存储的token
   store.state.token = localstorage.get("token");
   // 判断这个url是否需要登录权限
@@ -94,7 +96,7 @@ router.beforeEach((to,from,next) => {
   }
 })
 router.afterEach(route => {
-  iView.LoadingBar.finish();
+  ViewUI.LoadingBar.finish();
 })
 /* eslint-disable no-new */
 new Vue({
