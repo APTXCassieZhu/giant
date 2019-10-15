@@ -181,21 +181,22 @@ export default {
                 console.log("focus empty")
                 document.getElementById("history-search").style.display="none"
             }
+            // 清空之前的数据,生成新的推荐列表
+            this.num = ''
+            this.arr = []
+            this.tagList = []
+            while(this.arr.length < 5) {
+                let num = parseInt(Math.random()*16)
+                if(this.arr.indexOf(num) == -1) {
+                    this.arr.push(num)
+                    this.num = num
+                    this.tagList.push(this.data[this.num])
+                }
+            }
             // 延迟500ms显示推荐内容
             setTimeout(function(){
                 document.getElementById("content").style.display="block"
-                // 清空之前的数据
-                this.num = ''
-                this.arr = []
-                this.tagList = []
-                while(this.arr.length < 5) {
-                    let num = parseInt(Math.random()*16)
-                    if(this.arr.indexOf(num) == -1) {
-                        this.arr.push(num)
-                        this.num = num
-                        this.tagList.push(this.data[this.num])
-                    }
-                }
+                
             },500);
         },
         // user click the recommend tag and directly go to searchresult page
@@ -232,7 +233,8 @@ export default {
     z-index: 10;
     font-family: MicrosoftYaHei;
     background-image: url("../assets/搜索.png");
-    background-size: 100% 100%;
+    background-position: center;
+    background-size: 80% 100%;
     background-repeat: no-repeat;
 }
 

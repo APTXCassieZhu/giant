@@ -4,14 +4,16 @@
         <Tag v-for="(item, index) in data" closable 
             class="tag"
             :color="color?color:'success'" 
-            :style="{'max-width':containerWidth - 14 +'px'}"
+            :style="{'max-width':'250px', 'min-width':'1px'}"
             :key="index"
             @on-close="close(index)">{{item}}</Tag>
-        <Input type="text" class="input"
+        <Input type="text" class="input" id="input"
+            placeholder="自定义筛选"
             v-model="value"
+            icon="md-return-left"
             @keyup.enter="createTag"
             @blur="createTag"
-            :style="{'width':inputWidth + 'px', 'max-width':containerWidth - 14 +'px'}"
+            :style="{'width':inputWidth + 'px', 'max-width':'280px', 'min-width': '250px'}"
         />
       </div>
     </div>
@@ -61,10 +63,12 @@ export default {
             if(!this.value){
                 return
             }
+            console.log("create.....")
             this.data.push(this.value)
             this.value = ""
         },
         click(e){
+            console.log("focus.....")
             let input = e.target.getElementsByClassName('input')[0]
             input.focus()
         },
@@ -99,7 +103,7 @@ export default {
     min-height: 36px;
     padding: 4px 7px;
     font-size: 12px;
-    border: 2px solid #dcdee2;
+    border-bottom: 2px solid #dcdee2;
     border-radius: 4px;
     background-color: #fff;
     cursor: text;
