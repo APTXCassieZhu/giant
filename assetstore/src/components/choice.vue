@@ -108,14 +108,21 @@
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>
+        <span>&emsp;&emsp;&emsp;</span>
+        <InputTag :data="yourData" :width="num" :color="yourColor"></InputTag>     
     </div>
 </template>
 
 <script>
+import InputTag from "../components/inputTag.vue"
 export default {
     name:"Choice",
+    components: {InputTag},
     data() {
         return {
+            yourColor: "#1ebf73",
+            yourData:['萝莉','二次元','少女'],
+            taglist: [],            // 由用户输入用来自定义标签已筛选搜索结果
             typeVisible: false,
             typeNotFull: true,
             checkTypeAll: false,
@@ -144,6 +151,9 @@ export default {
         }
     },
     methods:{
+        handleClose(){
+            this.show = false;
+        },
         // handleXXXOpen 和 handleXXXClose 是为了下拉栏能够在更合适的时间关闭
         handleTypeOpen () {
             this.typeVisible = true;
@@ -357,5 +367,36 @@ export default {
     width: 200px; 
     font-size: 15px;
     font-family: MicrosoftYaHei;
+}
+.container{
+    margin: 10px;
+    width: 336px;
+}
+.tag-container{
+    border-bottom: 2px solid #ccc;
+    padding: 0px 0px 0px 0px;
+    display: flex;
+    align-items: center;
+}
+.tag{
+    padding: 10px;
+    display: flex;
+}
+.tag-container:hover{
+    border-bottom: 2px solid #1ebf73;
+}
+.tag-input{
+    flex:1;
+    padding:5px;
+    outline: none;
+    border: 0;
+}
+.tag-container input{
+    flex:1;
+    padding: 5px;
+    outline: none;
+    border: 0;
+    font-size: 14px;
+    font-weight: 600;
 }
 </style>

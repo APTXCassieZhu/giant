@@ -33,7 +33,7 @@
             <div class="card-wrapper">
                 <ul>
                     <span style="color: #1ebf73;">{{resultCount}}</span>条搜索结果
-                    <div style="float: right; margin-right: 60px;">
+                    <div style="float: right; margin-right: 125px;">
                         <Dropdown style="margin-left: 20px">
                             <span href="javascript:void(0)" style="cursor:pointer;">默认排序
                                 <Icon type="md-arrow-dropdown" size="20"/>
@@ -47,7 +47,7 @@
                     </div>
                 </ul>
                 <br>
-                <source-card v-for="n in 18" :key="n" class="card-style"></source-card>
+                <source-card v-for="n in 15" :key="n" class="card-style"></source-card>
                 <Page style="position: relative; margin-left: 35%;" :total="100" show-elevator />
                 <corner></corner>
                 <br><br><br><br><br>            
@@ -185,7 +185,7 @@ export default {
     position: relative;
     left: 3%;
     top: 60px;
-    width: 92%;
+    width: 80%;
     margin-right: 18px;
 }
 .card-style{
