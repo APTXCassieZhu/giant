@@ -27,10 +27,10 @@
                         <Icon type="ios-contact" size="48" class="topnav-user"/>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown">
-                        <ul><DropdownItem><router-link style="color:black;" to="/personal">个人中心</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><router-link style="color:black;" to="/personal">我的关注</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><router-link style="color:black;" to="/personal">修改资料</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><span style="color:black;" @click="logout()">退出登录</span></DropdownItem></ul>
+                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">个人中心</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">我的关注</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">修改资料</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
                     </DropdownMenu>
                 </Dropdown>
             </div>
@@ -200,32 +200,28 @@ export default {
     z-index:inherit;
 }
 
-.topnav-user{
+.topnav-user, .user-box-link-a{
     color:black;
     z-index:inherit;
 }
 
-.topnav-user:hover{
+.topnav-user:hover, .user-box-link-a:hover{
     color: #1ebf73;
     /*border-top: 5px solid #6495ED;*/
     cursor: pointer;
 }
 
 .topnav-dropdown{
+    color: black;
     font-size: 18px;
     font-family: MicrosoftYaHei;
     position: fixed;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.988);
-    z-index:inherit;
+    border-radius: 4px;
+    z-index: 100;
 }
 
-.topnav-dropdown router-link{
-    font-size: 18px;
-    font-family: MicrosoftYaHei;
-    z-index:inherit;
-}
 .divide{
     position: fixed;
     top: 80px;

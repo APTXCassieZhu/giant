@@ -39,9 +39,9 @@
                                 <Icon type="md-arrow-dropdown" size="20"/>
                             </span>
                             <DropdownMenu slot="list">
-                                <DropdownItem>推荐</DropdownItem>
-                                <DropdownItem>热度</DropdownItem>
-                                <DropdownItem>时间</DropdownItem>
+                                <DropdownItem class="box-link-a">推荐</DropdownItem>
+                                <DropdownItem class="box-link-a">热度</DropdownItem>
+                                <DropdownItem class="box-link-a">时间</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>
@@ -200,6 +200,13 @@ export default {
 }
 .tag-style{
     cursor:pointer;
+}
+.box-link-a{
+    color:black;
+}
+.box-link-a:hover{
+    color:#1ebf73;
+    cursor: pointer;
 }
 </style>
 

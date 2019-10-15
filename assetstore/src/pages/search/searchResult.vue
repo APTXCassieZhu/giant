@@ -6,13 +6,13 @@
                 <div class="advise-container">
                     <span>&emsp;推荐搜索&emsp;</span>
                     <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
-                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
+                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
                     <span>&emsp;</span>
-                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
+                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
                     <span>&emsp;</span>  
-                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
+                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
                     <span>&emsp;</span> 
-                    <Tag color="purple" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
+                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
                     <span>&emsp;&emsp;&emsp;&emsp;</span>
                     <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" /> 
                 </div>
@@ -21,6 +21,7 @@
                 <strong>"{{getSearchContent}}"在
                     <Dropdown @on-click="changeFilter" trigger="click">
                         <a herf="javascript:void(0)" name="所有" v-html='this.currentFilter'></a>
+                            <a><Icon type="md-arrow-dropdown" size="40"/></a>
                             <DropdownMenu slot="list">
                             <!--TODO () 内所有数字都是从后端得到的-->
                             <DropdownItem name="所有">所有(19871)</DropdownItem>
@@ -35,16 +36,16 @@
             </div>
             <div class="card-wrapper">
                 <ul>
-                    <span style="color: blue;">{{resultCount}}</span>条搜索结果
+                    <span style="color: #1ebf73;">{{resultCount}}</span>条搜索结果
                     <div style="float: right; margin-right: 125px;">
                         <Dropdown style="margin-left: 20px">
                             <span href="javascript:void(0)" style="cursor:pointer;">默认排序
                                 <Icon type="md-arrow-dropdown" size="20"/>
                             </span>
                             <DropdownMenu slot="list">
-                                <DropdownItem>推荐</DropdownItem>
-                                <DropdownItem>热度</DropdownItem>
-                                <DropdownItem>时间</DropdownItem>
+                                <DropdownItem class="box-link-a">推荐</DropdownItem>
+                                <DropdownItem class="box-link-a">热度</DropdownItem>
+                                <DropdownItem class="box-link-a">时间</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>
@@ -212,6 +213,13 @@ export default {
 }
 .tag-style{
     cursor:pointer;
+}
+.box-link-a{
+    color:black;
+}
+.box-link-a:hover{
+    color:#1ebf73;
+    cursor: pointer;
 }
 </style>
 

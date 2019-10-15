@@ -63,7 +63,7 @@
                         <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">个人中心</router-link></DropdownItem></ul>
                         <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">我的关注</router-link></DropdownItem></ul>
                         <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">修改资料</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><span @click="logout()">退出登录</span></DropdownItem></ul>
+                        <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
                     </DropdownMenu>
                 </Dropdown>
                 
