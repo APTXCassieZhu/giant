@@ -276,7 +276,7 @@ export default {
     position: fixed;
     font-family: MicrosoftYaHei;
     transition: all 0.2s ease-in-out;
-    width: 32%; 
+    width: 333px; 
     top: 65px; 
     padding: 10px 20px 10px 20px;
 }
@@ -291,7 +291,7 @@ export default {
     position: fixed;
     font-family: MicrosoftYaHei;
     transition: all 0.2s ease-in-out;
-    width: 32%; 
+    width: 333px; 
     top: 65px; 
     padding: 0px 20px 0px 20px;
 }

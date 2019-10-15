@@ -18,9 +18,9 @@
                 <Search style="z-index: 1000;"></Search>
             </div>
             <div class="topnav-box-user">
-                <Icon type="md-cloud-upload" size="36"/>
-                <Icon type="md-notifications" size="36"/>
-                <Icon type="md-settings" size="36"/>
+                <Icon class="topnav-user" type="md-cloud-upload" size="36"/>
+                <Icon class="topnav-user" type="md-notifications" size="36"/>
+                <Icon class="topnav-user" type="md-settings" size="36"/>
                 <span>&emsp; {{getUser}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
@@ -44,7 +44,7 @@
     </div>
     <Divider class="divide"/>
     <div class="submenu">
-        <Menu mode="horizontal" :theme="light" :active-name="activenum" class="nav-menu">
+        <Menu mode="horizontal" :active-name="activenum" class="nav-menu">
             <MenuItem name="1" @click.native="goPage('/artFilter')">
                 <Icon type="ios-paper" />
                 美术类资源

@@ -122,6 +122,7 @@ export default {
         return {
             yourColor: "#1ebf73",
             yourData:['萝莉','二次元','少女'],
+            num: 500,
             taglist: [],            // 由用户输入用来自定义标签已筛选搜索结果
             typeVisible: false,
             typeNotFull: true,

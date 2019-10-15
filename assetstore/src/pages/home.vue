@@ -26,7 +26,7 @@
     <br><br>
     <div class="type-title">精选美术资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
-    <Carousel autoplay arrow="always" trigger="click" dots="none" autoplay-speed="5000" loop style="text-align:center; width: 80%; left: 10%">
+    <Carousel autoplay arrow="always" trigger="click" dots="none" autoplay-speed=5000 loop style="text-align:center; width: 80%; left: 10%">
         <!--TODO　解决走马灯无法点击爱心收藏-->
         <CarouselItem>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
