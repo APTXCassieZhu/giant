@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router' 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vuex from 'vuex'
 import VueResource from 'vue-resource'
 import ViewUI from 'view-design';
@@ -23,6 +24,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios*/
 Vue.use(VueResource)
 
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.config.productionTip = false
 // 用常量代替事件类型，使得代码更清晰
 const ADD_COUNT = 'ADD_COUNT'
 const REMOVE_COUNT = 'REMOVE_COUNT'

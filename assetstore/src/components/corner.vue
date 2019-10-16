@@ -7,11 +7,15 @@
         </transition>
         <br>
         <div class="corner-icon">
-            <strong><Icon size="25" type="ios-create-outline" /></strong>
+            <span style="position:relative; left: 2px; font-size:20px;"><font-awesome-icon icon="edit"/></span>
         </div>
     </div>
 </template>
 <script>
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+library.add(faEdit)
+
 export default {
     name:"Corner",
     props: {
@@ -98,9 +102,9 @@ export default {
 }
 
 .corner-icon:hover{
-    border: 1px solid #fff;
-    background-color: gray;
-    color: white;
+    /*border: 1px solid #fff;
+    background-color: gray;*/
+    color: #1ebf73;
 
 }
 </style>

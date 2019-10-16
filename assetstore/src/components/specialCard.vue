@@ -2,8 +2,8 @@
     <div class="source-card">
         <div id="special" :class="special" style="height: 184px;width: 306px;">
             <strong class="heart" id="heart" @click="addFavorite()">
-                <Icon size="30" type="md-heart-outline" v-show="!favoriteIcon"/>
-                <Icon size="30" type="md-heart" v-show="favoriteIcon"/>
+                <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
+                <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
             </strong>
         </div>
         <div class="source-content">
@@ -37,6 +37,12 @@ export default {
             // TODO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
             this.favoriteIcon = !this.favoriteIcon
+            /* 提示用户已关注 */
+            if(this.favoriteIcon){
+                this.$Message.success('已关注')
+            }else{
+                this.$Message.success('已取消关注')
+            }         
         }
     }
 }

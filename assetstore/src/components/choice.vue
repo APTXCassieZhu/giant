@@ -5,7 +5,7 @@
             <Button id="type" class="button-style" :class="{active: typeActiveButton}" href="javascript:void(0)" @click="handleTypeOpen()">
                 <strong>资源分类<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
-            <DropdownMenu slot="list" style="width:200px;" >
+            <DropdownMenu slot="list" style="width:177px;" >
                 <CheckboxGroup v-model="typeGroup" @on-change="checkAllTypeGroupChange">
                     <!--TODO 此处数字应与后端互动拿到-->
                     <DropdownItem><Checkbox label="动画" style="font-size:15px">动画 (987)</Checkbox></DropdownItem>
@@ -29,7 +29,7 @@
             <Button id="tool" class="button-style" :class="{active: toolActiveButton}" href="javascript:void(0)" @click="handleToolOpen()">
                 <strong>资源类别<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
-            <DropdownMenu slot="list" style="width:200px;" >
+            <DropdownMenu slot="list" style="width:177px;" >
                 <CheckboxGroup v-model="toolGroup" @on-change="checkAllToolGroupChange">
                     <!--TODO 此处数字应与后端互动拿到-->
                     <DropdownItem><Checkbox label="S级别" style="font-size:15px">S级别</Checkbox></DropdownItem>
@@ -50,7 +50,7 @@
             <Button id="style" class="button-style" :class="{active: styleActiveButton}" href="javascript:void(0)" @click="handleStyleOpen()">
                 <strong>资源风格<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
-            <DropdownMenu slot="list" style="width:200px;" >
+            <DropdownMenu slot="list" style="width:177px;" >
                 <CheckboxGroup v-model="styleGroup" @on-change="checkAllStyleGroupChange">
                     <!--TODO 此处数字应与后端互动拿到-->
                     <DropdownItem><Checkbox label="小清新" style="font-size:15px">小清新</Checkbox></DropdownItem>
@@ -71,7 +71,7 @@
             <Button id="program" class="button-style" :class="{active: programActiveButton}" href="javascript:void(0)" @click="handleProgramOpen()">
                 <strong>项目<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
-            <DropdownMenu slot="list" style="width:200px;" >
+            <DropdownMenu slot="list" style="width:177px;" >
                 <CheckboxGroup v-model="programGroup" @on-change="checkAllProgramGroupChange">
                     <!--TODO 此处数字应与后端互动拿到-->
                     <DropdownItem><Checkbox label="征途" style="font-size:15px">征途</Checkbox></DropdownItem>
@@ -90,7 +90,7 @@
         <span>&emsp;&emsp;&emsp;</span> 
         <!--引擎engine part-->
         <Dropdown placement="bottom-start" trigger="custom" :visible="engineVisible" @on-clickoutside="handleEngineClose()">
-            <Button id="engine" class="button-style" :class="{active: engineActiveButton}" href="javascript:void(0)" @click="handleEngineOpen()">
+            <Button id="engine" class="button-style" style="width:96px;" :class="{active: engineActiveButton}" href="javascript:void(0)" @click="handleEngineOpen()">
                 <strong>引擎<Icon type="md-arrow-dropdown" size="20"/></strong>
             </Button>
             <DropdownMenu slot="list" style="width:200px;" >
@@ -109,7 +109,15 @@
             </DropdownMenu>
         </Dropdown>
         <span>&emsp;&emsp;&emsp;</span>
-        <InputTag :data="yourData" :width="num" :color="yourColor"></InputTag>     
+        <InputTag :data="taglist" :width="num" :color="yourColor"></InputTag> 
+        <br>
+        <div style="display: inline; height: 22px;">
+            <Tag v-for="(item, index) in taglist" closable 
+                color="#1ebf73" 
+                :style="{'max-width':'250px', 'min-width':'1px'}"
+                :key="index"
+                @on-close="close(index)">{{item}}</Tag>
+        </div>    
     </div>
 </template>
 
@@ -121,9 +129,9 @@ export default {
     data() {
         return {
             yourColor: "#1ebf73",
-            yourData:['萝莉','二次元','少女'],
-            num: 500,
-            taglist: [],            // 由用户输入用来自定义标签已筛选搜索结果
+            taglist:[],                 // 由用户输入用来自定义标签已筛选搜索结果
+            num: 500,                   // input width
+           
             typeVisible: false,
             typeNotFull: true,
             checkTypeAll: false,
@@ -151,11 +159,15 @@ export default {
             engineActiveButton: false,
         }
     },
+    mounted(){
+    },
     methods:{
-        handleClose(){
-            this.show = false;
+        /* 关闭button下方的tag，重新筛选搜索结果 */
+        close(index){
+            this.tagList.splice(index, 1)
+            // TODO 重新筛选
         },
-        // handleXXXOpen 和 handleXXXClose 是为了下拉栏能够在更合适的时间关闭
+        /* handleXXXOpen 和 handleXXXClose 是为了下拉栏能够在更合适的时间关闭 */
         handleTypeOpen () {
             this.typeVisible = true;
         },
@@ -186,7 +198,7 @@ export default {
         handleEngineClose () {
             this.engineVisible = false;
         },
-        // handleCheckXXXXAll 和 checkAllXXXXGroupChange是为了用户能够更快速全选或取消全选
+        /* handleCheckXXXXAll 和 checkAllXXXXGroupChange是为了用户能够更快速全选或取消全选 */
         handleCheckTypeAll () {
             if (this.typeNotFull) {
                 this.checkTypeAll = false;
@@ -211,12 +223,12 @@ export default {
             } else if (data.length > 0) {
                 this.typeNotFull = true;
                 this.checkTypeAll = false;
-                // 子件里面有一个选中则当前父button高亮
+                /* 子件里面有一个选中则当前父button高亮 */
                 this.typeActiveButton = true;
             } else {
                 this.typeNotFull = false;
                 this.checkTypeAll = false;
-                // 子件里面没有一个选中则当前父button不高亮 
+                /* 子件里面没有一个选中则当前父button不高亮 */
                 console.log("取消高亮")
                 this.typeActiveButton = false;
             }
@@ -247,12 +259,12 @@ export default {
             } else if (data.length > 0) {
                 this.toolNotFull = true;
                 this.checkToolAll = false;
-                // 子件里面有一个选中则当前父button高亮
+                /* 子件里面有一个选中则当前父button高亮 */
                 this.toolActiveButton = true;
             } else {
                 this.toolNotFull = false;
                 this.checkToolAll = false;
-                // 子件里面没有一个选中则当前父button不高亮 
+                /* 子件里面没有一个选中则当前父button不高亮 */
                 this.toolActiveButton = false;
             }
         },
@@ -282,12 +294,12 @@ export default {
             } else if (data.length > 0) {
                 this.styleNotFull = true;
                 this.checkStyleAll = false;
-                // 子件里面有一个选中则当前父button高亮
+                /* 子件里面有一个选中则当前父button高亮 */
                 this.styleActiveButton = true;
             } else {
                 this.styleNotFull = false;
                 this.checkStyleAll = false;
-                // 子件里面没有一个选中则当前父button不高亮 
+                /* 子件里面没有一个选中则当前父button不高亮 */
                 this.styleActiveButton = false;
             }
         },
@@ -317,12 +329,12 @@ export default {
             } else if (data.length > 0) {
                 this.programNotFull = true;
                 this.checkProgramAll = false;
-                // 子件里面有一个选中则当前父button高亮
+                /* 子件里面有一个选中则当前父button高亮 */
                 this.programActiveButton = true;
             } else {
                 this.programNotFull = false;
                 this.checkProgramAll = false;
-                // 子件里面没有一个选中则当前父button不高亮 
+                /* 子件里面没有一个选中则当前父button不高亮 */
                 this.programActiveButton = false;
             }
         },
@@ -351,12 +363,12 @@ export default {
             } else if (data.length > 0) {
                 this.engineNotFull = true;
                 this.checkEngineAll = false;
-                // 子件里面有一个选中则当前父button高亮
+                /* 子件里面有一个选中则当前父button高亮 */
                 this.engineActiveButton = true;
             } else {
                 this.engineNotFull = false;
                 this.checkEngineAll = false;
-                // 子件里面没有一个选中则当前父button不高亮 
+                /* 子件里面没有一个选中则当前父button不高亮 */
                 this.engineActiveButton = false;
             }
         },
@@ -365,7 +377,8 @@ export default {
 </script>
 <style scoped>
 .button-style{
-    width: 200px; 
+    width: 177px; 
+    height: 45px;
     font-size: 15px;
     font-family: MicrosoftYaHei;
 }

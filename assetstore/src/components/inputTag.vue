@@ -1,7 +1,7 @@
 <template>
     <div class="container" :style="{width: containerWidth + 'px'}" @click="click">
       <div id="tagContainer">
-        <Tag v-for="(item, index) in data" closable 
+        <Tag v-for="(item, index) in tagList" closable 
             class="tag"
             :color="color?color:'success'" 
             :style="{'max-width':'250px', 'min-width':'1px'}"
@@ -11,7 +11,8 @@
             placeholder="自定义筛选"
             v-model="value"
             icon="md-return-left"
-            @on-enter="createTag"
+            @on-change="createTag"
+            @on-enter="searchTag"
             :style="{'width':inputWidth + 'px', 'max-width':'280px', 'min-width': '250px'}"
         />
       </div>
@@ -39,6 +40,7 @@ export default {
     },
     data () {
         return {
+            tagList: [],
             value:'',
             length: 0,
             inputWidth: 1,
@@ -56,15 +58,31 @@ export default {
     },
     methods: {
         close(index){
-            this.data.splice(index, 1)
+            this.tagList.splice(index, 1)
         },
         createTag(){
             if(!this.value){
                 return
             }
             console.log("create.....")
-            this.data.push(this.value)
-            this.value = ""
+            // 标签超过5，过多！！！
+            if(this.tagList.length > 5){
+                // TODO 让input框变成红色，提示语出现在input下方
+                alert("一次性输入标签过多")
+            }else{
+                if(this.value.indexOf(" ") != -1 && this.value.charAt(0) !== " "){
+                    this.tagList.push(this.value)
+                    this.value = ""
+                } 
+            }  
+        },
+        searchTag(){
+            console.log("enter...")
+            for(var i=0; i<this.tagList.length; i++){
+                /* 出现重复内容 */
+                if(this.data.indexOf(this.tagList[i]) == -1)
+                    this.data.push(this.tagList[i])
+            }
         },
         click(e){
             this.$refs.inputid.focus();
