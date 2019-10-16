@@ -6,15 +6,21 @@
     </div>
     <br><br>
     <div class="type-title">美术类资源</div>
-    <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目集合-</div>
-    <strong><div class="more" @click='goArtShow()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+    <div style="position:relative; text-align:center; width: 1320px;margin: 0 auto;">
+        <div class="more" style="float:left; height:21px"></div>
+        <div class="type-des-title">-最具创意的美术项目集合-</div>
+        <strong><div class="more" @click='goArtShow()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+    </div>
     <div class="card-wrapper">
         <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
     </div>
     <br><br>
     <div class="type-title">推荐分类</div>
-    <div style="position: relative; text-align: center; color: gray;">-各类高实用性的项目集合-</div>
-    <strong><div class="more" @click='goArtFilter()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+    <div style="position:relative; text-align:center; width: 1320px;margin: 0 auto;">
+        <div class="more" style="float:left; height:21px"></div>
+        <div class="type-des-title">-各类高实用性的项目集合-</div>
+        <strong><div class="more" @click='goArtFilter()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+    </div>
     <div class="card-wrapper">
         <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
         <div class="advise-card"><span class="advise-des">3D</span></div>
@@ -119,12 +125,24 @@ export default {
     font-size: 22px;
     font-weight: 600;
 }
+
+.type-des-title{
+    position:relative;
+    display:inline-block;
+    width: 1120px;
+    padding: 0;
+    margin: 0;    
+    color: gray;
+}
 .more{
-    position: relative; 
-    left: 81%;
+    position: relative;
+    float:right;
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;
+    width: 100px;
+    padding: 0;
+    margin: 0;
 }
 .advise-card{
     display: inline-block; 

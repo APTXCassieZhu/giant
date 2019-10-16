@@ -6,10 +6,11 @@
                 <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
             </strong>
         </div>
-        <div class="source-content">
+        <div class="source-des">
             <h3>{{sourceTitle}}</h3>
             <span>{{sourceDescription}}</span>
-            <br>
+        </div>
+        <div class="source-content">
             <Icon size="18" v-for="n in 4" :key="n" type="md-star" style="color: #FF9933" />
             <Icon size="18" type="ios-star-half" style="color: #FF9933"/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
             <Icon type="ios-eye" size="20" />{{viewCount}}&emsp;
@@ -108,7 +109,12 @@ export default {
     box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
     background-color: #ffffff;
 }
-
+.source-des{
+    text-align: left;
+    position:relative;
+    left: 15px;
+    top: 5px;
+}
 .source-content{
     margin-left: 10px;
     margin-right: 5px;

@@ -80,9 +80,11 @@ export default {
             console.log("enter...")
             for(var i=0; i<this.tagList.length; i++){
                 /* 出现重复内容 */
-                if(this.data.indexOf(this.tagList[i]) == -1)
+                if(this.data.indexOf(this.tagList[i]) == -1){
                     this.data.push(this.tagList[i])
+                }
             }
+            this.tagList = []
         },
         click(e){
             this.$refs.inputid.focus();
