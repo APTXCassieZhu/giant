@@ -9,7 +9,6 @@ import VueResource from 'vue-resource'
 import ViewUI from 'view-design';
 // import style
 import 'view-design/dist/styles/iview.css';
-
 import '../my-theme/index.less';       // change theme color
 
 Vue.use(ViewUI);
@@ -20,18 +19,24 @@ Vue.use(Vuex)
 axios.defaults.baseURL='http://localhost:8080'
 global.axios=axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
-
 Vue.prototype.$axios = axios*/
 Vue.use(VueResource)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
+/* 设置全局提示的位置时间
+Vue.prototype.$Message.config({
+  top: 450,
+  duration:2
+});*/
 // 用常量代替事件类型，使得代码更清晰
 const ADD_COUNT = 'ADD_COUNT'
 const REMOVE_COUNT = 'REMOVE_COUNT'
 const REMEM_COUNT = 'REMEM_COUNT'
 const SEARCH_COUNT = 'SEARCH_COUNT'
 const NOW_ACTIVE = 'NOW_ACTIVE'
+const ADD_FAVORITE = 'ADD_FAVORITE'
+const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
 const localstorage = require('./localstorage')
 // 注册状态管理全局参数
 var store = new Vuex.Store({
@@ -41,6 +46,7 @@ var store = new Vuex.Store({
     single:true,
     searchContent:'',
     activenum: 1,
+    favoriteList: [],
   },
   mutations:{
     // rememeber login state
@@ -79,6 +85,21 @@ var store = new Vuex.Store({
       sessionStorage.setItem("active", activenum)
       state.activenum = activenum
     },
+    // 添加关注到用户关注列表
+    [ADD_FAVORITE] (state, favorite) {
+      state.favoriteList.add(favorite)
+      localStorage.setItem("favorite", state.favoriteList)
+    },
+    // 取消关注
+    [REMOVE_FAVORITE] (state, favorite) {
+      for(var i = 0; i < state.favoriteList.length; i++) {
+        if(state.favoriteList[i] == favorite) {
+          state.favoriteList.splice(i, 1);
+          break;
+        }
+      }
+      localStorage.setItem("favorite", state.favoriteList)
+    }
   }
 })
 

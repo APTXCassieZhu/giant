@@ -1,6 +1,6 @@
 <template>
     <div class="source-card">
-        <div id="special" :class="special" style="height: 184px;width: 306px;">
+        <div id="special" :class="special" style="height: 184px;width: 306px;background-size: 306px 184px;background-repeat: no-repeat;">
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
                 <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
@@ -50,49 +50,31 @@ export default {
 </script>
 <style scoped>
 .image {
-    background-image: url("../assets/绿.jpg");
-    background-size: 306px 184px;
-    background-repeat: no-repeat;
+    background-image: url("../assets/绿.jpg");  
 }
 .image-02 {
     background-image: url("../assets/tool-02.png");
-    background-size: 306px 184px;
-    background-repeat: no-repeat;
 }
 .image-03 {
     background-image: url("../assets/tool-03.png");
-    background-size: 306px 184px;
-    background-repeat: no-repeat;
 }
 .image-04 {
     background-image: url("../assets/tool-04.png");
-    background-size: 306px 184px;
-    background-repeat: no-repeat;
 }
 .image-05 {
     background-image: url("../assets/tool-05.png");
-    background-size: 306px 184px;
-    background-repeat: no-repeat;
 }
 .image-06 {
     background-image: url("../assets/tool-06.png");
-    background-size: 306px 184px;
-    background-repeat: no-repeat;
 }
 .image-07 {
     background-image: url("../assets/tool-07.png");
-    background-size: 306px 184px;
-    background-repeat: no-repeat;
 }
 .image-08 {
     background-image: url("../assets/tool-08.png");
-    background-size: 306px 184px;
-    background-repeat: no-repeat;
 }
 .image-09 {
     background-image: url("../assets/tool-09.png");
-    background-size: 306px 184px;
-    background-repeat: no-repeat;
 }
 .heart{
     position: relative; 

@@ -13,7 +13,7 @@
             icon="md-return-left"
             @on-change="createTag"
             @on-enter="searchTag"
-            :style="{'width':inputWidth + 'px', 'max-width':'280px', 'min-width': '250px'}"
+            :style="{'width':inputWidth+'px','max-width':'280px','min-width': '250px'}"
         />
       </div>
     </div>

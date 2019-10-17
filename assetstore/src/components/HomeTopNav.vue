@@ -5,9 +5,9 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo">
-                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="logo" @click="gohome()">      
+                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="logo" @click="goPage('/')">      
             </div>
-            <span class="logo-text" @click="gohome()">GDRC</span>
+            <span class="logo-text" @click="goPage('/')">GDRC</span>
             <!--不知道怎么清除之前div css-->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
@@ -57,7 +57,7 @@
                 <span>欢迎回来，{{getUser}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <Icon type="ios-contact" size="48" class="topnav-user"/>
+                        <Icon type="ios-contact" size="48" class="topnav-user" @click="goPage('/personal')"/>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown">
                         <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">个人中心</router-link></DropdownItem></ul>
@@ -91,9 +91,9 @@ export default {
             this.$store.commit('REMOVE_COUNT', this.$store.state.token);
             this.$router.push('/login')
         },
-        gohome(){
-            this.$router.push('/')
-        }
+        goPage(url){
+            this.$router.push(url)
+        },
     }   
 }
 </script>

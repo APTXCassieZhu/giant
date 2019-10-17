@@ -31,6 +31,7 @@ export default {
             sourceTitle: '资源名称',
             sourceDescription: '描述文字帮助用户对资源快速预览以及理解文字',
             favoriteIcon: false,            // defalut favourite is false
+            sourceID: 0,                    // TODO从后端得到
         }
     },
     methods:{
@@ -41,8 +42,10 @@ export default {
             /* 提示用户已关注 */
             if(this.favoriteIcon){
                 this.$Message.success('已关注')
+                this.$store.commit('ADD_FAVORITE', this.sourceID);
             }else{
                 this.$Message.success('已取消关注')
+                this.$store.commit('REMOVE_FAVORITE', this.sourceID);
             }  
         }
     }
@@ -73,6 +76,7 @@ export default {
 }
 
 .source-content{
+    text-align: left;
     margin-left: 5px;
     margin-right: 5px;
     font-family: MicrosoftYaHei;

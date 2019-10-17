@@ -16,16 +16,33 @@
             </ul>
             <Divider />
             <!-- TODO 从后端数据库读取-->
-            <ul style="font-size: 16px; font-weight: bold">标签</ul>
-            <Tag size="large">小天使</Tag><Tag size="large">小棉袄</Tag>
-            <Tag size="large">小甜饼</Tag><Tag size="large">柯南骨灰粉</Tag>
-            <Tag size="large">正义使者</Tag><Tag size="large">你老爸</Tag>
+            <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
+            <span v-for="(item,index) in personalTagList" :key="index">
+                <Tag size="large">{{item}}</Tag>
+            </span>
             <Divider />
-            <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul>
-            <ul>二次元人物模型</ul>
-            <ul>天空贴图素材包</ul>
+            <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
+            <div v-for="(item,index) in productList" :key="index">
+                <div class="font-image">{{item.charAt(0)}}</div>&emsp;{{item}}
+                <br><br>
+            </div>
+        </div>
+        
+        <div class="asset-card" >
+            <Menu mode="horizontal" :active-name="personalActiveNum" class="nav-menu">
+            <MenuItem name="11">
+                资源(8)
+            </MenuItem>
+            <MenuItem name="22">
+                软件(1)
+            </MenuItem>
+            <MenuItem name="33">
+                关注({{favoriteNum}})
+            </MenuItem>
+        </Menu>
         </div>
         <br><br><br><br>
+        <corner></corner>
         <Footer style="position:relative; bottom: 0px;"></Footer>
     </div>
 </template>
@@ -33,12 +50,20 @@
 <script>
 import TopNavigation from '../../components/TopNav.vue'
 import Footer from '../../components/footer.vue'
+import Corner from '../../components/corner.vue'
 export default {
     name:"Personal",
-    components:{TopNavigation, Footer},
+    components:{TopNavigation, Footer, Corner},
     computed:{
         getUser(){
             return this.$store.state.token;
+        }
+    },
+    data () {
+        return {
+            personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸'],// 从后端拿
+            productList: ['二次元人物模型','天空贴图素材包'],    // 从后端拿
+            favoriteNum: 0,
         }
     },
 }
@@ -47,10 +72,12 @@ export default {
 <style scoped>
 .self-card{
     position: relative;
+    display:inline-block;
     font-family: MicrosoftYaHei;
     width: 360px;
+    height: 660px;
     left: 50px;
-    top: 30px;
+    top: 10px;
     padding: 30px 20px 30px 25px;
     border: 1px solid lightgrey;
     box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
@@ -74,6 +101,34 @@ export default {
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;
+}
+
+.asset-card{
+    position: relative;
+    display:inline-block;
+    font-family: MicrosoftYaHei;
+    width: 1200px;
+    height: 660px;
+    left: 100px;
+    top: 30px;
+    padding: 30px 20px 30px 25px;
+    border: 1px solid lightgrey;
+    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
+    background-color: #ffffff;
+    overflow: auto;
+}
+.asset-card:hover, .self-card:hover{
+    box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
+}
+.font-image{
+    font-size:16px;
+    display: inline-block;
+    color: #1ebf73;
+    background-color: #e8f8f0;
+    height: 44px;
+    width: 44px;
+    text-align: center;
+    line-height: 44px;
 }
 </style>
 

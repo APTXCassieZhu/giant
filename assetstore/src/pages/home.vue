@@ -23,16 +23,16 @@
     </div>
     <div class="card-wrapper">
         <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
-        <div class="advise-card"><span class="advise-des">3D</span></div>
-        <div class="advise-card"><span class="advise-des">2D</span></div>
-        <div class="advise-card"><span class="advise-des">贴图与材质</span></div>
-        <div class="advise-card"><span class="advise-des">模板</span></div>
-        <div class="advise-card"><span class="advise-des">人物</span></div>
+        <div class="advise-card" style="backgroundImage: 'url(' + require('../assets/资源-3d.png') + ')'"></div>
+        <div class="advise-card" style="background3D"></div>
+        <div class="advise-card" style="background3D"></div>
+        <div class="advise-card"></div>
+        <div class="advise-card"></div>
     </div>
     <br><br>
     <div class="type-title">精选美术资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
-    <Carousel autoplay arrow="always" trigger="click" dots="none" autoplay-speed=5000 loop style="text-align:center; width: 80%; left: 10%">
+    <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop style="text-align:center; width: 80%; left: 10%">
         <CarouselItem>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
@@ -88,6 +88,11 @@ addEventListener(searchContent, "focus", function() {
 export default {
     name:"Home",
     components: {HomeTopNavigation,HomeSearch,SourceCard,SpecialCard,Footer,Corner},
+    data() {
+        return {
+            speed: 5000,
+        }
+    },
     mounted() {
         this.$refs.child.special = "image-02";
         this.$refs.child3.special = "image-03";

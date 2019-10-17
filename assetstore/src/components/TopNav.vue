@@ -24,7 +24,7 @@
                 <span>&emsp; {{getUser}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <Icon type="ios-contact" size="48" class="topnav-user"/>
+                        <Icon type="ios-contact" size="48" class="topnav-user" @click="goPage('/personal')"/>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown">
                         <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">个人中心</router-link></DropdownItem></ul>
