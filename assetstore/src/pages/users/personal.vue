@@ -106,11 +106,12 @@ export default {
     position: relative;
     display:inline-block;
     font-family: MicrosoftYaHei;
+    font-size: 16px;
     width: 1200px;
     height: 660px;
     left: 100px;
     top: 30px;
-    padding: 30px 20px 30px 25px;
+    padding: 10px 20px 30px 25px;
     border: 1px solid lightgrey;
     box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
     background-color: #ffffff;

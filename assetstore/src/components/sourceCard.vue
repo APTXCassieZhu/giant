@@ -71,7 +71,7 @@ export default {
     height: 275px;
     font-family: MicrosoftYaHei;
     border: 1px solid #ffffff;
-    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
     background-color: #ffffff;
 }
 

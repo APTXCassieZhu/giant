@@ -97,7 +97,7 @@ export default {
     text-align: center;
     /*vertical-align: middle;*/
     padding: 10px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
     cursor: pointer;
 }
 

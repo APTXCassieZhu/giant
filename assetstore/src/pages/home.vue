@@ -22,11 +22,11 @@
     </div>
     <div class="card-wrapper">
         <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
-        <div class="advise-card" style="backgroundImage: 'url(' + require('../assets/资源-3d.png') + ')'"></div>
-        <div class="advise-card" style="background3D"></div>
-        <div class="advise-card" style="background3D"></div>
-        <div class="advise-card"></div>
-        <div class="advise-card"></div>
+        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-3d.png') + ')'}"></div>
+        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-2d.png') + ')'}"></div>
+        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-3d.png') + ')'}"></div>
+        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-3d.png') + ')'}"></div>
+        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-角色.png') + ')'}"></div>
     </div>
     <div class="type-title" @click="goPage('/artShow')">精选美术资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>

@@ -7,14 +7,15 @@
         </div>
         <div class="card-wrapper">
             <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
-            <ul><div class="advise-card"><span class="advise-des">可视化脚本</span></div>
-            <div class="advise-card"><span class="advise-des">地形</span></div>
-            <div class="advise-card"><span class="advise-des">动画编辑器</span></div>
-            <div class="advise-card"><span class="advise-des">粒子和效果</span></div></ul>
-            <ul><div class="advise-card"><span class="advise-des">其他工具</span></div>
-            <div class="advise-card"><span class="advise-des">AI</span></div>
-            <div class="advise-card"><span class="advise-des">Unity引擎</span></div>
-            <div class="advise-card"><span class="advise-des">Unreal引擎</span></div></ul>
+            <ul><div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/研发资源-可视化脚本.png') + ')'}"></div>
+            <!--<div class="advise-card"><span class="advise-des">地形</span></div>-->
+            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/研发资源-地形.png') + ')'}"></div>
+            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/研发资源-动画编辑器.png') + ')'}"></div>
+            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/研发资源-粒子和效果.png') + ')'}"></div></ul>
+            <ul><div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/研发资源-其他工具.png') + ')'}"></div>
+            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/研发资源-AI.png') + ')'}"></div>
+            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/研发资源-unity.png') + ')'}"></div>
+            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/研发资源-unreal.png') + ')'}"></div></ul>
         </div>
         <corner></corner>
         <Footer style="position:relative;"></Footer>
@@ -72,7 +73,7 @@ export default {
     background-image: url('../../assets/彩色.jpg');
     background-size: 240px 275px;
     background-repeat: no-repeat;
-    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
     color: white;
 }
 .advise-des{
