@@ -5,21 +5,20 @@
         <HomeSearch></HomeSearch>  
     </div>
     <br><br>
-    <div class="type-title">美术类资源</div>
+    <div class="type-title" @click="goPage('/artShow')">美术类资源</div>
     <div style="position:relative; text-align:center; width: 1320px;margin: 0 auto;">
         <div class="more" style="float:left; height:21px"></div>
         <div class="type-des-title">-最具创意的美术项目集合-</div>
-        <strong><div class="more" @click='goArtShow()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+        <strong><div class="more" @click="goPage('/artShow')">查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
     </div>
     <div class="card-wrapper">
         <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
     </div>
-    <br><br>
-    <div class="type-title">推荐分类</div>
+    <div class="type-title" @click="goPage('/artFilter')">推荐分类</div>
     <div style="position:relative; text-align:center; width: 1320px;margin: 0 auto;">
         <div class="more" style="float:left; height:21px"></div>
         <div class="type-des-title">-各类高实用性的项目集合-</div>
-        <strong><div class="more" @click='goArtFilter()'>查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+        <strong><div class="more" @click="goPage('/artFilter')">查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
     </div>
     <div class="card-wrapper">
         <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
@@ -29,10 +28,9 @@
         <div class="advise-card"></div>
         <div class="advise-card"></div>
     </div>
-    <br><br>
-    <div class="type-title">精选美术资源</div>
+    <div class="type-title" @click="goPage('/artShow')">精选美术资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
-    <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop style="text-align:center; width: 80%; left: 10%">
+    <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop class="carousel-style">
         <CarouselItem>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
@@ -52,21 +50,19 @@
             <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
         </CarouselItem>
     </Carousel>
-    <br><br>
-    <div class="type-title">研发类资源</div>
+    <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
-    <div class="card-wrapper">
+    <div class="card-wrapper" style="margin-bottom: 0px;">
         <special-card ref="child" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child3" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child4" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child5" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
     </div>
-    <div class="card-wrapper">    
+    <div class="card-wrapper" style="margin-top: 0px; margin-bottom: 200px;">    
         <special-card ref="child6" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child7" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child8" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         <special-card ref="child9" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <br><br><br>
     </div>
     <corner></corner>
     <Footer style="position: relative;"></Footer>
@@ -104,11 +100,8 @@ export default {
         this.$refs.child9.special = "image-09";
     },
     methods:{
-        goArtShow(){
-            this.$router.push('/artShow')
-        },
-        goArtFilter(){
-            this.$router.push('/artFilter')
+        goPage(url){
+            this.$router.push(url)
         },
     }
 }
@@ -121,6 +114,8 @@ export default {
     /*left: 15%;*/
     text-align:center;
     /*width:80%;*/
+    margin-top: 20px;
+    margin-bottom: 50px;
 }
 .type-title{
     position: relative; 
@@ -129,6 +124,8 @@ export default {
     font-family: MicrosoftYaHei;
     font-size: 22px;
     font-weight: 600;
+    z-index: 10;
+    cursor:pointer;
 }
 
 .type-des-title{
@@ -148,6 +145,13 @@ export default {
     width: 100px;
     padding: 0;
     margin: 0;
+}
+.carousel-style{
+    text-align:center; 
+    width: 80%; 
+    left: 10%;
+    margin-top: 20px;
+    margin-bottom: 50px;
 }
 .advise-card{
     display: inline-block; 

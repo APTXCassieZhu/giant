@@ -117,9 +117,9 @@ export default {
     background-color: #ffffff;
     overflow: auto;
 }
-.asset-card:hover, .self-card:hover{
+/*.asset-card:hover, .self-card:hover{
     box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
-}
+}*/
 .font-image{
     font-size:16px;
     display: inline-block;

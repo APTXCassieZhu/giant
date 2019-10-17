@@ -13,20 +13,20 @@
                     <!--TODO 热门搜索的内容暂不知-->
                     <ul class="hot-search-title">热门搜索</ul>
                     <span v-for="(item,index) in tagList" :key="index">
-                        <Tag color="red" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
+                        <Tag class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                         <span>&emsp;</span>
                     </span>
                     <div id="history-search">
                         <Divider style="margin: 8px;"/>
                         <ul>
-                            <span class="history-search-title">历史搜索</span>
+                            <!--<span class="history-search-title">历史搜索</span>-->
                             <div class="clear-history" @mousedown="clearHistory()">
                                 <Icon size="30" type="ios-close"></Icon>清空
                             </div>
                         </ul>
                         <ul v-for="(item,index) in searchHistory" :key="index">
-                            <Icon size="20" type="ios-time-outline" color="orange"></Icon>
-                            <Tag color="orange" class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
+                            <Icon size="20" type="ios-time-outline" ></Icon>
+                            <span class="tag-style" @click.native="searchTag(item)">{{item}}</span>
                         </ul>
                     </div>
                 </div>
@@ -236,7 +236,7 @@ export default {
 
 .hot-search-title {
     position: relative;
-    color: red; 
+    color: #1ebf73; 
     font-size: 19px; 
     font-family: MicrosoftYaHei;
     height:30px; 
@@ -263,6 +263,7 @@ export default {
 
 .tag-style{
     cursor:pointer;
+    color:grey;
     font-family: MicrosoftYaHei;
 }
 
