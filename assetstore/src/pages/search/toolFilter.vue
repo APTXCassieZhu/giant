@@ -17,7 +17,6 @@
             <div class="advise-card"><span class="advise-des">Unreal引擎</span></div></ul>
         </div>
         <corner></corner>
-        <br><br><br><br><br>        
         <Footer style="position:relative;"></Footer>
     </div>
 </template>
@@ -61,7 +60,7 @@ export default {
     position: relative;
     text-align: center;
     top: 40px;
-
+    margin-bottom: 200px;
 }
 
 .advise-card{

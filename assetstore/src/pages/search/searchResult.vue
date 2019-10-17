@@ -52,10 +52,9 @@
                 </ul>
                 <br>
                 <source-card v-for="n in 15" :key="n" class="card-style"></source-card>
-                <Page style="position: relative; margin-left: 35%;" :total="100" show-elevator />
+                <Page style="position: relative; margin-left: 35%; margin-bottom: 200px;" :total="100" show-elevator />
             </div>
             <corner></corner>
-            <br><br><br><br><br>
             <Footer style="position:relative;"></Footer>
         </div>     
     </div>

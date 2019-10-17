@@ -41,9 +41,8 @@
             </MenuItem>
         </Menu>
         </div>
-        <br><br><br><br>
         <corner></corner>
-        <Footer style="position:relative; bottom: 0px;"></Footer>
+        <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
     </div>
 </template>
 

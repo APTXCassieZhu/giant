@@ -175,6 +175,7 @@ export default {
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
+    z-index:inherit;
     color: #2f2f2f;
 }
 
