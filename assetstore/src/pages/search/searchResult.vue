@@ -38,14 +38,14 @@
                 <ul>
                     <span style="color: #1ebf73;">{{resultCount}}</span>条搜索结果
                     <div style="float: right; margin-right: 125px;">
-                        <Dropdown style="margin-left: 20px">
-                            <span href="javascript:void(0)" style="cursor:pointer;">默认排序
+                        <Dropdown @on-click="changeOrder" trigger="click" style="margin-left: 20px">
+                            <span href="javascript:void(0)" name="按推荐排序" v-html='this.currentOrder' class="order-style">
                                 <Icon type="md-arrow-dropdown" size="20"/>
                             </span>
                             <DropdownMenu slot="list">
-                                <DropdownItem class="box-link-a">推荐</DropdownItem>
-                                <DropdownItem class="box-link-a">热度</DropdownItem>
-                                <DropdownItem class="box-link-a">时间</DropdownItem>
+                                <DropdownItem class="box-link-a" name="按推荐排序">推荐</DropdownItem>
+                                <DropdownItem class="box-link-a" name="按热度排序">热度</DropdownItem>
+                                <DropdownItem class="box-link-a" name="按时间排序">时间</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>
@@ -83,6 +83,7 @@ export default {
             currentFilter: "所有",              // 由用户选择需要什么类别的搜索结果
             searchHistory: [],              //存放历史搜索
             searchForm: {content:""},
+            currentOrder: "按推荐排序",        //筛选结果按这个currentOrder排序
         }
     },
     methods:{
@@ -97,6 +98,16 @@ export default {
                 this.currentFilter = "美术类资源"
             }else{
                 this.currentFilter = "研发类工具"
+            }
+        },
+        changeOrder(name){
+            // TODO 根据用户选择的筛选，重新加载searchresult page显示资源
+            if(name === "按推荐排序"){
+                this.currentOrder = "按推荐排序"
+            }else if(name === "按热度排序"){
+                this.currentOrder = "按热度排序"
+            }else{
+                this.currentOrder = "按时间排序"
             }
         },
         searchAdviseTag(val){
@@ -219,6 +230,13 @@ export default {
 .box-link-a:hover{
     color:#1ebf73;
     cursor: pointer;
+}
+.order-style{
+    cursor:pointer;
+    color: #7f7f7f;
+}
+.order-style:hover{
+    color: #1ebf73;
 }
 </style>
 

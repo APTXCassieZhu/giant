@@ -29,32 +29,19 @@
         </div>
         
         <div class="asset-card" >
-            <Menu mode="horizontal" :active-name="personalActiveNum" class="nav-menu" @click="showPart()">
-                <MenuItem name="00" class="menu-style">
-                    &emsp;&emsp;&emsp;&emsp;文章(12)&emsp;&emsp;&emsp;&emsp;
-                </MenuItem>
-                <MenuItem name="11" class="menu-style">
-                    &emsp;&emsp;&emsp;&emsp;资源(8)&emsp;&emsp;&emsp;&emsp;
-                </MenuItem>
-                <MenuItem name="22" class="menu-style">
-                    &emsp;&emsp;&emsp;&emsp;软件(1)&emsp;&emsp;&emsp;&emsp;
-                </MenuItem>
-                <MenuItem name="33" class="menu-style">
-                    &emsp;&emsp;&emsp;&emsp;关注({{getFavoriteNUM}})&emsp;&emsp;&emsp;&emsp;
-                </MenuItem>
-            </Menu>
-            <div class="subpart" :visible="showArtical">
-                <h1>artical</h1>
-            </div>
-            <div class="subpart" :visible="showSource">
-                <h1>source</h1>
-            </div>
-            <div class="subpart" :visible="showSoftware">
-                <h1>software</h1>
-            </div>
-            <div class="subpart" :visible="showLike">
-                <h1>like</h1>
-            </div>
+            <Tabs value="name1" :animated="false">
+                <TabPane :label="tab1" name="name1">
+                    <div class="upload-style">
+                        <Icon type="md-folder" class="upload-icon-style"/>
+                    </div>
+                </TabPane>
+                <TabPane :label="tab2" name="name2">
+                    标签二的内容
+                </TabPane>
+                <TabPane :label="tab3" name="name3">
+                    标签三的内容
+                </TabPane>
+            </Tabs> 
         </div>
         <corner></corner>
         <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
@@ -72,40 +59,30 @@ export default {
         getUser(){
             return this.$store.state.token;
         },
-        getFavoriteNUM(){
-            return this.$store.state.favoriteList.length
-        }
+    },
+    mounted(){
+        this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
     },
     data () {
         return {
-            personalActiveNum: "11",
-            showArtical: false,
-            showSource: true,
-            showSoftware: false,
-            showLike: false,
+            tab1: "资源(8)",
+            tab2: "软件(1)",
+            tab3: "关注(0)",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸'],// 从后端拿
             productList: ['二次元人物模型','天空贴图素材包'],    // 从后端拿
         }
     },
     methods:{
         showPart(){
-            if(this.personalActiveNum === "00"){
-                this.showArtical = true;
-                this.showSource = false;
-                this.showSoftware = false;
-                this.showLike = false;
-            }else if(this.personalActiveNum === "11"){
-                this.showArtical = false;
+            if(this.personalActiveNum === "11"){
                 this.showSource = true;
                 this.showSoftware = false;
                 this.showLike = false;
             }else if(this.personalActiveNum === "22"){
-                this.showArtical = false;
                 this.showSource = false;
                 this.showSoftware = true;
                 this.showLike = false;
             }else if(this.personalActiveNum === "33"){
-                this.showArtical = false;
                 this.showSource = false;
                 this.showSoftware = false;
                 this.showLike = true;
@@ -158,18 +135,17 @@ export default {
     height: 660px;
     left: 100px;
     top: 30px;
-    padding: 10px 20px 30px 25px;
+    padding: 20px 28px 30px 28px;
     border: 1px solid lightgrey;
     box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
     background-color: #ffffff;
     overflow: auto;
 }
-.menu-style{
-    font-family: MicrosoftYaHei;
-    font-size: 16px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
+/*.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container{
+ > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab*/
+ /* TODO 无法改变字体大小 */
+ .asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-tab{
+    font-size: 200px!important;
 }
 .font-image{
     font-size:16px;
@@ -180,6 +156,17 @@ export default {
     width: 44px;
     text-align: center;
     line-height: 44px;
+}
+
+.upload-style{
+    height: 196px; 
+    width: 274px;
+    margin-top: 27px;
+    border: solid 2px #eaeaea;
+}
+.upload-icon-style{
+    text-align:center;
+    color:#e5e5e5
 }
 </style>
 
