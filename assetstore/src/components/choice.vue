@@ -183,6 +183,37 @@ export default {
         },
         /* 关闭button下方的tag，重新筛选搜索结果 */
         close(index){
+            /* for loop 是为了取消checkbox的勾选 */
+            for(var i=0; i<this.typeGroup.length; i++){
+                if(this.typeGroup[i] == this.tagTotal[index]){
+                    this.typeGroup.splice(i, 1)
+                    console.log("stop")
+                    this.$options.methods.checkAllTypeGroupChange.bind(this)(this.typeGroup);
+                    break 
+                }
+                console.log("repeat")
+            }
+            for(var i=0; i<this.toolGroup.length; i++){
+                if(this.toolGroup[i] == this.tagTotal[index]){
+                    this.toolGroup.splice(i, 1)
+                    this.$options.methods.checkAllTypeGroupChange.bind(this)(this.toolGroup);
+                    break
+                }
+            }
+            for(var i=0; i<this.styleGroup.length; i++){
+                if(this.styleGroup[i] == this.tagTotal[index]){
+                    this.styleGroup.splice(i, 1)
+                    this.$options.methods.checkAllStyleGroupChange.bind(this)(this.styleGroup);
+                    break 
+                }
+            }
+            for(var i=0; i<this.engineGroup.length; i++){
+                if(this.engineGroup[i] == this.tagTotal[index]){
+                    this.engineGroup.splice(i, 1)
+                    this.$options.methods.checkAllEngineGroupChange.bind(this)(this.engineGroup);
+                    break 
+                }
+            }
             this.tagTotal.splice(index, 1)
             // TODO 重新筛选
         },
