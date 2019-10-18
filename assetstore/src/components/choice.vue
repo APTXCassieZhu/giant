@@ -109,7 +109,7 @@
             </DropdownMenu>
         </Dropdown>
         <span>&emsp;&emsp;&emsp;</span>
-        <InputTag :data="taglist" :width="num" :color="yourColor" @on-enter="calculateSelfTag()"></InputTag> 
+        <InputTag :data="taglist" :width="num" :color="yourColor" tabindex="1" @keyup.native.enter="calculateSelfTag()"></InputTag> 
         <br>
         <div style="display: inline; height: 22px;">
             <!--<Tag v-for="(item, selfindex) in taglist" closable 
@@ -218,6 +218,13 @@ export default {
                 if(this.engineGroup[i] == this.tagTotal[index]){
                     this.engineGroup.splice(i, 1)
                     this.$options.methods.checkAllEngineGroupChange.bind(this)(this.engineGroup);
+                    break 
+                }
+            }
+            /* for loop 为了删去自定义标签 */
+            for(var i=0; i<this.taglist.length; i++){
+                if(this.taglist[i] == this.tagTotal[index]){
+                    this.taglist.splice(i, 1)
                     break 
                 }
             }
