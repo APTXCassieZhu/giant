@@ -44,7 +44,8 @@ export default {
             value:'',
             length: 0,
             inputWidth: 1,
-            containerWidth: this.width ? this.width: 500
+            containerWidth: this.width ? this.width: 500,
+            //currentData: this.data,
         }
     },
     watch: {

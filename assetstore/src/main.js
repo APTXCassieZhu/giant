@@ -87,7 +87,7 @@ var store = new Vuex.Store({
     },
     // 添加关注到用户关注列表
     [ADD_FAVORITE] (state, favorite) {
-      state.favoriteList.add(favorite)
+      state.favoriteList.push(favorite)
       localStorage.setItem("favorite", state.favoriteList)
     },
     // 取消关注

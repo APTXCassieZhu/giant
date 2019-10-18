@@ -29,17 +29,32 @@
         </div>
         
         <div class="asset-card" >
-            <Menu mode="horizontal" :active-name="personalActiveNum" class="nav-menu">
-            <MenuItem name="11">
-                资源(8)
-            </MenuItem>
-            <MenuItem name="22">
-                软件(1)
-            </MenuItem>
-            <MenuItem name="33">
-                关注({{favoriteNum}})
-            </MenuItem>
-        </Menu>
+            <Menu mode="horizontal" :active-name="personalActiveNum" class="nav-menu" @click="showPart()">
+                <MenuItem name="00" class="menu-style">
+                    &emsp;&emsp;&emsp;&emsp;文章(12)&emsp;&emsp;&emsp;&emsp;
+                </MenuItem>
+                <MenuItem name="11" class="menu-style">
+                    &emsp;&emsp;&emsp;&emsp;资源(8)&emsp;&emsp;&emsp;&emsp;
+                </MenuItem>
+                <MenuItem name="22" class="menu-style">
+                    &emsp;&emsp;&emsp;&emsp;软件(1)&emsp;&emsp;&emsp;&emsp;
+                </MenuItem>
+                <MenuItem name="33" class="menu-style">
+                    &emsp;&emsp;&emsp;&emsp;关注({{getFavoriteNUM}})&emsp;&emsp;&emsp;&emsp;
+                </MenuItem>
+            </Menu>
+            <div class="subpart" :visible="showArtical">
+                <h1>artical</h1>
+            </div>
+            <div class="subpart" :visible="showSource">
+                <h1>source</h1>
+            </div>
+            <div class="subpart" :visible="showSoftware">
+                <h1>software</h1>
+            </div>
+            <div class="subpart" :visible="showLike">
+                <h1>like</h1>
+            </div>
         </div>
         <corner></corner>
         <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
@@ -56,14 +71,46 @@ export default {
     computed:{
         getUser(){
             return this.$store.state.token;
+        },
+        getFavoriteNUM(){
+            return this.$store.state.favoriteList.length
         }
     },
     data () {
         return {
+            personalActiveNum: "11",
+            showArtical: false,
+            showSource: true,
+            showSoftware: false,
+            showLike: false,
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸'],// 从后端拿
             productList: ['二次元人物模型','天空贴图素材包'],    // 从后端拿
-            favoriteNum: 0,
         }
+    },
+    methods:{
+        showPart(){
+            if(this.personalActiveNum === "00"){
+                this.showArtical = true;
+                this.showSource = false;
+                this.showSoftware = false;
+                this.showLike = false;
+            }else if(this.personalActiveNum === "11"){
+                this.showArtical = false;
+                this.showSource = true;
+                this.showSoftware = false;
+                this.showLike = false;
+            }else if(this.personalActiveNum === "22"){
+                this.showArtical = false;
+                this.showSource = false;
+                this.showSoftware = true;
+                this.showLike = false;
+            }else if(this.personalActiveNum === "33"){
+                this.showArtical = false;
+                this.showSource = false;
+                this.showSoftware = false;
+                this.showLike = true;
+            }
+        },
     },
 }
 </script>
@@ -117,9 +164,13 @@ export default {
     background-color: #ffffff;
     overflow: auto;
 }
-/*.asset-card:hover, .self-card:hover{
-    box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
-}*/
+.menu-style{
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+}
 .font-image{
     font-size:16px;
     display: inline-block;

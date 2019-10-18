@@ -109,15 +109,20 @@
             </DropdownMenu>
         </Dropdown>
         <span>&emsp;&emsp;&emsp;</span>
-        <InputTag :data="taglist" :width="num" :color="yourColor"></InputTag> 
+        <InputTag :data="taglist" :width="num" :color="yourColor" @on-enter="calculateSelfTag()"></InputTag> 
         <br>
         <div style="display: inline; height: 22px;">
-            <Tag v-for="(item, index) in taglist" closable 
+            <!--<Tag v-for="(item, selfindex) in taglist" closable 
+                color="#1ebf73" 
+                :style="{'max-width':'250px', 'min-width':'1px'}"
+                :key="selfindex"
+                @on-close="close(selfindex)">{{item}}</Tag>-->
+            <Tag v-for="(item, index) in tagTotal" closable 
                 color="#1ebf73" 
                 :style="{'max-width':'250px', 'min-width':'1px'}"
                 :key="index"
                 @on-close="close(index)">{{item}}</Tag>
-        </div>    
+        </div>   
     </div>
 </template>
 
@@ -126,10 +131,17 @@ import InputTag from "../components/inputTag.vue"
 export default {
     name:"Choice",
     components: {InputTag},
+    props: {
+        result: {
+            type: Array,
+            require: true
+        },
+    },
     data() {
         return {
             yourColor: "#1ebf73",
-            taglist:[],                 // 由用户输入用来自定义标签已筛选搜索结果
+            taglist: [],       // 用于接收子组件的prop值     
+            tagTotal: [],                // 由用户输入用来自定义标签已筛选搜索结果
             num: 500,                   // input width
            
             typeVisible: false,
@@ -159,12 +171,19 @@ export default {
             engineActiveButton: false,
         }
     },
-    mounted(){
-    },
     methods:{
+        /* 把用户自定义的tag也加入 tagtotal */
+        calculateSelfTag(){
+            console.log("self enter "+this.taglist)
+            for(var i=0; i<this.taglist.length; i++){
+                if(this.tagTotal.indexOf(this.taglist[i]) == -1){
+                    this.tagTotal.push(this.taglist[i])
+                }
+            }
+        },
         /* 关闭button下方的tag，重新筛选搜索结果 */
         close(index){
-            this.tagList.splice(index, 1)
+            this.tagTotal.splice(index, 1)
             // TODO 重新筛选
         },
         /* handleXXXOpen 和 handleXXXClose 是为了下拉栏能够在更合适的时间关闭 */
@@ -173,30 +192,54 @@ export default {
         },
         handleTypeClose () {
             this.typeVisible = false;
+            for(var i=0; i<this.typeGroup.length; i++){
+                if(this.tagTotal.indexOf(this.typeGroup[i]) == -1){
+                    this.tagTotal.push(this.typeGroup[i])
+                }
+            }
         },
         handleToolOpen () {
             this.toolVisible = true;
             },
         handleToolClose () {
             this.toolVisible = false;
+            for(var i=0; i<this.toolGroup.length; i++){
+                if(this.tagTotal.indexOf(this.toolGroup[i]) == -1){
+                    this.tagTotal.push(this.toolGroup[i])
+                }
+            }
         },
         handleStyleOpen () {
             this.styleVisible = true;
             },
         handleStyleClose () {
             this.styleVisible = false;
-        },
+            for(var i=0; i<this.styleGroup.length; i++){
+                if(this.tagTotal.indexOf(this.styleGroup[i]) == -1){
+                    this.tagTotal.push(this.styleGroup[i])
+                }
+            }        },
         handleProgramOpen () {
             this.programVisible = true;
             },
         handleProgramClose () {
             this.programVisible = false;
+            for(var i=0; i<this.programGroup.length; i++){
+                if(this.tagTotal.indexOf(this.programGroup[i]) == -1){
+                    this.tagTotal.push(this.programGroup[i])
+                }
+            }
         },
         handleEngineOpen () {
             this.engineVisible = true;
             },
         handleEngineClose () {
             this.engineVisible = false;
+            for(var i=0; i<this.engineGroup.length; i++){
+                if(this.tagTotal.indexOf(this.engineGroup[i]) == -1){
+                    this.tagTotal.push(this.engineGroup[i])
+                }
+            }
         },
         /* handleCheckXXXXAll 和 checkAllXXXXGroupChange是为了用户能够更快速全选或取消全选 */
         handleCheckTypeAll () {
