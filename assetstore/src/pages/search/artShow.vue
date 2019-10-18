@@ -17,13 +17,13 @@
                     <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" />  
                 </div>
             </div>
-            <div class="bread-container">
+            <!--<div class="bread-container">
                 <Breadcrumb>
                     <BreadcrumbItem to="/home">首页</BreadcrumbItem>
                     <BreadcrumbItem to="/home/resource">美术类资源</BreadcrumbItem>
                     <BreadcrumbItem>当前内容</BreadcrumbItem>
                 </Breadcrumb>
-            </div>
+            </div>-->
             <div class="title-wrapper">
                 <strong>美术类资源</strong>
             </div>

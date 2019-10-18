@@ -14,7 +14,6 @@
                     <ul class="hot-search-title">热门搜索</ul>
                     <span v-for="(item,index) in tagList" :key="index">
                         <Tag class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
-                        <span>&emsp;</span>
                     </span>
                     <div id="history-search">
                         <Divider style="margin: 8px;"/>

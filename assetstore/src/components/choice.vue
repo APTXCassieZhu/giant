@@ -112,11 +112,6 @@
         <InputTag :data="taglist" :width="num" :color="yourColor" tabindex="1" @keyup.native.enter="calculateSelfTag()"></InputTag> 
         <br>
         <div style="display: inline; height: 22px;">
-            <!--<Tag v-for="(item, selfindex) in taglist" closable 
-                color="#1ebf73" 
-                :style="{'max-width':'250px', 'min-width':'1px'}"
-                :key="selfindex"
-                @on-close="close(selfindex)">{{item}}</Tag>-->
             <Tag v-for="(item, index) in tagTotal" closable 
                 color="#1ebf73" 
                 :style="{'max-width':'250px', 'min-width':'1px'}"
@@ -237,47 +232,35 @@ export default {
         },
         handleTypeClose () {
             this.typeVisible = false;
-            for(var i=0; i<this.typeGroup.length; i++){
-                if(this.tagTotal.indexOf(this.typeGroup[i]) == -1){
-                    this.tagTotal.push(this.typeGroup[i])
-                }
-            }
+            this.tagTotal = this.typeGroup.concat(this.toolGroup, this.styleGroup, 
+            this.programGroup, this.engineGroup, this.taglist)
         },
         handleToolOpen () {
             this.toolVisible = true;
             },
         handleToolClose () {
             this.toolVisible = false;
-            for(var i=0; i<this.toolGroup.length; i++){
-                if(this.tagTotal.indexOf(this.toolGroup[i]) == -1){
-                    this.tagTotal.push(this.toolGroup[i])
-                }
-            }
+            this.tagTotal = this.typeGroup.concat(this.toolGroup, this.styleGroup, 
+            this.programGroup, this.engineGroup, this.taglist)
         },
         handleStyleOpen () {
             this.styleVisible = true;
             },
         handleStyleClose () {
             this.styleVisible = false;
-            for(var i=0; i<this.styleGroup.length; i++){
-                if(this.tagTotal.indexOf(this.styleGroup[i]) == -1){
-                    this.tagTotal.push(this.styleGroup[i])
-                }
-            }        },
+            this.tagTotal = this.typeGroup.concat(this.toolGroup, this.styleGroup, 
+            this.programGroup, this.engineGroup, this.taglist)        },
         handleProgramOpen () {
             this.programVisible = true;
-            },
+        },
         handleProgramClose () {
             this.programVisible = false;
-            for(var i=0; i<this.programGroup.length; i++){
-                if(this.tagTotal.indexOf(this.programGroup[i]) == -1){
-                    this.tagTotal.push(this.programGroup[i])
-                }
-            }
+            this.tagTotal = this.typeGroup.concat(this.toolGroup, this.styleGroup, 
+            this.programGroup, this.engineGroup, this.taglist)
         },
         handleEngineOpen () {
             this.engineVisible = true;
-            },
+        },
         handleEngineClose () {
             this.engineVisible = false;
             for(var i=0; i<this.engineGroup.length; i++){
@@ -443,7 +426,6 @@ export default {
             }
         },
         checkAllEngineGroupChange (data) {
-            // data is undefined ???????????????
             console.log(data);
             if (data.length === 3) {
                 this.engineNotFull = false;
