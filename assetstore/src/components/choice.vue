@@ -196,7 +196,7 @@ export default {
             for(var i=0; i<this.toolGroup.length; i++){
                 if(this.toolGroup[i] == this.tagTotal[index]){
                     this.toolGroup.splice(i, 1)
-                    this.$options.methods.checkAllTypeGroupChange.bind(this)(this.toolGroup);
+                    this.$options.methods.checkAllToolGroupChange.bind(this)(this.toolGroup);
                     break
                 }
             }
@@ -204,6 +204,13 @@ export default {
                 if(this.styleGroup[i] == this.tagTotal[index]){
                     this.styleGroup.splice(i, 1)
                     this.$options.methods.checkAllStyleGroupChange.bind(this)(this.styleGroup);
+                    break 
+                }
+            }
+            for(var i=0; i<this.programGroup.length; i++){
+                if(this.programGroup[i] == this.tagTotal[index]){
+                    this.programGroup.splice(i, 1)
+                    this.$options.methods.checkAllProgramGroupChange.bind(this)(this.programGroup);
                     break 
                 }
             }
