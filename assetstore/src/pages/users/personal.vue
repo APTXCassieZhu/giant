@@ -154,7 +154,7 @@ export default {
 /*.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container{
  > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab*/
  /* TODO 无法改变字体大小 */
- .asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-tab{
+ .asset-card > .ivu-tabs-nav-container{
     font-size: 200px!important;
 }
 .ivu-tabs-nav-scroll {
