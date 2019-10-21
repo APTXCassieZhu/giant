@@ -32,8 +32,16 @@
             <Tabs value="name1" :animated="false">
                 <TabPane :label="tab1" name="name1">
                     <div class="upload-style">
-                        <Icon type="md-folder" class="upload-icon-style"/>
+                        <Icon size="80" type="md-folder" class="upload-folder-style"/>  
+                        <Icon size="40" type="md-add" class="upload-add-style"/>
                     </div>
+                    <!--<source-box></source-box>
+                    <source-box></source-box>
+                    <source-box></source-box>
+                    <source-box></source-box>
+                    <source-box></source-box>
+                    <source-box></source-box>
+                    <source-box></source-box>-->
                 </TabPane>
                 <TabPane :label="tab2" name="name2">
                     标签二的内容
@@ -41,7 +49,7 @@
                 <TabPane :label="tab3" name="name3">
                     标签三的内容
                 </TabPane>
-            </Tabs> 
+            </Tabs>
         </div>
         <corner></corner>
         <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
@@ -52,9 +60,10 @@
 import TopNavigation from '../../components/TopNav.vue'
 import Footer from '../../components/footer.vue'
 import Corner from '../../components/corner.vue'
+import SourceBox from '../../components/sourceBox.vue'
 export default {
     name:"Personal",
-    components:{TopNavigation, Footer, Corner},
+    components:{TopNavigation, Footer, Corner, SourceBox},
     computed:{
         getUser(){
             return this.$store.state.token;
@@ -65,6 +74,7 @@ export default {
     },
     data () {
         return {
+            cur: 0,
             tab1: "资源(8)",
             tab2: "软件(1)",
             tab3: "关注(0)",
@@ -147,6 +157,9 @@ export default {
  .asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-tab{
     font-size: 200px!important;
 }
+.ivu-tabs-nav-scroll {
+    position: sticky;
+}
 .font-image{
     font-size:16px;
     display: inline-block;
@@ -157,16 +170,35 @@ export default {
     text-align: center;
     line-height: 44px;
 }
-
+.tabpane{
+    cursor: pointer;
+    font-size: 16px;
+}
+.tabpane:hover{
+    color: #1ebf73;
+}
 .upload-style{
+    display:inline-block;
     height: 196px; 
     width: 274px;
-    margin-top: 27px;
+    margin-top: 30px;
+    margin-right: 30px;
     border: solid 2px #eaeaea;
 }
-.upload-icon-style{
+.upload-add-style{
+    position: fixed;
+    /*color: #ffffff;*/
+    top: 30px;
+    left: 100px;
+    color: black;
+    z-index: 10;
+}
+.upload-folder-style{
+    position: relative;
+    line-height: 196px;
+    width: 274px;
     text-align:center;
-    color:#e5e5e5
+    color:#e5e5e5;
 }
 </style>
 
