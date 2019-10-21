@@ -35,13 +35,8 @@
                         <Icon size="80" type="md-folder" class="upload-folder-style"/>  
                         <Icon size="40" type="md-add" class="upload-add-style"/>
                     </div>
-                    <!--<source-box></source-box>
-                    <source-box></source-box>
-                    <source-box></source-box>
-                    <source-box></source-box>
-                    <source-box></source-box>
-                    <source-box></source-box>
-                    <source-box></source-box>-->
+                    <source-box ref="son"></source-box>
+                    <source-box ref="son1"></source-box>
                 </TabPane>
                 <TabPane :label="tab2" name="name2">
                     标签二的内容
@@ -69,8 +64,10 @@ export default {
             return this.$store.state.token;
         },
     },
-    mounted(){
+    mounted() {
         this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
+        this.$refs.son.sourceName = '二次元人物模型'
+        this.$refs.son1.sourceName = '天空贴图素材包'
     },
     data () {
         return {
@@ -83,26 +80,11 @@ export default {
         }
     },
     methods:{
-        showPart(){
-            if(this.personalActiveNum === "11"){
-                this.showSource = true;
-                this.showSoftware = false;
-                this.showLike = false;
-            }else if(this.personalActiveNum === "22"){
-                this.showSource = false;
-                this.showSoftware = true;
-                this.showLike = false;
-            }else if(this.personalActiveNum === "33"){
-                this.showSource = false;
-                this.showSoftware = false;
-                this.showLike = true;
-            }
-        },
     },
 }
 </script>
 
-<style scoped>
+<style>
 .self-card{
     position: relative;
     display:inline-block;
@@ -151,11 +133,18 @@ export default {
     background-color: #ffffff;
     overflow: auto;
 }
-/*.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container{
- > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab*/
- /* TODO 无法改变字体大小 */
- .asset-card > .ivu-tabs-nav-container{
-    font-size: 200px!important;
+
+.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container{
+    font-size: 18px!important;
+}
+.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container
+ > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab{
+    /* 使得三个标签间距变大 */
+    padding: 8px 50px;
+ }
+
+.asset-card > .ivu-tabs > .ivu-tabs-content{
+    overflow: auto;
 }
 .ivu-tabs-nav-scroll {
     position: sticky;
@@ -187,14 +176,19 @@ export default {
 }
 .upload-add-style{
     position: fixed;
+    cursor: pointer;
     /*color: #ffffff;*/
     top: 30px;
     left: 100px;
     color: black;
     z-index: 10;
 }
+.upload-add-style:hover{
+    color:#1ebf73;
+}
 .upload-folder-style{
     position: relative;
+    cursor: pointer;
     line-height: 196px;
     width: 274px;
     text-align:center;

@@ -24,8 +24,8 @@
         <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
         <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-3d.png') + ')'}"></div>
         <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-2d.png') + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-3d.png') + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-3d.png') + ')'}"></div>
+        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-贴图与材质.png') + ')'}"></div>
+        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-模板.png') + ')'}"></div>
         <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-角色.png') + ')'}"></div>
     </div>
     <div class="type-title" @click="goPage('/artShow')">精选美术资源</div>
@@ -155,6 +155,7 @@ export default {
 }
 .advise-card{
     display: inline-block; 
+    cursor: pointer;
     margin-right: 30px; 
     margin-bottom: 40px;
     width: 240px;
