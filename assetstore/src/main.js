@@ -35,6 +35,7 @@ const REMOVE_COUNT = 'REMOVE_COUNT'
 const REMEM_COUNT = 'REMEM_COUNT'
 const SEARCH_COUNT = 'SEARCH_COUNT'
 const NOW_ACTIVE = 'NOW_ACTIVE'
+const PERSONAL_ACTIVE = 'PERSONAL_ACTIVE'
 const ADD_FAVORITE = 'ADD_FAVORITE'
 const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
 const localstorage = require('./localstorage')
@@ -46,6 +47,7 @@ var store = new Vuex.Store({
     single:true,
     searchContent:'',
     activenum: 1,
+    personalActive: "",
     favoriteList: [],
   },
   mutations:{
@@ -84,6 +86,11 @@ var store = new Vuex.Store({
     [NOW_ACTIVE] (state, activenum) {
       sessionStorage.setItem("active", activenum)
       state.activenum = activenum
+    },
+    // 判读当前在个人中心的两个标签页中
+    [PERSONAL_ACTIVE] (state, personalActive) {
+      sessionStorage.setItem("personalActive", personalActive)
+      state.personalActive = personalActive
     },
     // 添加关注到用户关注列表
     [ADD_FAVORITE] (state, favorite) {

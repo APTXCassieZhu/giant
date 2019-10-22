@@ -29,7 +29,7 @@
         </div>
         
         <div class="asset-card" >
-            <Tabs value="name1" :animated="false">
+            <Tabs :value="personalActive" :animated="false">
                 <TabPane :label="tab1" name="name1">
                     <!--TODO 排版绝对有问题。不能单独设置top -->
                     <div class="upload-style">
@@ -78,6 +78,8 @@ export default {
         },
     },
     mounted() {
+        this.personalActive = this.$store.state.personalActive
+        console.log("ry=uqi "+this.personalActive)
         this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
         this.$refs.son.sourceName = '二次元人物模型'
         this.$refs.son1.sourceName = '天空贴图素材包'
@@ -87,10 +89,10 @@ export default {
     },
     data () {
         return {
-            cur: 0,
             tab1: "资源(2)",
             tab2: "软件(1)",
             tab3: "关注(0)",
+            personalActive: "name1",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸'],// 从后端拿
             productList: ['二次元人物模型','天空贴图素材包'],    // 从后端拿
             softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版'],
@@ -163,9 +165,9 @@ export default {
     padding: 8px 50px;
  }
 
-.asset-card > .ivu-tabs > .ivu-tabs-content{
-    /*overflow: auto;*/
-}
+ /*.asset-card > .ivu-tabs > .ivu-tabs-content{
+   overflow: auto;
+}*/
 .ivu-tabs-nav-scroll {
     position: sticky;
 }

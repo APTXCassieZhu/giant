@@ -60,8 +60,8 @@
                         <Icon type="ios-contact" size="48" class="topnav-user" @click="goPage('/personal')"/>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown">
-                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">个人中心</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">我的关注</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
+                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem></ul>
                         <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">修改资料</router-link></DropdownItem></ul>
                         <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
                     </DropdownMenu>
@@ -93,6 +93,14 @@ export default {
         },
         goPage(url){
             this.$router.push(url)
+        },
+        goLike(type){
+            if(type === 'personal'){
+                this.$store.commit('PERSONAL_ACTIVE', "name1")
+            }else if(type === 'like'){
+                this.$store.commit('PERSONAL_ACTIVE', "name3")
+            }
+            this.$router.push('/personal')
         },
     }   
 }
