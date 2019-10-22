@@ -57,7 +57,7 @@
                 <span>欢迎回来，{{getUser}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <Icon type="ios-contact" size="48" class="topnav-user" @click="goPage('/personal')"/>
+                        <Icon type="ios-contact" size="48" class="topnav-user" @click="goLike('personal')"/>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>

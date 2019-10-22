@@ -12,7 +12,7 @@
         </div>
         <Divider style="margin: 15px 0px 5px 0px;"/>
         <span>
-            <Rate disabled v-model="rate" style="position:relative; left:-10px;"></Rate>
+            <Rate disabled v-model="rate" style="position:relative; left:3px;"></Rate>&emsp;
             <!--<Icon size="18" v-for="n in 4" :key="n" type="md-star" style="color: #FF9933" />
             <Icon size="18" type="ios-star-half" style="color: #FF9933"/>&emsp;&emsp;-->
             <Icon type="ios-eye" size="20" />{{viewCount}}&emsp;

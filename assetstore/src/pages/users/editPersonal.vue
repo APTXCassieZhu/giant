@@ -21,7 +21,7 @@
             </div>
             <div class="personal-input">绑定的域账号
                 <span style="margin-left: 120px;" class="span">
-                    <Input v-model="account" disable icon="md-lock" placeholder="xiamuZhu@ztgame.com" 
+                    <Input v-model="account" readonly icon="md-lock" placeholder="xiamuZhu@ztgame.com" 
                     style="width: 430px; height: 44px;" />
                 </span>
             </div>
@@ -34,7 +34,7 @@
             <div class="personal-input">
                 <span style="position:relative; top: -86px;">签名栏</span>
                 <span style="margin-left: 166px;" class="span">
-                    <Input v-model="nickname" placeholder="团队简介以及个人签名" 
+                    <Input type="textarea" v-model="nickname" placeholder="团队简介以及个人签名" 
                     style="width: 430px; height: 198px;" />
                 </span>
             </div>
