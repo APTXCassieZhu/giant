@@ -55,10 +55,10 @@ export default {
 </script>
 <style scoped>
 .source-box{
-    display: inline-block;
+    display:inline-block;
     height: 196px; 
     width: 274px;
-    margin-top: -30px;
+    margin-top: 30px;
     margin-right: 30px;
     border: solid 2px #eaeaea;
 }
@@ -102,7 +102,7 @@ export default {
     height: 56px;
     line-height: 56px;
     text-align: center;
-    margin-top: 12.5px;
+    margin-top: 10px;
 }
 .footer-col {
     border-right:2px solid #7d7d7d;

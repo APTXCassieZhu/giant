@@ -31,15 +31,16 @@
         <div class="asset-card" >
             <Tabs value="name1" :animated="false">
                 <TabPane :label="tab1" name="name1">
+                    <!--TODO 排版绝对有问题。不能单独设置top -->
                     <div class="upload-style">
                         <Icon size="80" type="md-folder" class="upload-folder-style"/>  
                         <Icon size="40" type="md-add" class="upload-add-style"/>
                     </div>
-                    <source-box ref="son"></source-box>
-                    <source-box ref="son1"></source-box>
+                    <source-box ref="son" style="position:relative; top: -74px;"></source-box>
+                    <source-box ref="son1" style="position:relative; top: -74px;"></source-box>
                 </TabPane>
                 <TabPane :label="tab2" name="name2">
-                    标签二的内容
+                    
                 </TabPane>
                 <TabPane :label="tab3" name="name3">
                     标签三的内容
@@ -144,7 +145,7 @@ export default {
  }
 
 .asset-card > .ivu-tabs > .ivu-tabs-content{
-    overflow: auto;
+    /*overflow: auto;*/
 }
 .ivu-tabs-nav-scroll {
     position: sticky;
@@ -174,25 +175,31 @@ export default {
     margin-right: 30px;
     border: solid 2px #eaeaea;
 }
+.upload-style:hover{
+    background-color: #e8f8f0;
+    border: solid 2px #1ebf73;
+}
 .upload-add-style{
-    position: fixed;
+    position: absolute;
     cursor: pointer;
-    /*color: #ffffff;*/
-    top: 30px;
-    left: 100px;
-    color: black;
+    color: #ffffff;
+    top: 173px;
+    left: 120px;
+    width: 24px;
+    text-align:center;
     z-index: 10;
 }
-.upload-add-style:hover{
-    color:#1ebf73;
-}
+
 .upload-folder-style{
-    position: relative;
+    position: absolute;
     cursor: pointer;
     line-height: 196px;
     width: 274px;
     text-align:center;
     color:#e5e5e5;
+}
+.upload-folder-style:hover{
+    color:#1ebf73;
 }
 </style>
 
