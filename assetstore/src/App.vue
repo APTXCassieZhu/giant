@@ -37,4 +37,8 @@ export default {
   color: #2c3e50;
   background-color: #ffffff;
 }
+@font-face {
+  font-family: "custom-font";
+  src: url('//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css') 
+}
 </style>
