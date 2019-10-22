@@ -11,9 +11,10 @@
             <span>{{sourceDescription}}</span>
         </div>
         <div class="source-content">
-            <Icon size="18" v-for="n in 4" :key="n" type="md-star" style="color: #FF9933" />
-            <Icon size="18" type="ios-star-half" style="color: #FF9933"/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            <Icon type="ios-eye" size="20" />{{viewCount}}&emsp;
+            <Rate disabled v-model="rate" style="position:relative; left: 2px;"></Rate>&emsp;&emsp;&emsp;&emsp;
+            <!--<Icon size="18" v-for="n in 4" :key="n" type="md-star" style="color: #FF9933" />
+            <Icon size="18" type="ios-star-half" style="color: #FF9933"/>-->
+            <Icon type="ios-eye" size="20" />{{viewCount}}&emsp;&emsp;
             <Icon type="md-chatboxes" size="18"/>{{chatCount}}
         </div>
     </div>

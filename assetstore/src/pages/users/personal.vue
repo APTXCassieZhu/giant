@@ -45,11 +45,11 @@
                     <software-pend-box ref="so2" style="position:relative; top: 1.5px;"></software-pend-box>
                 </TabPane>
                 <TabPane :label="tab3" name="name3">
-                    <div v-if="this.$store.state.favoriteList.length==0">
-
+                    <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
+                        <Button class="like-btn" @click="goPage('/')">去关注</Button>
                     </div>
-                    <div v-else>
-                        
+                    <div v-else v-for="n in this.$store.state.favoriteList.length" :key="n" style="display:inline-block;">
+                        <like-box></like-box>
                     </div>
                 </TabPane>
             </Tabs>
@@ -64,12 +64,14 @@ import TopNavigation from '../../components/TopNav.vue'
 import Footer from '../../components/footer.vue'
 import Corner from '../../components/corner.vue'
 import SourceBox from '../../components/sourceBox.vue'
+import LikeBox from '../../components/likeBox.vue'
 import SoftwareBox from '../../components/softwareBox.vue'
 import SoftwareUpBox from '../../components/softwareUpBox.vue'
 import SoftwarePendBox from '../../components/softwarePendBox.vue'
 export default {
     name:"Personal",
-    components:{TopNavigation, Footer, Corner, SourceBox, SoftwareBox, SoftwareUpBox, SoftwarePendBox},
+    components:{TopNavigation, Footer, Corner, SourceBox, SoftwareBox, 
+    SoftwareUpBox, SoftwarePendBox, LikeBox},
     computed:{
         getUser(){
             return this.$store.state.token;
@@ -95,6 +97,9 @@ export default {
         }
     },
     methods:{
+        goPage(url){
+            this.$router.push(url)
+        },
     },
 }
 </script>
@@ -214,6 +219,19 @@ export default {
 }
 .upload-folder-style:hover{
     color:#1ebf73;
+}
+.like-btn-container{
+    width: 1120px;
+    height: 560px;
+}
+.like-btn{
+    position: relative;
+    width: 250px;
+    height: 50px;
+    top: 230px;
+    left: 460px;
+    font-size: 16px;
+    float: center;
 }
 </style>
 
