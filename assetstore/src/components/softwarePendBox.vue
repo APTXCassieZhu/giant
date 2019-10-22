@@ -47,7 +47,7 @@ export default {
 </script>
 <style scoped>
 .source-box{
-    display:inline-block;
+    float: left;
     height: 196px; 
     width: 274px;
     margin-top: 30px;

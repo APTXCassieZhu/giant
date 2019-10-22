@@ -31,18 +31,17 @@
         <div class="asset-card" >
             <Tabs :value="personalActive" :animated="false">
                 <TabPane :label="tab1" name="name1">
-                    <!--TODO 排版绝对有问题。不能单独设置top -->
                     <div class="upload-style">
                         <Icon size="80" type="md-folder" class="upload-folder-style"/>  
                         <Icon size="40" type="md-add" class="upload-add-style"/>
                     </div>
-                    <source-box ref="son" style="position:relative; top: -74px;"></source-box>
-                    <source-box ref="son1" style="position:relative; top: -74px;"></source-box>
+                    <source-box ref="son"></source-box>
+                    <source-box ref="son1"></source-box>
                 </TabPane>
                 <TabPane :label="tab2" name="name2">
-                    <software-box ref="so" style="position:relative; top: -55px;"></software-box>
+                    <software-box ref="so"></software-box>
                     <software-up-box ref="so1"></software-up-box>
-                    <software-pend-box ref="so2" style="position:relative; top: 1.5px;"></software-pend-box>
+                    <software-pend-box ref="so2"></software-pend-box>
                 </TabPane>
                 <TabPane :label="tab3" name="name3">
                     <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
@@ -188,7 +187,7 @@ export default {
     color: #1ebf73;
 }
 .upload-style{
-    display:inline-block;
+    float: left;
     height: 196px; 
     width: 274px;
     margin-top: 30px;
