@@ -40,10 +40,17 @@
                     <source-box ref="son1" style="position:relative; top: -74px;"></source-box>
                 </TabPane>
                 <TabPane :label="tab2" name="name2">
-                    
+                    <software-box ref="so" style="position:relative; top: -55px;"></software-box>
+                    <software-up-box ref="so1"></software-up-box>
+                    <software-pend-box ref="so2" style="position:relative; top: 1.5px;"></software-pend-box>
                 </TabPane>
                 <TabPane :label="tab3" name="name3">
-                    标签三的内容
+                    <div v-if="this.$store.state.favoriteList.length==0">
+
+                    </div>
+                    <div v-else>
+                        
+                    </div>
                 </TabPane>
             </Tabs>
         </div>
@@ -57,9 +64,12 @@ import TopNavigation from '../../components/TopNav.vue'
 import Footer from '../../components/footer.vue'
 import Corner from '../../components/corner.vue'
 import SourceBox from '../../components/sourceBox.vue'
+import SoftwareBox from '../../components/softwareBox.vue'
+import SoftwareUpBox from '../../components/softwareUpBox.vue'
+import SoftwarePendBox from '../../components/softwarePendBox.vue'
 export default {
     name:"Personal",
-    components:{TopNavigation, Footer, Corner, SourceBox},
+    components:{TopNavigation, Footer, Corner, SourceBox, SoftwareBox, SoftwareUpBox, SoftwarePendBox},
     computed:{
         getUser(){
             return this.$store.state.token;
@@ -69,15 +79,19 @@ export default {
         this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
         this.$refs.son.sourceName = '二次元人物模型'
         this.$refs.son1.sourceName = '天空贴图素材包'
+        this.$refs.so.softwareName = this.softwareList[0]
+        this.$refs.so1.softwareName = this.softwareList[1]
+        this.$refs.so2.softwareName = this.softwareList[2]
     },
     data () {
         return {
             cur: 0,
-            tab1: "资源(8)",
+            tab1: "资源(2)",
             tab2: "软件(1)",
             tab3: "关注(0)",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸'],// 从后端拿
             productList: ['二次元人物模型','天空贴图素材包'],    // 从后端拿
+            softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版'],
         }
     },
     methods:{

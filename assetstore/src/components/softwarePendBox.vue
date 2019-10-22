@@ -1,37 +1,28 @@
 <template>
     <div class="source-box">
         <div class="upper">
-            <div class="font-image">{{sourceName.charAt(0)}}</div>
-            <div class="font-title">{{sourceName}}</div>
-            <div class="font-content">下载次数&emsp;&emsp;&emsp;关注人数</div>
-            <div class="font-num">{{downloadCount}}<span style="margin-left: 63px;">2,019</span></div>
+            <div class="font-image">{{softwareName.charAt(0)}}</div>
+            <div class="font-title">{{softwareName}}</div>
+            <div class="font-content">当前版本<span style="margin-left:10px;">{{currentVersion}}</span></div>
+            <div class="font-content">最后更新<span style="margin-left:10px;">{{lastestUpgrade}}</span></div>
         </div>
-        <Row class="font-footer">
-            <Col span="8" class="footer-col">
-                <Icon size="25" type="md-download" class="foot-icon" />     
-            </Col>
-            <Col span="8" class="footer-col">
-                <Divider type="vertical" class="foot-divider"/>
-                <Icon size="25" type="md-create" class="foot-icon" />
-                
-            </Col>
-            <Col span="8" class="footer-col1">
-                <Divider type="vertical" class="foot-divider"/>
-                <Icon size="25" type="md-more" class="foot-icon" />
-            </Col>
-        </Row>
+        <div class="font-footer">
+            Pending...
+        </div>
     </div>
 </template>
 <script>
 export default {
-    name: "SourceBox",
+    name: "SoftwarePendBox",
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
-            sourceName: '啦啦啦啦',
+            softwareName: '申请的软件名称',
             rate: 3.5,
             downloadCount: 233,
             likeCount: 2019,
+            currentVersion: '9.0.1',
+            lastestUpgrade: '2019.05.04',
             favoriteIcon: false,            // defalut favourite is false
             sourceID: 0,                    // TODO从后端得到
         }
@@ -65,22 +56,22 @@ export default {
 }
 .upper{
     padding: 18px 18px 0px 18px;
-    margin-bottom: 10px;
 }
 .font-image{
+    display: inline-block;
     color: #1ebf73;
     background-color: #e8f8f0;
     height: 44px;
     width: 44px;
-    line-height: 44px;
     text-align: center;
+    line-height: 44px;
 }
 .font-title{
     display: inline-block;
     position: relative;
     top: -10px;
     right: -10px;
-    margin-bottom: 30px;
+    margin-bottom: 8px;
     font-size: 16px;
     font-weight: bold; 
     line-height: 21px;
@@ -89,6 +80,7 @@ export default {
     position: relative;
     font-size: 14px;
     margin-left: 60px;
+    margin-top: 8px;
 }
 .font-num{
     position: relative;
@@ -97,23 +89,16 @@ export default {
     margin-left: 60px;
 }
 .font-footer{
-    background-color: #eaeaea;  
-    color: #7d7d7d;
+    background-color: #37d89d;  
+    color: white;
+    font-size: 21px;
     width: 270px;
     height: 56px;
     line-height: 56px;
     text-align: center;
+    margin-top: 15.5px;
 }
-.footer-col {
-    /*border-right:2px solid #7d7d7d;*/
-    cursor: pointer;
-}
-.footer-col1 {
-    cursor: pointer;
-}
-.foot-icon:hover, .foot-icon1:hover{
-    color: #1ebf73;
-}
+
 .foot-divider{
     position:relative;
     float:left;
