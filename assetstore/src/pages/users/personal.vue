@@ -4,7 +4,7 @@
         <div class="self-card">
             <div class="self">
                 <ul><img src="../../assets/绿头像.jpg" class="avatar">
-                <Icon size="20" class="edit-self" type="md-create" /></ul>
+                <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editPersonal')"/></ul>
                 <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
                 <!-- TODO 属于哪个部门从amt那里得到-->
                 <ul style="font-size: 14px; color: #7f7f7f;">前沿技术部门</ul>
@@ -79,7 +79,6 @@ export default {
     },
     mounted() {
         this.personalActive = this.$store.state.personalActive
-        console.log("ry=uqi "+this.personalActive)
         this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
         this.$refs.son.sourceName = '二次元人物模型'
         this.$refs.son1.sourceName = '天空贴图素材包'
