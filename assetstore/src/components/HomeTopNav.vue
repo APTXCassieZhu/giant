@@ -34,7 +34,7 @@
                 </div>
                 <div class="topnav-box-link-a">
                     <Dropdown placement="bottom-start">
-                        <a href="javascript:void(0)">研发工具<Icon type="ios-arrow-down"></Icon></a>
+                        <a href="javascript:void(0)">研发类工具<Icon type="ios-arrow-down"></Icon></a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
                             <!--TODO 超链接导向的网页还没建-->
                             <ul><DropdownItem><router-link to="/工具/可视化脚本">可视化脚本</router-link></DropdownItem></ul>

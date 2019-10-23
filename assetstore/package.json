@@ -15,7 +15,6 @@
     "@fortawesome/vue-fontawesome": "^0.1.7",
     "cookie-parser": "^1.4.4",
     "good-storage": "^1.1.0",
-    "iview": "^4.0.0",
     "iview-input-tag": "^1.0.4",
     "view-design": "^4.0.0",
     "vue": "^2.5.2",

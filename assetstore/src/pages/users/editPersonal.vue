@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="background-color: #eff2f5">
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <Menu active-name="1" class="leftside-menu">
             <!--TODO 未完成，仅有样式-->
@@ -20,8 +20,8 @@
                 <p>最小图片尺寸不能低于 100像素 X 100像素</p>
             </div>
             <div class="personal-input">绑定的域账号
-                <span style="margin-left: 120px;" class="span">
-                    <Input v-model="account" readonly icon="md-lock" placeholder="xiamuZhu@ztgame.com" 
+                <span style="margin-left: 120px;" class="span1">
+                    <Input v-model="account" readonly icon="md-lock"
                     style="width: 430px; height: 44px;" />
                 </span>
             </div>
@@ -85,7 +85,7 @@ export default {
     left: 50px;
     top: 170px;
     padding: 30px 20px 30px 30px;
-    border: 1px solid lightgrey;
+    border-radius: 3px;
     /*box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);*/
     background-color: #ffffff;
 }
@@ -99,8 +99,7 @@ export default {
     left: 350px;
     top: 30px;
     padding: 30px 28px 30px 28px;
-    border: 1px solid lightgrey;
-    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
+    border-radius: 3px;
     background-color: #ffffff;
     overflow: auto;
 }
@@ -140,9 +139,13 @@ export default {
     font-size: 16px;
     color: #000000;
 }
-.setting-card > .personal-input > .span > .ivu-input-wrapper > .ivu-input-icon{
+.setting-card > .personal-input > .span1 > .ivu-input-wrapper > .ivu-input-icon{
     /* 使锁居中 */
     line-height: 44px;
+}
+.setting-card > .personal-input > .span1 > .ivu-input-wrapper > .ivu-input{
+    height: 100%;
+    background-color: #eaeaea;
 }
 .setting-card > .personal-input > .span > .ivu-input-wrapper > .ivu-input{
     height: 100%;

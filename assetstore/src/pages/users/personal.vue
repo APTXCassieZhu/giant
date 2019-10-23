@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="background-color: #eff2f5">
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <div class="self-card">
             <div class="self">
@@ -121,8 +121,7 @@ export default {
     left: 50px;
     top: 10px;
     padding: 30px 20px 30px 25px;
-    border: 1px solid lightgrey;
-    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
+    border-radius: 3px;
     background-color: #ffffff;
 }
 .self{
@@ -140,6 +139,7 @@ export default {
     position: absolute;
     top: 0px;
     right: 15px;
+    border-radius: 3px;
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;
@@ -155,8 +155,7 @@ export default {
     left: 100px;
     top: 30px;
     padding: 20px 28px 30px 28px;
-    border: 1px solid lightgrey;
-    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
+    border-radius: 3px;
     background-color: #ffffff;
     overflow: auto;
 }

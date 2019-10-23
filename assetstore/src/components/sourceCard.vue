@@ -11,13 +11,15 @@
             <span>{{sourceDescription}}</span>
         </div>
         <Divider style="margin: 15px 0px 5px 0px;"/>
-        <span>
-            <Rate disabled v-model="rate" style="position:relative; left:3px;"></Rate>&emsp;
+        <div style="width:240px;">
+            <Rate disabled v-model="rate" style="position:relative; left: 5px; bottom: 5px;"></Rate>&emsp;
             <!--<Icon size="18" v-for="n in 4" :key="n" type="md-star" style="color: #FF9933" />
             <Icon size="18" type="ios-star-half" style="color: #FF9933"/>&emsp;&emsp;-->
-            <Icon type="ios-eye" size="20" />{{viewCount}}&emsp;
-            <Icon type="md-chatboxes" size="18"/>{{chatCount}}
-        </span>
+            <Icon type="ios-eye" size="20" style="position:relative; bottom: 3px;"/>
+            <span style="position:relative;bottom:3px;"> {{viewCount}}&emsp;</span>
+            <Icon type="md-chatboxes" size="18" style="position:relative;bottom: 3px;" />
+            <span style="position:relative;bottom:3px;"> {{chatCount}}</span>
+        </div>
     </div>
 </template>
 <script>
@@ -54,7 +56,7 @@ export default {
 </script>
 <style>
 .image {
-    height: 150px; 
+    height: 140px; 
     width: 250px;
     background-image: url("../assets/白绿.jpg");
     background-size: 240px 150px;
@@ -78,8 +80,10 @@ export default {
 
 .source-content{
     text-align: left;
-    margin-left: 5px;
+    margin-top: 8px;
+    margin-left: 12px;
     margin-right: 5px;
+    margin-bottom: 27px;
     font-family: MicrosoftYaHei;
 }
 
