@@ -32,8 +32,8 @@
             <Tabs :value="personalActive" :animated="false">
                 <TabPane :label="tab1" name="name1">
                     <div class="upload-style">
-                        <Icon size="80" type="md-folder" class="upload-folder-style"/>  
-                        <Icon size="40" type="md-add" class="upload-add-style"/>
+                        <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
+                        <Icon size="40" type="md-add" @mouseover.native="bright()" @mouseout.native="unBright()" class="upload-add-style"/>
                     </div>
                     <source-box ref="son"></source-box>
                     <source-box ref="son1"></source-box>
@@ -87,6 +87,7 @@ export default {
     },
     data () {
         return {
+            uploadFolderStyle: "upload-folder-style",
             tab1: "资源(2)",
             tab2: "软件(1)",
             tab3: "关注(0)",
@@ -99,6 +100,12 @@ export default {
     methods:{
         goPage(url){
             this.$router.push(url)
+        },
+        bright(){
+            this.uploadFolderStyle = "upload-folder-style-hover"
+        },
+        unBright(){
+            this.uploadFolderStyle = "upload-folder-style";
         },
     },
 }
@@ -216,6 +223,14 @@ export default {
     width: 274px;
     text-align:center;
     color:#e5e5e5;
+}
+.upload-folder-style-hover{
+    position: absolute;
+    cursor: pointer;
+    line-height: 196px;
+    width: 274px;
+    text-align:center;
+    color:#1ebf73;
 }
 .upload-folder-style:hover{
     color:#1ebf73;
