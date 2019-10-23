@@ -111,7 +111,10 @@ export default {
 .footer-col1 {
     cursor: pointer;
 }
-.foot-icon:hover, .foot-icon1:hover{
+.foot-icon:hover, .foot-icon1:hover, .footer-col:hover, .footer-col1:hover{
+    color: #1ebf73;
+}
+.foot-icon-hover{
     color: #1ebf73;
 }
 .foot-divider{

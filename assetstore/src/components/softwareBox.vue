@@ -111,10 +111,8 @@ export default {
     /*border-right:2px solid #7d7d7d;*/
     cursor: pointer;
 }
-.footer-col1 {
-    cursor: pointer;
-}
-.foot-icon:hover, .foot-icon1:hover{
+
+.foot-icon:hover, .footer-col:hover{
     color: #1ebf73;
 }
 .foot-divider{
