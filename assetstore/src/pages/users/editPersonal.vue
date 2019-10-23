@@ -38,7 +38,7 @@
                     style="width: 430px; height: 198px;" />
                 </span>
             </div>
-            <Button class="confirm-btn">确认</Button>
+            <Button class="confirm-btn" type="success">确认</Button>
         </div>
         <corner></corner>
         <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
@@ -113,21 +113,26 @@ export default {
     text-align: center;
     line-height: 116px;
 }
-.camera:hover, .camera-btn:hover{
+.camera:hover{
     cursor: pointer;
     color: #1ebf73;
     background-color: #e8f8f0;
 }
 .camera-btn{
     display: inline-block;
-    color: #7d7d7d;
-    background-color: #e5e5e5;
+    color: #1ebf73;
+    background-color: #e8f8f0;
     height: 44px;
     width: 430px;
     font-size: 16px;
     margin-left: 100px;
     margin-top: -70px;
 }
+.camera-btn:active{
+    background-color: #1ebf73;
+    color: white;
+}
+
 .notice-content{
     font-size: 14px;
     color: #7d7d7d;
@@ -153,17 +158,12 @@ export default {
 .confirm-btn{
     width: 430px;
     height: 44px;
-    color: #7d7d7d;
-    background-color: #e5e5e5;
     font-weight: bold;
     font-size: 18px;
     margin-left: 218px;
     margin-top: 70px;
-}
-.confirm-btn:hover{
     cursor: pointer;
-    background-color: #1ebf73;
-    color: white;
 }
+
 </style>
 

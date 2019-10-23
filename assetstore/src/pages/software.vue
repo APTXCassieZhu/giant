@@ -30,6 +30,9 @@
         <div class="software-page">
             <span class="card-title">通用软件（{{generalNum}}已收录）</span>
             <Divider/>
+            <div v-for="n in 7" :key="n">
+                <software-download></software-download>
+            </div>
         </div>
         <corner></corner>
         <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
@@ -40,9 +43,10 @@
 import TopNavigation from '../components/TopNav.vue'
 import Footer from '../components/footer.vue'
 import Corner from '../components/corner.vue'
+import SoftwareDownload from '../components/softwareDownload.vue'
 export default {
     name:"software",
-    components:{TopNavigation, Footer, Corner},
+    components:{TopNavigation, Footer, Corner, SoftwareDownload},
     data(){
         return{
             generalNum: 20,

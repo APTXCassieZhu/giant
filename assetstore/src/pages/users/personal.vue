@@ -18,7 +18,7 @@
             <!-- TODO 从后端数据库读取-->
             <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
             <span v-for="(item,index) in personalTagList" :key="index">
-                <Tag size="large">{{item}}</Tag>
+                <Tag class="tag-style" size="large">{{item}}</Tag>
             </span>
             <Divider />
             <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>

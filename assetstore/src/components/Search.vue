@@ -214,22 +214,13 @@ export default {
 }
 
 .search-button{
-    background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);
+    /*background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);*/
     border-width: 0px;
     font-family: MicrosoftYaHei;
     float: left;
-    /*width: 20%;*/
     width: 60px;
     cursor: pointer;
     height: 40px;
-    z-index: 0;
-}
-
-.search-button:hover{
-    background-image: linear-gradient(to bottom, aquamarine, #40e1ab,#1ebf73);
-    border-color:aquamarine;
-    color: white;
-    border-width: 3px;
     z-index: 0;
 }
 

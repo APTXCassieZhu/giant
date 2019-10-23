@@ -269,26 +269,14 @@ export default {
 }
 
 .search-button{
-    /*background-color: #6495ED;*/
     position: relative;
-    background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);
+    /*background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);*/
     border-width: 0px;
     float: left;
-    /*width: 20%;*/
     width: 54px;
     cursor: pointer;
     height: 39px;
     top:23px;
-    z-index: 0;
-}
-
-.search-button:hover{
-    /*background-color: #BA55D3;
-    border-color: #BA55D3;*/
-    background-image: linear-gradient(to bottom, aquamarine, #40e1ab,#1ebf73);
-    border-color:aquamarine;
-    color: white;
-    border-width: 3px;
     z-index: 0;
 }
 
@@ -309,7 +297,6 @@ export default {
 .clear-history {
     cursor:pointer; 
     color:grey;
-    display: inline-block;
     float: right;
 }
 .tag-style{
@@ -317,6 +304,7 @@ export default {
     color:grey;
     cursor: pointer;
 }
+
 .clear-history:hover {
     color: orangered;
 }
