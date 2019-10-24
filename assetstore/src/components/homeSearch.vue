@@ -3,13 +3,8 @@
         <Form id="search" ref="searchForm" :model="searchForm" :rules="searchRule">
             <FormItem prop="content">
                 <div class="home-search-container">
-                    <div class=search-title>GDRC研发资源中心</div>
-                    <div class="search-title">望能成为您日常工作的好助力</div>
-                    <!--<Input id="searchcontent" size="large" type="text" clearable class="search-input" 
-                    @focus.native.capture="changeAdvise()" @blur.native.capture="hideAdvise()"
-                    @on-clear="hideAssociate()"
-                    v-on:input="handleInput()" v-model.trim="searchForm.content"
-                    placeholder="支持输入资源、用户、文章关键字" /></Input>-->
+                    <div class="search-title">GDRC研发资源中心</div>
+                    <div class="search-title2">成为您日常工作的好助力</div>
                     <Dropdown placement="bottom-start" trigger="custom" :visible="searchVisible" @on-clickoutside="hideAdvise()">
                         <Input id="searchcontent" size="large" type="text" clearable class="search-input" 
                         @click.native="changeAdvise()" @on-clear="hideAssociate()"
@@ -253,9 +248,16 @@ export default {
     z-index: 0;
 }
 .search-title{
-    font-family: MicrosoftYaHei;
+    font-family: MicrosoftYaHeiLight;
+    font-size: 24px;
+    font-weight: 300;
+    color: #042c55;
+}
+.search-title2{
+    font-family: MicrosoftYaHeiHeavy;
     font-size: 24px;
     font-weight: 900;
+    color: #042c55;
 }
 .search-input{
     position: relative;
@@ -263,7 +265,7 @@ export default {
     float: left;
     /*width: 80%;*/
     width: 460px;
-    height: 48px;
+    height: 54px;
     top: 23px;
     z-index: 0;
 }

@@ -6,7 +6,7 @@
             <p style="position:relative;top:8px;font-size:14px;font-weight:600;color:#7f7f7f;">当前版本 {{currentVersion}}</p>
             <p style="position:relative; top: 25px;font-size:14px;color:#7f7f7f;">最后更新 {{latestUpdate}}</p>
         </div>
-        <Button class="btn"><Icon type="md-download" /></Button>
+        <Button class="btn" type="success"><Icon type="md-download" />下载软件</Button>
     </div>
 </template>
 <script>
@@ -26,11 +26,10 @@ export default {
 <style scoped>
 .source-box{
     float: left;
-    height: 160px; 
+    height: 150px; 
     width: 252px;
-    margin-right: 30px;
-    margin-bottom: 30px;
-    border: solid 2px #eaeaea;
+    margin-right: 60px;
+    margin-bottom: 60px;
 }
 
 .font-image{
@@ -51,11 +50,12 @@ export default {
     line-height: 21px;
 }
 .btn{
-    background-color: #eaeaea;  
-    color: #7d7d7d;
+    position:relative;
+    top: -70px;
+    left: -2px;
     width: 252px;
-    height: 56px;
-    line-height: 56px;
+    height: 37px;
+    line-height: 37px;
     text-align: center;
 }
 </style>

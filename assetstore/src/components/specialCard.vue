@@ -7,19 +7,24 @@
             </strong>
         </div>
         <div class="source-des">
-            <h3>{{sourceTitle}}</h3>
-            <span>{{sourceDescription}}</span>
+            <p class="source-des-name">{{sourceTitle}}</p>
+            <p>{{sourceDescription}}</p>
         </div>
         <div class="source-content">
-            <Rate disabled v-model="rate" style="position:relative; left: 2px;"></Rate>&emsp;&emsp;&emsp;&emsp;
-            <!--<Icon size="18" v-for="n in 4" :key="n" type="md-star" style="color: #FF9933" />
-            <Icon size="18" type="ios-star-half" style="color: #FF9933"/>-->
-            <Icon type="ios-eye" size="20" />{{viewCount}}&emsp;&emsp;
-            <Icon type="md-chatboxes" size="18"/>{{chatCount}}
+            <Rate disabled icon="md-star" v-model="rate" style="position:relative; left: 2px;"></Rate>
+            <span class="source-content-icon">
+                <font-awesome-icon icon="eye"/>
+                <span> {{viewCount}}&emsp;&emsp;</span>
+                <font-awesome-icon icon="comment"/>
+                <span> {{chatCount}}</span>
+            </span>
         </div>
     </div>
 </template>
 <script>
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faComment, faEye } from '@fortawesome/free-solid-svg-icons'
+library.add(faComment, faEye)
 export default {
     name: "SpecialCard",
     data() {
@@ -96,15 +101,28 @@ export default {
     text-align: left;
     position:relative;
     left: 15px;
-    top: 5px;
+    top: 8px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.source-des-name{
+    font-size: 14px;
+    letter-spacing: 1.17px;
+    color: #262626;
 }
 .source-content{
     margin-left: 10px;
     margin-right: 5px;
     margin-top: 7px;
+    font-size: 12px;
+    color: #7f7f7f;
     font-family: MicrosoftYaHei;
 }
-
+.source-content-icon{
+    position:relative;
+    top: 5px;
+    left: 70px;
+}
 .ivu-rate-star{
     margin-right: 0px;
 }

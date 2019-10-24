@@ -11,18 +11,21 @@
             <span>{{sourceDescription}}</span>
         </div>
         <Divider style="margin: 15px 0px 5px 0px;"/>
-        <div style="width:240px;">
-            <Rate disabled v-model="rate" style="position:relative; left: 5px; bottom: 5px;"></Rate>&emsp;
-            <!--<Icon size="18" v-for="n in 4" :key="n" type="md-star" style="color: #FF9933" />
-            <Icon size="18" type="ios-star-half" style="color: #FF9933"/>&emsp;&emsp;-->
-            <Icon type="ios-eye" size="20" style="position:relative; bottom: 3px;"/>
-            <span style="position:relative;bottom:3px;"> {{viewCount}}&emsp;</span>
-            <Icon type="md-chatboxes" size="18" style="position:relative;bottom: 3px;" />
-            <span style="position:relative;bottom:3px;"> {{chatCount}}</span>
+        <div class="source-card-footer">
+            <Rate disabled icon="md-star" v-model="rate" style="position:relative; left: 8px; bottom: 8px;"></Rate>
+            <span class="source-card-footer-icon">
+                <font-awesome-icon icon="eye"/>
+                <span> {{viewCount}}&emsp;</span>
+                <font-awesome-icon icon="comment"/>
+                <span> {{chatCount}}</span>
+            </span>
         </div>
     </div>
 </template>
 <script>
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faComment, faEye } from '@fortawesome/free-solid-svg-icons'
+library.add(faComment, faEye)
 export default {
     name: "SourceCard",
     data() {
@@ -86,8 +89,19 @@ export default {
     margin-bottom: 27px;
     font-family: MicrosoftYaHei;
 }
-
-.ivu-rate > .ivu-rate-star{
+.source-card-footer{
+    width:240px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    text-align: left;
+}
+.source-card-footer-icon{
+    position:relative;
+    bottom:3px;
+    left:35px;
+}
+.ivu-rate > .ivu-rate-star-chart{
     margin-right: 0px;
 }
+
 </style>

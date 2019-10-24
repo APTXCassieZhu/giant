@@ -39,6 +39,6 @@ export default {
 }
 @font-face {
   font-family: "custom-font";
-  src: url('//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css') 
+  src: url('https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
 }
 </style>

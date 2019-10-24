@@ -17,7 +17,7 @@
                 <div class="topnav-box-link-a">
                     <Dropdown placement="bottom-start">
                         <a href="javascript:void(0)">美术类资源
-                            <Icon type="ios-arrow-down"></Icon>
+                            <Icon size="28" type="md-arrow-dropdown" style="position:relative; top: 3px;"></Icon>
                         </a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
                             <!--TODO 超链接导向的网页还没建-->
@@ -34,7 +34,9 @@
                 </div>
                 <div class="topnav-box-link-a">
                     <Dropdown placement="bottom-start">
-                        <a href="javascript:void(0)">研发类工具<Icon type="ios-arrow-down"></Icon></a>
+                        <a href="javascript:void(0)">研发类工具
+                            <Icon size="28" type="md-arrow-dropdown" style="position:relative; top: 3px;"></Icon>
+                        </a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
                             <!--TODO 超链接导向的网页还没建-->
                             <ul><DropdownItem><router-link to="/工具/可视化脚本">可视化脚本</router-link></DropdownItem></ul>
@@ -54,10 +56,10 @@
             </div>
            
             <div class="topnav-box-user">
-                <span>欢迎回来，{{getUser}}</span>
+                <span class="welcome">欢迎回来，{{getUser}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <Icon type="ios-contact" size="48" class="topnav-user" @click="goLike('personal')"/>
+                        <Icon type="ios-contact" size="40" class="topnav-user" @click="goLike('personal')"/>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
@@ -189,9 +191,9 @@ export default {
     position: relative;
     font-family: MicrosoftYaHei;
     text-decoration: none;
-    width: 12%;
+    width: 15%;
     float: left;
-    padding-right: 2%;
+    padding-right: 3%;
     text-align:center;    
     color: black;
 }
@@ -207,7 +209,12 @@ export default {
     font-size: 15px;
     top: 8.5px;
 }
-
+.welcome{
+    position:relative;
+    bottom: 6px;
+    font-size:14px;
+    color: rgba(0, 0, 0, 0.5);
+}
 .topnav-box-user{
     position: relative;
     font-family: MicrosoftYaHei;
