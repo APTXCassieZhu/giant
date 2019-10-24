@@ -9,7 +9,9 @@
     <div style="position:relative; text-align:center; width: 1320px;margin: 0 auto;">
         <div class="more" style="float:left; height:21px"></div>
         <div class="type-des-title">-最具创意的美术项目集合-</div>
-        <strong><div class="more" @click="goPage('/artShow')">查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+        <strong><div class="more" @click="goPage('/artShow')">查看更多
+            <Icon size="25" style="position:relative;top:2px;left:-5px;" type="md-arrow-dropright" /></div>
+        </strong>
     </div>
     <div class="card-wrapper">
         <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
@@ -18,7 +20,9 @@
     <div style="position:relative; text-align:center; width: 1320px;margin: 0 auto;">
         <div class="more" style="float:left; height:21px"></div>
         <div class="type-des-title">-各类高实用性的项目集合-</div>
-        <strong><div class="more" @click="goPage('/artFilter')">查看更多<Icon size="18" type="md-arrow-dropright" /></div></strong>
+        <strong><div class="more" @click="goPage('/artFilter')">查看更多
+            <Icon size="25" style="position:relative;top:2px;left:-5px;" type="md-arrow-dropright" /></div>
+        </strong>
     </div>
     <div class="card-wrapper">
         <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->

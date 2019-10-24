@@ -48,7 +48,7 @@
                         </DropdownMenu>
                     </Dropdown>
                 </div>
-                <router-link class="topnav-box-link-a" to="/software" exact-active-class="router-active">常用软件</router-link>
+                <router-link class="topnav-box-link-a"  style="bottom:1px;" to="/software" exact-active-class="router-active">常用软件</router-link>
             </div>
             
             <!--提交搜索内容-->
@@ -196,6 +196,7 @@ export default {
     padding-right: 3%;
     text-align:center;    
     color: black;
+    bottom: 4px;
 }
 
 .topnav-box-link-a a{

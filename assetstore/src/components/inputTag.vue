@@ -1,6 +1,6 @@
 <template>
     <div class="container" :style="{width: containerWidth + 'px'}" @click="click">
-      <div id="tagContainer">
+      <div id="tagContainer" class="tagContainer">
         <Tag v-for="(item, index) in tagList" closable 
             class="tag"
             :color="color?color:'success'" 
@@ -111,6 +111,9 @@ export default {
     white-space:pre-wrap;
     word-wrap : break-word;
     overflow: hidden ;
+}
+.tagContainer > .ivu-input-wrapper > .ivu-input {
+    border-width: 0px;
 }
 </style>
 

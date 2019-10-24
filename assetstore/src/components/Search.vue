@@ -6,9 +6,9 @@
                 @click.native="changeAdvise()" @on-clear="hideAssociate()"
                 v-on:input="handleInput()" v-model.trim="searchForm.content"
                 placeholder="支持输入资源、用户、文章关键字" /></Input>
-                <Button type="primary" class="search-button" @click="searchSubmit()">
+                <span class="span-button"><Button type="primary" class="search-button" @click="searchSubmit()">
                     <Icon type="ios-search" size="30"></Icon>
-                </Button>
+                </Button></span>
                 <div class="search-card" id="content">
                     <!--TODO 热门搜索的内容暂不知-->
                     <ul class="hot-search-title">热门搜索</ul>
@@ -202,14 +202,29 @@ export default {
 }
 </script>
 
+<style>
+.search-input > .ivu-input{
+    border-radius: 0;
+    height: 39px;
+}
+
+.span-button > .ivu-btn{
+    border-radius: 0;
+}
+
+.span-button > .ivu-btn > span{
+    position: relative;
+    left: -10px;
+    text-align:center;
+}
+</style>
 <style scoped>
 .search-input{
     text-align: left;
     float: left;
     font-family: MicrosoftYaHei;
-    /*width: 80%;*/
     width: 333px;
-    height: 48px;
+    height: 39px;
     z-index: 0;
 }
 
@@ -218,9 +233,9 @@ export default {
     border-width: 0px;
     font-family: MicrosoftYaHei;
     float: left;
-    width: 60px;
+    width: 39px;
+    height: 39px;
     cursor: pointer;
-    height: 40px;
     z-index: 0;
 }
 

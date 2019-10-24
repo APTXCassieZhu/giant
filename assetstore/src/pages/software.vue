@@ -117,7 +117,7 @@ export default {
 <style scoped>
 .bread-container {
     position: relative;
-    left: 3%;
+    left: 4%;
 }
 .alert{
     position: relative;
@@ -130,7 +130,7 @@ export default {
     position: relative; 
     float: left;
     z-index: 0; 
-    left:2.5%;
+    left:4%;
     top: 28px;
     border-radius: 3px;
 }

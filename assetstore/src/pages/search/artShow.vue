@@ -7,23 +7,12 @@
                     <span>&emsp;推荐搜索&emsp;</span>
                     <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
                     <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
-                    <span>&emsp;</span>
                     <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
-                    <span>&emsp;</span> 
                     <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
-                    <span>&emsp;</span> 
                     <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
-                    <span>&emsp;&emsp;&emsp;&emsp;</span>
                     <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" />  
                 </div>
             </div>
-            <!--<div class="bread-container">
-                <Breadcrumb>
-                    <BreadcrumbItem to="/home">首页</BreadcrumbItem>
-                    <BreadcrumbItem to="/home/resource">美术类资源</BreadcrumbItem>
-                    <BreadcrumbItem>当前内容</BreadcrumbItem>
-                </Breadcrumb>
-            </div>-->
             <div class="title-wrapper">
                 <strong>美术类资源</strong>
             </div>
@@ -35,8 +24,8 @@
                     <span style="color: #1ebf73;">{{resultCount}}</span>条搜索结果
                     <div style="float: right; margin-right: 125px;">
                         <Dropdown @on-click="changeOrder" trigger="click" style="margin-left: 20px">
-                            <span href="javascript:void(0)" name="按推荐排序" v-html='this.currentOrder' class="order-style">
-                                <Icon type="md-arrow-dropdown" size="20"/>
+                            <span href="javascript:void(0)" name="按推荐排序"  class="order-style">
+                                {{currentOrder}}<Icon type='md-arrow-dropdown' size='20' />
                             </span>
                             <DropdownMenu slot="list">
                                 <DropdownItem class="box-link-a" name="按推荐排序">推荐</DropdownItem>
@@ -48,7 +37,7 @@
                 </ul>
                 <br>
                 <source-card v-for="n in 15" :key="n" class="card-style"></source-card>
-                <Page style="position: relative; margin-left: 35%; margin-bottom:200px;" :total="100" show-elevator />
+                <Page class="page-style" :total="100" show-elevator />
                 <corner></corner>
             </div>
             <Footer style="position:relative;"></Footer>
@@ -152,46 +141,43 @@ export default {
     width: 100%;
     height: 50px;
     background-color:rgba(0, 0, 0, 0.05);
-    box-shadow: inset 0px 8px 8px 5px rgba(0,0,0,0.2); 
 }
 .advise-container {
     position: relative;
-    left:2.5%;
-    top:15px;
+    left:3.3%;
+    top:10px;
     height: 20px;
 }
 .advise-close{
     position: relative;
-    top: 3px;
+    left: 1250px;
+    top: 5px;
+    color: rgba(0, 0, 0, 0.25);
 }
 .advise-close:hover{
     color:silver;
     cursor: pointer;
-}
-
-.bread-container {
-    position: relative;
-    top: 15px;
-    left: 3%;
+    color: #1ebf73;
 }
 
 .title-wrapper{
     position: relative;
-    left: 3%;
+    left: 4%;
     top: 20px;
-    font-size: 30px;
+    font-size: 24px;
+    color:#262626;
+    margin-bottom: 30px;
 }
 
 .button-wrapper{
     position: relative;
-    left: 3%;
-    top: 30px;
+    left: 4%;
 }
 
 .card-wrapper {
     position: relative;
-    left: 3%;
-    top: 60px;
+    left: 4%;
+    top: 50px;
     width: 80%;
     margin-right: 18px;
 }
@@ -207,6 +193,7 @@ export default {
 }
 .tag-style{
     cursor:pointer;
+    margin-left: 20px;
 }
 .box-link-a{
     color:black;
@@ -214,6 +201,12 @@ export default {
 .box-link-a:hover{
     color:#1ebf73;
     cursor: pointer;
+}
+.page-style{
+    position: relative; 
+    margin-left: 35%; 
+    margin-top: 90px;
+    margin-bottom:200px;
 }
 .order-style{
     cursor:pointer;

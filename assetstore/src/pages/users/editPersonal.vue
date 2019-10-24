@@ -74,8 +74,20 @@ export default {
     },
 }
 </script>
-
 <style>
+.setting-card > .personal-input > .span1 > .ivu-input-wrapper > .ivu-input-icon{
+    /* 使锁居中 */
+    line-height: 44px;
+}
+.setting-card > .personal-input > .span1 > .ivu-input-wrapper > .ivu-input{
+    height: 100%;
+    background-color: #eaeaea;
+}
+.setting-card > .personal-input > .span > .ivu-input-wrapper > .ivu-input{
+    height: 100%;
+}
+</style>
+<style scoped>
 .leftside-menu{
     position: fixed;
     display:inline-block;
@@ -144,17 +156,7 @@ export default {
     font-size: 16px;
     color: #000000;
 }
-.setting-card > .personal-input > .span1 > .ivu-input-wrapper > .ivu-input-icon{
-    /* 使锁居中 */
-    line-height: 44px;
-}
-.setting-card > .personal-input > .span1 > .ivu-input-wrapper > .ivu-input{
-    height: 100%;
-    background-color: #eaeaea;
-}
-.setting-card > .personal-input > .span > .ivu-input-wrapper > .ivu-input{
-    height: 100%;
-}
+
 .confirm-btn{
     width: 430px;
     height: 44px;

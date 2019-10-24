@@ -58,6 +58,11 @@ export default {
 }
 </script>
 <style>
+.ivu-rate > .ivu-rate-star-chart{
+    margin-right: 0px;
+}
+</style>
+<style scoped>
 .image {
     height: 140px; 
     width: 250px;
@@ -100,8 +105,4 @@ export default {
     bottom:3px;
     left:35px;
 }
-.ivu-rate > .ivu-rate-star-chart{
-    margin-right: 0px;
-}
-
 </style>

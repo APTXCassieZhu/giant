@@ -18,13 +18,12 @@
                 <Search style="z-index: 1000;"></Search>
             </div>
             <div class="topnav-box-user">
-                <Icon class="topnav-user" type="md-cloud-upload" size="36"/>
-                <Icon class="topnav-user" type="md-notifications" size="36"/>
-                <Icon class="topnav-user" type="md-settings" size="36"/>
-                <span>&emsp; {{getUser}}</span>
+                <Icon class="topnav-user" type="md-cloud-upload" size="35"/>
+                <Icon class="topnav-user" type="md-notifications" size="35"/>
+                <Icon class="topnav-user" type="md-settings" size="35"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <Icon type="ios-contact" size="48" class="topnav-user" @click="goLike('personal')"/>
+                        <Icon type="ios-contact" size="40" class="topnav-user" @click="goLike('personal')"/>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
@@ -46,16 +45,13 @@
     <div class="submenu">
         <Menu mode="horizontal" :active-name="activenum" class="nav-menu">
             <MenuItem name="1" @click.native="goPage('/artFilter')">
-                <Icon type="ios-paper" />
                 美术类资源
             </MenuItem>
             <!--TODO menuitem 2 3的网页还没建，to的地址可能会改变-->
             <MenuItem name="2" @click.native="goPage('/toolFilter')">
-                <Icon type="ios-construct" />
                 研发工具
             </MenuItem>
             <MenuItem name="3" @click.native="goPage('/software')">
-                <Icon type="ios-people" />
                 常用软件
             </MenuItem>
         </Menu>
@@ -212,6 +208,7 @@ export default {
 .topnav-user, .user-box-link-a{
     color:black;
     z-index:inherit;
+    margin-right: 30px;
 }
 
 .topnav-user:hover, .user-box-link-a:hover{
@@ -248,6 +245,7 @@ export default {
     height: 60px;
     top: 80px;
     z-index: 10;
+    box-shadow: 0 1px 5px 0 rgba(141, 141, 141, 0.5)
 }
 .nav-menu{
     float: right;
@@ -259,6 +257,7 @@ export default {
     margin: 0;
     padding: 0;
     outline: 0;
+    left: 18px;
     font-size: 14px;
     font-family: MicrosoftYaHei;
 }

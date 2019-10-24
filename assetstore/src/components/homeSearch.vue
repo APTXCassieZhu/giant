@@ -3,26 +3,26 @@
         <Form id="search" ref="searchForm" :model="searchForm" :rules="searchRule">
             <FormItem prop="content">
                 <div class="home-search-container">
-                    <div class="search-title">GDRC研发资源中心</div>
-                    <div class="search-title2">成为您日常工作的好助力</div>
+                    <div class="home-search-title">GDRC研发资源中心</div>
+                    <div class="home-search-title2">成为您日常工作的好助力</div>
                     <Dropdown placement="bottom-start" trigger="custom" :visible="searchVisible" @on-clickoutside="hideAdvise()">
-                        <Input id="searchcontent" size="large" type="text" clearable class="search-input" 
+                        <Input id="searchcontent" size="large" type="text" clearable class="home-search-input" 
                         @click.native="changeAdvise()" @on-clear="hideAssociate()"
                         v-on:input="handleInput()" v-model.trim="searchForm.content"
-                        placeholder="支持输入资源、用户、文章关键字" /></Input>
-                        <Button type="primary" class="search-button" @click="searchSubmit()">
-                            <Icon type="ios-search" size="30"></Icon>
+                        placeholder="支持输入资源、用户、文章关键字" />
+                        <Button type="primary" class="home-search-button" @click="searchSubmit()">
+                            <Icon type="ios-search" size="50"></Icon>
                         </Button>
-                        <div class="search-card" id="content">
+                        <div class="home-search-card" id="content">
                             <!--TODO 热门搜索的内容暂不知-->
-                            <ul class="hot-search-title">热门搜索</ul>
+                            <ul class="home-hot-search-title">热门搜索</ul>
                             <span v-for="(item,index) in tagList" :key="index">
                                 <Tag class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                             </span>
                             <div id="history-search">
                                 <Divider/>
                                 <ul>
-                                    <div class="clear-history" @mousedown="clearHistory()">
+                                    <div class="home-clear-history" @mousedown="clearHistory()">
                                         <Icon size="30" type="ios-close"></Icon>清空
                                     </div>
                                 </ul>
@@ -33,15 +33,15 @@
                             </div>
                         </div>
                         <!--TODO 目前借用了百度的库实现联想搜索，未来要用自己的库-->
-                        <div class="associate-card" id="associate" style="display:none">     
+                        <div class="home-associate-card" id="associate" style="display:none">     
                             <!--<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='???'">??????????</a>         
                             <a style="display:block;" href ="https://www.baidu.com/s?wd='???'">??????????</a> -->        
                         </div>
                     </Dropdown>
 
-                    <div class="recommend-line">
+                    <div class="home-recommend-line">
                         <!-- TODO 推荐内容暂不知-->
-                        <span style="color:#1ebf73; font-weight:600;">大伙儿都在搜&emsp;</span>
+                        <span style="color:#1ebf73; font-weight:600; font-size:12px;">大伙儿都在搜&emsp;</span>
                         <Tag class="tag-style" @click.native="searchTag('推荐搜索1')">推荐搜索1</Tag>
                         <span>&emsp;</span>
                         <Tag class="tag-style" @click.native="searchTag('推荐搜索2')">推荐搜索2</Tag>
@@ -213,6 +213,19 @@ export default {
     }
 }
 </script>
+<style>
+.home-search-input > .ivu-input{
+    border-radius: 0;
+    height: 54px;
+}
+.home-search-container > .ivu-dropdown > .ivu-dropdown-rel > .ivu-btn{
+    border-radius: 0;
+}
+.home-search-container > .ivu-dropdown > .ivu-dropdown-rel > .ivu-btn > span{
+    position: relative;
+    left: -12px;
+}
+</style>
 
 <style scoped>
 .home-search-wrapper{
@@ -247,42 +260,41 @@ export default {
     height: 400px;
     z-index: 0;
 }
-.search-title{
+.home-search-title{
     font-family: MicrosoftYaHeiLight;
     font-size: 24px;
     font-weight: 300;
     color: #042c55;
 }
-.search-title2{
+.home-search-title2{
     font-family: MicrosoftYaHeiHeavy;
     font-size: 24px;
     font-weight: 900;
     color: #042c55;
 }
-.search-input{
+.home-search-input{
     position: relative;
     text-align: left;
     float: left;
     /*width: 80%;*/
     width: 460px;
-    height: 54px;
-    top: 23px;
+    top: 26px;
     z-index: 0;
 }
 
-.search-button{
+.home-search-button{
     position: relative;
     /*background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);*/
     border-width: 0px;
     float: left;
     width: 54px;
     cursor: pointer;
-    height: 39px;
-    top:23px;
+    height: 54px;
+    top:26px;
     z-index: 0;
 }
 
-.hot-search-title {
+.home-hot-search-title {
     position: absolute;
     color: #1ebf73; 
     font-size: 19px; 
@@ -290,13 +302,13 @@ export default {
     top:10px;
 }
 
-.history-search-title {
+.home-history-search-title {
     color: orange; 
     font-size: 19px; 
     height:28px;     
 }
 
-.clear-history {
+.home-clear-history {
     cursor:pointer; 
     color:grey;
     float: right;
@@ -307,19 +319,19 @@ export default {
     cursor: pointer;
 }
 
-.clear-history:hover {
+.home-clear-history:hover {
     color: orangered;
 }
 
-.recommend-line {
+.home-recommend-line {
     font-size: 16px;
     position: absolute;
     float: left;
-    top: 145px;
+    top: 160px;
     z-index: -1;
 }
 
-.search-card{
+.home-search-card{
     display: none;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
@@ -335,7 +347,7 @@ export default {
     z-index: 10;
 }
 
-.associate-card {
+.home-associate-card {
     display: none;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
@@ -351,14 +363,14 @@ export default {
     z-index: 10;
 }
 
-.Divider {
+.home-Divider {
     margin: 105px 0px 105px 0px;
 }
-.close {
+.home-close {
     cursor: pointer;
 }
 
-.close:hover {
+.home-close:hover {
     color: red;
 }
 </style>
