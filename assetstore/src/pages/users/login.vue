@@ -8,11 +8,11 @@
             </div>
             <Form id="login" ref="loginForm" :model="loginForm" :rules="loginRule">
                 <FormItem prop="account">
-                    <Input type = "text" placeholder="请输入域账户" v-model="loginForm.account" id="account" style="background-color:white;">
+                    <Input ref="account" type = "text" placeholder="请输入域账户" v-model="loginForm.account" id="account" style="background-color:white;">
                     </Input>
                 </FormItem>
                 <FormItem prop="password">                    
-                    <Input type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password" style="background-color:white;">
+                    <Input ref="password" type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password" style="background-color:white;">
                     </Input>
                 </FormItem>
                 <FormItem>
@@ -57,7 +57,7 @@ export default {
            this.$refs.password.focus()
 
 
-           
+
        }
    },
    methods:{
