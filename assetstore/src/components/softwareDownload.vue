@@ -1,4 +1,5 @@
 <template>
+    <!--用于软件中心-->
     <div class="source-box">
         <div class="font-image">LOGO</div>
         <div class="font-title">

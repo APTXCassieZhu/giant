@@ -4,7 +4,7 @@
             <FormItem prop="content">
                 <div class="home-search-container">
                     <div class="home-search-title">GDRC研发资源中心</div>
-                    <div class="home-search-title2">成为您日常工作的好助力</div>
+                    <div class="home-search-title2">您日常工作的好助力</div>
                     <Dropdown placement="bottom-start" trigger="custom" :visible="searchVisible" @on-clickoutside="hideAdvise()">
                         <Input id="searchcontent" size="large" type="text" clearable class="home-search-input" 
                         @click.native="changeAdvise()" @on-clear="hideAssociate()"
@@ -17,7 +17,7 @@
                             <!--TODO 热门搜索的内容暂不知-->
                             <ul class="home-hot-search-title">热门搜索</ul>
                             <span v-for="(item,index) in tagList" :key="index">
-                                <Tag class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
+                                <Tag class="tag-style" size="medium" @click.native="searchTag(item)">{{item}}</Tag>
                             </span>
                             <div id="history-search">
                                 <Divider/>
@@ -42,9 +42,9 @@
                     <div class="home-recommend-line">
                         <!-- TODO 推荐内容暂不知-->
                         <span style="color:#1ebf73; font-weight:600; font-size:12px;">大伙儿都在搜&emsp;</span>
-                        <Tag class="tag-style" @click.native="searchTag('推荐搜索1')">推荐搜索1</Tag>
+                        <Tag class="tag-style" size="medium" @click.native="searchTag('推荐搜索1')">推荐搜索1</Tag>
                         <span>&emsp;</span>
-                        <Tag class="tag-style" @click.native="searchTag('推荐搜索2')">推荐搜索2</Tag>
+                        <Tag class="tag-style" size="medium" @click.native="searchTag('推荐搜索2')">推荐搜索2</Tag>
                         <span>&emsp;</span>
                     </div>
                 </div>
@@ -225,6 +225,12 @@ export default {
     position: relative;
     left: -12px;
 }
+.home-recommend-line > .tag-style:hover > .ivu-tag-text{
+    color: #1ebf73;
+}
+.home-search-card > span > .tag-style:hover > .ivu-tag-text{
+    color: #1ebf73;
+}
 </style>
 
 <style scoped>
@@ -314,8 +320,6 @@ export default {
     float: right;
 }
 .tag-style{
-    height: 24px;
-    color:grey;
     cursor: pointer;
 }
 
@@ -342,7 +346,7 @@ export default {
     transition: all 0.2s ease-in-out;
     /*width: 80%;*/
     width: 460px; 
-    top: 66px; 
+    top: 82px; 
     padding: 10px 20px 10px 20px;
     z-index: 10;
 }
@@ -358,7 +362,7 @@ export default {
     transition: all 0.2s ease-in-out;
     /*width: 80%;*/
     width: 460px; 
-    top: 66px; 
+    top: 82px; 
     padding: 0px 20px 0px 20px;
     z-index: 10;
 }

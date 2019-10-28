@@ -6,10 +6,10 @@
                 <div class="advise-container">
                     <span>&emsp;推荐搜索&emsp;</span>
                     <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
-                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
-                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
-                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
-                    <Tag color="green" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
+                    <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
+                    <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
+                    <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
+                    <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
                     <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" />  
                 </div>
             </div>

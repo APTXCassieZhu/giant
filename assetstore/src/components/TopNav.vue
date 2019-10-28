@@ -18,14 +18,14 @@
                 <Search style="z-index: 1000;"></Search>
             </div>
             <div class="topnav-box-user">
-                <Icon class="topnav-user" type="md-cloud-upload" size="35"/>
-                <Icon class="topnav-user" type="md-notifications" size="35"/>
-                <Icon class="topnav-user" type="md-settings" size="35"/>
+                <Icon class="topnav-user" type="md-cloud-upload" size="29"/>
+                <Icon class="topnav-user" type="md-notifications" size="29"/>
+                <Icon class="topnav-user" type="md-settings" size="29"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <Icon type="ios-contact" size="40" class="topnav-user" @click="goLike('personal')"/>
+                        <div class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
-                    <DropdownMenu slot="list" class="topnav-dropdown">
+                    <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-30px;">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem></ul>
                         <ul><DropdownItem><router-link class="user-box-link-a" to="/editPersonal">修改资料</router-link></DropdownItem></ul>
@@ -36,7 +36,7 @@
 
             <div to='/login' class="topnav-box-user-login">
                 <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
-                    <Icon type="ios-contact" size="48"/>
+                    <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                 </Tooltip>
             </div>
         </div>
@@ -198,14 +198,30 @@ export default {
 
 .topnav-box-user{
     position: relative;
-    width: 15%;
+    width: 13%;
+    top: 10px;
     float:right;
     align-content: center;
     color:black;
     z-index:inherit;
 }
 
-.topnav-user, .user-box-link-a{
+.topnav-user-image{
+    position: relative;
+    top: -2px;
+    width: 30px;
+    height: 30PX;
+    color:rgba(0, 0, 0, 0.5);
+    background-color: #e8f8f0;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+}
+.topnav-user-image:hover{
+    color: #1ebf73;
+}
+
+.topnav-user,.user-box-link-a{
     color:black;
     z-index:inherit;
     margin-right: 30px;

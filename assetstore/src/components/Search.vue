@@ -217,6 +217,9 @@ export default {
     left: -10px;
     text-align:center;
 }
+.search-card > span > .tag-style:hover > .ivu-tag-text{
+    color: #1ebf73;
+}
 </style>
 <style scoped>
 .search-input{

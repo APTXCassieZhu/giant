@@ -59,9 +59,9 @@
                 <span class="welcome">欢迎回来，{{getUser}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <Icon type="ios-contact" size="40" class="topnav-user" @click="goLike('personal')"/>
+                        <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
-                    <DropdownMenu slot="list" class="topnav-dropdown">
+                    <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-25px;">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem></ul>
                         <ul><DropdownItem><router-link class="user-box-link-a" to="/editPersonal">修改资料</router-link></DropdownItem></ul>
@@ -212,7 +212,7 @@ export default {
 }
 .welcome{
     position:relative;
-    bottom: 6px;
+    bottom: 0px;
     font-size:14px;
     color: rgba(0, 0, 0, 0.5);
 }
@@ -225,7 +225,17 @@ export default {
     color:black;
 }
 
-.topnav-user, .user-box-link-a{
+.topnav-user{
+    color:rgba(0, 0, 0, 0.5);
+    background-color: #e8f8f0;
+    width:35px;
+    height:35px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.user-box-link-a{
     color:black;
 }
 

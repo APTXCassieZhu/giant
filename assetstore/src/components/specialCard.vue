@@ -116,6 +116,7 @@ export default {
     margin-top: 7px;
     font-size: 12px;
     color: #7f7f7f;
+    text-align: left;
     font-family: MicrosoftYaHei;
 }
 .source-content-icon{

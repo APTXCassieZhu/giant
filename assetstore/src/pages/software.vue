@@ -137,7 +137,7 @@ export default {
 
 .software-page{
     position: relative;
-    left: 80px;
+    left: 130px;
     top: 28px;
     width: 1200px;
     height: 600px;
