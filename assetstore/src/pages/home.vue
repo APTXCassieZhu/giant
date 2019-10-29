@@ -6,22 +6,18 @@
     </div>
     <br><br>
     <div class="type-title" @click="goPage('/artShow')">美术类资源</div>
-    <div style="position:relative; text-align:center; width: 1320px;margin: 0 auto;">
-        <div class="more" style="float:left; height:21px"></div>
-        <div class="type-des-title">-最具创意的美术项目集合-</div>
+    <div style="text-align:center;position:relative;">-最具创意的美术项目集合-
         <strong><div class="more" @click="goPage('/artShow')">查看更多
-            <Icon size="25" style="position:relative;top:2px;left:-5px;" type="md-arrow-dropright" /></div>
+            <Icon size="23" style="position:absolute;bottom:0.4px;" type="md-arrow-dropright" /></div>
         </strong>
     </div>
     <div class="card-wrapper">
         <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
     </div>
     <div class="type-title" @click="goPage('/artFilter')">推荐分类</div>
-    <div style="position:relative; text-align:center; width: 1320px;margin: 0 auto;">
-        <div class="more" style="float:left; height:21px"></div>
-        <div class="type-des-title">-各类高实用性的项目集合-</div>
+    <div style="text-align:center;position:relative;">-各类高实用性的项目集合-
         <strong><div class="more" @click="goPage('/artFilter')">查看更多
-            <Icon size="25" style="position:relative;top:2px;left:-5px;" type="md-arrow-dropright" /></div>
+            <Icon size="23" style="position:absolute;bottom:0.4px" type="md-arrow-dropright" /></div>
         </strong>
     </div>
     <div class="card-wrapper">
@@ -131,18 +127,10 @@ export default {
     z-index: 10;
     cursor:pointer;
 }
-
-.type-des-title{
-    position:relative;
-    display:inline-block;
-    width: 1120px;
-    padding: 0;
-    margin: 0;    
-    color: gray;
-}
 .more{
-    position: relative;
-    float:right;
+    position: absolute;
+    top: 1.5px;
+    right: 300px;
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;

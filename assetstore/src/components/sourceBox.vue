@@ -1,8 +1,8 @@
 <template>
     <div class="source-box">
         <div class="upper">
-            <div class="font-image">{{sourceName.charAt(0)}}</div>
-            <div class="font-title">{{sourceName}}</div>
+            <div class="font-image">{{source.charAt(0)}}</div>
+            <div class="font-title">{{source}}</div>
             <div class="font-content">下载次数&emsp;&emsp;&emsp;关注人数</div>
             <div class="font-num">{{downloadCount}}<span style="margin-left: 63px;">2,019</span></div>
         </div>
@@ -25,10 +25,15 @@
 <script>
 export default {
     name: "SourceBox",
+    props: {
+        sourceName: {
+            type: String,
+        },
+    },
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
-            sourceName: '啦啦啦啦',
+            source: this.sourceName, //'啦啦啦啦',
             rate: 3.5,
             downloadCount: 233,
             likeCount: 2019,

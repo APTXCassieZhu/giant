@@ -41,12 +41,15 @@
         <div v-show="showPage == 'special'" class="software-page">
             <span class="card-title">专用软件（{{specialNum}}款已收录）</span>
             <Divider/>
-            <div v-for="n in 7" :key="n">
-                <software-download></software-download>
+            <special-download ref="sp1"></special-download>
+            <special-download ref="sp2"></special-download>
+            <special-download ref="sp3"></special-download>
+            <div v-for="n in 4" :key="n">
+                <special-download></special-download>
             </div>
             <Button v-show="!ifMore" id="more" class="more" @click="addMore()">加载更多</Button>
             <div v-if="ifMore">
-                <software-download v-for="n in 13" :key="n"></software-download>
+                <special-download v-for="n in 13" :key="n"></special-download>
             </div>
         </div>
         <div v-show="showPage == 'free'" class="software-page">
@@ -92,9 +95,10 @@ import TopNavigation from '../components/TopNav.vue'
 import Footer from '../components/footer.vue'
 import Corner from '../components/corner.vue'
 import SoftwareDownload from '../components/softwareDownload.vue'
+import SpecialDownload from '../components/specialDownload.vue'
 export default {
     name:"software",
-    components:{TopNavigation, Footer, Corner, SoftwareDownload},
+    components:{TopNavigation, Footer, Corner, SoftwareDownload, SpecialDownload},
     data(){
         return{
             generalNum: 20,
@@ -103,8 +107,14 @@ export default {
             scheduleNum: 10,
             driveNum: 8,
             ifMore: false,
-            showPage: 'general'
+            showPage: 'general',
+            softwareList: ['微博','微信','知乎','豆瓣','人人', 'QQ', '网易云'],
         }
+    },
+    mounted(){
+        this.$refs.sp1.class='btn1'
+        this.$refs.sp2.class='btn2'
+        this.$refs.sp3.class='btn3'
     },
     methods:{
         addMore(){

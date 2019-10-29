@@ -1,8 +1,8 @@
 <template>
     <div class="source-box">
         <div class="upper">
-            <div class="font-image">{{softwareName.charAt(0)}}</div>
-            <div class="font-title">{{softwareName}}</div>
+            <div class="font-image">{{software.charAt(0)}}</div>
+            <div class="font-title">{{software}}</div>
             <div class="font-content">当前版本<span style="margin-left:10px;">{{currentVersion}}</span></div>
             <div class="font-content">最后更新<span style="margin-left:10px;">{{lastestUpgrade}}</span></div>
         </div>
@@ -19,10 +19,15 @@ library.add(faArrowAltCircleUp)
 
 export default {
     name: "SoftwareUpBox",
+    props: {
+        softwareName: {
+            type: String,
+        },
+    },
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
-            softwareName: '申请的软件名称',
+            software: this.softwareName,
             rate: 3.5,
             downloadCount: 233,
             likeCount: 2019,

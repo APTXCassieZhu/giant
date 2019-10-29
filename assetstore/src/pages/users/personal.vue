@@ -22,7 +22,7 @@
             </span>
             <Divider />
             <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
-            <div v-for="(item,index) in productList" :key="index">
+            <div v-for="(item, i) in productList" :key="'a'+i">
                 <div class="font-image">{{item.charAt(0)}}</div>&emsp;{{item}}
                 <br><br>
             </div>
@@ -35,13 +35,13 @@
                         <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
                         <Icon size="40" type="md-add" @mouseover.native="bright()" @mouseout.native="unBright()" class="upload-add-style"/>
                     </div>
-                    <source-box ref="son"></source-box>
-                    <source-box ref="son1"></source-box>
+                    <source-box v-bind:sourceName='this.productList[0]'></source-box>
+                    <source-box v-bind:sourceName='this.productList[1]'></source-box>
                 </TabPane>
                 <TabPane :label="tab2" name="name2">
-                    <software-box ref="so"></software-box>
-                    <software-up-box ref="so1"></software-up-box>
-                    <software-pend-box ref="so2"></software-pend-box>
+                    <software-box v-bind:softwareName='this.softwareList[0]'></software-box>
+                    <software-up-box v-bind:softwareName='this.softwareList[1]'></software-up-box>
+                    <software-pend-box v-bind:softwareName='this.softwareList[2]'></software-pend-box>
                 </TabPane>
                 <TabPane :label="tab3" name="name3">
                     <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
@@ -67,6 +67,7 @@ import LikeBox from '../../components/likeBox.vue'
 import SoftwareBox from '../../components/softwareBox.vue'
 import SoftwareUpBox from '../../components/softwareUpBox.vue'
 import SoftwarePendBox from '../../components/softwarePendBox.vue'
+
 export default {
     name:"Personal",
     components:{TopNavigation, Footer, Corner, SourceBox, SoftwareBox, 
@@ -79,11 +80,6 @@ export default {
     mounted() {
         this.personalActive = this.$store.state.personalActive
         this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
-        this.$refs.son.sourceName = '二次元人物模型'
-        this.$refs.son1.sourceName = '天空贴图素材包'
-        this.$refs.so.softwareName = this.softwareList[0]
-        this.$refs.so1.softwareName = this.softwareList[1]
-        this.$refs.so2.softwareName = this.softwareList[2]
     },
     data () {
         return {
@@ -93,8 +89,9 @@ export default {
             tab3: "关注(0)",
             personalActive: "name1",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸'],// 从后端拿
-            productList: ['二次元人物模型','天空贴图素材包'],    // 从后端拿
-            softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版'],
+            // TODO 这两个list还得修改。每一个都还有其他产品信息
+            productList: ['二次元人物模型','天空贴图素材包'],    
+            softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
         }
     },
     methods:{

@@ -20,7 +20,7 @@
             <div class="topnav-box-user">
                 <Icon class="topnav-user" type="md-cloud-upload" size="29"/>
                 <Icon class="topnav-user" type="md-notifications" size="29"/>
-                <Icon class="topnav-user" type="md-settings" size="29"/>
+                <Icon class="topnav-user" @click="goPage('editPersonal')" type="md-settings" size="29"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <div class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
