@@ -10,6 +10,14 @@ import ViewUI from 'view-design';
 // import style
 import 'view-design/dist/styles/iview.css';
 import '../my-theme/index.less';       // change theme color
+// fontawesome icon
+import fontawesome from '@fortawesome/fontawesome'
+import solid from '@fortawesome/fontawesome-free-solid'
+import regular from '@fortawesome/fontawesome-free-regular'
+import brands from '@fortawesome/fontawesome-free-brands'
+fontawesome.library.add(solid)
+fontawesome.library.add(regular)
+fontawesome.library.add(brands)
 
 Vue.use(ViewUI);
 Vue.config.productionTip = false

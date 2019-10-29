@@ -8,16 +8,12 @@
         <br>
         <div class="corner-icon">
             <span style="position:relative; left: 2px; font-size:20px;">
-                <font-awesome-icon icon="edit"/>
+                <font-awesome-icon :icon="['fas','edit']"/>
             </span>
         </div>
     </div>
 </template>
 <script>
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
-library.add(faEdit)
-
 export default {
     name:"Corner",
     props: {

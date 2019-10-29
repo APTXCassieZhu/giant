@@ -13,21 +13,54 @@
         
         <div v-show="modal" class="modal-mask">
             <div class="modal">
-                <Icon size="30" type="md-close" class="modal-close" @click="modal = false"/> 
-                <span class="modal-title">请输入您的账号</span>
-                <p class="modal-step"><Steps :current="current">
+                <font-awesome-icon class="modal-close" :icon="['fas','times']" @click="modal = false"/>
+                <span v-if="current==0" class="modal-title">请输入您的账号</span>
+                <span v-if="current==1" class="modal-title">请填写您的申请理由</span>
+                <span v-if="current==2" class="modal-title">确认提交吗？</span>
+                <p v-if="current<3" class="modal-step"><Steps :current="current">
                 <Step title="确认账号"></Step>
                 <Step title="申请理由"></Step>
                 <Step title="提交"></Step>
                 </Steps></p>
                 <div v-if="current==0" class="modal-account-verify">
-                    <p class="modal-account">当前登录域账号</p>
-                    <Input disable class="modal-account-input"/>
-                    <p class="modal-account">请输入域账号密码</p>
+                    <div class="modal-account">当前登录域账号</div>
+                    <Input v-model="account" readonly class="modal-account-input"/>
+                    <div class="modal-account">请输入域账号密码</div>
                     <Input class="modal-account-input" type="password" password/>
+                    <div class="modal-btn-wrapper">
+                        <Button class="modal-prev-btn" @click="prevStep">返回</Button>
+                        <Button class="modal-next-btn" @click="nextStep">确认，下一步</Button>
+                    </div>
                 </div>
-                <div class="modal-btn-wrapper">
-
+                
+                 <div v-if="current==1" class="modal-account-verify">
+                    <Input v-model="reason" maxlength="100" show-word-limit type="textarea" placeholder="请描述需求以便快速审核"/>
+                    <div class="modal-btn-wrapper">
+                        <Button class="modal-prev-btn" @click="prevStep">上一步</Button>
+                        <Button class="modal-next-btn" @click="nextStep">确认，下一步</Button>
+                    </div>
+                </div>
+                <div v-if="current==2" class="modal-account-verify">
+                    <div class="modal-last-step-title">申请人ID</div>
+                    <div class="modal-last-step-content">{{account}}</div>
+                    <div class="modal-last-step-title">申请理由</div>
+                    <div class="modal-last-step-content">{{reason}}</div>
+                    <div class="modal-btn-wrapper">
+                        <Button class="modal-prev-btn" @click="prevStep">上一步</Button>
+                        <Button class="modal-next-btn" @click="nextStep">提交</Button>
+                    </div>
+                </div>
+                <div v-if="current==3" class="modal-account-verify" style="top:0;height:405px;">
+                    <font-awesome-icon :icon="['far','handshake']" class="modal-finish-icon"/>
+                    <span class="modal-finish-title">已受理</span>
+                    <div class="modal-finish-content">
+                        你的申领已经受理，我们会尽快处理。请牢记下方的回执编号，处理结果请注意通知信息，谢谢！
+                    </div>
+                    <div class="modal-finish-codearea">
+                        <span class="modal-finish-codetext">回执编号：</span>
+                        <span class="modal-finish-code">{{code}}</span>
+                    </div>
+                    <Button class="modal-next-btn" @click="nextStep" style="position:absolute;bottom:0px;left:80px;">确认</Button>
                 </div>
             </div>
         </div>
@@ -41,17 +74,29 @@ export default {
     name: "SepcialDownload",
     data() {
         return {
+            account: 'xiamuZhu@ztgame.com',
             softwareName: "XXX客户端",
             currentVersion: "3.0.1",
             latestUpdate: "2019.02.29",
             modal: false,
             class: 'btn2',
             current: 0,                 //当前处于步骤几
+            reason: '',
+            code: 89757,                // 回执编号
         }
     },
     methods:{
-        next(){
+        prevStep(){
+            if (this.current == 0) {
+                this.modal = false;
+            } else {
+                this.current -= 1;
+            }
+        },
+        nextStep(){
             if (this.current == 3) {
+                this.modal = false;
+                this.class ='btn3';
                 this.current = 0;
             } else {
                 this.current += 1;
@@ -87,6 +132,9 @@ export default {
     width: 37px;
     height: 37px;
     line-height: 37px;
+}
+.modal-account-verify > .ivu-input-wrapper > textarea{
+    height: 135px;
 }
 </style>
 <style scoped>
@@ -195,12 +243,13 @@ export default {
 }
 .modal-close{
     z-index: 1001;
-    font-size: 12px;
+    font-size: 20px;
     position: fixed;
     right: 560px;
     top: 220px;
     overflow: hidden;
     cursor: pointer;
+    color: #787878;
 }  
 .modal-close:hover{
     color: red;
@@ -219,22 +268,105 @@ export default {
 
 .modal-account-verify{
     position: relative;
-    top: 100px;
+    top: 80px;
     width: 464px;
+    height: 260px;
     text-align: center;
+    left:60px;
 }
 .modal-account{
     position: relative;
     text-align: left;
     font-size: 16px;
     color: #000000;
+    margin-bottom: 10px;
 }
 .modal-account-input{
     position: relative;
     width: 464px;
     text-align: center;
+    margin-bottom: 30px;
 }
 .modal-btn-wrapper{
+    position: absolute;
+    width: 464px;
+    bottom: 0px;
+}
+.modal-prev-btn{
+    width: 148px;
+    height: 45px;
+    background-color: #f2f2f2;
+    font-size: 18px;
+    font-weight: bold;
+    color: #787878;
+    margin-right: 25px;
+    border-width: 0px;
+}
 
+.modal-next-btn{
+    width: 285px;
+    height: 45px;
+    border: solid 1px #1ebf73;
+    background-color: #1ebf73;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.modal-last-step-title{
+    font-size: 18px;
+    font-weight: 600;
+    color: #1ebf73;
+    text-align: left;
+    margin-bottom: 10px;
+}
+.modal-last-step-content{
+    font-size: 14px;
+    color: #7f7f7f;
+    text-align: left;
+    margin-bottom: 30px;
+}
+.modal-finish-icon{
+    width: 58px;
+    height: 58px;
+    font-size: 50px;
+    color: #1ebf73;
+    border-radius: 50%;
+}
+.modal-finish-title{
+    font-size: 24px;
+    font-weight: 600;
+    color: #1ebf73;
+    position: relative;
+    bottom: 15px;
+    left: 10px;
+}
+.modal-finish-content{
+    font-size: 18px;
+    font-weight: 600;
+    color: #7f7f7f;
+    text-align: left;
+    margin-bottom: 50px;
+    margin-top: 30px;
+}
+.modal-finish-codearea{
+    width: 453px;
+    height: 80px;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+}
+.modal-finish-codetext{
+    font-size: 18px;
+    font-weight: bold;
+    color: #787878;
+    line-height: 80px;
+    text-align: center;
+}
+.modal-finish-code{
+    font-size: 24px;
+    font-weight: bold;
+    color: #1ebf73;
+    line-height: 80px;
+    text-align: center;
 }
 </style>
