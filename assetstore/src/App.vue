@@ -36,6 +36,10 @@ export default {
   /*text-align: center;*/
   color: #2c3e50;
   background-color: #ffffff;
+  width:1950px;
+  min-width:1620px;
+  max-width:100%;
+  height:100%;
 }
 @font-face {
   font-family: "custom-font";

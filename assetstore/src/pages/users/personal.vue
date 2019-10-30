@@ -33,9 +33,12 @@
                 <TabPane :label="tab1" name="name1">
                     <div class="upload-style">
                         <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
-                        <Icon size="40" type="md-add" @mouseover.native="bright()" @mouseout.native="unBright()" class="upload-add-style"/>
+                        <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
                     </div>
                     <source-box v-bind:sourceName='this.productList[0]'></source-box>
+                    <source-box v-bind:sourceName='this.productList[1]'></source-box>
+                    <source-box v-bind:sourceName='this.productList[1]'></source-box>
+                    <source-box v-bind:sourceName='this.productList[1]'></source-box>
                     <source-box v-bind:sourceName='this.productList[1]'></source-box>
                 </TabPane>
                 <TabPane :label="tab2" name="name2">
@@ -107,8 +110,23 @@ export default {
     },
 }
 </script>
-
 <style>
+.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container{
+    font-size: 18px!important;
+}
+.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container
+ > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab{
+    /* 使得三个标签间距变大 */
+    padding: 8px 50px;
+ }
+/*.asset-card > .ivu-tabs > .ivu-tabs-content{
+   overflow: auto;
+}*/
+.ivu-tabs-nav-scroll {
+    position: sticky;
+}
+</style>
+<style scoped>
 .self-card{
     position: relative;
     display:inline-block;
@@ -157,21 +175,6 @@ export default {
     overflow: auto;
 }
 
-.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container{
-    font-size: 18px!important;
-}
-.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container
- > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab{
-    /* 使得三个标签间距变大 */
-    padding: 8px 50px;
- }
-
- /*.asset-card > .ivu-tabs > .ivu-tabs-content{
-   overflow: auto;
-}*/
-.ivu-tabs-nav-scroll {
-    position: sticky;
-}
 .font-image{
     font-size:16px;
     display: inline-block;
@@ -205,9 +208,10 @@ export default {
     position: absolute;
     cursor: pointer;
     color: #ffffff;
-    top: 173px;
-    left: 120px;
+    top: 178px;
+    left: 128px;
     width: 24px;
+    font-size: 24px;
     text-align:center;
     z-index: 10;
 }

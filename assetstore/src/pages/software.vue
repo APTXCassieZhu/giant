@@ -41,9 +41,9 @@
         <div v-show="showPage == 'special'" class="software-page">
             <span class="card-title">专用软件（{{specialNum}}款已收录）</span>
             <Divider/>
-            <special-download ref="sp1"></special-download>
-            <special-download ref="sp2"></special-download>
-            <special-download ref="sp3"></special-download>
+            <special-download :btn='btnList[0]'></special-download>
+            <special-download :btn='btnList[1]'></special-download>
+            <special-download :btn='btnList[2]'></special-download>
             <div v-for="n in 4" :key="n">
                 <special-download></special-download>
             </div>
@@ -109,12 +109,13 @@ export default {
             ifMore: false,
             showPage: 'general',
             softwareList: ['微博','微信','知乎','豆瓣','人人', 'QQ', '网易云'],
+            btnList:['btn1','btn2','btn3'],
         }
     },
     mounted(){
-        this.$refs.sp1.class='btn1'
-        this.$refs.sp2.class='btn2'
-        this.$refs.sp3.class='btn3'
+        // this.$refs.sp1.class='btn1'
+        // this.$refs.sp2.class='btn2'
+        // this.$refs.sp3.class='btn3'
     },
     methods:{
         addMore(){
@@ -132,8 +133,8 @@ export default {
 .alert{
     position: relative;
     top: 15px;
-    left: 2.5%;
-    width: 90%;
+    left: 4%;
+    width: 80%;
     font-size: 16px;
 }
 .sidemenu-card{

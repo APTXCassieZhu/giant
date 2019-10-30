@@ -7,9 +7,10 @@
             <p style="position:relative;top:8px;font-size:14px;font-weight:600;color:#7f7f7f;">当前版本 {{currentVersion}}</p>
             <p style="position:relative; top: 25px;font-size:14px;color:#7f7f7f;">最后更新 {{latestUpdate}}</p>
         </div>
-        <Button v-if="this.class==='btn1'" class='btn1' type="success"><Icon type="md-checkmark" size="22"/> 已获得</Button>
-        <Button v-if="this.class==='btn2'" class="btn2" @click="modal = true"><font-awesome-icon icon="handshake"/> 申领使用权</Button>
-        <Button v-if="this.class==='btn3'" disable class="btn3">Pending</Button>
+        <Button v-if="this.curbtn==='btn1'" class='btn1' @mouseover.native="mouseover" ><Icon type="md-checkmark" size="22"/> 已获得</Button>
+        <Button v-if="this.curbtn==='btn2'" class="btn2" @click="modal = true"><font-awesome-icon icon="handshake"/> 申领使用权</Button>
+        <Button v-if="this.curbtn==='btn3'" disable class="btn3">Pending</Button>
+        <Button v-if="this.curbtn==='btn4'" @click="tip" @mouseout.native="mouseout" class="btn1" style="background-color: #1ebf73;color:white;">找回软件</Button>
         
         <div v-show="modal" class="modal-mask">
             <div class="modal">
@@ -72,14 +73,21 @@ import { faHandshake } from '@fortawesome/free-solid-svg-icons'
 library.add(faHandshake)
 export default {
     name: "SepcialDownload",
+    props:{
+        btn:{
+            type: String,
+            default: 'btn2',
+        }
+    },
     data() {
+        console.log(this.btn)
         return {
+            curbtn: this.btn,
             account: 'xiamuZhu@ztgame.com',
             softwareName: "XXX客户端",
             currentVersion: "3.0.1",
             latestUpdate: "2019.02.29",
-            modal: false,
-            class: 'btn2',
+            modal: false,      
             current: 0,                 //当前处于步骤几
             reason: '',
             code: 89757,                // 回执编号
@@ -96,11 +104,24 @@ export default {
         nextStep(){
             if (this.current == 3) {
                 this.modal = false;
-                this.class ='btn3';
+                this.curbtn ='btn3';
                 this.current = 0;
             } else {
                 this.current += 1;
             }
+        },
+        tip(){
+            const content = '<p>请拨打 8000 致IT服务台,</p><p>提供域账号再次申领该软件</p>'
+            this.$Modal.info({
+                title: '提示',
+                content: content
+            });
+        },
+        mouseover(){
+            this.curbtn='btn4'
+        },
+        mouseout(){
+            this.curbtn='btn1'
         }
     }
 }
@@ -173,6 +194,9 @@ export default {
     text-align: center;
     font-weight:600;
     font-size:16px;
+    border: solid 1px #1ebf73;
+    background-color: #ffffff;
+    color: #1ebf73;
 }
 .btn2{
     position:relative;
@@ -183,13 +207,13 @@ export default {
     line-height: 37px;
     text-align: center;
     color: white;
-    background-color: #f62b36;
+    background-color: #3199ff;
     font-weight:600;
     font-size:16px;
 }
 .btn2:hover{
-    border-color: #fc8b91;
-    background-color: #fc8b91;
+    border-color: #6cb4fc;
+    background-color: #6cb4fc;
 }
 .btn3{
     position:relative;
@@ -200,7 +224,7 @@ export default {
     line-height: 37px;
     text-align: center;
     color: white;
-    background-color: #37d89d;
+    background-color: #1aa463;
     border-width: 0px;
     font-weight:600;
     font-size:16px;
@@ -245,8 +269,8 @@ export default {
     z-index: 1001;
     font-size: 20px;
     position: fixed;
-    right: 560px;
-    top: 220px;
+    right: 565px;
+    top: 215px;
     overflow: hidden;
     cursor: pointer;
     color: #787878;
