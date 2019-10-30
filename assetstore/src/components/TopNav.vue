@@ -20,7 +20,7 @@
             <div class="topnav-box-user">
                 <Icon class="topnav-user" type="md-cloud-upload" size="29"/>
                 <Icon class="topnav-user" type="md-notifications" size="29"/>
-                <Icon class="topnav-user" @click="goPage('editPersonal')" type="md-settings" size="29"/>
+                <Icon class="topnav-user" @click="goPage('editSetting')" type="md-settings" size="29"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <div class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
@@ -28,7 +28,7 @@
                     <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-30px;">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem></ul>
-                        <ul><DropdownItem><router-link class="user-box-link-a" to="/editPersonal">修改资料</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><router-link class="user-box-link-a" to="/editSetting">修改资料</router-link></DropdownItem></ul>
                         <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
                     </DropdownMenu>
                 </Dropdown>

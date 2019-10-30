@@ -3,14 +3,14 @@
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <Menu active-name="1" class="leftside-menu">
             <!--TODO 未完成，仅有样式-->
-            <MenuItem name="1">
-                <Icon size="18" type="ios-apps" />个性化设置
+            <MenuItem name="1" @click.native="showPerson">
+                <Icon size="18" type="md-person" />个性化设置
             </MenuItem>
-            <MenuItem name="2">
+            <MenuItem name="2" @click.native="showInfo">
                 <Icon size="18" type="md-notifications" />消息通知设置
             </MenuItem>
         </Menu>
-        <div class="setting-card">
+        <div v-if="this.showPersonal" class="setting-card">
             <div class="camera"><Icon size="28" type="md-camera" /></div>
             <!--TODO 没找到和设计稿一样的upload icon-->
             <Button class="camera-btn"><Icon size="20" type="md-cloud-upload" /> 上传</Button>
@@ -40,6 +40,44 @@
             </div>
             <Button class="confirm-btn" type="success">确认</Button>
         </div>
+        <div v-if="!showPersonal" class="setting-card info-setting-card">
+            <div class="info-content">
+                <span class="info-text">资源更新提醒</span>
+                <i-switch class="info-switch" v-model="switch1" @on-change="updateChange">
+                    <span slot="open">开</span>
+                    <span slot="close">关</span>
+                </i-switch>
+            </div>
+            <div class="info-content">
+                <span class="info-text">提问回答提醒</span>
+                <i-switch class="info-switch" v-model="switch2" @on-change="replayChange">
+                    <span slot="open">开</span>
+                    <span slot="close">关</span>
+                </i-switch>
+            </div>
+            <div class="info-content">
+                <span class="info-text">向您提问提醒</span>
+                <i-switch class="info-switch" v-model="switch3" @on-change="askChange">
+                    <span slot="open">开</span>
+                    <span slot="close">关</span>
+                </i-switch>
+            </div>
+            <div class="info-content">
+                <span class="info-text">软件更新提醒</span>
+                <i-switch class="info-switch" v-model="switch4" @on-change="softwareChange">
+                    <span slot="open">开</span>
+                    <span slot="close">关</span>
+                </i-switch>
+            </div>
+            <div class="info-content">
+                <span class="info-text">资源评论提醒</span>
+                <i-switch class="info-switch" v-model="switch5" @on-change="commentChange">
+                    <span slot="open">开</span>
+                    <span slot="close">关</span>
+                </i-switch>
+            </div>
+            <Button class="save-btn" type="success">保存</Button>
+        </div>
         <corner></corner>
         <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
     </div>
@@ -51,7 +89,7 @@ import Footer from '../../components/footer.vue'
 import Corner from '../../components/corner.vue'
 
 export default {
-    name:"EditPersonal",
+    name:"EditSetting",
     components:{TopNavigation, Footer, Corner, },
     computed:{
         getUser(){
@@ -65,11 +103,35 @@ export default {
         return {
             account: 'xiamuZhu@ztgame.com',
             nickname: '',
+            showPersonal: true,
+            switch1: true,
+            switch2: true,
+            switch3: false,
+            switch4: true,
+            switch5: true,
         }
     },
     methods:{
         goPage(url){
             this.$router.push(url)
+        },
+        showPerson(){
+            console.log(this.showPersonal)
+            this.showPersonal = true
+        },
+        showInfo(){
+            this.showPersonal = false
+        },
+        // TODO 改变的值要传给后端
+        updateChange(status){
+        },
+        replayChange(status){
+        },
+        askChange(status){
+        },
+        softwareChange(status){
+        },
+        commentChange(status){
         },
     },
 }
@@ -114,6 +176,37 @@ export default {
     border-radius: 3px;
     background-color: #ffffff;
     overflow: auto;
+}
+.info-setting-card{
+    height: 624px;
+    width: 800px;
+    padding: 30px 98px 60px 98px;
+}
+.info-content{
+    height: 84px;
+    border-bottom: 1px solid #eff2f5;
+    text-align:center;
+    line-height: 84px;
+}
+.info-text{
+    color: #000000;
+    font-size: 16px;
+    position: relative;
+    float: left;
+    margin-right: 450px;
+}
+.info-switch{
+    position: relative;
+    /* float: right; */
+}
+.save-btn{
+    margin-top: 60px;
+    margin-left: 100px;
+    width: 430px;
+    height: 44px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
 }
 .camera{
     display: inline-block;

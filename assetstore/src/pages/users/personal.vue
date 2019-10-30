@@ -36,10 +36,7 @@
                         <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
                     </div>
                     <source-box v-bind:sourceName='this.productList[0]'></source-box>
-                    <source-box v-bind:sourceName='this.productList[1]'></source-box>
-                    <source-box v-bind:sourceName='this.productList[1]'></source-box>
-                    <source-box v-bind:sourceName='this.productList[1]'></source-box>
-                    <source-box v-bind:sourceName='this.productList[1]'></source-box>
+                    <source-box v-bind:sourceName='this.productList[1]'></source-box>  
                 </TabPane>
                 <TabPane :label="tab2" name="name2">
                     <software-box v-bind:softwareName='this.softwareList[0]'></software-box>
@@ -119,10 +116,12 @@ export default {
     /* 使得三个标签间距变大 */
     padding: 8px 50px;
  }
-/*.asset-card > .ivu-tabs > .ivu-tabs-content{
-   overflow: auto;
-}*/
-.ivu-tabs-nav-scroll {
+.asset-card > .ivu-tabs{
+    overflow: visible;
+    min-height: 500px;
+}
+.asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container > .ivu-tabs-nav-wrap
+> .ivu-tabs-nav-scroll{
     position: sticky;
 }
 </style>
@@ -197,7 +196,7 @@ export default {
     height: 196px; 
     width: 274px;
     margin-top: 30px;
-    margin-right: 30px;
+    margin-right: 50px;
     border: solid 2px #eaeaea;
 }
 .upload-style:hover{

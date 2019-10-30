@@ -9,7 +9,7 @@ import searchresult from '../pages/search/searchResult'
 import software from '../pages/software'
 import discussion from '../pages/Q&A'
 import personal from '../pages/users/personal'
-import editPersonal from '../pages/users/editPersonal'
+import editSetting from '../pages/users/editSetting'
 import knowledge from '../pages/knowledge'
 
 Vue.use(Router)
@@ -47,9 +47,9 @@ export default new Router({
     },
     ,
     {
-      path: '/editPersonal',
-      name: 'EditPersonal',
-      component: editPersonal,
+      path: '/editSetting',
+      name: 'EditSetting',
+      component: editSetting,
       meta: {
         requireAuth: true
       }

@@ -1,5 +1,5 @@
 <template>
-<div class="source-box-wrapper">
+<div class="source-box-wrapper" v-if="!deleteOrNot">
     <div class="source-box">
         <div class="upper">
             <div class="font-image">{{source.charAt(0)}}</div>
@@ -17,14 +17,18 @@
             </Col>
             <Col span="8" class="footer-col1">
                 <Divider type="vertical" class="foot-divider"/>
-                <Icon size="25" type="md-more" class="foot-icon" @click="openDrop=true"/>
+                <Dropdown trigger="click">
+                    <Button href="javascropt:void(0)" class="foot-btn">
+                        <Icon size="25" type="md-more" class="foot-icon"/>
+                    </Button>
+                    <DropdownMenu slot="list">
+                        <DropdownItem @click.native="changeState" class="dropdown-text">{{state}}共享</DropdownItem>
+                        <DropdownItem @click.native="deleteSource" class="dropdown-text-delete">删除</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
             </Col>
         </Row>
     </div>
-    <!-- <div v-if="openDrop==true" @on-clickoutside="closeDrop()" class="dropdown">
-            <p @click="changeState" class="dropdown-text">{{state}}共享</p>
-            <p @click="deleteSource" class="dropdown-text-delete">删除</p>
-    </div> -->
 </div>
 </template>
 <script>
@@ -46,7 +50,8 @@ export default {
             sourceID: 0,                    // TODO从后端得到
             state: '关闭',
             // default
-            openDrop: false,
+            // moreVisible: false,
+            deleteOrNot: false,
         }
     },
     methods:{
@@ -70,22 +75,38 @@ export default {
                 this.state = '关闭'
         },
         deleteSource(){
-
+            this.$Modal.confirm({
+                title: '确认删除该条资源？',
+                okText: '确认',
+                cancelText: '取消',
+                onOk: () => {
+                    setTimeout(() => {
+                        this.$Modal.success({
+                            title: '资源已删除',
+                        })
+                        // TODO 告诉后端这个资源已删除
+                        this.deleteOrNot = true
+                    }, 1000);
+                },
+            });
         },
-        closesDrop(){
-            console.log(this.openDrop)
-            this.openDrop=false
-            debugger
-        }
+        // closeDrop(){
+        //     console.log('close')
+        //     this.moreVisible=false
+        // },
+        // openDrop(){
+        //     console.log('open')
+        //     this.moreVisible=true
+        // }
     }
 }
 </script>
 <style scoped>
 .source-box-wrapper{
     float: left;
-    height:296px;
+    height:250px;
     width: 274px;
-    margin-right: 30px;
+    margin-right: 50px;
 }
 .source-box{
     height: 196px; 
@@ -159,21 +180,22 @@ export default {
     color: #7d7d7d;
     margin: 0px;
 }
-.dropdown{
-    position: absolute;
-    width: 92px;
-    height: 100px;
-    top: 285px;
-    left: 485px;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 4, 0.1);
-    z-index: 1000;
+.foot-btn{
+    border-width: 0px;
+    border-radius: 0px;
+    width: 88px;
+    height: 45px;
+    text-align:center;
+    line-height:45px;
+    background-color: #eaeaea;
 }
+
 .dropdown-text, .dropdown-text-delete{
     font-size: 14px;
     font-weight: 600;
     color:#7f7f7f;
     text-align:center;
-    line-height: 50px;
+    line-height: 40px;
     cursor: pointer;
 }
 .dropdown-text:hover{
