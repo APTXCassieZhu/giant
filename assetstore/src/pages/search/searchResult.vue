@@ -148,14 +148,8 @@ export default {
             return this.$store.state.searchContent;
         }
     },
-    mouted(){
-        // top(140px) + bottom(300px) = 440
-        /*this.minHeight = document.documentElement.clientHeight - 440
-        console.log(this.minHeight)
-        var that = this
-        window.onresize = function(){
-            this.minHeight = document.documentElement.clientHeight - 440
-        }*/
+    mounted(){
+        /* 如果搜索到的匹配的内容为空 */
     },
 }
 </script>

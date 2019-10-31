@@ -45,4 +45,7 @@ export default {
   font-family: "custom-font";
   src: url('https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
 }
+#app input:-internal-autofill-selected {
+        box-shadow: 0 0 0 1000px white inset;
+    }
 </style>
