@@ -13,7 +13,12 @@ router.post('/login', jsonParser, function(req,res){
     console.log("pwd: " +req.body.password)
     res.cookie('session', { current_user: req.body.account });
     // TO DO check if the user exists
-    res.json({'status':"OK"});
+    if(req.body.account == '超级无敌美少女' && req.body.password == '1234'){
+        res.status(200).json({'code': 40101})
+    }else{
+        res.status(200).json({'code': 0});
+    }
+    
 })
 
 router.post('/search', jsonParser,function(req,res){

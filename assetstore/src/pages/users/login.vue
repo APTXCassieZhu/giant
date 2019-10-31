@@ -73,21 +73,25 @@ export default {
             console.log(this.loginForm);
             this.$http.post('/users/login',{account:this.loginForm.account, password:this.loginForm.password},{emulateJSON:true}).then((res)=>{
                 // 登录成功
-                this.$store.commit('REMEM_COUNT', this.single)
-                this.$store.commit('ADD_COUNT', this.loginForm.account);
-                this.$router.push('/')
-            }, (res)=>{
-                // 登录失败
+                console.log(res.data)
+                if(res.data.code == 0){
+                    this.$store.commit('REMEM_COUNT', this.single)
+                    this.$store.commit('ADD_COUNT', this.loginForm.account);
+                    this.$router.push('/')
+                }
                 // alert("出错啦QAQ"+response.code)
-                if(res.code == '40101'){
+                else if(res.data.code == 40101){
                     this.$Modal.error({
                         title: '抱歉，账号或密码错误，请确认之后重试',
                     });
-                }else if(res.code == '40103'){
+                }else if(res.data.code == 40103){
                     this.$Modal.error({
                         title: '抱歉，连接域账号服务器失败，请稍后再试',
                     });
                 }
+            }, (res)=>{
+                // 登录失败
+                
             })
         },
         forgetPsd(){

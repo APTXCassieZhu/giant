@@ -19,7 +19,7 @@
             </div>
             <div class="topnav-box-user">
                 <Icon class="topnav-user" type="md-cloud-upload" size="29"/>
-                <Icon class="topnav-user" type="md-notifications" size="29"/>
+                <Icon class="topnav-user" @click="goPage('notice')" type="md-notifications" size="29"/>
                 <Icon class="topnav-user" @click="goPage('editSetting')" type="md-settings" size="29"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
@@ -47,7 +47,6 @@
             <MenuItem name="1" @click.native="goPage('/artFilter')">
                 美术类资源
             </MenuItem>
-            <!--TODO menuitem 2 3的网页还没建，to的地址可能会改变-->
             <MenuItem name="2" @click.native="goPage('/toolFilter')">
                 研发工具
             </MenuItem>

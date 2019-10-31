@@ -11,6 +11,7 @@ import discussion from '../pages/Q&A'
 import personal from '../pages/users/personal'
 import editSetting from '../pages/users/editSetting'
 import knowledge from '../pages/knowledge'
+import Notice from '../pages/notice'
 
 Vue.use(Router)
 
@@ -66,6 +67,14 @@ export default new Router({
       path: '/knowledge',
       name: 'Knowledge',
       component: knowledge,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/notice',
+      name: 'Notice',
+      component: Notice,
       meta: {
         requireAuth: true
       }
