@@ -3,7 +3,6 @@
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <div class="middle-card-wrapper">
             <Menu active-name="1" class="leftside-menu">
-                <!--TODO 未完成，仅有样式-->
                 <MenuItem name="1" @click.native="showPerson">
                     <Icon size="18" type="md-person" />个性化设置
                 </MenuItem>
@@ -12,12 +11,37 @@
                 </MenuItem>
             </Menu>
             <div v-if="this.showPersonal" class="setting-card">
-                <Upload :format="['jpg','png']" :max-size="1024" :on-format-error="handleFormatError">
-                    <div class="camera"><Icon size="28" type="md-camera" /></div>
+                <Upload 
+                    name='avatar'
+                    :format="['jpg','png']" 
+                    :max-size="1024" 
+                    :before-upload="handleBeforeUpload"
+                    :on-format-error="handleFormatError" 
+                    :on-exceeded-size="handleMaxSize"
+                    :on-progress="handleUploading"
+                    :on-success="handleSuccess" 
+                    :show-upload-list="false"
+                    action="/upload/avatar"
+                >
+                    <img class="camera" v-if="finished" :src="imageUrl" alt="avatar" />
+                    <div v-else class="camera">
+                        <Icon v-if="loading" size="28" type='ios-loading' class="demo-spin-icon-load"/>
+                        <Icon v-if="!loading" size="28" type='md-camera'/>
+                    </div>
                 </Upload>
-                <!--TODO 没找到和设计稿一样的upload icon-->
-                <Upload :format="['jpg','png']" :max-size="1024">
-                    <Button class="camera-btn"><Icon size="20" type="md-cloud-upload" /> 上传</Button>
+                <Upload 
+                    name='avatar'
+                    :format="['jpg','png']" 
+                    :max-size="1024" 
+                    :before-upload="handleBeforeUpload"
+                    :on-format-error="handleFormatError" 
+                    :on-exceeded-size="handleMaxSize"
+                    :on-progress="handleUploading"
+                    :on-success="handleSuccess" 
+                    :show-upload-list="false"
+                    action="/upload/avatar"
+                >
+                    <Button class="camera-btn" type="success"><font-awesome-icon :icon="['fas','upload']"/> 上传</Button>
                 </Upload>
                 <div class="notice-content">
                     <p>* 支持上传 JPG\PNG 格式的图像文件</p>
@@ -30,20 +54,25 @@
                         style="width: 430px; height: 44px;" />
                     </span>
                 </div>
-                <div class="personal-input">显示名
-                    <span style="margin-left: 166px;" class="span">
-                        <Input v-model="nickname" placeholder="工作环境，显示名称请谨慎对待" 
-                        style="width: 430px; height: 44px;" />
-                    </span>
-                </div>
-                <div class="personal-input">
-                    <span style="position:relative; top: -86px;">签名栏</span>
-                    <span style="margin-left: 166px;" class="span">
-                        <Input type="textarea" v-model="nickname" placeholder="团队简介以及个人签名" 
-                        style="width: 430px; height: 198px;" />
-                    </span>
-                </div>
-                <Button class="confirm-btn" type="success">确认</Button>
+                <Form ref="personalForm" :model="personalForm" :rules="inputRule">
+                    <FormItem prop="nickname" class="personal-input">显示名
+                        <span style="margin-left: 172px;" class="span">
+                            <Input v-model="personalForm.nickname" placeholder="工作环境，显示名称请谨慎对待" maxlength="10"
+                            @onkeyup.native="onlyWord()" @onbeforepaste.native="onlyWord1()"
+                            style="width: 430px; height: 44px;" />
+                        </span>
+                    </FormItem>
+                    <FormItem prop="sign" class="personal-input">
+                        <span style="position:relative; top: -86px;">签名栏</span>
+                        <span style="margin-left: 172px;" class="span">
+                            <Input type="textarea" v-model="personalForm.sign" placeholder="团队简介以及个人签名" maxlength="140" show-word-limit  
+                            style="width: 430px; height: 198px;" />
+                        </span>
+                    </FormItem>
+                    <FormItem>
+                        <Button class="confirm-btn" type="success">确认</Button>
+                    </FormItem>
+                </Form>
             </div>
             <div v-if="!showPersonal" class="setting-card info-setting-card">
                 <div class="info-content">
@@ -93,7 +122,11 @@
 import TopNavigation from '../../components/TopNav.vue'
 import Footer from '../../components/footer.vue'
 import Corner from '../../components/corner.vue'
-
+function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+}
 export default {
     name:"EditSetting",
     components:{TopNavigation, Footer, Corner, },
@@ -106,15 +139,34 @@ export default {
         this.personalActive = this.$store.state.personalActive       
     },
     data () {
+        /* TODO 检查是否含有敏感词 */
+        const sensitive = (rule, value, callback) => {
+            // if (value.length < 6) {
+            //     callback(new Error('*仅限中英文'))
+            // } else {
+            //     callback()
+            // }
+        }
         return {
             account: 'xiamuZhu@ztgame.com',
-            nickname: '',
+            personalForm: {
+                nickname: "",
+                sign: ""
+            },
+            inputRule: {
+                nickname: [{required: false, trigger:'blur'}],
+                sign:[{required: false, validator: sensitive, trigger:'blur'}]
+            },
             showPersonal: true,
             switch1: true,
             switch2: true,
             switch3: false,
             switch4: true,
             switch5: true,
+            // 无需从后端读取
+            loading: false,     // 判断图片是否加载完毕    
+            finished: false,    // 判断图片已经加载完毕    
+            imageUrl: '',
         }
     },
     methods:{
@@ -128,11 +180,71 @@ export default {
         showInfo(){
             this.showPersonal = false
         },
+        handleBeforeUpload(file){
+            this.finished = false
+            let self = this
+            return new Promise(function (resolve, reject) {
+                let fr = new FileReader();
+                fr.onload = e => {
+                    let src = e.target.result;
+                    const image = new Image();
+                    image.onload = () => {
+                        console.log(image.width);  
+                        console.log(image.height);
+                        if(image.width < 100 || image.height < 100){
+                            self.$Notice.warning({
+                                title: '图片小于最小尺寸(100px * 100px)'
+                            });
+                            reject();
+                        }else {
+                            resolve();
+                        }
+                    };
+                    image.onerror = reject;
+                    image.src = src;
+                    self.imageUrl = src;
+                };
+                fr.readAsDataURL(file)
+            });
+        },
         handleFormatError(){
             this.$Notice.warning({
-                title: 'The file format is incorrect',
-                desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+                title: '不支持的图片格式'
             });
+        },
+        handleMaxSize(){
+            this.$Notice.warning({
+                title: '图片容量超过上限(1MB)'
+            });
+        },
+        handleUploading(event, file){
+            if (file.status === 'uploading') {
+                this.loading = true;
+                return;
+            }
+        },
+        handleSuccess (res, file) {
+            // file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
+            // file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+            console.log("file "+file.status)
+            console.log("file "+file.name)
+            this.loading = false;
+            this.finished = true;
+            
+            // Get this url from response in real world.
+            // getBase64(file.originFileObj, imageUrl => {
+            //     this.imageUrl = imageUrl;
+            //     this.loading = false;
+            //     console.log("url "+this.imageUrl)
+            // });
+        },
+        /* TODO 只能输入中英文 ？？？ */
+        onlyWord(){
+            this.personalForm.nickname=this.personalForm.nickname.replace(/[/d]/g,'') 
+        },
+        onlyWord1(){
+            clipboardData.setData('text',clipboardData.getData('text').replace(/[/d]/g,''))
+            // this.personalForm.nickname=this.personalForm.nickname.replace(/[/d]/g,'') 
         },
         // TODO 改变的值要传给后端
         updateChange(status){
@@ -157,7 +269,7 @@ export default {
     height: 100%;
     background-color: #eaeaea;
 }
-.setting-card > .personal-input > .span > .ivu-input-wrapper > .ivu-input{
+.span > .ivu-input-wrapper > .ivu-input{
     height: 100%;
 }
 </style>
@@ -242,8 +354,6 @@ export default {
 }
 .camera-btn{
     display: inline-block;
-    color: #1ebf73;
-    background-color: #e8f8f0;
     height: 44px;
     width: 430px;
     font-size: 16px;
@@ -254,7 +364,9 @@ export default {
     background-color: #1ebf73;
     color: white;
 }
-
+.demo-spin-icon-load{
+    animation: ani-demo-spin 1s linear infinite;
+}
 .notice-content{
     font-size: 14px;
     color: #7d7d7d;

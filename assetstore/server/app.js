@@ -4,11 +4,13 @@ var bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 var users = require('./routers/users')
+var upload = require('./routers/upload')
 
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded( {extended: false}))
 app.use('/users', users)
+app.use('/upload', upload)
 app.use('/script', express.static(__dirname +'/script'))
 
 app.get('/',function(req, res){
