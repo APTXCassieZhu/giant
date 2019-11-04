@@ -4,7 +4,6 @@
         <div class="login-subtitle">您日常工作的好助力</div>
         <div class="my-wrap-login"> 
             <div class="my-login-logo">
-                <!--<img src="../images/login.png">-->
                 <p class="my-login-welcome">欢迎登陆</p>
             </div>
             <Form id="login" ref="loginForm" :model="loginForm" :rules="loginRule">
@@ -108,42 +107,32 @@ export default {
     width:100%;
     min-height:959px;
     /* display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-ms-flexbox;display:flex;flex-wrap:wrap; */
-    /* justify-content:center;
-    align-items:center; */
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
     padding:15px;
     background: #eff2f5 url('../../assets/transparentLogo.png') no-repeat;
     background-position: 550px 200px;
     background-size: 400px 460px;
-    
-    /* background: red,url('../../assets/logo.png'); */
-
 }
 .login-title{
-    position: relative;
-    text-align: center;
-    top: 175px;
     font-size: 21px;
     font-weight: 900;
     line-height: 1;
     color: #7f7f7f;
+    margin-bottom: 10px;
 }
 .login-subtitle{
-    position: relative;
-    top: 185px;
-    text-align: center;
     font-size: 21px;
     font-weight: 300;
     line-height: 1.14;
     color: #7f7f7f;
+    margin-bottom: 30px;
 }
 .my-wrap-login {
-    position: absolute;
     width: 379px;
     height: 414px;
-    text-align: center;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
     overflow:hidden;
     border-style: solid;
     border-radius:3px;
@@ -151,6 +140,7 @@ export default {
     padding:60px 40px 60px 40px;
     box-shadow: 0 1px 4px 3px rgba(141, 141, 141, 0.05);
     background-color: #ffffff;
+    margin-bottom: 53px;
 }
 .my-login-logo {
     position: relative;
@@ -192,13 +182,6 @@ export default {
 }
 .my-container-login-btn{
     position: relative;
-    /* display:-webkit-box;
-    display:-webkit-flex;
-    display:-moz-box;
-    display:-ms-flexbox;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center; */
     padding-top:70px;
     width:100%;
     font-size: 16px;
@@ -228,11 +211,8 @@ export default {
     background-image: linear-gradient(121deg, #37d89d 35%, #7be3c3 86%, #5be9c5 99%);
 }
 .login-footer{
-    position: relative;
-    top: 800px;
     font-size: 12px;
     letter-spacing: 0.86px;
-    text-align: center;
     color: #cccccc;
 }
 </style>

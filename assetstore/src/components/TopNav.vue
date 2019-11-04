@@ -187,7 +187,8 @@ export default {
     float:left;
     left: 5%;
     top: 5px;
-    width: 40%;
+    width: 30%;
+    min-width: 400px;
     height: 80px;
     font-size: 18px;
     font-family: MicrosoftYaHei;
@@ -198,6 +199,7 @@ export default {
 .topnav-box-user{
     position: relative;
     width: 13%;
+    min-width: 240px;
     top: 10px;
     float:right;
     align-content: center;

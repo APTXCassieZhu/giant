@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vuex from 'vuex'
 import VueResource from 'vue-resource'
 import ViewUI from 'view-design';
+import VueCropper from 'vue-cropper'
 // import style
 import 'view-design/dist/styles/iview.css';
 import '../my-theme/index.less';       // change theme color
@@ -29,6 +30,7 @@ global.axios=axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios*/
 Vue.use(VueResource)
+Vue.use(VueCropper)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false

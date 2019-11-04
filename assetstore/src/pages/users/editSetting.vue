@@ -21,14 +21,45 @@
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/upload/avatar"
+                    action="/upload"
                 >
-                    <img class="camera" v-if="finished" :src="imageUrl" alt="avatar" />
+                    <div v-if="finished" class="demo-upload-list">
+                        <img class="camera" :src="imageUrl" alt="avatar" />
+                        <div class="demo-upload-list-cover">
+                            <svg @mousedown="handleView()" style="position:relative; top: 5px;height:32px; width: 32px;cursor:pointer;" t="1572859566143" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4817"  width="200" height="200"><defs></defs><path d="M512 234.666667c131.946667 0 252.245333 80.512 360.874667 241.536a64 64 0 0 1 2.410666 67.712l-2.410666 3.882666-6.058667 8.853334C759.786667 711.765333 641.493333 789.333333 512 789.333333c-131.946667 0-252.245333-80.512-360.874667-241.536a64 64 0 0 1-2.410666-67.712l2.410666-3.882666 6.058667-8.853334C264.213333 312.234667 382.506667 234.666667 512 234.666667z m0 64c-105.770667 0-206.037333 65.749333-301.952 204.757333L204.181333 512l5.888 8.597333C306.069333 659.648 406.314667 725.333333 512 725.333333c105.770667 0 206.037333-65.749333 301.952-204.757333l5.866667-8.576-5.888-8.597333C717.930667 364.352 617.685333 298.666667 512 298.666667z m0 77.482666a141.482667 141.482667 0 1 1 0 282.944 141.482667 141.482667 0 0 1 0-282.944z m0 64a77.482667 77.482667 0 1 0 0 154.944 77.482667 77.482667 0 0 0 0-154.944z" p-id="4818" fill="#ffffff"></path></svg>
+                            <Modal v-model="viewImage" :footer-hide="true" style="text-align:center">
+                                <img :src="imageUrl" alt="avatar" />
+                            </Modal>
+                            <svg @click.native="handleRemove()" style="height:23px; width: 23px; cursor:pointer;" t="1572861115099" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2153" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M426.65984 42.65984l170.65984 0q53.00224 0 90.50112 37.49888t37.49888 90.50112l0 42.65984 170.65984 0q17.67424 0 30.16704 12.4928t12.4928 30.16704-12.4928 30.16704-30.16704 12.4928l-42.65984 0 0 512q0 53.00224-37.49888 90.50112t-90.50112 37.49888l-426.65984 0q-53.00224 0-90.50112-37.49888t-37.49888-90.50112l0-512-42.65984 0q-17.67424 0-30.16704-12.4928t-12.4928-30.16704 12.4928-30.16704 30.16704-12.4928l170.65984 0 0-42.65984q0-53.00224 37.49888-90.50112t90.50112-37.49888zM768 810.65984l0-512-512 0 0 512q0 17.67424 12.4928 30.16704t30.16704 12.4928l426.65984 0q17.67424 0 30.16704-12.4928t12.4928-30.16704zM597.34016 128l-170.65984 0q-17.67424 0-30.16704 12.4928t-12.4928 30.16704l0 42.65984 256 0 0-42.65984q0-17.67424-12.4928-30.16704t-30.16704-12.4928z" p-id="2154" fill="#ffffff"></path></svg>
+                        </div>
+                    </div>
                     <div v-else class="camera">
                         <Icon v-if="loading" size="28" type='ios-loading' class="demo-spin-icon-load"/>
                         <Icon v-if="!loading" size="28" type='md-camera'/>
                     </div>
                 </Upload>
+                <Modal title="图片剪裁" v-model="dialogVisible" @on-ok="cropFinish()" :loading="loading">
+                    <div class="cropper" style="text-align:center">
+                        <vueCropper
+                            ref="cropper"
+                            :img="option.img"
+                            :outputSize="option.size"
+                            :outputType="option.outputType"
+                            :info="true"
+                            :full="option.full"
+                            :canMove="option.canMove"
+                            :canMoveBox="option.canMoveBox"
+                            :original="option.original"
+                            :autoCrop="option.autoCrop"
+                            :fixed="option.fixed"
+                            :fixedNumber="option.fixedNumber"
+                            :centerBox="option.centerBox"
+                            :infoTrue="option.infoTrue"
+                            :fixedBox="option.fixedBox"
+                            @realTime="realTime"
+                        ></vueCropper>
+                    </div>
+                </Modal>
                 <Upload 
                     name='avatar'
                     :format="['jpg','png']" 
@@ -39,7 +70,7 @@
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/upload/avatar"
+                    action="/upload"
                 >
                     <Button class="camera-btn" type="success"><font-awesome-icon :icon="['fas','upload']"/> 上传</Button>
                 </Upload>
@@ -167,6 +198,29 @@ export default {
             loading: false,     // 判断图片是否加载完毕    
             finished: false,    // 判断图片已经加载完毕    
             imageUrl: '',
+            viewImage: false,   // 点击大图查看头像
+            dialogVisible: false,
+            // 裁剪组件的基础配置option
+            option: {
+                img: '', // 裁剪图片的地址
+                info: true, // 裁剪框的大小信息
+                outputSize: 0.8, // 裁剪生成图片的质量
+                outputType: 'png', // 裁剪生成图片的格式
+                canScale: true, // 图片是否允许滚轮缩放
+                autoCrop: true, // 是否默认生成截图框
+                autoCropWidth: 250, // 默认生成截图框宽度
+                autoCropHeight: 250, // 默认生成截图框高度
+                fixedBox: false, // 固定截图框大小 不允许改变
+                fixed: true, // 是否开启截图框宽高固定比例
+                fixedNumber: [1, 1], // 截图框的宽高比例
+                full: false, // 是否输出原图比例的截图
+                canMoveBox: true, // 截图框能否拖动
+                original: false, // 上传图片按照原始比例渲染
+                centerBox: false, // 截图框是否被限制在图片里面
+                infoTrue: false // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+            },
+            // 防止重复提交
+            loading: false
         }
     },
     methods:{
@@ -204,6 +258,7 @@ export default {
                     image.src = src;
                     self.imageUrl = src;
                 };
+                // 转化为base64
                 fr.readAsDataURL(file)
             });
         },
@@ -224,19 +279,32 @@ export default {
             }
         },
         handleSuccess (res, file) {
-            // file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-            // file.name = '7eb99afb9d5f317c912f08b5212fd69a';
             console.log("file "+file.status)
             console.log("file "+file.name)
+            
             this.loading = false;
             this.finished = true;
-            
-            // Get this url from response in real world.
-            // getBase64(file.originFileObj, imageUrl => {
-            //     this.imageUrl = imageUrl;
-            //     this.loading = false;
-            //     console.log("url "+this.imageUrl)
-            // });
+            this.option.img = this.imageUrl
+            this.dialogVisible = true
+        },
+        // 实时预览函数
+        realTime(data) {
+            console.dir(data)
+            this.imageUrl = data.url
+        },
+        cropFinish(){
+            this.$refs.cropper.getCropData((data) => {
+                this.loading = true
+                this.dialogVisible = false
+                this.imageUrl = data
+                /* TODO 向后端post头像数据 */
+            });
+        },
+        handleView(){
+            this.viewImage = true
+        },
+        handleRemove(){
+
         },
         /* TODO 只能输入中英文 ？？？ */
         onlyWord(){
@@ -271,6 +339,7 @@ export default {
 }
 .span > .ivu-input-wrapper > .ivu-input{
     height: 100%;
+    resize: none;
 }
 </style>
 <style scoped>
@@ -283,12 +352,10 @@ export default {
 .leftside-menu{
     position: sticky;
     font-family: MicrosoftYaHei;
-    width: 281px;
-    height: 160px;
-    /* left: 50px; */
+    width: 240px;
+    height: 98px;
     top: 170px;
     margin-right: 30px;
-    padding: 30px 30px 30px 30px;
     border-radius: 3px;
     /*box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);*/
     background-color: #ffffff;
@@ -337,8 +404,15 @@ export default {
     font-size: 18px;
     cursor: pointer;
 }
-.camera{
+.demo-upload-list{
     display: inline-block;
+    height: 116px;
+    width: 116px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 116px;
+}
+.camera{   
     color: #7d7d7d;
     background-color: #e5e5e5;
     height: 116px;
@@ -359,6 +433,7 @@ export default {
     font-size: 16px;
     margin-left: 220px;
     margin-top: -220px;
+    cursor: pointer;
 }
 .camera-btn:active{
     background-color: #1ebf73;
@@ -367,11 +442,31 @@ export default {
 .demo-spin-icon-load{
     animation: ani-demo-spin 1s linear infinite;
 }
+.demo-upload-list-cover{
+    display: none;
+    position: absolute;
+    top: 60px;
+    height: 116px;
+    width: 116px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 116px;
+    background: rgba(0,0,0,.5);
+    z-index: 1;
+}
+.demo-upload-list:hover .demo-upload-list-cover{
+    display: block;
+}
+.cropper {
+    width: auto;
+    height: 300px;
+}
+
 .notice-content{
     font-size: 14px;
     color: #7d7d7d;
     margin-left: 220px;
-    margin-top: -100px;
+    margin-top: -90px;
 }
 .personal-input{
     margin-top: 70px;
