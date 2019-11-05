@@ -218,6 +218,9 @@ export default {
     border-radius: 0;
     height: 54px;
 }
+.home-search-input > .ivu-icon{
+    line-height: 54px;
+}
 .home-search-container > .ivu-dropdown > .ivu-dropdown-rel > .ivu-btn{
     border-radius: 0;
 }

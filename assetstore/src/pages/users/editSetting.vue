@@ -89,7 +89,7 @@
                     <FormItem prop="nickname" class="personal-input">显示名
                         <span style="margin-left: 172px;" class="span">
                             <Input v-model="personalForm.nickname" placeholder="工作环境，显示名称请谨慎对待" maxlength="10" show-word-limit 
-                            @onkeyup.native="onlyWord()" @onbeforepaste.native="onlyWord1()"
+                            @onkeyup.native="onlyWord()" @onbeforepaste.native="onlyWord1()" clearable 
                             style="width: 430px; height: 44px;" />
                         </span>
                     </FormItem>
@@ -97,7 +97,7 @@
                         <span style="position:relative; top: -86px;">签名栏</span>
                         <span style="margin-left: 172px;" class="span">
                             <Input type="textarea" v-model="personalForm.sign" placeholder="团队简介以及个人签名" maxlength="140" show-word-limit  
-                            style="width: 430px; height: 198px;" />
+                            style="width: 430px; height: 198px;" clearable/>
                         </span>
                     </FormItem>
                     <FormItem>
@@ -396,6 +396,10 @@ export default {
 .span > .ivu-input-wrapper > .ivu-input{
     height: 100%;
     resize: none;
+}
+.personal-input > .ivu-form-item-content > span > .ivu-input-wrapper > .ivu-icon{
+    /* 使clearable的叉叉居中 */
+    line-height: 44px;
 }
 </style>
 <style scoped>

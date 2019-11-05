@@ -78,7 +78,7 @@ var store = new Vuex.Store({
       state.token = token
       // 让所有请求header里面都有token
       console.log('token'+token)
-      Vue.http.headers.common['token'] = state.token
+      // Vue.http.headers.common['token'] = state.token
     },
     // logout
     [REMOVE_COUNT] (state, token) {

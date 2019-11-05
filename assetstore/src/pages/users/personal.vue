@@ -4,7 +4,7 @@
         <div class="self-card">
             <div class="self">
                 <ul><img src="../../assets/绿头像.jpg" class="avatar">
-                <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editPersonal')"/></ul>
+                <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/></ul>
                 <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
                 <!-- TODO 属于哪个部门从amt那里得到-->
                 <ul style="font-size: 14px; color: #7f7f7f;">前沿技术部门</ul>
@@ -133,7 +133,7 @@ export default {
     width: 360px;
     height: 660px;
     left: 50px;
-    top: 10px;
+    /* top: 10px; */
     padding: 30px 20px 30px 25px;
     border-radius: 3px;
     background-color: #ffffff;
@@ -167,7 +167,7 @@ export default {
     width: 1200px;
     height: 660px;
     left: 100px;
-    top: 30px;
+    top: 53px;
     padding: 20px 28px 30px 28px;
     border-radius: 3px;
     background-color: #ffffff;
