@@ -70,7 +70,7 @@ export default {
         },
         loginSubmit(){
             console.log(this.loginForm);
-            this.$http.post('/users/login',{account:this.loginForm.account, password:this.loginForm.password},{emulateJSON:true}).then((res)=>{
+            this.$http.post('/user/login',{account:this.loginForm.account, pwd:this.loginForm.password},{emulateJSON:true}).then((res)=>{
                 // 登录成功
                 console.log(res.data)
                 if(res.data.code == 0){
@@ -90,7 +90,7 @@ export default {
                 }
             }, (res)=>{
                 // 登录失败
-                
+                alert(res)
             })
         },
         forgetPsd(){

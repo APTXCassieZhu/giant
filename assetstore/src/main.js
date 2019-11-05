@@ -52,7 +52,7 @@ const localstorage = require('./localstorage')
 // 注册状态管理全局参数
 var store = new Vuex.Store({
   state:{
-    token:'',
+    token:localstorage['token'],
     userID:'',
     single:true,
     searchContent:'',
@@ -74,7 +74,11 @@ var store = new Vuex.Store({
         // 用户未勾选记住登录状态
         sessionStorage.setItem("token", token)
       }  
+
       state.token = token
+      // 让所有请求header里面都有token
+      console.log('token'+token)
+      Vue.http.headers.common['token'] = state.token
     },
     // logout
     [REMOVE_COUNT] (state, token) {
@@ -127,7 +131,7 @@ router.beforeEach((to,from,next) => {
   store.state.token = localstorage.get("token");
   // 判断这个url是否需要登录权限
   if(to.meta.requireAuth) {
-    if(store.state.token !== "" && store.state.token !== null) {
+    if(store.state.token) {
       next();
     }else{
       next({path:'/login', query:{redirect: to.fullPath}});

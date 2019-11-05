@@ -14,7 +14,7 @@ module.exports = {
       "/search" : {
         target: "http://localhost:3000"
       },
-      "/users/*" : {
+      "/user/*" : {
         target: "http://localhost:3000"
       },
       "/upload/*" : {

@@ -23,7 +23,8 @@
                 <Icon class="topnav-user" @click="goPage('editSetting')" type="md-settings" size="29"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <div class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
+                        <img v-if="profile" class="topnav-user-image" :src="profile" @click="goLike('personal')" alt="avatar">
+                        <div v-else class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-30px;">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
@@ -66,12 +67,30 @@ export default {
     data(){
         return{
             activenum: 0,
+            profile: null,
         }
     },
     computed:{
         getUser(){
             return this.$store.state.token;
         }
+    },
+    mounted(){
+        this.$http.get('/user/describe').then((res)=>{
+            if(res.data.code == 0){
+                this.$store.commit('ADD_COUNT', res.headers.get('token'))
+                this.profile = res.data.data.profilePic
+            }
+            else if(res.data.code == 401){
+                // 未登录 ===》跳转login 重新登录
+                this.$store.commit('REMOVE_COUNT', this.$store.state.token);
+                this.$router.push('/login')
+            }else if(res.data.code == 404){
+                alert('user not found')
+            }
+        }, (res)=>{
+            // 请求失败
+        })
     },
     methods:{
         logout(){

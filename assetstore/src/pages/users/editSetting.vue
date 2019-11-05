@@ -88,7 +88,7 @@
                 <Form ref="personalForm" :model="personalForm" :rules="inputRule">
                     <FormItem prop="nickname" class="personal-input">显示名
                         <span style="margin-left: 172px;" class="span">
-                            <Input v-model="personalForm.nickname" placeholder="工作环境，显示名称请谨慎对待" maxlength="10"
+                            <Input v-model="personalForm.nickname" placeholder="工作环境，显示名称请谨慎对待" maxlength="10" show-word-limit 
                             @onkeyup.native="onlyWord()" @onbeforepaste.native="onlyWord1()"
                             style="width: 430px; height: 44px;" />
                         </span>
@@ -101,47 +101,47 @@
                         </span>
                     </FormItem>
                     <FormItem>
-                        <Button class="confirm-btn" type="success">确认</Button>
+                        <Button class="confirm-btn" type="success" @click="submitPersonalForm()">确认</Button>
                     </FormItem>
                 </Form>
             </div>
             <div v-if="!showPersonal" class="setting-card info-setting-card">
                 <div class="info-content">
                     <span class="info-text">资源更新提醒</span>
-                    <i-switch class="info-switch" v-model="switch1" @on-change="updateChange">
+                    <i-switch class="info-switch" v-model="switch1"       >
                         <span slot="open">开</span>
                         <span slot="close">关</span>
                     </i-switch>
                 </div>
                 <div class="info-content">
                     <span class="info-text">提问回答提醒</span>
-                    <i-switch class="info-switch" v-model="switch2" @on-change="replayChange">
+                    <i-switch class="info-switch" v-model="switch2">
                         <span slot="open">开</span>
                         <span slot="close">关</span>
                     </i-switch>
                 </div>
                 <div class="info-content">
                     <span class="info-text">向您提问提醒</span>
-                    <i-switch class="info-switch" v-model="switch3" @on-change="askChange">
+                    <i-switch class="info-switch" v-model="switch3">
                         <span slot="open">开</span>
                         <span slot="close">关</span>
                     </i-switch>
                 </div>
                 <div class="info-content">
                     <span class="info-text">软件更新提醒</span>
-                    <i-switch class="info-switch" v-model="switch4" @on-change="softwareChange">
+                    <i-switch class="info-switch" v-model="switch4">
                         <span slot="open">开</span>
                         <span slot="close">关</span>
                     </i-switch>
                 </div>
                 <div class="info-content">
                     <span class="info-text">资源评论提醒</span>
-                    <i-switch class="info-switch" v-model="switch5" @on-change="commentChange">
+                    <i-switch class="info-switch" v-model="switch5">
                         <span slot="open">开</span>
                         <span slot="close">关</span>
                     </i-switch>
                 </div>
-                <Button class="save-btn" type="success">保存</Button>
+                <Button class="save-btn" type="success" @click="submitSetting()">保存</Button>
             </div>
         </div>
         <corner></corner>
@@ -167,7 +167,28 @@ export default {
         },
     },
     mounted() {
-        this.personalActive = this.$store.state.personalActive       
+        this.personalActive = this.$store.state.personalActive  
+        this.$http.get('/user/describe').then((res)=>{
+            if(res.data.code == 0){
+                this.$store.commit('ADD_COUNT', res.headers.get('token'))
+                this.finished = true
+                this.imageUrl = res.data.data.profilePic
+                this.account = res.data.data.account
+                this.personalForm.nickname = res.data.data.nickName
+                this.personalForm.sign = res.data.data.signature
+            }
+            else if(res.data.code == 401){
+                // 未登录 ===》跳转login 重新登录
+                this.$store.commit('REMOVE_COUNT', this.$store.state.token);
+                this.$router.push('/login')
+            }else if(res.data.code == 404){
+                alert('user not found')
+            }
+        }, (res)=>{
+            // 请求失败
+            alert(res)
+        })
+        /*TODO 从后端get setting的数据 */
     },
     data () {
         /* TODO 检查是否含有敏感词 */
@@ -246,8 +267,9 @@ export default {
                         console.log(image.width);  
                         console.log(image.height);
                         if(image.width < 100 || image.height < 100){
-                            self.$Notice.warning({
-                                title: '图片小于最小尺寸(100px * 100px)'
+                            self.$Message.warning({
+                                background: true,
+                                content: '图片小于最小尺寸(100px * 100px)'
                             });
                             reject();
                         }else {
@@ -263,13 +285,15 @@ export default {
             });
         },
         handleFormatError(){
-            this.$Notice.warning({
-                title: '不支持的图片格式'
+            this.$Message.warning({
+                background: true,
+                content: '不支持的图片格式'
             });
         },
         handleMaxSize(){
-            this.$Notice.warning({
-                title: '图片容量超过上限(1MB)'
+            this.$Message.warning({
+                background: true,
+                content: '图片容量超过上限(1MB)'
             });
         },
         handleUploading(event, file){
@@ -297,7 +321,6 @@ export default {
                 this.loading = true
                 this.dialogVisible = false
                 this.imageUrl = data
-                /* TODO 向后端post头像数据 */
             });
         },
         handleView(){
@@ -307,6 +330,27 @@ export default {
             this.finished = false
             this.loading = false
         },
+        submitPersonalForm(){
+            this.$http.put('/user',{profilePic:this.imageUrl, nickName:personalForm.nickname, 
+            signature:personalForm.sign}).then(res => {
+                if(res.data.code == 0){
+                    // 用户基本资料修改成功
+                    this.$Message.warning({
+                        background: true,
+                        content: '修改资料成功'
+                    });
+                }
+                else if(res.data.code == 401){
+                    // 未登录 ===》跳转login 重新登录
+                    this.$store.commit('REMOVE_COUNT', this.$store.state.token);
+                    this.$router.push('/login')
+                }else if(res.data.code == 400){
+                    alert('bad request (form error)')
+                }
+            }, res => {
+                // error callback
+            });
+        },
         /* TODO 只能输入中英文 ？？？ */
         onlyWord(){
             this.personalForm.nickname=this.personalForm.nickname.replace(/[/d]/g,'') 
@@ -315,16 +359,27 @@ export default {
             clipboardData.setData('text',clipboardData.getData('text').replace(/[/d]/g,''))
             // this.personalForm.nickname=this.personalForm.nickname.replace(/[/d]/g,'') 
         },
-        // TODO 改变的值要传给后端
-        updateChange(status){
-        },
-        replayChange(status){
-        },
-        askChange(status){
-        },
-        softwareChange(status){
-        },
-        commentChange(status){
+        submitSetting(){
+            /* TODO swagger 接口还没写好 */
+            this.$http.put('/user',{profilePic:this.imageUrl, nickName:personalForm.nickname, 
+            signature:personalForm.sign}).then(res => {
+                if(res.data.code == 0){
+                    // 用户基本资料修改成功
+                    this.$Message.warning({
+                        background: true,
+                        content: '修改设置成功'
+                    });
+                }
+                else if(res.data.code == 401){
+                    // 未登录 ===》跳转login 重新登录
+                    this.$store.commit('REMOVE_COUNT', this.$store.state.token);
+                    this.$router.push('/login')
+                }else if(res.data.code == 400){
+                    alert('bad request (form error)')
+                }
+            }, res => {
+                // error callback
+            });
         },
     },
 }
