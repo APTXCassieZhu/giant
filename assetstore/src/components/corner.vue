@@ -11,7 +11,7 @@
                 <font-awesome-icon :icon="['fas','edit']"/>
             </span>
         </div>
-        <feedback :showFeedback.sync='toShow'></feedback>
+        <feedback :showFeedback='toShow' @hideDialog="toShow=false"></feedback>
     </div>
 </template>
 <script>

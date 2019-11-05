@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="showFeedback" :footer-hide="true" @on-cancel="cancel">
+    <Modal v-model="curShow" :footer-hide="true" @on-cancel="cancel">
     </Modal>  
 </template>
 
@@ -13,7 +13,13 @@ export default {
         },
     },
     computed:{
-        
+        curShow:{
+            get(){
+                return this.showFeedback 
+            },
+            set(){
+            }
+        }
     },
     mounted(){
     },
@@ -23,7 +29,7 @@ export default {
     },
     methods:{
         cancel(){
-            this.$emit('update:showFeedback', false)
+            this.$emit("hideDialog")
         }
     }
 }

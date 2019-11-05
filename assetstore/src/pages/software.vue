@@ -32,7 +32,7 @@
                 </Menu>
                 <br><br>
                 <Button @click="showFeedback()" class="sidemenu-btn"><font-awesome-icon :icon="['fas','edit']"/> 找不到想要的？</Button>
-                <Feedback :showFeedback.sync='curShowFeedback'></Feedback>
+                <Feedback :showFeedback='curShowFeedback' @hideDialog="curShowFeedback = false"></Feedback>
             </div>
             <div v-show="showPage == 'general'" class="software-page">
                 <div class="card-title">通用软件（{{generalNum}}款已收录）</div>
