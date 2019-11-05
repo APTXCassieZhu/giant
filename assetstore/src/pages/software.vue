@@ -31,7 +31,8 @@
                     </MenuItem>
                 </Menu>
                 <br><br>
-                <Button class="sidemenu-btn"><font-awesome-icon :icon="['fas','edit']"/> 找不到想要的？</Button>
+                <Button @click="showFeedback()" class="sidemenu-btn"><font-awesome-icon :icon="['fas','edit']"/> 找不到想要的？</Button>
+                <Feedback :showFeedback.sync='curShowFeedback'></Feedback>
             </div>
             <div v-show="showPage == 'general'" class="software-page">
                 <div class="card-title">通用软件（{{generalNum}}款已收录）</div>
@@ -104,9 +105,10 @@ import Corner from '../components/corner.vue'
 import SoftwareDownload from '../components/softwareDownload.vue'
 import SpecialDownload from '../components/specialDownload.vue'
 import specialDownloadVue from '../components/specialDownload.vue'
+import Feedback from '../components/feedback.vue'
 export default {
     name:"software",
-    components:{TopNavigation, Footer, Corner, SoftwareDownload, SpecialDownload},
+    components:{TopNavigation, Footer, Corner, SoftwareDownload, SpecialDownload, Feedback},
     data(){
         return{
             generalNum: 20,
@@ -122,6 +124,7 @@ export default {
             ifMoreFree: false,
             ifMoreSchedule: false,
             ifMoreDrive: false,
+            curShowFeedback: false,
         }
     },
     mounted(){
@@ -147,6 +150,9 @@ export default {
                 case 'drive':
                     this.ifMoreDrive = true
             }
+        },
+        showFeedback(){
+            this.curShowFeedback = true
         },
     },
 }

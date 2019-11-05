@@ -6,16 +6,19 @@
             </div>
         </transition>
         <br>
-        <div class="corner-icon">
+        <div class="corner-icon" @click="showFeedbackModal()">
             <span style="position:relative; left: 2px; font-size:20px;">
                 <font-awesome-icon :icon="['fas','edit']"/>
             </span>
         </div>
+        <feedback :showFeedback.sync='toShow'></feedback>
     </div>
 </template>
 <script>
+import feedback from "../components/feedback.vue"
 export default {
     name:"Corner",
+    components:{feedback},
     props: {
         transitionName: {
             type: String,
@@ -33,6 +36,7 @@ export default {
         return {
             //定义定时器
             interval: null,
+            toShow: false,
         }
     },
     mounted() {
@@ -75,6 +79,10 @@ export default {
             // 将总长度设置为一半，并且时间从当前开始递减，对图像进行垂直向上平移
             return -c / 2 * (--t * (t - 2) - 1) + b
             }
+        },
+        showFeedbackModal(){
+            console.log('showing')
+            this.toShow = true            
         }
     },
 }
