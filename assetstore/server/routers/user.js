@@ -12,6 +12,7 @@ router.post('/login', jsonParser, function(req,res){
     console.log("back-end account: "+req.body.account)
     console.log("pwd: " +req.body.pwd)
     res.cookie('session', { current_user: req.body.account });
+    res.set('Authorization','token23333333333333333333333333')
     // TO DO check if the user exists
     if(req.body.account == '超级无敌美少女' && req.body.pwd == '1234'){
         res.status(200).json({'code': 40101})
@@ -21,7 +22,7 @@ router.post('/login', jsonParser, function(req,res){
     
 })
 router.get('/describe', function(req, res){
-    res.status(200).json({'data': {'nickName': '睿酱', 'signature': '啦啦啦，每天都要开心鸭', 'account':'xiamu@ztgame.com'}, 'code': 0})
+    res.status(200).json({'data': {'nickName': '睿酱', 'signature': '啦啦啦，每天都要开心鸭', 'account':'xiamu@ztgame.com'}, 'code': 401})
 });
 
 router.post('/search', jsonParser,function(req,res){

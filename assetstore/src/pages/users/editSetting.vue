@@ -168,9 +168,9 @@ export default {
     },
     mounted() {
         this.personalActive = this.$store.state.personalActive  
-        this.$http.get('/user/describe').then((res)=>{
+        axios.get('/user/describe').then((res)=>{
             if(res.data.code == 0){
-                this.$store.commit('ADD_COUNT', res.headers.get('token'))
+                this.$store.commit('ADD_COUNT', res.headers.Authorization)
                 this.finished = true
                 this.imageUrl = res.data.data.profilePic
                 this.account = res.data.data.account
@@ -179,6 +179,7 @@ export default {
             }
             else if(res.data.code == 401){
                 // 未登录 ===》跳转login 重新登录
+                console.log('test 401')
                 this.$store.commit('REMOVE_COUNT', this.$store.state.token);
                 this.$router.push('/login')
             }else if(res.data.code == 404){

@@ -76,7 +76,7 @@ export default {
         }
     },
     mounted(){
-        this.$http.get('/user/describe').then((res)=>{
+        axios.get('/user/describe').then((res)=>{
             if(res.data.code == 0){
                 this.$store.commit('ADD_COUNT', res.headers.get('token'))
                 this.profile = res.data.data.profilePic

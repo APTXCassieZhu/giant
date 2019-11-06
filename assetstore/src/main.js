@@ -5,7 +5,8 @@ import App from './App'
 import router from './router' 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vuex from 'vuex'
-import VueResource from 'vue-resource'
+import axios from 'axios'
+// import VueResource from 'vue-resource'
 import ViewUI from 'view-design';
 import VueCropper from 'vue-cropper'
 // import style
@@ -19,20 +20,34 @@ import brands from '@fortawesome/fontawesome-free-brands'
 fontawesome.library.add(solid)
 fontawesome.library.add(regular)
 fontawesome.library.add(brands)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
-/*axios post setting
-axios.defaults.baseURL='http://localhost:8080'
+//axios post setting
+axios.defaults.baseURL='http://192.168.94.135:8080'
 global.axios=axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
-Vue.prototype.$axios = axios*/
-Vue.use(VueResource)
+Vue.prototype.$axios = axios
+axios.interceptors.response.use(
+  response => {
+    if (response.data.code=="401") {
+      console.log('test 401 success')
+      store.commit('REMOVE_COUNT', store.state.token);
+      router.push('/login')
+      return response
+    }else{
+      return response;
+    }
+  },
+  error => {
+    alert(error)   // 返回接口返回的错误信息
+});
+
 Vue.use(VueCropper)
 
-Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 /* 设置全局提示的位置时间
 Vue.prototype.$Message.config({
@@ -42,7 +57,6 @@ Vue.prototype.$Message.config({
 // 用常量代替事件类型，使得代码更清晰
 const ADD_COUNT = 'ADD_COUNT'
 const REMOVE_COUNT = 'REMOVE_COUNT'
-const REMEM_COUNT = 'REMEM_COUNT'
 const SEARCH_COUNT = 'SEARCH_COUNT'
 const NOW_ACTIVE = 'NOW_ACTIVE'
 const PERSONAL_ACTIVE = 'PERSONAL_ACTIVE'
@@ -52,44 +66,26 @@ const localstorage = require('./localstorage')
 // 注册状态管理全局参数
 var store = new Vuex.Store({
   state:{
-    token:localstorage['token'],
+    token:localStorage['token'],
     userID:'',
-    single:true,
     searchContent:'',
     activenum: 1,
     personalActive: "",
     favoriteList: [],
   },
   mutations:{
-    // rememeber login state
-    [REMEM_COUNT] (state, single) {
-      state.single = single
-    },
     // login
     [ADD_COUNT] (state, token) {
-      if(state.single){
-        // 用户勾选记住登录状态
-        localstorage.setAge(30*24*60*60*1000).set("token", token)
-      }else{
-        // 用户未勾选记住登录状态
-        sessionStorage.setItem("token", token)
-      }  
-
+      localStorage.setItem("token", token)
       state.token = token
       // 让所有请求header里面都有token
-      console.log('token'+token)
-      // Vue.http.headers.common['token'] = state.token
+      console.log('token '+token)
+      axios.defaults.headers.common['Authorization'] = state.token
     },
     // logout
     [REMOVE_COUNT] (state, token) {
-      if(state.single) {
-        console.log(token+" logout.")
-        localStorage.removeItem("token", token)
-      } else {
-        sessionStorage.removeItem("token", token)
-      }
-        
-      state.token = token
+      localStorage.removeItem("token", token)
+      state.token = undefined
     },
     // 存放用户搜索内容
     [SEARCH_COUNT] (state, searchContent) {
@@ -128,7 +124,7 @@ router.beforeEach((to,from,next) => {
   // loading 效果
   ViewUI.LoadingBar.start();
   // 获取本地存储的token
-  store.state.token = localstorage.get("token");
+  store.state.token = localStorage.getItem("token");
   // 判断这个url是否需要登录权限
   if(to.meta.requireAuth) {
     if(store.state.token) {

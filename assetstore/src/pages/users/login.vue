@@ -14,7 +14,7 @@
                     <Input ref="password" type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password" class="my-login-input" @on-change="fillIn()"/>
                 </FormItem>
                 <FormItem class="text-center">
-                    <Checkbox class="login-remember" v-model="single">记住登录状态</Checkbox>
+                    <Checkbox class="login-remember" v-model="expire">记住登录状态</Checkbox>
                     <a class="login-forget" @click="forgetPsd()">忘记密码？</a>
                 </FormItem>
                 <FormItem>
@@ -30,14 +30,14 @@
 </template>
 
 <script>
-import VueResource from 'vue-resource' 
 import Vuex from 'vuex' 
 export default {
     data(){
         return {
             loginBtn: 'my-login-btn-disable',
             disableOrNot: true,
-            single: true,
+            expire: true,
+            expireTime: 720,
             loginForm: {
                 account: "",
                 password: ""
@@ -70,12 +70,13 @@ export default {
         },
         loginSubmit(){
             console.log(this.loginForm);
-            this.$http.post('/user/login',{account:this.loginForm.account, pwd:this.loginForm.password},{emulateJSON:true}).then((res)=>{
+            if(!this.expire) {
+                this.expireTime = 2
+            }
+            axios.post('/user/login',{account:this.loginForm.account, pwd:this.loginForm.password, expire:this.expireTime},{emulateJSON:true}).then((res)=>{
                 // 登录成功
-                console.log(res.data)
                 if(res.data.code == 0){
-                    this.$store.commit('REMEM_COUNT', this.single)
-                    this.$store.commit('ADD_COUNT', this.loginForm.account);
+                    this.$store.commit('ADD_COUNT', res.headers.Authorization);
                     this.$router.push('/')
                 }
                 // alert("出错啦QAQ"+response.code)
