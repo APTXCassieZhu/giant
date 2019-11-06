@@ -31,13 +31,16 @@ axios.defaults.baseURL='http://192.168.94.135:8080'
 global.axios=axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios
+// axios.interceptors.request.use(function (config) {
+// });
 axios.interceptors.response.use(
   response => {
     if (response.data.code=="401") {
       console.log('test 401 success')
       store.commit('REMOVE_COUNT', store.state.token);
       router.push('/login')
-      return response
+      // return Promise.reject()
+      return response;
     }else{
       return response;
     }

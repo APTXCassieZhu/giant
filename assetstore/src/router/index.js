@@ -10,6 +10,7 @@ import software from '../pages/software'
 import discussion from '../pages/Q&A'
 import personal from '../pages/users/personal'
 import editSetting from '../pages/users/editSetting'
+import visit from '../pages/users/visit'
 import knowledge from '../pages/knowledge'
 import Notice from '../pages/notice'
 
@@ -46,11 +47,18 @@ export default new Router({
         requireAuth: true
       }
     },
-    ,
     {
       path: '/editSetting',
       name: 'EditSetting',
       component: editSetting,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/visit',
+      name: 'Visit',
+      component: visit,
       meta: {
         requireAuth: true
       }

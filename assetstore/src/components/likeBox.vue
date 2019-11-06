@@ -20,15 +20,23 @@
 <script>
 export default {
     name: "LikeBox",
+    props: {
+        softwareName: {
+            type: String,
+            default: '我关注的资源名字'
+        },
+        whoShared:{
+            type: String,
+            default: '圣母玛利亚'
+        }
+    },
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
-            softwareName: '我关注的资源名字',
             rate: 3.5,
             downloadCount: 233,
             likeCount: 2019,
-            whoShared: '圣母玛利亚',
-            rate: '3.8',
+            rate: 3.8,
             favoriteIcon: false,            // defalut favourite is false
             sourceID: 0,                    // TODO从后端得到
         }
