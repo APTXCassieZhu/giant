@@ -78,7 +78,11 @@ export default {
             if(res.data.code == 0){
                 this.$store.commit('ADD_COUNT', res.headers.Authorization)
                 this.profile = res.data.data.profilePic
-                this.userName = res.data.data.name
+                if(res.data.data.nickName == null){
+                    this.userName = res.data.data.name
+                }else{
+                    this.userName = res.data.data.nickName
+                }
             }
             else if(res.data.code == 404){
                 alert('user not found')

@@ -59,6 +59,7 @@
                 <span class="welcome">欢迎回来，{{userName}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
+                        <img v-if="profile" class="topnav-user" :src="profile" @click="goLike('personal')" alt="avatar">
                         <div class="topnav-user" @click="goLike('personal')">{{userName.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-25px;">
@@ -85,6 +86,7 @@ export default {
     name: "HomeTopNavigation",
     data(){
         return{
+            profile: null,
             userName: '神之子阿目',
         }
     },
@@ -98,7 +100,11 @@ export default {
             if(res.data.code == 0){
                 this.$store.commit('ADD_COUNT', res.headers.Authorization)
                 this.profile = res.data.data.profilePic
-                this.userName = res.data.data.name
+                if(res.data.data.nickName == null){
+                    this.userName = res.data.data.name
+                }else{
+                    this.userName = res.data.data.nickName
+                }
             }
             else if(res.data.code == 404){
                 alert('user not found')
@@ -125,7 +131,11 @@ export default {
             }else if(type === 'like'){
                 this.$store.commit('PERSONAL_ACTIVE', "name3")
             }
-            this.$router.push('/personal')
+            if(this.$route.path==='/personal'){
+                location.reload()
+            }else{
+                this.$router.push('/personal')
+            }
         },
     }   
 }

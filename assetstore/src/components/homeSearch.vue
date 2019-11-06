@@ -55,8 +55,6 @@
 
 <script>
 import storage from 'good-storage'
-import VueResource from 'vue-resource' 
-
 // 判断是否含有string是否含有某个字符
 function contain(str, charset) {
     var i;
@@ -108,33 +106,35 @@ export default {
     methods: {
         searchSubmit() {
             // 清空
-            this.searchHistory = []
-            if((storage.has(1)&&storage.has(2))) {
-                storage.set(3, storage.get(2))
-                storage.set(2, storage.get(1))
-                storage.set(1, this.searchForm.content)
-                this.searchHistory.push(storage.get(1))
-                this.searchHistory.push(storage.get(2))
-                this.searchHistory.push(storage.get(3));
-            }else{
-                if(!storage.has(1)) {
-                    // empty history
-                    storage.set(1, this.searchForm.content)
-                    this.searchHistory.push(storage.get(1))
-                } else {
+            if(this.searchForm.content != ""){
+                this.searchHistory = []
+                if((storage.has(1)&&storage.has(2))) {
+                    storage.set(3, storage.get(2))
                     storage.set(2, storage.get(1))
                     storage.set(1, this.searchForm.content)
                     this.searchHistory.push(storage.get(1))
                     this.searchHistory.push(storage.get(2))
+                    this.searchHistory.push(storage.get(3));
+                }else{
+                    if(!storage.has(1)) {
+                        // empty history
+                        storage.set(1, this.searchForm.content)
+                        this.searchHistory.push(storage.get(1))
+                    } else {
+                        storage.set(2, storage.get(1))
+                        storage.set(1, this.searchForm.content)
+                        this.searchHistory.push(storage.get(1))
+                        this.searchHistory.push(storage.get(2))
+                    }
                 }
+                axios.post('/user/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
+                    //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
+                    this.$store.commit('SEARCH_COUNT', this.searchForm.content)
+                    this.$router.push('/searchresult')
+                }, (response)=>{
+                    //alert("出错啦QAQ")
+                })
             }
-            this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
-                //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                this.$store.commit('SEARCH_COUNT', this.searchForm.content)
-                this.$router.push('/searchresult')
-            }, (response)=>{
-                //alert("出错啦QAQ")
-            })
         },
         handleInput(e) {
             document.getElementById("content").style.display="none"

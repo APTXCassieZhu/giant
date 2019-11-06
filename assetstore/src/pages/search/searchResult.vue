@@ -112,7 +112,6 @@ export default {
             /* TODO 下面这种可以直接call其他组件的method，但是不知道为什么一直说content not defined
                所有直接把要call的method 复制过来了，待解决。。。
                Search.methods.searchSubmit()*/
-
             this.searchHistory = []
             if((storage.has(1)&&storage.has(2))) {
                 storage.set(3, storage.get(2))
@@ -133,11 +132,11 @@ export default {
                     this.searchHistory.push(storage.get(2))
                 }
             }
-            this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
+            axios.post('/user/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                 //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
                 this.$store.commit('SEARCH_COUNT', this.searchForm.content)
                 this.reload()
-                this.$router.push('/searchResult')
+                //this.$router.push('/searchResult')
             }, (response)=>{
             })
 

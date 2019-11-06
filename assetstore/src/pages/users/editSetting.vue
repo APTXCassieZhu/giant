@@ -161,18 +161,15 @@ function getBase64(img, callback) {
 export default {
     name:"EditSetting",
     components:{TopNavigation, Footer, Corner, },
-    computed:{
-        getUser(){
-            return this.$store.state.token;
-        },
-    },
     mounted() {
         this.personalActive = this.$store.state.personalActive  
         axios.get('/user/describe').then((res)=>{
             if(res.data.code == 0){
                 this.$store.commit('ADD_COUNT', res.headers.Authorization)
-                this.finished = true
-                this.imageUrl = res.data.data.profilePic
+                if(res.data.data.profilePic != null){
+                    this.finished = true
+                    this.imageUrl = res.data.data.profilePic
+                }
                 this.account = res.data.data.account
                 this.personalForm.nickname = res.data.data.nickName
                 this.personalForm.sign = res.data.data.signature
@@ -242,7 +239,11 @@ export default {
     },
     methods:{
         goPage(url){
-            this.$router.push(url)
+            if(this.$route.path===url){
+                location.reload()
+            }else{
+                this.$router.push(url)
+            }
         },
         showPerson(){
             console.log(this.showPersonal)
@@ -336,11 +337,7 @@ export default {
                         content: '修改资料成功'
                     });
                 }
-                else if(res.data.code == 401){
-                    // 未登录 ===》跳转login 重新登录
-                    this.$store.commit('REMOVE_COUNT', this.$store.state.token);
-                    this.$router.push('/login')
-                }else if(res.data.code == 400){
+                else if(res.data.code == 400){
                     alert('bad request (form error)')
                 }
             }, res => {
@@ -366,11 +363,7 @@ export default {
                         content: '修改设置成功'
                     });
                 }
-                else if(res.data.code == 401){
-                    // 未登录 ===》跳转login 重新登录
-                    this.$store.commit('REMOVE_COUNT', this.$store.state.token);
-                    this.$router.push('/login')
-                }else if(res.data.code == 400){
+                else if(res.data.code == 400){
                     alert('bad request (form error)')
                 }
             }, res => {
