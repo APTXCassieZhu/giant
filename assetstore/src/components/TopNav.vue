@@ -6,9 +6,9 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo" >
-                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="首页" @click="goPage('/')">
+                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="首页" @click="goPage('/home')">
             </div>
-            <span class="logo-text" @click="goPage('/')">GDRC</span>
+            <span class="logo-text" @click="goPage('/home')">GDRC</span>
             <!--不知道怎么清除之前div css-->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
@@ -24,7 +24,7 @@
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <img v-if="profile" class="topnav-user-image" :src="profile" @click="goLike('personal')" alt="avatar">
-                        <div v-else class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
+                        <div v-else class="topnav-user-image" @click="goLike('personal')">{{userName.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-30px;">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
@@ -37,7 +37,7 @@
 
             <div to='/login' class="topnav-box-user-login">
                 <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
-                    <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
+                    <div class="topnav-user" @click="goLike('personal')">{{userName.charAt(0)}}</div>
                 </Tooltip>
             </div>
         </div>
@@ -68,24 +68,19 @@ export default {
         return{
             activenum: 0,
             profile: null,
+            userName: '神',
         }
     },
     computed:{
-        getUser(){
-            return this.$store.state.token;
-        }
     },
     mounted(){
         axios.get('/user/describe').then((res)=>{
             if(res.data.code == 0){
-                this.$store.commit('ADD_COUNT', res.headers.get('token'))
+                this.$store.commit('ADD_COUNT', res.headers.Authorization)
                 this.profile = res.data.data.profilePic
+                this.userName = res.data.data.name
             }
-            else if(res.data.code == 401){
-                // 未登录 ===》跳转login 重新登录
-                this.$store.commit('REMOVE_COUNT', this.$store.state.token);
-                this.$router.push('/login')
-            }else if(res.data.code == 404){
+            else if(res.data.code == 404){
                 alert('user not found')
             }
         }, (res)=>{
@@ -108,7 +103,11 @@ export default {
                 this.activenum = 3
                 this.$store.commit('NOW_ACTIVE', this.activenum)
             }
-            this.$router.push(url)
+            if(this.$route.path===url){
+                location.reload()
+            }else{
+                this.$router.push(url)
+            }
         },
         goLike(type){
             if(type === 'personal'){

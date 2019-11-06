@@ -5,9 +5,9 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo">
-                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="logo" @click="goPage('/')">      
+                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="logo" @click="goPage('/home')">      
             </div>
-            <span class="logo-text" @click="goPage('/')">GDRC</span>
+            <span class="logo-text" @click="goPage('/home')">GDRC</span>
             <!--不知道怎么清除之前div css-->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
@@ -56,10 +56,10 @@
             </div>
            
             <div class="topnav-box-user">
-                <span class="welcome">欢迎回来，{{getUser}}</span>
+                <span class="welcome">欢迎回来，{{userName}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
+                        <div class="topnav-user" @click="goLike('personal')">{{userName.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-25px;">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
@@ -83,10 +83,29 @@
 <script>
 export default {
     name: "HomeTopNavigation",
-    computed:{
-        getUser(){
-            return this.$store.state.token;
+    data(){
+        return{
+            userName: '神之子阿目',
         }
+    },
+    computed:{
+        // getUser(){
+        //     return this.$store.state.token;
+        // }
+    },
+    mounted(){
+        axios.get('/user/describe').then((res)=>{
+            if(res.data.code == 0){
+                this.$store.commit('ADD_COUNT', res.headers.Authorization)
+                this.profile = res.data.data.profilePic
+                this.userName = res.data.data.name
+            }
+            else if(res.data.code == 404){
+                alert('user not found')
+            }
+        }, (res)=>{
+            // 请求失败
+        })
     },
     methods:{
         logout(){
@@ -94,7 +113,11 @@ export default {
             this.$router.push('/login')
         },
         goPage(url){
-            this.$router.push(url)
+            if(this.$route.path===url){
+                location.reload()
+            }else{
+                this.$router.push(url)
+            }
         },
         goLike(type){
             if(type === 'personal'){

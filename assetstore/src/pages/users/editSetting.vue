@@ -177,12 +177,7 @@ export default {
                 this.personalForm.nickname = res.data.data.nickName
                 this.personalForm.sign = res.data.data.signature
             }
-            else if(res.data.code == 401){
-                // 未登录 ===》跳转login 重新登录
-                console.log('test 401')
-                this.$store.commit('REMOVE_COUNT', this.$store.state.token);
-                this.$router.push('/login')
-            }else if(res.data.code == 404){
+            else if(res.data.code == 404){
                 alert('user not found')
             }
         }, (res)=>{
