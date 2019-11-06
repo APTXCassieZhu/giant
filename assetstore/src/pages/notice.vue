@@ -86,9 +86,6 @@ export default {
         }
     },
     methods:{
-        goPage(url){
-            this.$router.push(url)
-        },
         showNotice(){
             this.showNotices = true
         },
@@ -133,6 +130,7 @@ export default {
     border-radius: 3px;
     background-color: #ffffff;
     color: black;
+    z-index: 0;
 }
 .menu_left_part{
     display: inline-block;

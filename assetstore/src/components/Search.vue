@@ -25,7 +25,7 @@
                         </ul>
                         <ul v-for="(item,index) in searchHistory" :key="index">
                             <Icon size="20" type="ios-time-outline" ></Icon>
-                            <span class="tag-style" @click.native="searchTag(item)">{{item}}</span>
+                            <span class="tag-style" @click="searchTag(item)">{{item}}</span>
                         </ul>
                     </div>
                 </div>
@@ -123,7 +123,9 @@ export default {
                     //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
                     this.$store.commit('SEARCH_COUNT', this.searchForm.content)
                     this.reload()
-                    //this.$router.push('/searchResult')
+                    if(this.$route.path != '/searchResult'){
+                        this.$router.push('/searchResult')
+                    }
                 }, (response)=>{
                 })
             }

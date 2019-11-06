@@ -28,7 +28,7 @@
                                 </ul>
                                 <ul v-for="(item,index) in searchHistory" :key="index">
                                     <Icon size="20" type="ios-time-outline"></Icon>
-                                    <span class="tag-style" @click.native="searchTag(item)">{{item}}</span>
+                                    <span class="tag-style" @click="searchTag(item)">{{item}}</span>
                                 </ul>
                             </div>
                         </div>

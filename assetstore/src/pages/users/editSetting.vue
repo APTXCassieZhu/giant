@@ -408,6 +408,7 @@ export default {
     border-radius: 3px;
     /*box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);*/
     background-color: #ffffff;
+    z-index: 0;
 }
 .setting-card{
     position: relative;
