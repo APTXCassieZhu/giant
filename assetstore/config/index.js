@@ -11,20 +11,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api/*':{
-        target: "http://localhost:3000"
+      '/api':{
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
       }
-      // "/user/*" : {
-        
-      // },
-      // "/upload/*" : {
-      //   target: "http://localhost:3000"
-      // }
     },
 
     // Various Dev Server settings
-    //host: 'localhost', // can be overwritten by process.env.HOST
-    host: '192.168.94.135',
+    host: 'localhost', // can be overwritten by process.env.HOST
+    //host: '192.168.94.135',
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -49,7 +47,7 @@ module.exports = {
     // If you have problems debugging vue-files in devtools,
     // set this to false - it *may* help
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
-    cacheBusting: true,
+    //cacheBusting: true,
 
     cssSourceMap: true
   },

@@ -15,6 +15,9 @@ import visit from '../pages/users/visit'
 import knowledge from '../pages/knowledge'
 import Notice from '../pages/notice'
 
+import uploadFile from '../pages/uploadFile'
+import resourceDetail from '../pages/resourceDetail'
+
 Vue.use(Router)
 
 export default new Router({ 
@@ -132,6 +135,22 @@ export default new Router({
       path: '/Q&A',
       name: 'Q&A',
       component: discussion,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/upFile',
+      name: 'upFile',
+      component: uploadFile,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path:'/resourceDetail/:resourceId',
+      name:'resourceDetail',
+      component:resourceDetail,
       meta: {
         requireAuth: true
       }

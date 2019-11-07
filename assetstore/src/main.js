@@ -26,8 +26,15 @@ Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
+
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css'
+Vue.use(Antd)
+
+
+axios.defaults.baseURL='/'  
 //axios post setting
-axios.defaults.baseURL='http://192.168.94.135:8080'
+// axios.defaults.baseURL='http://192.168.94.135:8080'
 global.axios=axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios
