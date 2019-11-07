@@ -31,7 +31,7 @@
         <div class="asset-card" >
             <Tabs :value="personalActive" :animated="false">
                 <TabPane :label="tab1" name="name1">
-                    <div class="upload-style">
+                    <div class="upload-style" @click="goPage('/upFile')">
                         <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
                         <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
                     </div>

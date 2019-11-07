@@ -22,7 +22,7 @@ router.post('/login', jsonParser, function(req,res){
     }
     
 })
-router.get('/describe', function(res){
+router.get('/describe', function(req,res){
     res.status(200).json({'data': {name:'夏目','nickName': '睿酱', 'signature': '啦啦啦，每天都要开心鸭', 
     'account':'xiamu@ztgame.com'}, 'code': 0})
 });

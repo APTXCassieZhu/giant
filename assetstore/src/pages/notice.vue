@@ -173,6 +173,7 @@ export default {
     float: right;
     margin-left: 995px;
     font-size: 14px;
+    color: #1ebf73;
 }
 .mark-readed{
     font-size: 14px;
@@ -183,6 +184,7 @@ export default {
     width: 16px;
     height: 14px;
     font-size: 18px;
+    color: #1ebf73;
 }
 .info-content{
     font-size: 18px;

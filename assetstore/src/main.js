@@ -27,9 +27,9 @@ Vue.config.productionTip = false
 Vue.use(Vuex)
 
 
-import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
-Vue.use(Antd)
+// import Antd from 'ant-design-vue'
+// import 'ant-design-vue/dist/antd.css'
+// Vue.use(Antd)
 
 
 axios.defaults.baseURL='/'  
