@@ -175,7 +175,7 @@ app.use('/script', express.static(__dirname +'/script'))
 								"pid": 1,
 								"rateId": null,
 								"user": {
-									"id": 1,
+									"id": 123,
 									"name": "胡浩",
 									"nickName": null,
 									"profilePic": '//avatars2.githubusercontent.com/u/18524392?s=460&v=4'

@@ -27,10 +27,16 @@ Vue.config.productionTip = false
 Vue.use(Vuex)
 
 
+import { Rate ,Tooltip} from "ant-design-vue";
+import 'ant-design-vue/lib/rate/style/css'
+import 'ant-design-vue/lib/tooltip/style/css'
+
+Vue.component(Rate.name, Rate)
+Vue.component(Tooltip.name, Tooltip)
+
 // import Antd from 'ant-design-vue'
 // import 'ant-design-vue/dist/antd.css'
 // Vue.use(Antd)
-
 
 axios.defaults.baseURL='/'  
 //axios post setting

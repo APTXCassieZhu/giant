@@ -39,47 +39,75 @@
 
           </div>
           <div class="resource-detail-deslist">
-            <div class="resource-detail-deslist-part1"><a-avatar size="small" style="backgroundColor:#87d068" icon="user" /><span>前沿技术部</span></div>
+            <div class="resource-detail-deslist-part1">
+              <!-- <a-avatar size="small" style="backgroundColor:#87d068" icon="user" /> -->
+              
+              <!-- <font-awesome-icon :type="['fas','user-circle']"></font-awesome-icon> -->
+              <font-awesome-icon :icon="['fas','user-circle']" style="color:#37d89d;width:23px;height:23px;"/>
+              <span>前沿技术部</span>
+            </div>
             <div class="resource-detail-deslist-part2">天空贴图的标题</div>
             <div class="resource-detail-deslist-part3">
-              <a-select defaultValue="ver 1.2.3" style="width: 120px">
+              <!-- <a-select defaultValue="ver 1.2.3" style="width: 120px">
                 <a-select-option value="v1">ver 1.2.3</a-select-option>
                 <a-select-option value="v2">ver 2.3.3</a-select-option>
                 <a-select-option value="v3">ver 3.0.3</a-select-option>
-              </a-select>
+              </a-select> -->
+              <Select v-model="def_ver" style="width: 120px">
+                <Option value="v1">ver 1.2.3</Option>
+                <Option value="v2">ver 2.3.3</Option>
+                <Option value="v3">ver 3.0.3</Option>
+              </Select>
               <span class="resource-detail-deslist-updatetime"> - Last Update:2019-7-29</span>
             </div>
             <div  class="resource-detail-deslist-part4">
               <div class="resource-detail-deslist-score-wrap">
-                <a-rate v-model="rate1" disabled/><span class="resource-detail-deslist-score">{{rate1+'.0'}}</span>
+                <!-- <Rate v-model="rate1" disabled/><span class="resource-detail-deslist-score">{{rate1+'.0'}}</span> -->
+                <a-rate disabled v-model="rate1" /><span class="resource-detail-deslist-score">{{rate1+'.0'}}</span>
               </div>
               <div>25条评分</div> 
               <div>137条评论</div>  
             </div>
             <div class="resource-detail-deslist-part5">
-              <div><a-icon type="folder" theme="twoTone" twoToneColor="#1ebf73"/> <span>资源包</span> </div>
+              <div>
+                <!-- <a-icon type="folder" theme="twoTone" twoToneColor="#1ebf73"/>  -->
+                <font-awesome-icon :icon="['fas','folder']" style="color:#1ebf73;width:15px;height:15px;"/>
+                <span>资源包</span> 
+              </div>
               <div>天空贴图的标题</div>
             </div>
             <div class="resource-detail-deslist-part6">
-              <div><a-icon type="setting" theme="twoTone" twoToneColor="#1ebf73"/>  <span>可运行的引擎版本</span>  </div>
+              <div>
+                <font-awesome-icon :icon="['fas','cog']" style="color:#1ebf73;width:15px;height:15px;"/>
+                <!-- <a-icon type="setting" theme="twoTone" twoToneColor="#1ebf73"/>   -->
+                <span>可运行的引擎版本</span> 
+               </div>
               <div>Unity 4.2 - 4.8</div>
             </div>
             <div  class="resource-detail-deslist-part7">
-              <div><a-icon type="tag" theme="twoTone" twoToneColor="#1ebf73"/> <span>资源标签</span>  </div>
               <div>
-                <a-tag>模型</a-tag>
-                <a-tag>模型22222</a-tag>
-                <a-tag>模型22</a-tag>
-                <a-tag>模型33</a-tag>
-                <a-tag>模型4424</a-tag>
-                <a-tag>模型11</a-tag>
-                <a-tag>模型33</a-tag>
-                <a-tag>模型4424</a-tag>
-                <a-tag>模型11</a-tag>
+                <!-- <a-icon type="tag" theme="twoTone" twoToneColor="#1ebf73"/>  -->
+                <font-awesome-icon :icon="['fas','tags']" style="color:#1ebf73;width:15px;height:15px;"/>
+                <span>资源标签</span> 
+              </div>
+              <div>
+                <Tag size="medium">模型33322</Tag>
+                <Tag size="medium">模型</Tag>
+                <Tag size="medium">模型22222</Tag>
+                <Tag size="medium">模型22</Tag>
+                <Tag size="medium">模型33</Tag>
+                <Tag size="medium">模型4424</Tag>
+                <Tag size="medium">模型11</Tag>
+                <Tag size="medium">模型33</Tag>
+                <Tag size="medium">模型4424</Tag>
+                <Tag size="medium">模型11</Tag>
               </div>
             </div>
             <div class="resource-detail-deslist-part8">
-              <div class="resource-detail-deslist-like" @click="handleLike"><a-icon type="heart" />&nbsp;关注</div>
+              <div class="resource-detail-deslist-like" @click="handleLike">
+                <!-- <a-icon type="heart" />&nbsp;关注 -->
+                <font-awesome-icon :icon="['fas','heart']" style="color:#1ebf73;width:15px;height:15px;"/>&nbsp;关注
+              </div>
               <div class="resource-detail-deslist-down" @click="handleDown">下载资源（512MB）</div>
             </div>
           </div>
@@ -131,7 +159,7 @@
             <span>137条评论</span> 
             <span>仅显示20条评论</span>
           </div>   
-          <a-dropdown :trigger="['click']">
+          <!-- <a-dropdown :trigger="['click']">
             <span class="ant-dropdown-link" > {{sortBy==='time'?'按时间排序':'按热度排序'}} <a-icon type="down" /> </span>
             <a-menu slot="overlay">
               <a-menu-item key="time" @click="dpClick">
@@ -142,13 +170,21 @@
               </a-menu-item>
               <a-menu-divider />
             </a-menu>
-          </a-dropdown>
+          </a-dropdown> -->
+        <Dropdown trigger="click" style="margin-right:10px;cursor:pointer;" >
+          <span > {{sortBy==='time'?'按时间排序':'按热度排序'}} <Icon type="ios-arrow-down"></Icon> </span>
+          <DropdownMenu slot="list" @click="dpClick">
+              <DropdownItem>按时间排序</DropdownItem>
+              <DropdownItem>按热度排序</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
         </div>
-        <a-alert message="您需要写评论才能评分哦" type="info" closable showIcon />
-        <a-alert message="您需要评分才可以发表评论哦" type="info" closable showIcon />
-  
+        <Alert show-icon closable>您需要写评论才能评分哦</Alert>
+        <Alert show-icon closable>您需要评分才可以发表评论哦</Alert>
+       
         <div class="resource-detail-rate-wrap" > 
           <a-rate v-model="rate2" size="large" :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
+          <!-- <Rate v-model="rate2" size="large" :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" /> -->
           <span class="resource-detail-rate-text">{{rate2+'.0'}}</span>
         </div>
         <div class="resource-detail-reply" ref="resource-detail-reply">
@@ -177,18 +213,18 @@
   //   border-color: transparent;
   //   box-shadow: none;
   // }
-  .ant-dropdown-link{
-    margin-right:15px;
-    cursor: pointer;
-    color:#7f7f7f;
-    font-size:16px;
-  }
+  // .ant-dropdown-link{
+  //   margin-right:15px;
+  //   cursor: pointer;
+  //   color:#7f7f7f;
+  //   font-size:16px;
+  // }
 }
 
 </style>
 <style>
 
-  .swiper-container {
+    .swiper-container {
       width: 100%;
       height: 300px;
       margin-left: auto;
@@ -224,6 +260,13 @@
   margin:0 auto;
   margin-top:50px;
   position: relative;
+
+  .ivu-tag{
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-top:5px;
+  }
+
   &-t{
     
   }
@@ -535,6 +578,11 @@ import moment from 'moment'
 import Footer from '../components/footer.vue'
 import axios from 'axios'
 
+
+// import Rate from 'ant-design-vue/lib/rate';
+// import 'ant-design-vue/lib/rate/style'; // 或者 ant-design-vue/lib/button/style/css 加载 css 文件
+
+
 // console.log('TopNavigation:', TopNavigation)
 import E from '../widget/emojiReply/'
 
@@ -551,7 +599,9 @@ export default {
       moment,
       rate1:3,
       rate2:0,
-      sortBy:'time'
+      sortBy:'time',
+
+      def_ver:'ver 1.2.3'
     }
 
   },
@@ -581,10 +631,10 @@ export default {
 
     // })
 
-    axios.get('/api/user/describe').then(response=>{
-      var res = response.data
+    axios.get('/api/user/describe').then(response_des=>{
+      var res = response_des.data
       var userid = res.data.id
-
+      console.log(userid,response_des)
       axios.get(`/api/comment`,{params:{ resourceId:params.resourceId,pageSize:20,order:'hot'}}).then(response=>{
 
         var res = response.data
@@ -628,6 +678,7 @@ export default {
           return item
         })
 
+       
         //console.log(response)
         let comments = Comments(this.$refs['resource-detail-comments'],{
           items,
@@ -635,6 +686,8 @@ export default {
             uid:userid
           }
         })
+
+       
         comments.onLike(prop=>{
           console.log('comments like:', prop)
 
@@ -849,7 +902,8 @@ export default {
   },
   methods:{
     handleLike(){
-      this.$message.success('已关注')
+      // this.$message.success('已关注')
+      this.$Message.success('已关注')
     },
     handleRate(v){
 
