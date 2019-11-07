@@ -287,7 +287,7 @@ export default {
 .software-feedback{
     position: relative;
     animation-name: drive; 
-    animation-duration:1s;
+    animation-duration:0.5s;
     width: 281px;
     height: 466px;
     border-radius: 3px;

@@ -25,6 +25,7 @@
     "good-storage": "^1.1.0",
     "iview-input-tag": "^1.0.4",
     "marked": "^0.7.0",
+    "moment": "^2.24.0",
     "multer": "^1.4.2",
     "uniqid": "^5.0.3",
     "view-design": "^4.0.0",
