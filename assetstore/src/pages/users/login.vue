@@ -77,9 +77,9 @@ export default {
                 // 登录成功
                 if(res.data.code == 0){
                     this.$store.commit('ADD_COUNT', res.headers.Authorization);
+                    this.$store.commit('ADD_USER', res.data.data);
                     this.$router.push('/')
                 }
-                // alert("出错啦QAQ"+response.code)
                 else if(res.data.code == 40101){
                     this.$Modal.error({
                         title: '抱歉，账号或密码错误，请确认之后重试',

@@ -24,7 +24,7 @@
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <img v-if="profile" class="topnav-user-image" :src="profile" @click="goLike('personal')" alt="avatar">
-                        <div v-else class="topnav-user-image" @click="goLike('personal')">{{userName.charAt(0)}}</div>
+                        <div v-else class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-30px;">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
@@ -37,7 +37,7 @@
 
             <div to='/login' class="topnav-box-user-login">
                 <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
-                    <div class="topnav-user" @click="goLike('personal')">{{userName.charAt(0)}}</div>
+                    <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                 </Tooltip>
             </div>
         </div>
@@ -72,24 +72,33 @@ export default {
         }
     },
     computed:{
+        getUser(){
+            let o = JSON.parse(this.$store.state.user)
+            this.profile = o.profilePic
+            if(o.nickName == null){
+                return o.name
+            }else{
+                return o.nickName
+            }
+        }
     },
     mounted(){
-        axios.get('/user/describe').then((res)=>{
-            if(res.data.code == 0){
-                this.$store.commit('ADD_COUNT', res.headers.Authorization)
-                this.profile = res.data.data.profilePic
-                if(res.data.data.nickName == null){
-                    this.userName = res.data.data.name
-                }else{
-                    this.userName = res.data.data.nickName
-                }
-            }
-            else if(res.data.code == 404){
-                alert('user not found')
-            }
-        }, (res)=>{
-            // 请求失败
-        })
+        // axios.get('/user/describe').then((res)=>{
+        //     if(res.data.code == 0){
+        //         this.$store.commit('ADD_COUNT', res.headers.Authorization)
+        //         this.profile = res.data.data.profilePic
+        //         if(res.data.data.nickName == null){
+        //             this.userName = res.data.data.name
+        //         }else{
+        //             this.userName = res.data.data.nickName
+        //         }
+        //     }
+        //     else if(res.data.code == 404){
+        //         alert('user not found')
+        //     }
+        // }, (res)=>{
+        //     // 请求失败
+        // })
     },
     methods:{
         logout(){

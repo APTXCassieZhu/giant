@@ -162,25 +162,33 @@ export default {
     name:"EditSetting",
     components:{TopNavigation, Footer, Corner, },
     mounted() {
-        this.personalActive = this.$store.state.personalActive  
-        axios.get('/user/describe').then((res)=>{
-            if(res.data.code == 0){
-                this.$store.commit('ADD_COUNT', res.headers.Authorization)
-                if(res.data.data.profilePic != null){
-                    this.finished = true
-                    this.imageUrl = res.data.data.profilePic
-                }
-                this.account = res.data.data.account
-                this.personalForm.nickname = res.data.data.nickName
-                this.personalForm.sign = res.data.data.signature
-            }
-            else if(res.data.code == 404){
-                alert('user not found')
-            }
-        }, (res)=>{
-            // 请求失败
-            alert(res)
-        })
+        this.personalActive = this.$store.state.personalActive 
+        let u = JSON.parse(this.$store.state.user)
+         if(u.profilePic != null){
+            this.finished = true
+            this.imageUrl = u.profilePic
+        }
+        this.account = u.account
+        this.personalForm.nickname = u.nickName
+        this.personalForm.sign = u.signature
+        // axios.get('/user/describe').then((res)=>{
+        //     if(res.data.code == 0){
+        //         this.$store.commit('ADD_COUNT', res.headers.Authorization)
+        //         if(res.data.data.profilePic != null){
+        //             this.finished = true
+        //             this.imageUrl = res.data.data.profilePic
+        //         }
+        //         this.account = res.data.data.account
+        //         this.personalForm.nickname = res.data.data.nickName
+        //         this.personalForm.sign = res.data.data.signature
+        //     }
+        //     else if(res.data.code == 404){
+        //         alert('user not found')
+        //     }
+        // }, (res)=>{
+        //     // 请求失败
+        //     alert(res)
+        // })
         /*TODO 从后端get setting的数据 */
     },
     data () {

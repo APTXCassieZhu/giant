@@ -134,6 +134,7 @@ export default {
     height: 660px;
     left: 50px;
     /* top: 10px; */
+    top: 33px;
     padding: 30px 20px 30px 25px;
     border-radius: 3px;
     background-color: #ffffff;

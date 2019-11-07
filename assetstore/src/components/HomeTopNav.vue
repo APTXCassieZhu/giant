@@ -56,11 +56,11 @@
             </div>
            
             <div class="topnav-box-user">
-                <span class="welcome">欢迎回来，{{userName}}</span>
+                <span class="welcome">欢迎回来，{{getUser}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <img v-if="profile" class="topnav-user" :src="profile" @click="goLike('personal')" alt="avatar">
-                        <div class="topnav-user" @click="goLike('personal')">{{userName.charAt(0)}}</div>
+                        <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-25px;">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
@@ -91,27 +91,32 @@ export default {
         }
     },
     computed:{
-        // getUser(){
-        //     return this.$store.state.token;
-        // }
+        getUser(){
+            let o = JSON.parse(this.$store.state.user)
+            this.profile = o.profilePic
+            if(o.nickName == null){
+                return o.name
+            }else{
+                return o.nickName
+            }
+        }
     },
     mounted(){
-        axios.get('/user/describe').then((res)=>{
-            if(res.data.code == 0){
-                this.$store.commit('ADD_COUNT', res.headers.Authorization)
-                this.profile = res.data.data.profilePic
-                if(res.data.data.nickName == null){
-                    this.userName = res.data.data.name
-                }else{
-                    this.userName = res.data.data.nickName
-                }
-            }
-            else if(res.data.code == 404){
-                alert('user not found')
-            }
-        }, (res)=>{
-            // 请求失败
-        })
+        // axios.get('/user/describe').then((res)=>{
+        //     if(res.data.code == 0){
+        //         this.$store.commit('ADD_COUNT', res.headers.Authorization)
+        //         this.profile = res.data.data.profilePic
+        //         if(res.data.data.nickName == null){
+        //             this.userName = res.data.data.name
+        //         }else{
+        //             this.userName = res.data.data.nickName
+        //         }
+        //     }
+        //     else if(res.data.code == 404){
+        //         alert('user not found')
+        //     }
+        // }, (res)=>{
+        // })
     },
     methods:{
         logout(){

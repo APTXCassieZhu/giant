@@ -32,15 +32,22 @@ global.axios=axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios
 // axios.interceptors.request.use(function (config) {
+//   config.headers.common['Authorization'] = state.token
+//   debugger
+//   return config
+// }, function (error) {
+//   // 对请求错误做些什么
+//   return Promise.reject(error);
 // });
+
 axios.interceptors.response.use(
   response => {
     if (response.data.code=="401") {
       console.log('test 401 success')
-      store.commit('REMOVE_COUNT', store.state.token);
+      store.commit('REMOVE_COUNT', store.state.token)
       router.push('/login')
-      // return Promise.reject()
-      return response;
+      return Promise.reject()
+      //return response;
     }else{
       return response;
     }
@@ -60,17 +67,18 @@ Vue.prototype.$Message.config({
 // 用常量代替事件类型，使得代码更清晰
 const ADD_COUNT = 'ADD_COUNT'
 const REMOVE_COUNT = 'REMOVE_COUNT'
+const ADD_USER = 'ADD_USER'
 const SEARCH_COUNT = 'SEARCH_COUNT'
 const NOW_ACTIVE = 'NOW_ACTIVE'
 const PERSONAL_ACTIVE = 'PERSONAL_ACTIVE'
 const ADD_FAVORITE = 'ADD_FAVORITE'
 const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
-const localstorage = require('./localstorage')
+// const localstorage = require('./localstorage')
 // 注册状态管理全局参数
 var store = new Vuex.Store({
   state:{
     token:localStorage['token'],
-    userID:'',
+    user:localStorage['user'],
     searchContent:'',
     activenum: 1,
     personalActive: "",
@@ -89,6 +97,11 @@ var store = new Vuex.Store({
     [REMOVE_COUNT] (state, token) {
       localStorage.removeItem("token", token)
       state.token = undefined
+    },
+    [ADD_USER] (state, user){
+      console.log('user '+user)
+      localStorage.setItem("user", JSON.stringify(user))
+      state.user = user
     },
     // 存放用户搜索内容
     [SEARCH_COUNT] (state, searchContent) {
