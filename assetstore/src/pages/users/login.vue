@@ -73,7 +73,7 @@ export default {
             if(!this.expire) {
                 this.expireTime = 2
             }
-            axios.post('/user/login',{account:this.loginForm.account, pwd:this.loginForm.password, expire:this.expireTime},{emulateJSON:true}).then((res)=>{
+            axios.post('/api/user/login',{account:this.loginForm.account, pwd:this.loginForm.password, expire:this.expireTime},{emulateJSON:true}).then((res)=>{
                 // 登录成功
                 if(res.data.code == 0){
                     this.$store.commit('ADD_COUNT', res.headers.Authorization);

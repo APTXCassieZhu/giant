@@ -6,6 +6,7 @@ import artfilter from '../pages/search/artFilter'
 import artshow from '../pages/search/artShow'
 import toolfilter from '../pages/search/toolFilter'
 import searchresult from '../pages/search/searchResult'
+import searchempty from '../pages/search/searchEmpty'
 import software from '../pages/software'
 import discussion from '../pages/Q&A'
 import personal from '../pages/users/personal'
@@ -115,6 +116,14 @@ export default new Router({
       path: '/searchresult',
       name: 'SearchResult',
       component: searchresult,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/searchempty',
+      name: 'SearchEmpty',
+      component: searchempty,
       meta: {
         requireAuth: true
       }

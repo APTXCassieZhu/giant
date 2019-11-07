@@ -16,5 +16,5 @@ router.post('/',upload.single('avatar'),function(req,res){
     if(req.file != undefined){
         res.json({'status':'OK','id':req.body['id']});
     }
-});
+})
 module.exports = router;
