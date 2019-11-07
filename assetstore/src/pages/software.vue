@@ -13,7 +13,7 @@
 
         <div class="middle-card-wrapper">
             <div class="sidemenu-card">
-                <Menu active-name="1">
+                <Menu active-name="1" style="width: 281px">
                     <MenuItem name="1" @click.native="showPage = 'general'">
                         <Icon size="18" type="ios-apps" />通用软件
                     </MenuItem>
@@ -30,9 +30,31 @@
                         <Icon size="18" type="md-car" />驱动软件
                     </MenuItem>
                 </Menu>
-                <br><br>
                 <Button @click="showFeedback()" class="sidemenu-btn"><font-awesome-icon :icon="['fas','edit']"/> 找不到想要的？</Button>
-                <Feedback :showFeedback='curShowFeedback' @hideDialog="curShowFeedback = false"></Feedback>
+                <div v-if="curShowFeedback" class="software-feedback">
+                    <div class="fb-close" @click="curShowFeedback=false"><font-awesome-icon :icon="['fas','times']"/></div>
+                    <div v-if="!fbSuccess">
+                        <div style="font-size: 18px;font-weight: 600;color: black;text-align:left;">告诉我们您需要的软件吧</div>
+                        <Form ref="softwareFBForm" :model="softwareFBForm" :rules="softwareFBRule">
+                            <FormItem prop="softwareWant">
+                                <Input class="fb-title" type="textarea" maxlength="30" v-model="softwareFBForm.softwareWant" @on-change="needMoreSoftware()"
+                                show-word-limit placeholder="如 ADOBE CS SUITE 9.0.123" />
+                            </FormItem>
+                            <FormItem prop="softwareDetail">
+                                <Input class="fb-des" type="textarea" v-model="softwareFBForm.softwareDetail" maxlength="150" show-word-limit placeholder="提供下载网址可以帮助我们更快的收集您的需求"/>
+                            </FormItem>
+                            <FormItem>
+                                <Button :class="fbbtn" :disabled="disableOrNot" type="success" @click="softwareFeedback()">提交</Button>
+                            </FormItem>
+                        </Form>
+                    </div>
+                    <div v-else style="text-align:center;padding:118px 16px">
+                        <font-awesome-icon :icon="['fas','check-circle']" class="fb-success-icon"/>
+                        <div style="font-size:18px;font-weight:600;color:black;margin-bottom:20px">感谢您的反馈</div>
+                        <p style="font-size:12px;color:#7f7f7f;text-align:left;">需求已提交，我们会尽快处理。</p>
+                        <p style="font-size:12px;color:#7f7f7f;text-align:left;">我们将通过<span style="font-weight:bold"> 消息—站内信 </span>的形式通知您反馈结果</p>
+                    </div>
+                </div>
             </div>
             <div v-show="showPage == 'general'" class="software-page">
                 <div class="card-title">通用软件（{{generalNum}}款已收录）</div>
@@ -105,10 +127,9 @@ import Corner from '../components/corner.vue'
 import SoftwareDownload from '../components/softwareDownload.vue'
 import SpecialDownload from '../components/specialDownload.vue'
 import specialDownloadVue from '../components/specialDownload.vue'
-import Feedback from '../components/feedback.vue'
 export default {
     name:"software",
-    components:{TopNavigation, Footer, Corner, SoftwareDownload, SpecialDownload, Feedback},
+    components:{TopNavigation, Footer, Corner, SoftwareDownload, SpecialDownload},
     data(){
         return{
             generalNum: 20,
@@ -124,7 +145,20 @@ export default {
             ifMoreFree: false,
             ifMoreSchedule: false,
             ifMoreDrive: false,
+
             curShowFeedback: false,
+            disableOrNot: true,
+            fbSuccess: false,
+            fbbtn: 'fb-btn-disable',
+            softwareFBForm:{
+                softwareWant: '',
+                softwareDetail: '',
+            },
+            softwareFBRule:{
+                softwareWant: [{required: true, message:'*请填写您需要的软件', trigger:'blur'}],
+                softwareDetail:[{required: false, trigger:'blur'},
+                            {type:'string', max: 150, message:'字太多啦', trigger:'blur'}]
+            }
         }
     },
     mounted(){
@@ -154,10 +188,62 @@ export default {
         showFeedback(){
             this.curShowFeedback = true
         },
+        needMoreSoftware(){
+            if(this.softwareFBForm.softwareWant == ''){
+                this.fbbtn = 'fb-btn-disable'
+                this.disableOrNot = true
+            }else{
+                this.fbbtn = 'fb-btn'
+                this.disableOrNot = false
+            }
+        },
+        softwareFeedback(){
+            axios.post('/api/feedback',{title:this.softwareFBForm.softwareWant, details:this.softwareFBForm.softwareDetail},
+            {emulateJSON:true}).then((res)=>{
+                if(res.data.code == 0){
+                    this.$store.commit('ADD_COUNT', res.headers.Authorization);
+                    this.fbSuccess = true
+                }
+                else if(res.data.code == 222){
+                    this.$notification.config({
+                        placement: 'bottomLeft',
+                    });
+                    this.$notification['error']({
+                        message: '上传失败',
+                    });
+                }else if(res.data.code == 233){
+                    this.$notification.config({
+                        placement: 'bottomLeft',
+                    });
+                    this.$notification['error']({
+                        message: '请求服务器失败',
+                    });
+                }
+            }, (res)=>{
+                // 登录失败
+                alert(res)
+            })
+        }
     },
 }
 </script>
-
+<style>
+.sidemenu-card > .ivu-menu >.ivu-menu-item{
+    width: 281px;
+    padding: 14px 40px;
+}
+.fb-des > textarea{
+    resize: none;
+    height: 208px;
+}
+.fb-title > textarea{
+    resize: none;
+    height: 49px;
+}
+.software-feedback > .ivu-form > .ivu-form-item{
+    border-width: 0px;
+}
+</style>
 <style scoped>
 .bread-container {
     position: relative;
@@ -172,28 +258,107 @@ export default {
 }
 .middle-card-wrapper{
     width:100%;
+    height: auto;
     display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-ms-flexbox;display:flex;flex-wrap:wrap;
     justify-content:center;
 }
 .sidemenu-card{
     position: sticky; 
-    width: 240px;
-    height: 500px;
+    width: 281px;
+    height: 800px;
     top: 210px;
     margin-top: 28px;
     margin-right: 30px;
     border-radius: 3px;
 }
 .sidemenu-btn{
-    width: 239px;
+    width: 281px;
     height: 49px;
     font-size: 16px;
     color: #515A6E;
     border-width: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .sidemenu-btn:hover{
     color: #1ebf73;
     background-color: #f0fff5;
+}
+.software-feedback{
+    position: relative;
+    animation-name: drive; 
+    animation-duration:1s;
+    width: 281px;
+    height: 466px;
+    border-radius: 3px;
+    box-shadow: 0 1px 6px 5px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    text-align: center;
+    padding: 40px 30px;
+}
+.fb-close{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 13px;
+    height: 16px;
+    font-size: 16px;
+    color: #787878;
+    cursor: pointer;
+}
+.fb-close:hover{
+    color: red;
+}
+.fb-title{
+    width: 222px;
+    height: 49px;
+    border-radius: 3px;
+    border: solid 1px #eaeaea;
+    text-align: left;
+    margin-top: 20px;
+}
+.fb-des{
+    width: 222px;
+    height: 208px;
+    border-radius: 3px;
+    border: solid 1px #eaeaea;
+    /* margin-top: 20px; */
+}
+.fb-btn-disable, .fb-btn-disable:hover{
+    width: 221px;
+    height: 37px;
+    border-radius: 3px;
+    background-color: #d8d8d8;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 10px;
+}
+.fb-btn{
+    width: 221px;
+    height: 37px;
+    border-radius: 3px;
+    border: solid 1px #1ebf73;
+    background-color: #1ebf73;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 10px;
+}
+@keyframes drive { 
+    from { 
+        transform: translate(-210px); 
+    } 
+    to { 
+        transform: translate(0); 
+    } 
+}
+.fb-success-icon{
+    width: 42px;
+    height: 48px;
+    font-size: 48px;
+    color: #1ebf73;
+    margin-bottom: 20px;
 }
 .software-page{
     position: relative;

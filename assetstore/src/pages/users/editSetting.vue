@@ -2,7 +2,7 @@
     <div style="background-color: #eff2f5">
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <div class="middle-card-wrapper">
-            <Menu active-name="1" class="leftside-menu">
+            <Menu active-name="1" class="leftside-menu" style="width:281px;">
                 <MenuItem name="1" @click.native="showPerson">
                     <Icon size="18" type="md-person" />个性化设置
                 </MenuItem>
@@ -398,6 +398,11 @@ export default {
     /* 使clearable的叉叉居中 */
     line-height: 44px;
 }
+
+.leftside-menu > .ivu-menu-item{
+    width: 281px;
+    padding: 14px 40px;
+}
 </style>
 <style scoped>
 .middle-card-wrapper{
@@ -409,7 +414,7 @@ export default {
 .leftside-menu{
     position: sticky;
     font-family: MicrosoftYaHei;
-    width: 240px;
+    width: 281px;
     height: 98px;
     top: 170px;
     margin-right: 30px;

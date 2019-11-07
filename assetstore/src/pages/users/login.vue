@@ -48,17 +48,17 @@ export default {
                             //{type:'string', min: 6, message:'密码请不要太短', trigger:'blur'}]
             }
         }
-   },
+    },
     created(){
-   },
+    },
     mounted(){
        if(this.loginForm.account === '') {
            this.$refs.account.focus()
        } else if(this.loginForm.password === '') {
            this.$refs.password.focus()
        }
-   },
-   methods:{
+    },
+    methods:{
         fillIn(){
             if(this.loginForm.account != '' && this.loginForm.password != ''){
                 this.loginBtn = 'my-login-btn'
@@ -73,7 +73,8 @@ export default {
             if(!this.expire) {
                 this.expireTime = 2
             }
-            axios.post('/api/user/login',{account:this.loginForm.account, pwd:this.loginForm.password, expire:this.expireTime},{emulateJSON:true}).then((res)=>{
+            axios.post('/api/user/login',{account:this.loginForm.account, pwd:this.loginForm.password, 
+            expire:this.expireTime},{emulateJSON:true}).then((res)=>{
                 // 登录成功
                 if(res.data.code == 0){
                     this.$store.commit('ADD_COUNT', res.headers.Authorization);

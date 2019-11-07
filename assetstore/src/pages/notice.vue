@@ -2,7 +2,7 @@
     <div style="background-color: #eff2f5">
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <div class="middle-card-wrapper">
-            <Menu active-name="1" class="leftside-menu" style="width:auto;min-width:240px;">
+            <Menu active-name="1" class="leftside-menu" style="width:auto;min-width:281px;">
                 <!--TODO 未完成，仅有样式-->
                 <MenuItem name="1" @click.native="showInfo">
                     <div class="menu_left_part">
@@ -111,6 +111,10 @@ export default {
 }
 </script>
 <style>
+.leftside-menu > .ivu-menu-item{
+    width: 281px;
+    padding: 14px 40px;
+}
 </style>
 <style scoped>
 .middle-card-wrapper{
@@ -122,7 +126,7 @@ export default {
 .leftside-menu{
     position: sticky;
     font-family: MicrosoftYaHei;
-    width: 240px;
+    width: 281px;
     height: 98px;
     left: 50px;
     top: 170px;

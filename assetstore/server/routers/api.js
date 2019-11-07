@@ -22,9 +22,24 @@ router.post('/user/login', jsonParser, function(req,res){
     }
     
 })
-router.get('/user/describe', function(req, res){
+router.get('/user/describe', function(res){
     res.status(200).json({'data': {name:'夏目','nickName': '睿酱', 'signature': '啦啦啦，每天都要开心鸭', 
     'account':'xiamu@ztgame.com'}, 'code': 0})
+});
+
+router.post('/feedback', jsonParser, function(req,res){
+    console.log("feedback title: "+req.body.title)
+    console.log("feedback details: "+req.body.details)
+    res.status(200).json({'code': 0});
+});
+router.post('/software/:id/verify', jsonParser, function(req,res){
+    console.log("verify account: "+req.body.account)
+    console.log("verify password: "+req.body.pwd)
+    res.status(200).json({'code': 0});
+});
+router.post('/software/:id/apply', jsonParser, function(req,res){
+    console.log("apply reason: "+req.body.reason)
+    res.status(200).json({'code': 0, 'data':{'num': 89797}});
 });
 
 router.post('/search', jsonParser,function(req,res){

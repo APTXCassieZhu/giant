@@ -27,10 +27,10 @@
                     <div class="modal-account">当前登录域账号</div>
                     <Input v-model="account" readonly class="modal-account-input"/>
                     <div class="modal-account">请输入域账号密码</div>
-                    <Input class="modal-account-input" type="password" password/>
+                    <Input v-model="pwd" class="modal-account-input1" type="password" password @on-change="fillPWD()"/>
                     <div class="modal-btn-wrapper">
                         <Button class="modal-prev-btn" @click="prevStep">返回</Button>
-                        <Button class="modal-next-btn" @click="nextStep">确认，下一步</Button>
+                        <Button :class="verifyBtn" @click="verifyAccount()" :disabled="disableOrNot">确认，下一步</Button>
                     </div>
                 </div>
                 
@@ -48,7 +48,7 @@
                     <div class="modal-last-step-content">{{reason}}</div>
                     <div class="modal-btn-wrapper">
                         <Button class="modal-prev-btn" @click="prevStep">上一步</Button>
-                        <Button class="modal-next-btn" @click="nextStep">提交</Button>
+                        <Button class="modal-next-btn" @click="submitApplication()">提交</Button>
                     </div>
                 </div>
                 <div v-if="current==3" class="modal-account-verify" style="top:0;height:405px;">
@@ -59,7 +59,7 @@
                     </div>
                     <div class="modal-finish-codearea">
                         <span class="modal-finish-codetext">回执编号：</span>
-                        <span class="modal-finish-code">{{code}}</span>
+                        <span class="modal-finish-code">{{num}}</span>
                     </div>
                     <Button class="modal-next-btn" @click="nextStep" style="position:absolute;bottom:0px;left:80px;">确认</Button>
                 </div>
@@ -77,10 +77,12 @@ export default {
         btn:{
             type: String,
             default: 'btn2',
+        },
+        id:{
+            type: Number,
         }
     },
     data() {
-        console.log(this.btn)
         return {
             curbtn: this.btn,
             account: 'xiamuZhu@ztgame.com',
@@ -89,8 +91,12 @@ export default {
             latestUpdate: "2019.02.29",
             modal: false,      
             current: 0,                 //当前处于步骤几
+            num: 0,                    // 回执编号
+            pwd:'',
             reason: '',
-            code: 89757,                // 回执编号
+
+            disableOrNot: true,
+            verifyBtn: 'modal-next-btn-disable'
         }
     },
     methods:{
@@ -109,6 +115,49 @@ export default {
             } else {
                 this.current += 1;
             }
+        },
+        fillPWD(){
+            if(this.pwd != ''){
+                this.verifyBtn = 'modal-next-btn'
+                this.disableOrNot = false
+            }else{
+                this.verifyBtn = 'modal-next-btn-disable'
+                this.disableOrNot = true
+            }
+        },
+        verifyAccount(){
+            axios.post(`/api/software/${this.id}/verify`,{account:this.account, pwd:this.pwd},{emulateJSON:true}).then((res)=>{
+                // 登录成功
+                if(res.data.code == 0){
+                    this.$store.commit('ADD_COUNT', res.headers.Authorization);
+                    this.$options.methods.nextStep.bind(this)()
+                }
+                else if(res.data.code == 40101){
+                    this.$Modal.error({
+                        title: '抱歉，账号或密码错误，请确认之后重试',
+                    });
+                }else if(res.data.code == 40103){
+                    this.$Modal.error({
+                        title: '抱歉，连接域账号服务器失败，请稍后再试',
+                    });
+                }
+            }, (res)=>{
+                // 登录失败
+                alert(res)
+            })
+        },
+        submitApplication(){
+            axios.post(`/api/software/${this.id}/apply`,{reason:this.reason},{emulateJSON:true}).then((res)=>{
+                // 登录成功
+                if(res.data.code == 0){
+                    this.$store.commit('ADD_COUNT', res.headers.Authorization);
+                    this.$options.methods.nextStep.bind(this)()
+                    this.num = res.data.data.num
+                }
+            }, (res)=>{
+                // 登录失败
+                alert(res)
+            })
         },
         tip(){
             const content = '<p>请拨打 8000 致IT服务台,</p><p>提供域账号再次申领该软件</p>'
@@ -147,9 +196,17 @@ export default {
 }
 .modal-account-input > .ivu-input{
     height: 37px;
+    background-color: #f2f2f2;
 }
-
+.modal-account-input1 > .ivu-input{
+    height: 37px;
+}
 .modal-account-input > .ivu-input-suffix {
+    width: 37px;
+    height: 37px;
+    line-height: 37px;
+}
+.modal-account-input1 > .ivu-input-suffix {
     width: 37px;
     height: 37px;
     line-height: 37px;
@@ -305,7 +362,7 @@ export default {
     color: #000000;
     margin-bottom: 10px;
 }
-.modal-account-input{
+.modal-account-input, .modal-account-input1{
     position: relative;
     width: 464px;
     text-align: center;
@@ -336,7 +393,14 @@ export default {
     font-weight: bold;
     color: #ffffff;
 }
-
+.modal-next-btn-disable, .modal-next-btn-disable:hover{
+    width: 285px;
+    height: 45px;
+    background-color: #d8d8d8;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+}
 .modal-last-step-title{
     font-size: 18px;
     font-weight: 600;
