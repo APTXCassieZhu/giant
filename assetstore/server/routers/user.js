@@ -17,8 +17,22 @@ router.post('/login', jsonParser, function(req,res){
     if(req.body.account == '超级无敌美少女' && req.body.pwd == '1234'){
         res.status(200).json({'code': 40101})
     }else{
-        res.status(200).json({'code': 0, 'data': {name:'夏目','nickName': '睿酱', 'signature': '啦啦啦，每天都要开心鸭', 
-        'account':'xiamu@ztgame.com'}});
+        res.status(200).json({
+			'code': 0, 
+			'data': {
+				name:'夏目',
+				'nickName': '睿酱', 
+				'signature': '啦啦啦，每天都要开心鸭', 
+				'account':'xiamu@ztgame.com',
+
+				"id": 123, 
+				"profilePic": "//avatars2.githubusercontent.com/u/18524392?s=460&v=4",
+				"name": "string",
+				"dept": "前沿技术部",
+				"title": "string",
+				"account": "string"
+			}
+		});
     }
     
 })

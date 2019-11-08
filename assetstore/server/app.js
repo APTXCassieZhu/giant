@@ -8,6 +8,7 @@ var feedback = require('./routers/feedback')
 var software = require('./routers/software')
 var search = require('./routers/search')
 var upload = require('./routers/upload')
+var resource = require('./routers/resource')
 
 app.use(cookieParser())
 app.use(bodyParser.json())
@@ -17,6 +18,7 @@ app.use('/search', search)
 app.use('/feedback', feedback)
 app.use('/software', software)
 app.use('/upload', upload)
+app.use('/resource', resource)
 app.use('/script', express.static(__dirname +'/script'))
 
 
