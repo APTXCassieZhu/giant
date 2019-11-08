@@ -35,10 +35,6 @@ export default {
         }
     },
     computed:{
-        // getTime(t){
-        //     let time = new Date(t);
-        //     return time.getFullYear()+'-'+time.getMonth()+1+'.'+time.getDate()
-        // }
     },
     mounted(){
         axios.get(`/api/resource/${this.$route.resourceId}/version`).then(res=>{
