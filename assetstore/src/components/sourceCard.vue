@@ -1,5 +1,5 @@
 <template>
-    <div class="source-card">
+    <div class="source-card" @click="goPage(`/resourceDetail/${sourceID}`)">
         <div class="image">
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
@@ -14,20 +14,23 @@
         <div class="source-card-footer">
             <Rate disabled icon="md-star" v-model="rate" style="position:relative; left: 8px; bottom: 8px;"></Rate>
             <span class="source-card-footer-icon">
-                <font-awesome-icon icon="eye"/>
+                <font-awesome-icon :icon="['fas','eye']"/>
                 <span> {{viewCount}}&emsp;</span>
-                <font-awesome-icon icon="comment"/>
+                <font-awesome-icon :icon="['fas','comment']"/>
                 <span> {{chatCount}}</span>
             </span>
         </div>
     </div>
 </template>
 <script>
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faComment, faEye } from '@fortawesome/free-solid-svg-icons'
-library.add(faComment, faEye)
 export default {
     name: "SourceCard",
+    props: {
+        sourceID: {
+            type: Number,
+            default: 233,
+        },
+    },
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
@@ -37,13 +40,14 @@ export default {
             sourceTitle: '资源名称',
             sourceDescription: '描述文字帮助用户对资源快速预览以及理解文字',
             favoriteIcon: false,            // defalut favourite is false
-            sourceID: 0,                    // TODO从后端得到
+            jumpOrNot: true,
         }
     },
     methods:{
         addFavorite(){
             //TODO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
+            this.jumpOrNot = false
             this.favoriteIcon = !this.favoriteIcon
             /* 提示用户已关注 */
             if(this.favoriteIcon){
@@ -53,7 +57,13 @@ export default {
                 this.$Message.success('已取消关注')
                 this.$store.commit('REMOVE_FAVORITE', this.sourceID);
             }  
-        }
+        },
+        goPage(url){
+            if(this.jumpOrNot){
+                this.$router.push(url)
+            }
+            this.jumpOrNot = true
+        },
     }
 }
 </script>
@@ -84,6 +94,7 @@ export default {
     border: 1px solid #ffffff;
     box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
     background-color: #ffffff;
+    cursor: pointer;
 }
 
 .source-content{

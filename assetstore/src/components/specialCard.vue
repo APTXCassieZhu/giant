@@ -1,5 +1,5 @@
 <template>
-    <div class="source-card">
+    <div class="source-card" @click="goPage(`/resourceDetail/${sourceID}`)">
         <div id="special" :class="special" style="height: 184px;width: 306px;background-size: 306px 184px;background-repeat: no-repeat;">
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
@@ -27,6 +27,12 @@ import { faComment, faEye } from '@fortawesome/free-solid-svg-icons'
 library.add(faComment, faEye)
 export default {
     name: "SpecialCard",
+    props: {
+        sourceID: {
+            type: Number,
+            default: 233,
+        },
+    },
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
@@ -37,12 +43,14 @@ export default {
             sourceDescription: '这是一段帮助用户理解资源内容的描述',
             favoriteIcon: false,            // defalut favourite is false
             special: 'image',
+            jumpOrNot: true,
         }
     },
     methods:{
         addFavorite(){
             // TODO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
+            this.jumpOrNot = false
             this.favoriteIcon = !this.favoriteIcon
             /* 提示用户已关注 */
             if(this.favoriteIcon){
@@ -50,7 +58,13 @@ export default {
             }else{
                 this.$Message.success('已取消关注')
             }         
-        }
+        },
+        goPage(url){
+            if(this.jumpOrNot){
+                this.$router.push(url)
+            }
+            this.jumpOrNot = true
+        },
     }
 }
 </script>
@@ -96,6 +110,7 @@ export default {
     border: 1px solid #ffffff;
     box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
     background-color: #ffffff;
+    cursor: pointer;
 }
 .source-des{
     text-align: left;

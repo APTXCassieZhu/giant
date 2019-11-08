@@ -51,7 +51,7 @@
                 <Page class="page-style" :total="100" show-elevator />
             </div>
             <corner></corner>
-            <Footer style="position:relative;"></Footer>
+            <Footer style="position:relative;margin-top:200px;"></Footer>
         </div>     
     </div>
 </template>
@@ -238,7 +238,6 @@ export default {
     position: relative; 
     margin-left: 35%; 
     margin-top: 90px;
-    margin-bottom:200px;
 }
 </style>
 

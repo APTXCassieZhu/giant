@@ -17,6 +17,7 @@ import Notice from '../pages/notice'
 
 import uploadFile from '../pages/uploadFile'
 import resourceDetail from '../pages/resourceDetail'
+import versionHistory from '../pages/resources/versionHistory'
 
 Vue.use(Router)
 
@@ -151,6 +152,14 @@ export default new Router({
       path:'/resourceDetail/:resourceId',
       name:'resourceDetail',
       component:resourceDetail,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path:'/resourceDetail/:resourceId/versionHistory',
+      name:'VersionHistory',
+      component:versionHistory,
       meta: {
         requireAuth: true
       }

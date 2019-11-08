@@ -25,7 +25,7 @@
             <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-国风.png') + ')'}"></div></ul>
         </div>
         <corner></corner>
-        <Footer style="position:relative;"></Footer>
+        <Footer style="position:relative;margin-top: 200px;"></Footer>
     </div>
 </template>
 
@@ -68,7 +68,6 @@ export default {
     position: relative;
     text-align: center;
     top: 40px;
-    margin-bottom: 200px;
 }
 
 .advise-card{

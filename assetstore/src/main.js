@@ -154,9 +154,10 @@ router.beforeEach((to,from,next) => {
   ViewUI.LoadingBar.start();
   // 获取本地存储的token
   store.state.token = localStorage.getItem("token");
+  store.state.user = localStorage.getItem("user");
   // 判断这个url是否需要登录权限
   if(to.meta.requireAuth) {
-    if(store.state.token) {
+    if(store.state.token && store.state.user) {
       next();
     }else{
       next({path:'/login', query:{redirect: to.fullPath}});

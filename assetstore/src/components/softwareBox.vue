@@ -12,18 +12,21 @@
             </Col>
             <Col span="12" class="footer-col">
                 <Divider type="vertical" class="foot-divider"/>
-                <font-awesome-icon icon="trash" class="foot-icon"/>
+                <font-awesome-icon :icon="['fas','trash']" class="foot-icon"/>
                 <!--<Icon size="25" type="ios-trash-outline" class="foot-icon" />-->
             </Col>
         </Row>
     </div>
 </template>
 <script>
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
-library.add(faTrash)
 export default {
     name: "SoftwareBox",
+    props: {
+        sourceID: {
+            type: Number,
+            default: 0,
+        },
+    },
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
@@ -34,7 +37,6 @@ export default {
             currentVersion: '9.0.1',
             lastestUpgrade: '2019.05.04',
             favoriteIcon: false,            // defalut favourite is false
-            sourceID: 0,                    // TODO从后端得到
         }
     },
     methods:{
