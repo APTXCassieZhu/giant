@@ -6,7 +6,7 @@
                 "<span style="color: #1ebf73">{{getSearchContent}}</span>"的搜索结果
             </div>
             <div class="empty-content">
-                <img src="../../assets/notFound.png" style="width:276px;height: 244px"/>
+                <img src="../../assets/notFound.png" style="width:276px;height: 244px;"/>
                 <div class="apologize">很抱歉，未能找到“<span style="color: #1ebf73">{{getSearchContent}}</span>”相关内容，来看看这些资源吧～</div>
             </div>
             <div class="subtitle-wrapper">
@@ -77,6 +77,7 @@ export default {
 }
 .empty-content{
     text-align: center;
+    margin-top: 70px;
 }
 .apologize{
     font-size: 21px;
@@ -84,6 +85,7 @@ export default {
     letter-spacing: 1.5px;
     color: #262626;
     margin-bottom: 58px;
+    margin-top: 60px;
 }
 .subtitle-wrapper{
     position: relative;

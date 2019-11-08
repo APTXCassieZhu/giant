@@ -8,8 +8,12 @@
                     <font-awesome-icon v-if="n != (versionList.length-1)" :icon="['fas', 'book']" class="version-icon"/>
                     <font-awesome-icon v-else :icon="['fas', 'birthday-cake']" class="version-icon"/>
                     <span class="version-num">Ver. {{item.verNum}}<span v-if="n==0">（当前版本）</span></span>
-                    <span class="version-update-time"> 更新于  2019-07.29</span>
+                    <span v-if="n != (versionList.length-1)" class="version-update-time"> 更新于 {{getYYMMDD(item.updatedAt)}} </span>
+                    <span v-else class="version-update-time"> 创建于 {{getYYMMDD(item.updatedAt)}} </span>
+                    <!-- TODO 点击如何下载还没写-->
+                    <Button class="download-btn" type="success">下载此版本</Button>
                     <Divider />
+                    <div class="version-des"  v-html="item.descriptipon"></div>
                 </div>
             </div>
         </div>
@@ -30,6 +34,12 @@ export default {
             versionList: [],
         }
     },
+    computed:{
+        // getTime(t){
+        //     let time = new Date(t);
+        //     return time.getFullYear()+'-'+time.getMonth()+1+'.'+time.getDate()
+        // }
+    },
     mounted(){
         axios.get(`/api/resource/${this.$route.resourceId}/version`).then(res=>{
             if(res.data.code === 0){
@@ -37,6 +47,21 @@ export default {
             }
         })
     },
+    methods:{
+        getYYMMDD(t){
+            let time = new Date(t)
+            let [yy,mm,dd] = [
+                time.getFullYear(),
+                time.getMonth()+1,
+                time.getDate()
+            ]
+            if(mm<10){
+                mm = '0' + mm
+            }
+            return  yy+'-'+mm+'.'+dd
+  
+        }
+    }
 }
 </script>
 
@@ -52,7 +77,7 @@ export default {
     height: auto;
     border-radius: 3px;
     background-color: #ffffff;
-    padding: 60px 70px;
+    padding: 60px 70px 0px 60px;
     margin-top: 30px;
 }
 .version-icon{
@@ -72,6 +97,23 @@ export default {
     font-size: 14px;
     letter-spacing: 1px;
     color: #7f7f7f;
+}
+.download-btn{
+    width: 178px;
+    height: 41px;
+    border-radius: 3px;
+    border: solid 1px #1ebf73;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    position: relative;
+    float: right;
+}
+.version-des{
+    font-size: 16px;
+    line-height: 2.5;
+    color: #7f7f7f;
+    margin-bottom: 60px;
 }
 </style>
 
