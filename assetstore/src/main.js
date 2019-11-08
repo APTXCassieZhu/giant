@@ -138,12 +138,14 @@ var store = new Vuex.Store({
     },
     // 取消关注
     [REMOVE_FAVORITE] (state, favorite) {
+      localStorage.removeItem("favorite", favorite)
       for(var i = 0; i < state.favoriteList.length; i++) {
         if(state.favoriteList[i] == favorite) {
           state.favoriteList.splice(i, 1);
           break;
         }
       }
+      console.log("cancel favorite")
       localStorage.setItem("favorite", state.favoriteList)
     }
   }

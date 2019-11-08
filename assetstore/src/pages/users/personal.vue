@@ -7,11 +7,9 @@
                     <ul><img src="../../assets/绿头像.jpg" class="avatar">
                     <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/></ul>
                     <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
-                    <!-- TODO 属于哪个部门从amt那里得到-->
                     <ul style="font-size: 14px; color: #7f7f7f;">{{getDep}}</ul>
                 </div>
                 <br>
-                <!-- TODO 用户自己输入-->
                 <ul style="font-size: 14px; color: #7f7f7f;">{{getSign}}</ul>
                 <Divider />
                 <!-- TODO 从后端数据库读取-->
@@ -42,7 +40,7 @@
                         <software-up-box v-bind:softwareName='this.softwareList[1]'></software-up-box>
                         <software-pend-box v-bind:softwareName='this.softwareList[2]'></software-pend-box>
                     </TabPane>
-                    <TabPane :label="tab3" name="name3">
+                    <TabPane :label="`关注(${this.$store.state.favoriteList.length})`" name="name3">
                         <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
                             <Button class="like-btn" @click="goPage('/')">去关注</Button>
                         </div>
@@ -93,14 +91,13 @@ export default {
     },
     mounted() {
         this.personalActive = this.$store.state.personalActive
-        this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
+        // this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
     },
     data () {
         return {
             uploadFolderStyle: "upload-folder-style",
             tab1: "资源(2)",
             tab2: "软件(1)",
-            tab3: "关注(0)",
             personalActive: "name1",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸','暴躁老妹'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息

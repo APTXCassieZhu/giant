@@ -1,5 +1,5 @@
 <template>
-    <div class="source-box">
+    <div class="source-box" v-if="!deleteOrNot">
         <div class="upper">
             <div class="font-image">{{softwareName.charAt(0)}}</div>
             <div class="font-title">{{softwareName}}</div>
@@ -12,7 +12,7 @@
             </Col>
             <Col span="12" class="footer-col">
                 <Divider type="vertical" class="foot-divider"/>
-                <Icon size="25" type="md-heart" class="foot-icon" />
+                <Icon size="25" type="md-heart" class="foot-icon" @click.native="cancelFavorite()"/>
             </Col>
         </Row>
     </div>
@@ -20,7 +20,12 @@
 <script>
 export default {
     name: "LikeBox",
+    inject: ['reload'],
     props: {
+        sourceID:{
+            type: Number,
+            default: 233
+        },
         softwareName: {
             type: String,
             default: '我关注的资源名字'
@@ -37,23 +42,29 @@ export default {
             downloadCount: 233,
             likeCount: 2019,
             rate: 3.8,
-            favoriteIcon: false,            // defalut favourite is false
-            sourceID: 0,                    // TODO从后端得到
+            // default
+            deleteOrNot: false,
         }
     },
     methods:{
         cancelFavorite(){
             //TODO add user favourite to favorite list so that they can check in personal
-            console.log('favorite')
-            this.favoriteIcon = !this.favoriteIcon
-            /* 提示用户已关注 */
-            if(this.favoriteIcon){
-                this.$Message.success('已关注')
-                this.$store.commit('ADD_FAVORITE', this.sourceID);
-            }else{
-                this.$Message.success('已取消关注')
-                this.$store.commit('REMOVE_FAVORITE', this.sourceID);
-            }  
+            this.$Modal.confirm({
+                title: '确认取消关注此条资源？',
+                okText: '确认',
+                cancelText: '取消',
+                onOk: () => {
+                    setTimeout(() => {
+                        this.$Modal.success({
+                            title: '已取消关注',
+                        })
+                        this.$store.commit('REMOVE_FAVORITE', this.sourceID); 
+                        // TODO 告诉后端这个已取消关注
+                        this.deleteOrNot = true
+                    }, 1000);
+                },
+            });
+            this.deleteOrNot = true
         },
 
     }

@@ -26,7 +26,7 @@
                     <div class="empty-notes">没有新的提醒</div>
                 </div>
                 <div v-else class="display-infoOrNotice">
-                    <a @click="markAsRead('info')" :class="markRead"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
+                    <a @click="readAll('info')" :class="markRead"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
                     <Divider/>
                     <div v-for="(item,index) in totalInfo" :key="index" :class="infoContentClass">
                         {{item}}
@@ -41,7 +41,7 @@
                     <div class="empty-notes">没有新的通知</div>
                 </div>
                 <div v-else class="display-infoOrNotice">
-                    <a @click="markAsRead('notice')" :class="markRead"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
+                    <a @click="readAll('notice')" :class="markRead"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
                     <Divider/>
                     <div v-for="(item,index) in totalNotice" :key="index" :class="noticeContentClass">
                         <span style="cursor:pointer">{{item}}</span>
@@ -92,15 +92,19 @@ export default {
         showInfo(){
             this.showNotices = false
         },
-        markAsRead(type){
+        readAll(type){
             this.$Modal.confirm({
                 title: '是否确认要清空 未读消息？',
                 onOk: () => {
                     this.markRead = 'mark-readed'
-                    if(type == 'info')
+                    if(type == 'info'){
                         this.infoContentClass = 'info-content-readed'
-                    else
+                        this.infoNotRead = 0
+                    }
+                    else{
                         this.noticeContentClass = 'info-content-readed'
+                        this.noticeNotRead = 0
+                    }
                 },
                 onCancel: () => {
                     this.$Message.info('您已取消');
@@ -184,7 +188,6 @@ export default {
     width: 16px;
     height: 14px;
     font-size: 18px;
-    color: #1ebf73;
 }
 .info-content{
     font-size: 18px;
