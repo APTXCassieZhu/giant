@@ -126,6 +126,7 @@ export default {
  > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab{
     /* 使得三个标签间距变大 */
     padding: 8px 50px;
+    margin-left: 0px;
  }
 .asset-card > .ivu-tabs{
     overflow: visible;

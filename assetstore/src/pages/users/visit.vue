@@ -56,13 +56,23 @@ export default {
     computed:{
     },
     mounted() {
+        axios.get(`/api/user/${this.$route.userId}`).then(res=>{
+            if(res.data.code === 0){
+                if(res.data.data.nickName === null){
+                    this.resName = res.data.data.name
+                }else{
+                    this.resName = res.data.data.nickName
+                }
+                this.personalTagList = res.data.data.labels
+            }
+        })
         this.tab = "资源("+this.sourceList.length+")"
     },
     data () {
         return {
             resName: "受访者张佳",
             tab: "资源(3)",
-            personalTagList: ['需求狂人','纠结','evil','偶尔良心发现','冷酷无情','无理取闹','债主'],// 从后端拿
+            personalTagList: ['改需求狂人','纠结','evil','偶尔良心发现','冷酷无情','无理取闹','债主'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息
             productList: ['批判大会','忆往昔峥嵘岁月'],    
             sourceList: ['受访者上传资源1', '受访者上传资源2','受访者上传资源3'],
