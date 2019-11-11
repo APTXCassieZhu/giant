@@ -17,12 +17,12 @@
             </Col>
             <Col span="8" class="footer-col1">
                 <Divider type="vertical" class="foot-divider"/>
-                <Dropdown trigger="click">
-                    <Button href="javascropt:void(0)" class="foot-btn">
+                <Dropdown trigger="click" :visible="moreVisible" @on-clickoutside="closeDrop()">
+                    <Button href="javascropt:void(0)" class="foot-btn" @click.native="openDrop()">
                         <Icon size="25" type="md-more" class="foot-icon"/>
                     </Button>
                     <DropdownMenu slot="list">
-                        <DropdownItem @click.native="changeState" class="dropdown-text">{{state}}共享</DropdownItem>
+                        <DropdownItem @click.native="changeState" class="dropdown-text">{{state}}资源</DropdownItem>
                         <DropdownItem @click.native="deleteSource" class="dropdown-text-delete">删除</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
@@ -48,9 +48,9 @@ export default {
             likeCount: 2019,
             favoriteIcon: false,            // defalut favourite is false
             sourceID: 0,                    // TODO从后端得到
-            state: '关闭',
+            state: '隐藏',
             // default
-            // moreVisible: false,
+            moreVisible: false,
             deleteOrNot: false,
         }
     },
@@ -69,14 +69,43 @@ export default {
             }  
         },
         changeState(){
-            if(this.state == '关闭')
-                this.state = '打开'
-            else
-                this.state = '关闭'
+            if(this.state == '隐藏'){
+                this.$Modal.confirm({
+                    title: '确认公开此条资源？',
+                    okText: '确认',
+                    cancelText: '取消',
+                    onOk: () => {
+                        setTimeout(() => {
+                            this.$Modal.success({
+                                title: '资源已公开',
+                            })
+                            this.state = '公开'
+                            // TODO 告诉后端这个资源已公开
+                        }, 1000);
+                    },
+                });
+                
+            }
+            else{
+                this.$Modal.confirm({
+                    title: '确认隐藏此条资源？',
+                    okText: '确认',
+                    cancelText: '取消',
+                    onOk: () => {
+                        setTimeout(() => {
+                            this.$Modal.success({
+                                title: '资源已隐藏',
+                            })
+                            this.state = '隐藏'
+                            // TODO 告诉后端这个资源已隐藏
+                        }, 1000);
+                    },
+                });
+            }
         },
         deleteSource(){
             this.$Modal.confirm({
-                title: '确认删除该条资源？',
+                title: '确认删除此条资源？',
                 okText: '确认',
                 cancelText: '取消',
                 onOk: () => {
@@ -90,14 +119,14 @@ export default {
                 },
             });
         },
-        // closeDrop(){
-        //     console.log('close')
-        //     this.moreVisible=false
-        // },
-        // openDrop(){
-        //     console.log('open')
-        //     this.moreVisible=true
-        // }
+        closeDrop(){
+            console.log('close')
+            this.moreVisible=false
+        },
+        openDrop(){
+            console.log('open')
+            this.moreVisible=true
+        }
     }
 }
 </script>

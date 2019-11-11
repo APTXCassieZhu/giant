@@ -143,12 +143,14 @@ var store = new Vuex.Store({
     },
     // 取消关注
     [REMOVE_FAVORITE] (state, favorite) {
+      localStorage.removeItem("favorite", favorite)
       for(var i = 0; i < state.favoriteList.length; i++) {
         if(state.favoriteList[i] == favorite) {
           state.favoriteList.splice(i, 1);
           break;
         }
       }
+      console.log("cancel favorite")
       localStorage.setItem("favorite", state.favoriteList)
     }
   }
@@ -160,9 +162,10 @@ router.beforeEach((to,from,next) => {
   ViewUI.LoadingBar.start();
   // 获取本地存储的token
   store.state.token = localStorage.getItem("token");
+  store.state.user = localStorage.getItem("user");
   // 判断这个url是否需要登录权限
   if(to.meta.requireAuth) {
-    if(store.state.token) {
+    if(store.state.token && store.state.user) {
       next();
     }else{
       next({path:'/login', query:{redirect: to.fullPath}});

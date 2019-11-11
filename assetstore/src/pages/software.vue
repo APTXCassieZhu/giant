@@ -32,7 +32,7 @@
                 </Menu>
                 <Button @click="showFeedback()" class="sidemenu-btn"><font-awesome-icon :icon="['fas','edit']"/> 找不到想要的？</Button>
                 <div v-if="curShowFeedback" class="software-feedback">
-                    <div class="fb-close" @click="curShowFeedback=false"><font-awesome-icon :icon="['fas','times']"/></div>
+                    <div class="fb-close" @click="curShowFeedback=false; fbSuccess=false"><font-awesome-icon :icon="['fas','times']"/></div>
                     <div v-if="!fbSuccess">
                         <div style="font-size: 18px;font-weight: 600;color: black;text-align:left;">告诉我们您需要的软件吧</div>
                         <Form ref="softwareFBForm" :model="softwareFBForm" :rules="softwareFBRule">

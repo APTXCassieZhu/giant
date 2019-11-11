@@ -8,7 +8,7 @@ var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-router.post('/feedback', jsonParser, function(req,res){
+router.post('/', jsonParser, function(req,res){
     console.log("feedback title: "+req.body.title)
     console.log("feedback details: "+req.body.details)
     res.status(200).json({'code': 0});

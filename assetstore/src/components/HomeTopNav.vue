@@ -60,7 +60,7 @@
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <img v-if="profile" class="topnav-user" :src="profile" @click="goLike('personal')" alt="avatar">
-                        <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
+                        <div v-else class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-25px;">
                         <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>

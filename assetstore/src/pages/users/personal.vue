@@ -1,57 +1,55 @@
 <template>
     <div style="background-color: #eff2f5">
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
-        <div class="self-card">
-            <div class="self">
-                <ul><img src="../../assets/绿头像.jpg" class="avatar">
-                <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/></ul>
-                <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
-                <!-- TODO 属于哪个部门从amt那里得到-->
-                <ul style="font-size: 14px; color: #7f7f7f;">前沿技术部门</ul>
+        <div class="middle-card-wrapper">
+            <div class="self-card">
+                <div class="self">
+                    <ul><img src="../../assets/绿头像.jpg" class="avatar">
+                    <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/></ul>
+                    <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
+                    <ul style="font-size: 14px; color: #7f7f7f;">{{getDep}}</ul>
+                </div>
+                <br>
+                <ul style="font-size: 14px; color: #7f7f7f;">{{getSign}}</ul>
+                <Divider />
+                <!-- TODO 从后端数据库读取-->
+                <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
+                <span v-for="(item,index) in personalTagList" :key="index">
+                    <Tag class="tag-style" size="large">{{item}}</Tag>
+                </span>
+                <Divider />
+                <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
+                <div v-for="(item, i) in productList" :key="'a'+i">
+                    <div class="font-image">{{item.charAt(0)}}</div>&emsp;{{item}}
+                    <br><br>
+                </div>
             </div>
-            <br>
-            <!-- TODO 用户自己输入-->
-            <ul style="font-size: 14px; color: #7f7f7f;">
-                啦啦啦啦啦啦啦啦啦啦啦这一段是瞎写的座右铭：今天明天和后天，一直快乐单身狗╮(╯▽╰)╭
-            </ul>
-            <Divider />
-            <!-- TODO 从后端数据库读取-->
-            <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
-            <span v-for="(item,index) in personalTagList" :key="index">
-                <Tag class="tag-style" size="large">{{item}}</Tag>
-            </span>
-            <Divider />
-            <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
-            <div v-for="(item, i) in productList" :key="'a'+i">
-                <div class="font-image">{{item.charAt(0)}}</div>&emsp;{{item}}
-                <br><br>
+            
+            <div class="asset-card" >
+                <Tabs :value="personalActive" :animated="false">
+                    <TabPane :label="tab1" name="name1">
+                        <div class="upload-style" @click="goPage('/upFile')">
+                            <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
+                            <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
+                        </div>
+                        <source-box v-bind:sourceName='this.productList[0]'></source-box>
+                        <source-box v-bind:sourceName='this.productList[1]'></source-box>  
+                    </TabPane>
+                    <TabPane :label="tab2" name="name2">
+                        <software-box v-bind:softwareName='this.softwareList[0]'></software-box>
+                        <software-up-box v-bind:softwareName='this.softwareList[1]'></software-up-box>
+                        <software-pend-box v-bind:softwareName='this.softwareList[2]'></software-pend-box>
+                    </TabPane>
+                    <TabPane :label="`关注(${this.$store.state.favoriteList.length})`" name="name3">
+                        <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
+                            <Button class="like-btn" @click="goPage('/')">去关注</Button>
+                        </div>
+                        <div v-else v-for="n in this.$store.state.favoriteList.length" :key="n" style="display:inline-block;">
+                            <like-box></like-box>
+                        </div>
+                    </TabPane>
+                </Tabs>
             </div>
-        </div>
-        
-        <div class="asset-card" >
-            <Tabs :value="personalActive" :animated="false">
-                <TabPane :label="tab1" name="name1">
-                    <div class="upload-style" @click="goPage('/upFile')">
-                        <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
-                        <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
-                    </div>
-                    <source-box v-bind:sourceName='this.productList[0]'></source-box>
-                    <source-box v-bind:sourceName='this.productList[1]'></source-box>  
-                </TabPane>
-                <TabPane :label="tab2" name="name2">
-                    <software-box v-bind:softwareName='this.softwareList[0]'></software-box>
-                    <software-up-box v-bind:softwareName='this.softwareList[1]'></software-up-box>
-                    <software-pend-box v-bind:softwareName='this.softwareList[2]'></software-pend-box>
-                </TabPane>
-                <TabPane :label="tab3" name="name3">
-                    <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
-                        <Button class="like-btn" @click="goPage('/')">去关注</Button>
-                    </div>
-                    <div v-else v-for="n in this.$store.state.favoriteList.length" :key="n" style="display:inline-block;">
-                        <like-box></like-box>
-                    </div>
-                </TabPane>
-            </Tabs>
         </div>
         <corner></corner>
         <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
@@ -73,22 +71,35 @@ export default {
     components:{TopNavigation, Footer, Corner, SourceBox, SoftwareBox, 
     SoftwareUpBox, SoftwarePendBox, LikeBox},
     computed:{
-        getUser(){
-            return this.$store.state.token;
+        getUser(){ 
+            let o = JSON.parse(this.$store.state.user)
+            this.profile = o.profilePic
+            if(o.nickName == null){
+                return o.name
+            }else{
+                return o.nickName
+            }
         },
+        getDep(){
+            let o = JSON.parse(this.$store.state.user)
+            return o.dept
+        },
+        getSign(){
+            let o = JSON.parse(this.$store.state.user)
+            return o.signature
+        }
     },
     mounted() {
         this.personalActive = this.$store.state.personalActive
-        this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
+        // this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
     },
     data () {
         return {
             uploadFolderStyle: "upload-folder-style",
             tab1: "资源(2)",
             tab2: "软件(1)",
-            tab3: "关注(0)",
             personalActive: "name1",
-            personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸'],// 从后端拿
+            personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸','暴躁老妹'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息
             productList: ['二次元人物模型','天空贴图素材包'],    
             softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
@@ -126,15 +137,18 @@ export default {
 }
 </style>
 <style scoped>
+.middle-card-wrapper{
+    width:100%;
+    display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-ms-flexbox;display:flex;flex-wrap:wrap;
+    justify-content:center;
+    /* align-items:center; */
+}
 .self-card{
-    position: relative;
-    display:inline-block;
     font-family: MicrosoftYaHei;
     width: 360px;
     height: 660px;
-    left: 50px;
+    margin-top: 53px;
     /* top: 10px; */
-    top: 33px;
     padding: 30px 20px 30px 25px;
     border-radius: 3px;
     background-color: #ffffff;
@@ -161,14 +175,12 @@ export default {
 }
 
 .asset-card{
-    position: relative;
-    display:inline-block;
     font-family: MicrosoftYaHei;
     font-size: 16px;
     width: 1200px;
     height: 660px;
-    left: 100px;
-    top: 53px;
+    margin-left: 50px;
+    margin-top: 53px;
     padding: 20px 28px 30px 28px;
     border-radius: 3px;
     background-color: #ffffff;

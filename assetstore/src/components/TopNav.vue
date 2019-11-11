@@ -72,7 +72,7 @@ export default {
         }
     },
     computed:{
-        getUser(){
+        getUser(){ 
             let o = JSON.parse(this.$store.state.user)
             this.profile = o.profilePic
             if(o.nickName == null){
