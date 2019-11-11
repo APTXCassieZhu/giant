@@ -30,6 +30,8 @@
                     <Divider/>
                     <div v-for="(item,index) in totalInfo" :key="index" :class="infoContentClass">
                         {{item}}
+                        <!-- TODO 时间戳 -->
+                        <span class="time-slot">刚刚</span>
                         <Divider/>
                     </div>
                 </div>
@@ -188,6 +190,10 @@ export default {
     width: 16px;
     height: 14px;
     font-size: 18px;
+}
+.time-slot{
+    float: right;
+    margin-left: 995px;
 }
 .info-content{
     font-size: 18px;
