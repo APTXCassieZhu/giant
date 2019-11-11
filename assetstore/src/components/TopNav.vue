@@ -18,11 +18,11 @@
                 <Search style="z-index: 1000;"></Search>
             </div>
             <div class="topnav-box-user">
-                <Icon class="topnav-user" type="md-cloud-upload" size="29"/>
+                <Icon class="topnav-user" type="md-cloud-upload" size="29" @click="goPage('/upFile')"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <Badge :count="totalUnreadNum" overflow-count="99">
-                            <Icon class="topnav-user" @click="goPage('notice')" type="md-notifications" size="29"/>
+                            <Icon class="topnav-user" @click="goPage('/notice')" type="md-notifications" size="29"/>
                         </Badge>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown-notice" style="margin-left: -250px;">
@@ -50,7 +50,7 @@
                         </Tabs>
                     </DropdownMenu>
                 </Dropdown>
-                <Icon class="topnav-user" @click="goPage('editSetting')" type="md-settings" size="29"/>
+                <Icon class="topnav-user" @click="goPage('/editSetting')" type="md-settings" size="29"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <img v-if="profile" class="topnav-user-image" :src="profile" @click="goLike('personal')" alt="avatar">

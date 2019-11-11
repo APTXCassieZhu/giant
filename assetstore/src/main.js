@@ -12,6 +12,10 @@ import VueCropper from 'vue-cropper'
 // import style
 import 'view-design/dist/styles/iview.css';
 import '../my-theme/index.less';       // change theme color
+
+import 'ant-design-vue/dist/antd.css';
+import '../my-theme/ant.less';
+
 // fontawesome icon
 import fontawesome from '@fortawesome/fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'
