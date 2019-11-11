@@ -37,8 +37,8 @@
         </a-form-item>
       <a-form-item v-bind="formItemLayout" label=" ">
         <a-cascader  v-decorator="[ 'resource-cascader',{
-              rules:[{ required: true, message: '请选择一个分类' }]
-            },
+            rules:[{ required: true, message: '请选择一个分类' }]
+          },
           ]" :options="options"  placeholder="请选择一个分类" />
       </a-form-item>
 
@@ -170,6 +170,7 @@
   &-r{
     width:20%;
   }
+
 }
 #components-form-demo-validate-other .dropbox {
   height: 180px;
@@ -180,6 +181,7 @@
 import TopNavigation from '../components/TopNav'
 import marked from 'marked'
 import Vue from 'vue'
+
 export default {
   components:{TopNavigation},
   props:[],
@@ -205,7 +207,6 @@ export default {
       inputVisible: false,
       inputValue: ''
 
-      
     }
   },
  
@@ -217,6 +218,7 @@ export default {
     // let editor = new E(this.$refs['editor-owo'])
     // editor.create()
     
+    console.log('matched:', this.$route.matched)
   },
   created(){
    

@@ -98,6 +98,9 @@ export default {
         this.$refs.child7.special = "image-07";
         this.$refs.child8.special = "image-08";
         this.$refs.child9.special = "image-09";
+
+
+        console.log('matched:', this.$route.matched)
     },
     methods:{
         goPage(url){

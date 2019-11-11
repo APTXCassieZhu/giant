@@ -35,6 +35,7 @@ export default {
         }
     },
     computed:{
+        
     },
     mounted(){
         axios.get(`/api/resource/${this.$route.resourceId}/version`).then(res=>{
@@ -112,4 +113,3 @@ export default {
     margin-bottom: 60px;
 }
 </style>
-

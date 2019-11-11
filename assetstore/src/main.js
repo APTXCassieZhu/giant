@@ -26,6 +26,11 @@ Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+// Vue.use(ElementUI)
+
+console.log(ElementUI)
 
 import { Rate ,Tooltip} from "ant-design-vue";
 import 'ant-design-vue/lib/rate/style/css'
@@ -150,6 +155,7 @@ var store = new Vuex.Store({
     }
   }
 })
+
 
 router.beforeEach((to,from,next) => {
   // loading 效果
