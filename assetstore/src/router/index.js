@@ -20,9 +20,7 @@ import resourceDetail from '../pages/resourceDetail'
 import versionHistory from '../pages/resources/versionHistory'
 import resourceComment from '../pages/resources/comment'
 
-
 Vue.use(Router)
-
 export default new Router({ 
   mode: "history",
   routes: [

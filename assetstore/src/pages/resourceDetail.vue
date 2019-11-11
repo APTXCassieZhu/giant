@@ -247,13 +247,15 @@
   }
 
   &-t{
-    
+      
   }
 
   &-des-content{  
     overflow: hidden;
     height: 200px;
   }
+
+
 
   &-des{
     // border:1px solid blue;
