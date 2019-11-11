@@ -45,6 +45,9 @@ import './emojiReply.css'
         })
   
       },
+      clearContent(){
+        this.$content.value = ''
+      },
       onSubmit(fn){
         this.handle_submit = fn
       },
@@ -173,7 +176,9 @@ import './emojiReply.css'
 
 
           $reply.addEventListener('click',
-            this.handleReplyClick.bind(this,  this.extendItem(item,  {reply,reply_n:0} )) 
+            this.handleReplyClick.bind(this,  this.extendItem(item,  {
+              reply,reply_n:0
+            } )) 
           )
           $del && $del.addEventListener(
             'click',
@@ -293,9 +298,10 @@ import './emojiReply.css'
         this.handleLike(o)
       },
       handleReplyClick(o){
-        
+   
         o.reply.onSubmit(prop=>{
           //console.log(prop)
+          prop.reply = o.reply
           this.handleReply(prop)
         })
         // console.log(o.reply)
@@ -304,7 +310,7 @@ import './emojiReply.css'
         }else{
           o.reply.hide()
         }
-        
+
       },
       handleDelClick(o){
         //console.log(o)
