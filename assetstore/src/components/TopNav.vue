@@ -30,11 +30,11 @@
                             <TabPane label="提醒" icon="ios-notifications" name="name1">
                                 <div v-for="(item,index) in totalUnreadInfo" :key="index" class="notice-content">
                                     <p style="cursor:pointer;padding: 0px 30px;">{{item}}</p>
-                                    <font-awesome-icon :icon="['fas','times']" class="close-icon-btn" @click="deleteUnread()"/>
+                                    <font-awesome-icon :icon="['fas','times']" class="close-icon-btn" @click="deleteUnread(item)"/>
                                     <Divider/>
                                 </div>
                                 <ul style="position:absolute;" class="ignore-all-ul"><Button class="ignore-all-btn" @click="ignoreAllInfo()">忽略全部</Button>
-                                <Button class="ignore-all-btn" style="width: 205.5px;margin-left: -5px;" @click="goPage('/notice')">查看更多</Button></ul>
+                                <Button class="ignore-all-btn" @click="goPage('/notice')">查看更多</Button></ul>
                             </TabPane>
                             <TabPane label="通知" icon="ios-megaphone" name="name2" >
                                 <div v-for="(item,index) in totalUnreadNotice" :key="index" class="notice-content">
@@ -44,7 +44,7 @@
                                 </div>
                                 <ul style="position:absolute;" class="ignore-all-ul" >
                                     <Button class="ignore-all-btn" @click="ignoreAllNotice()">忽略全部</Button>
-                                    <Button class="ignore-all-btn" style="width: 205.5px;margin-left: -5px;" @click="goPage('/notice')">查看更多</Button>
+                                    <Button class="ignore-all-btn" @click="goPage('/notice')">查看更多</Button>
                             </ul>
                             </TabPane>
                         </Tabs>
@@ -373,7 +373,7 @@ export default {
     font-size: 18px;
     letter-spacing: 1.13px;
     color: #8a8a8a;
-    width: 202px;
+    width: 205.5px;
     height: 62px;
 }
 .ignore-all-btn:hover{
