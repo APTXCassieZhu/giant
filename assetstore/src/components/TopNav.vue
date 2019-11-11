@@ -19,18 +19,48 @@
             </div>
             <div class="topnav-box-user">
                 <Icon class="topnav-user" type="md-cloud-upload" size="29"/>
-                <Icon class="topnav-user" @click="goPage('notice')" type="md-notifications" size="29"/>
+                <Dropdown placement="bottom-start">
+                    <a href="javascript:void(0)">
+                        <Badge :count="totalUnreadNum" overflow-count="99">
+                            <Icon class="topnav-user" @click="goPage('notice')" type="md-notifications" size="29"/>
+                        </Badge>
+                    </a>
+                    <DropdownMenu slot="list" class="topnav-dropdown-notice" style="margin-left: -250px;">
+                        <Tabs value="name1" style="width:408px;">
+                            <TabPane label="提醒" icon="ios-notifications" name="name1">
+                                <div v-for="(item,index) in totalUnreadInfo" :key="index" class="notice-content">
+                                    <p style="cursor:pointer;padding: 0px 30px;">{{item}}</p>
+                                    <font-awesome-icon :icon="['fas','times']" class="close-icon-btn" @click="deleteUnread()"/>
+                                    <Divider/>
+                                </div>
+                                <ul style="position:absolute;" class="ignore-all-ul"><Button class="ignore-all-btn" @click="ignoreAllInfo()">忽略全部</Button>
+                                <Button class="ignore-all-btn" style="width: 205.5px;margin-left: -5px;" @click="goPage('/notice')">查看更多</Button></ul>
+                            </TabPane>
+                            <TabPane label="通知" icon="ios-megaphone" name="name2" >
+                                <div v-for="(item,index) in totalUnreadNotice" :key="index" class="notice-content">
+                                    <p style="cursor:pointer;padding: 0px 30px;">{{item}}</p>
+                                    <font-awesome-icon :icon="['fas','times']" class="close-icon-btn1" @click="deleteUnread(item)"/>
+                                    <Divider/>
+                                </div>
+                                <ul style="position:absolute;" class="ignore-all-ul" >
+                                    <Button class="ignore-all-btn" @click="ignoreAllNotice()">忽略全部</Button>
+                                    <Button class="ignore-all-btn" style="width: 205.5px;margin-left: -5px;" @click="goPage('/notice')">查看更多</Button>
+                            </ul>
+                            </TabPane>
+                        </Tabs>
+                    </DropdownMenu>
+                </Dropdown>
                 <Icon class="topnav-user" @click="goPage('editSetting')" type="md-settings" size="29"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <img v-if="profile" class="topnav-user-image" :src="profile" @click="goLike('personal')" alt="avatar">
                         <div v-else class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
-                    <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-30px;">
-                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
-                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem></ul>
-                        <ul><DropdownItem><router-link class="user-box-link-a" to="/editSetting">修改资料</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
+                    <DropdownMenu slot="list" class="topnav-dropdown" >
+                        <DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem>
+                        <DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem>
+                        <DropdownItem><router-link class="user-box-link-a" to="/editSetting">修改资料</router-link></DropdownItem>
+                        <DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>
@@ -69,6 +99,10 @@ export default {
             activenum: 0,
             profile: null,
             userName: '神',
+            totalUnreadNum: 100,
+            totalUnreadInfo: ['你关注的资源 天空的材质包 更新了！','你的软件 Axure 更新了，访问 这里 快速更新！',
+            'JOE 评论了你 天空资源的贴图', '前沿技术部 回答了你的问题'],
+            totalUnreadNotice: ['软件领取通知：您已成功申领 ADOBE CS SUITE 软件，请下载','您已成功提交 ADOBE CS SUITE 软件申请 '],  
         }
     },
     computed:{
@@ -99,6 +133,7 @@ export default {
         // }, (res)=>{
         //     // 请求失败
         // })
+        this.totalUnreadNum = this.totalUnreadInfo.length + this.totalUnreadNotice.length
     },
     methods:{
         logout(){
@@ -130,12 +165,62 @@ export default {
             }
             this.$router.push('/personal')
         },
+        mircophone(){
+            // let $parent = document.querySelectorAll('#top-nav .ivu-tabs-tab')[1]
+
+            // let $span = document.createElement('span')
+            // $span.className = 'iconX-bullhorn-solid'
+            // $parent.appendChild($parent)
+        },
+        deleteUnread(item){
+            for(var i = 0; i < this.totalUnreadInfo.length; i++) {
+                if(this.totalUnreadInfo[i] == item) {
+                    console.log("delete info")
+                    this.totalUnreadInfo.splice(i, 1);
+                    break;
+                }
+            }
+            for(var i = 0; i < this.totalUnreadNotice.length; i++) {
+                if(this.totalUnreadNotice[i] == item) {
+                    console.log('delete notice')
+                    this.totalUnreadNotice.splice(i, 1);
+                    break;
+                }
+            }
+            /*TODO axios put*/
+        },
+        ignoreAllInfo(){
+            this.totalUnreadInfo = [];
+        },
+        ignoreAllNotice(){
+            this.totalUnreadNotice = [];
+
+        },
     }   
 }
 </script>
-
+<style>
+.topnav-dropdown-notice > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container
+ > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab {
+    padding: 8px 65px;
+    margin-right: 6px;
+    margin-left: 6px;
+ }
+ /* .topnav-dropdown-notice > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container
+ > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab {
+    width: 20px;
+    height: 20px;
+ } */
+ .topnav-dropdown-notice > .ivu-tabs > .ivu-tabs-content{
+    position: relative;
+ }
+ .topnav-dropdown-notice > .ivu-tabs > .ivu-tabs-content > .ivu-tabs-tabpane{
+    box-sizing: border-box;
+    padding-bottom: 62px;
+    position: relative;
+ }
+</style>
 <style scoped>
-
 .topnav {
     overflow: hidden;
     position: fixed;
@@ -229,7 +314,7 @@ export default {
 
 .topnav-box-user{
     position: relative;
-    width: 13%;
+    width:15%;
     min-width: 240px;
     top: 10px;
     float:right;
@@ -248,24 +333,72 @@ export default {
     line-height: 30px;
     text-align: center;
     border-radius: 50%;
+    margin-left:30px;
 }
 .topnav-user-image:hover{
     color: #1ebf73;
 }
 
-.topnav-user,.user-box-link-a{
+.topnav-user{
     color:black;
     z-index:inherit;
-    margin-right: 30px;
+    margin-left: 30px;
 }
-
+.user-box-link-a{
+    color:black;
+    z-index:inherit;
+    text-align: center;
+    margin-left:5px;
+    /* margin-right: 30px; */
+}
 .topnav-user:hover, .user-box-link-a:hover{
     color: #1ebf73;
     /*border-top: 5px solid #6495ED;*/
     cursor: pointer;
 }
-
-.topnav-dropdown{
+.notice-content{
+    color: black;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.ignore-all-ul{
+    position: absolute;
+    bottom:0;
+    left:0;
+    display: flex;
+}
+.ignore-all-btn{
+    border-radius: 0px;
+    font-size: 18px;
+    letter-spacing: 1.13px;
+    color: #8a8a8a;
+    width: 202px;
+    height: 62px;
+}
+.ignore-all-btn:hover{
+    color: #1ebf73;
+}
+.close-icon-btn{
+    position: absolute;
+    margin-top: -20px;
+    right: 30px;
+    float: right;
+    cursor: pointer;
+    color: #7f7f7f;
+}
+.close-icon-btn1{
+    position: absolute;
+    margin-top: -20px;
+    left: 380px;
+    float: right;
+    cursor: pointer;
+    color: #7f7f7f;
+}
+.close-icon-btn:hover,.close-icon-btn1:hover{
+    color: red;
+}
+.topnav-dropdown, .topnav-dropdown-notice{
     color: black;
     font-size: 18px;
     font-family: MicrosoftYaHei;

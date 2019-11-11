@@ -19,6 +19,7 @@ app.use('/feedback', feedback)
 app.use('/software', software)
 app.use('/upload', upload)
 app.use('/resource', resource)
+app.use('/fonts', express.static(__dirname +'/fonts'))
 app.use('/script', express.static(__dirname +'/script'))
 
 
