@@ -48,7 +48,7 @@ router.get('/describe', function(req, res){
 					"id": 123, 
 					"profilePic": "//avatars2.githubusercontent.com/u/18524392?s=460&v=4",
 					"name": "string",
-					"dept": "前沿技术部",
+					"dept": "未来技术研究部",
 					"title": "string",
 					"account": "string"
 			}, 

@@ -1,72 +1,63 @@
 <template>
   <div>
     <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
-   
     <section class="resource-detail">
       <div class="resource-detail-t">
         <div class="resource-detail-t-topwrap">
           <div class="resource-detail-lightbox"> 
             <div class="swiper-container gallery-top" ref="gallery-top">
               <div class="swiper-wrapper">
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572951374068&di=32d7b2f0241ab23ea61488baf6ddfaff&imgtype=0&src=http%3A%2F%2Fww1.sinaimg.cn%2Flarge%2F46070b07gw1eqdiqw4hylj20xc0gogo5.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572951415743&di=38754c8f774e83c4e276bf8631e7452a&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D1468004494%2C3374529979%26fm%3D214%26gp%3D0.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
+                <div class="swiper-slide" v-for="(src,i) in resource.images" :key="i" 
+                 :attrx="src" :style="{backgroundImage: `url(${src})`}">
+                </div>
               </div>
               <div class="swiper-button-next swiper-button-white"></div>
               <div class="swiper-button-prev swiper-button-white"></div>
             </div>
             <div class="swiper-container gallery-thumbs" ref="gallery-thumbs">
               <div class="swiper-wrapper">
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572951722265&di=6ae8c5212af12bbcd4bd5c30aed0fe9a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F-fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fpic%2Fitem%2F472309f790529822ccae72b0d5ca7bcb0a46d420.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572951768114&di=a4822fbaa2718bd407e26080c3106b7f&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F4%2F542a57eb5c816.jpg)"></div>
-              </div>
+               <div class="swiper-slide" v-for="(src,i) in resource.images" :key="i" 
+                 :attrx="src" :style="{backgroundImage: `url(${src})`}">
+                </div>
+              </div>             
             </div>
-
           </div>
           <div class="resource-detail-deslist">
             <div class="resource-detail-deslist-part1">
-              <!-- <a-avatar size="small" style="backgroundColor:#87d068" icon="user" /> -->
-              
-              <!-- <font-awesome-icon :type="['fas','user-circle']"></font-awesome-icon> -->
-              <font-awesome-icon :icon="['fas','user-circle']" style="color:#37d89d;width:23px;height:23px;"/>
-              <span>前沿技术部</span>
+							<div @click="handleVisit" style="cursor:pointer;">
+								<font-awesome-icon v-if="!describe.profilePic" :icon="['fas','user-circle']" style="color:#37d89d;width:23px;height:23px;"/>
+								<img v-if="describe.profilePic" style="width:23px;border-radius:23px;" :src="describe.profilePic" alt=""/>
+							</div>
+              <span>{{describe.dept}}</span>
             </div>
-            <div class="resource-detail-deslist-part2">天空贴图的标题</div>
+            <div class="resource-detail-deslist-part2">{{resource.name}}</div>
             <div class="resource-detail-deslist-part3">
-              <!-- <a-select defaultValue="ver 1.2.3" style="width: 120px">
-                <a-select-option value="v1">ver 1.2.3</a-select-option>
-                <a-select-option value="v2">ver 2.3.3</a-select-option>
-                <a-select-option value="v3">ver 3.0.3</a-select-option>
-              </a-select> -->
-              <Select v-model="def_ver" style="width: 120px">
-                <Option value="v1">ver 1.2.3</Option>
-                <Option value="v2">ver 2.3.3</Option>
-                <Option value="v3">ver 3.0.3</Option>
+              <Select :placeholder="resource.ver[0].verNum" @on-change="handleSelectChange" style="width: 120px">
+                <Option v-for="(item,j) in resource.ver" :key="j" :value="item.verNum">{{item.verNum}}</Option>
+                <Option value="all">全部</Option>
               </Select>
-              <span class="resource-detail-deslist-updatetime"> - Last Update:2019-7-29</span>
+              <!-- <Dropdown>
+                <a href="javascript:void(0)">
+                  下拉菜单
+                  <Icon type="arrow-down-b"></Icon>
+                </a>
+                <Dropdown-menu slot="list">
+                  <Dropdown-item>驴打滚</Dropdown-item>
+                  <Dropdown-item>炸酱面</Dropdown-item>
+                  <Dropdown-item disabled>豆汁儿</Dropdown-item>
+                  <Dropdown-item>冰糖葫芦</Dropdown-item>
+                  <Dropdown-item divided>北京烤鸭</Dropdown-item>
+                </Dropdown-menu>
+              </Dropdown> -->
+              <span class="resource-detail-deslist-updatetime"> - Last Update: {{getYYMMDD(resource.createdAt)}}</span>
             </div>
             <div  class="resource-detail-deslist-part4">
               <div class="resource-detail-deslist-score-wrap">
                 <!-- <Rate v-model="rate1" disabled/><span class="resource-detail-deslist-score">{{rate1+'.0'}}</span> -->
-                <a-rate disabled v-model="rate1" /><span class="resource-detail-deslist-score">{{rate1+'.0'}}</span>
+                <a-rate disabled v-model="resource.rateAvg" /><span class="resource-detail-deslist-score">{{resource.rateAvg+'.0'}}</span>
               </div>
-              <div>25条评分</div> 
-              <div>137条评论</div>  
+              <div style="text-decoration:none;">{{resource.rateCount}}条评分</div> 
+              <div><a id="resource-comment-a" href="javascript:void 0;" @click="handleCommentLink">{{resource.commentCount}}条评论</a></div>  
             </div>
             <div class="resource-detail-deslist-part5">
               <div>
@@ -74,15 +65,15 @@
                 <font-awesome-icon :icon="['fas','folder']" style="color:#1ebf73;width:15px;height:15px;"/>
                 <span>资源包</span> 
               </div>
-              <div>天空贴图的标题</div>
+              <div>{{resource.ver.length ? resource.ver[0].file.fileName:''}}</div>
             </div>
             <div class="resource-detail-deslist-part6">
               <div>
                 <font-awesome-icon :icon="['fas','cog']" style="color:#1ebf73;width:15px;height:15px;"/>
                 <!-- <a-icon type="setting" theme="twoTone" twoToneColor="#1ebf73"/>   -->
                 <span>可运行的引擎版本</span> 
-               </div>
-              <div>Unity 4.2 - 4.8</div>
+              </div>
+              <div>{{resource.tags.length? resource.tags[0].name:''}}</div>
             </div>
             <div  class="resource-detail-deslist-part7">
               <div>
@@ -91,24 +82,17 @@
                 <span>资源标签</span> 
               </div>
               <div>
-                <Tag size="medium">模型33322</Tag>
-                <Tag size="medium">模型</Tag>
-                <Tag size="medium">模型22222</Tag>
-                <Tag size="medium">模型22</Tag>
-                <Tag size="medium">模型33</Tag>
-                <Tag size="medium">模型4424</Tag>
-                <Tag size="medium">模型11</Tag>
-                <Tag size="medium">模型33</Tag>
-                <Tag size="medium">模型4424</Tag>
-                <Tag size="medium">模型11</Tag>
+                <Tag v-for="(item,k) in resource.label" :key="k" size="medium">{{item}}</Tag>
               </div>
             </div>
             <div class="resource-detail-deslist-part8">
               <div class="resource-detail-deslist-like" @click="handleLike">
                 <!-- <a-icon type="heart" />&nbsp;关注 -->
-                <font-awesome-icon :icon="['fas','heart']" style="color:#1ebf73;width:15px;height:15px;"/>&nbsp;关注
+                <font-awesome-icon v-if="!resource.isStar" :icon="['far','heart']" style="color:#1ebf73;width:15px;height:15px;"/>
+                <font-awesome-icon v-if="resource.isStar" :icon="['fas','heart']" style="color:#1ebf73;width:15px;height:15px;"/>
+                <span>&nbsp;关注</span>
               </div>
-              <div class="resource-detail-deslist-down" @click="handleDown">下载资源（512MB）</div>
+              <div class="resource-detail-deslist-down" @click="handleDown">下载资源（{{fileSize()}}）</div>
             </div>
           </div>
         </div>
@@ -116,34 +100,15 @@
           <div>资源描述</div>
           <div>
             <input type="checkbox" id="resource-detail-des-more">
-            <div class="resource-detail-des-content">
-              主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx主要特性xxxxxxxxx<br/>
-              包含的内容<br/>
-              xxxxxx包含的内容<br/>
-              包含的内容<br/>
-              xxxxxx包含的内容<br/>
-              包含的内容<br/>
-              xxxxxx包含的内容<br/>
-              包含的内容<br/>
-              xxxxxx包含的内容<br/>
-               xxxxxx包含的内容<br/>
-              包含的内容<br/>
-              xxxxxx包含的内容<br/>
-              包含的内容<br/>
-              xxxxxx包含的内容<br/>
-               xxxxxx包含的内容<br/>
-              包含的内容<br/>
-              xxxxxx包含的内容<br/>
-              包含的内容<br/>
-              xxxxxx包含的内容<br/>
-            </div>
-            <p>
+            <div class="resource-detail-des-content" v-html="resource.description">
               
-              <span class="resource-detail-des-caret-down" style="cursor:pointer;text-align:center;"> 
+            </div>
+            <p>        
+              <span class="resource-detail-des-caret-down" style="cursor:pointer;text-align:center;z-index:2;"> 
                 <label for="resource-detail-des-more">展开</label>
                 <span style="color:#1ebf73"><font-awesome-icon :icon="['fas','caret-down']"/></span>
               </span>
-              <span class="resource-detail-des-caret-up" style="cursor:pointer;text-align:center;"> 
+              <span class="resource-detail-des-caret-up" style="cursor:pointer;text-align:center;z-index:2;"> 
                 <label for="resource-detail-des-more">收起</label>
                 <span style="color:#1ebf73"><font-awesome-icon :icon="['fas','caret-up']"/></span>
               </span>
@@ -156,45 +121,40 @@
        
         <div  class="resource-detail-b-bar">
           <div>
-            <span>137条评论</span> 
-            <span>仅显示20条评论</span>
+            <span>{{resource.commentCount}}条评论</span> 
+            <span>仅显示{{comment_pagesize}}条评论</span>
           </div>   
-          <!-- <a-dropdown :trigger="['click']">
-            <span class="ant-dropdown-link" > {{sortBy==='time'?'按时间排序':'按热度排序'}} <a-icon type="down" /> </span>
-            <a-menu slot="overlay">
-              <a-menu-item key="time" @click="dpClick">
-                <span>按时间排序</span>
-              </a-menu-item>
-              <a-menu-item key="hot"  @click="dpClick">
-                <span>按热度排序</span>
-              </a-menu-item>
-              <a-menu-divider />
-            </a-menu>
-          </a-dropdown> -->
-        <Dropdown trigger="click" style="margin-right:10px;cursor:pointer;" >
-          <span > {{sortBy==='time'?'按时间排序':'按热度排序'}} <Icon type="ios-arrow-down"></Icon> </span>
-          <DropdownMenu slot="list" @click="dpClick">
-              <DropdownItem>按时间排序</DropdownItem>
-              <DropdownItem>按热度排序</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+          <Dropdown trigger="click" style="margin-right:10px;cursor:pointer;font-size:16px;color:#7f7f7f;" >
+            <span > {{sortBy==='time'?'按时间排序':'按热度排序'}} <Icon type="ios-arrow-down"></Icon> </span>
+            <DropdownMenu slot="list" @click.native="dpClick">
+                <DropdownItem style="font-size:16px;color:#7f7f7f;" name="time">按时间排序</DropdownItem>
+                <DropdownItem style="font-size:16px;color:#7f7f7f;" name="hot">按热度排序</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
-        <Alert show-icon closable>您需要写评论才能评分哦</Alert>
-        <Alert show-icon closable>您需要评分才可以发表评论哦</Alert>
-       
-        <div class="resource-detail-rate-wrap" > 
-          <a-rate v-model="rate2" size="large" :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
-          <!-- <Rate v-model="rate2" size="large" :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" /> -->
-          <span class="resource-detail-rate-text">{{rate2+'.0'}}</span>
+        <!-- <Alert v-if="showAlertComment" show-icon closable>您需要先评分才能评论哦</Alert> -->
+      
+        <div class="resource-detail-rate-wrap" >
+          <!-- <template v-if="resource.isRate">
+            <a-rate v-model="resource.rateAvg" size="large" disabled   />
+            <span class="resource-detail-rate-text">{{resource.rateAvg+'.0'}}</span>
+          </template> -->
+         
+          <!-- <template v-if="!resource.isRate">
+            <a-rate size="large"  :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
+            <span class="resource-detail-rate-text">{{rate2+'.0'}}</span>
+          </template> -->
+          <a-rate size="large" v-model="rate2" :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
+          <a name="resource-rate"><span class="resource-detail-rate-text">{{rate2+'.0'}}</span></a>
         </div>
         <div class="resource-detail-reply" ref="resource-detail-reply">
 
         </div>
         <div class="resource-detail-comments"  ref="resource-detail-comments">
-
+          
         </div>
         <div class="resource-detail-comments-btn-wrap">
-          <Button style="color:#1ebf73;" size="large">查看所有评论</Button>
+          <Button style="color:#1ebf73;" @click="handleCommentLink" size="large">查看所有评论</Button>
         </div>
       </div>
     </section>
@@ -222,8 +182,16 @@
 }
 
 </style>
-<style>
-
+<style lang="less">
+  
+  .resource-detail {
+    .ivu-select-single .ivu-select-selection
+    .ivu-select-placeholder{
+      color:#7f7f7f;
+      font-size:16px;
+      
+    }
+  }
     .swiper-container {
       width: 100%;
       height: 300px;
@@ -260,12 +228,23 @@
   margin:0 auto;
   margin-top:50px;
   position: relative;
+  overflow: hidden;
 
   .ivu-tag{
     margin-right: 10px;
     margin-bottom: 10px;
     margin-top:5px;
   }
+
+
+  #resource-rate-a{
+    color:#7f7f7f;
+
+  }
+  #resource-comment-a{
+    color:#7f7f7f;
+  }
+
 
   &-t{
     
@@ -291,6 +270,7 @@
     >div:nth-child(2){
       color:#7f7f7f;
       font-size:16px;
+      position: relative;
 
 
       input[type='checkbox']{
@@ -306,13 +286,36 @@
       input[type='checkbox']:checked ~ p .resource-detail-des-caret-up{
         display:block;
       }
+      input[type='checkbox']:checked ~ p:after{
+        width:0%;
+      }
 
       .resource-detail-des-caret-up{
         display:none;
       }
 
+      p span{
+        position: relative;
+      }
+
       p{
         text-align: center;
+        position: relative;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+
+        &:after{
+          content: '';
+          width: 100%;
+          height: 150%;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          z-index: 1;
+          box-shadow: 0 -15px 50px #fff inset;
+      }
+
 
       }
       label{
@@ -340,6 +343,10 @@
   &-deslist-score-wrap{
     display: flex;
     align-items: center;
+
+    a{
+      color:#7f7f7f;
+    }
   }
 
   &-lightbox{
@@ -386,7 +393,7 @@
     margin-left:20px;
     margin-top:3px;
     text-decoration: underline;
-    cursor: pointer;
+    // cursor: pointer;
   }
   &-deslist-part4>div:nth-child(3){
     margin-left:10px;
@@ -553,7 +560,6 @@
     margin-top:30px;
     margin-bottom:10px;
 
-
     >div:nth-child(1){
       >span{
         padding-left:15px;
@@ -577,8 +583,6 @@ import TopNavigation from '../components/TopNav.vue'
 import moment from 'moment'
 import Footer from '../components/footer.vue'
 import axios from 'axios'
-
-
 // import Rate from 'ant-design-vue/lib/rate';
 // import 'ant-design-vue/lib/rate/style'; // 或者 ant-design-vue/lib/button/style/css 加载 css 文件
 
@@ -600,13 +604,63 @@ export default {
       rate1:3,
       rate2:0,
       sortBy:'time',
+      userid:'',
+      model1:'333333333',
 
-      def_ver:'ver 1.2.3'
+      showAlertComment:false,
+
+      comment_order:'time',
+      comment_pagesize:20,
+      describe:{
+				dept:'', // 部门
+				profilePic:'',
+        lightboxImgs:[], // 轮询图
+      },
+      resource:{
+        
+        "id": 0,
+        "name": "资源名23333", // 资源名
+        "images": [ // 轮询图
+        ],
+        "label": [ // 自定义标签
+          "最喜欢大哥哥了",'小姐姐','小哥哥','小姐姐','小哥哥','小姐姐','小哥哥','小姐姐','小哥哥'
+        ],
+        "createdAt": "2019-11-08T03:41:55.000Z", // 创建时间  
+        "description": // 资源描述
+          ``
+        ,
+        "updatedAt": "2019-11-08T03:41:55.000Z", // 更新时间  
+        "commentCount": 1343,
+        "rateAvg": 3, // 评价评分
+        "rateCount": 132,
+        "state": true,
+        "isStar": true, //是否关注过
+        "isRate":true,
+        "ver": [ // 版本 resource.ver[0].file.fileName
+      	{
+						"id": 0,
+						"verNum": "1.3.5",
+						"descriptipon": "string",
+						"file":{
+							"fileName": "环境贴图aaa", // 资源包file名称
+							"size": 133244, // file大小 b
+							"id": 0 // file id
+						}
+					},
+        ],
+        "tags": [ // 引擎版本
+          
+        ]
+        
+      }
+      
     }
+    
+  },
+  computed:{
 
   },
   mounted(){
-
     // /resource/{id}  GET 资源详情
 
     // /resource/{id}/star  POST 关注资源
@@ -617,29 +671,156 @@ export default {
 
     // /comment  GET  获取资源评论
 
+
     // /comment  POST 提交评论
 
     // /comment DEL 删除评论
 
     // ​/comment​/{id}​/star  POST 点赞评论
 
-    const {params} = this.$route
+		console.log('matched:', this.$route.matched)
 
-    // axios.get(`/api/resource/1234`,{params:{  }}).then(response=>{
+		const {params} = this.$route
+
+    // debugger
+
+		
+    axios.get(`/api/resource/${params.resourceId}`).then(response=>{
+      var res = response.data
+
+      this.resource = Object.assign(this.resource,res.data)
+
+      this.$nextTick(()=>{
+        var galleryThumbs = new Swiper('.gallery-thumbs', {
+          spaceBetween: 10,
+          slidesPerView: 4,
+          freeMode: true,
+          watchSlidesVisibility: true,
+          watchSlidesProgress: true
+        })
+
+        new Swiper('.gallery-top', {
+          spaceBetween: 10,
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+          },
+          thumbs: {
+            swiper: galleryThumbs
+          }
+        })
+      })
       
-    // }).catch(err=>{
 
-    // })
+    })
 
     axios.get('/api/user/describe').then(response_des=>{
       var res = response_des.data
       var userid = res.data.id
-      console.log(userid,response_des)
-      axios.get(`/api/comment`,{params:{ resourceId:params.resourceId,pageSize:20,order:'hot'}}).then(response=>{
+      this.userid = userid
 
-        var res = response.data
-          
-        let items = []
+			this.describe.dept = res.data.dept
+			this.describe.profilePic = res.data.profilePic
+
+      this.createComment()
+    })
+    
+
+    let replyx = Reply(this.$refs['resource-detail-reply'],{userdata:{}})
+
+    replyx.onSubmit(prop=>{
+      if(!this.resource.isRate){
+        return this.$Message.warning('请先进行评分哦~')
+      }
+
+      if(!prop.content.length){
+        return this.$Message.warning('请输入你的评论内容~')
+      }
+
+       //让他回复
+      axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id}).then(response=>{
+        this.$Message.success('评论提交成功~')
+        replyx.clearContent()
+      })
+      
+    })
+
+
+
+  // // Initializes and creates emoji set from sprite sheet
+    
+  //   var emojiPicker = new EmojiPicker({
+  //     emojiable_selector: '[data-emojiable=true]',
+  //     assetsPath: './lib/img/',
+  //     popupButtonClasses: 'fa fa-smile-o'
+  //   })
+  //   // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+  //   // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+  //   // It can be called as many times as necessary; previously converted input fields will not be converted again
+  //   emojiPicker.discover()
+
+  },
+  methods:{
+    handleLike(){
+      // this.$message.success('已关注')
+      if(!this.resource.isStar){
+        axios.post(`/api/resource/${this.$route.params.resourceId}/star`,{params:{star:true}}).then(response=>{
+          this.resource.isStar = true
+          this.$Message.success('已关注')
+        })
+
+      }else{
+        axios.post(`/api/resource/${this.$route.params.resourceId}/star`,{params:{star:false}}).then(response=>{
+          this.resource.isStar = false
+          this.$Message.success('已取消关注')
+        })
+      }
+      
+    },
+    handleCommentLink(){
+      this.$router.push(`/resourceDetail/${this.$route.params.resourceId}/comment`)
+    },
+    getYYMMDD(t){
+        let time = new Date(t)
+        let [yy,mm,dd] = [
+            time.getFullYear(),
+            time.getMonth()+1,
+            time.getDate()
+        ]
+        if(mm<10){
+            mm = '0' + mm
+        }
+        return  yy+'-'+mm+'.'+dd
+
+    },
+    handleSelectChange(){
+      this.$router.push(`/resourceDetail/${this.$route.params.resourceId}/versionHistory`)
+    },
+    handleRate(v){
+      const {params} = this.$route
+      axios.post(`/api/rate/${params.resourceId}`,{value:v}).then(response=>{
+        this.resource.isRate = true
+        this.resource.ra
+        //console.log('isRate!!1')
+      })
+    },
+    yymmdd(t){
+      return '2019-01.23'
+    },
+    fileSize(b){
+      return 512
+    },
+		handleVisit(){
+			this.$router.push(`/${this.userid}/visit/`)
+		},
+    createComment(){
+
+      const {params} = this.$route
+      axios.get(`/api/comment`,{params:{ resourceId:params.resourceId,page:1,pageSize:this.comment_pagesize,order:this.sortBy}}).then(response=>{
+        
+        var res = response.data 
+
+        let items = [] 
 
         items = res.data.list.map(o=>{
           var item = {
@@ -649,13 +830,13 @@ export default {
             score:o.rate.value,
             like:o.hot,
             liked:o.stars.length>1,
-            time:o.createdAt ,
+            time: this.getYYMMDD(o.createdAt)  ,
             replyUserId:o.replyUserId,
             user:{
               uid:o.user.id,
               name:o.user.name,
               nickname:o.user.nickName,
-              imgurl:o.user.profilePic,
+              imgurl:o.user.profilePic
             }
           }
           item.items = o.items.map(o=>{  
@@ -671,31 +852,30 @@ export default {
               userb:{
                 uid:o.followUser.id,name:o.followUser.name,nickname:o.followUser.nickName,imgurl:o.followUser.profilePic
               },
-              time:o.createdAt
+              time: this.getYYMMDD(o.createdAt)
             }
           })
 
           return item
         })
 
+
        
         //console.log(response)
         let comments = Comments(this.$refs['resource-detail-comments'],{
           items,
           userdata:{
-            uid:userid
+            uid:this.userid
           }
         })
 
-       
         comments.onLike(prop=>{
           console.log('comments like:', prop)
 
           if(prop.liked){
             axios.post(`/api/comment/${prop.id}/star`,{star:false}).then(response=>{
               comments.dislikeByProp(prop)
-            })       
-
+            })
 
           }else{
             axios.post(`/api/comment/${prop.id}/star`,{star:true}).then(response=>{
@@ -705,14 +885,26 @@ export default {
           }
         })
 
+
         comments.onReply(prop=>{
           // 	"pid": 0,
           // 	"content": "string",
           // 	"replyUserId": 0
+
+          // 触发了回复评论, 但从没有评分过
+          if(!this.resource.isRate){
+            return this.showAlertComment = true
+          }
+          if(!prop.content.length){
+            return this.$Message.warning('请输入你的回复内容~')
+          }
+
+          //让他回复
           axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id,replyUserId:prop.replyUserId}).then(response=>{
-            
+            this.$Message.success('评论提交成功~')
+            prop.reply.clearContent()
           })
-          console.log('comments reply:', prop)
+          //console.log('comments reply:', prop)
         })
 
 
@@ -729,12 +921,14 @@ export default {
               axios.delete(`/api/comment/${prop.id}`,{pid:prop.id}).then(response=>{
                 
                 comments.removeCommentByProp(prop)
+
                 setTimeout(()=>{
                   this.$Modal.success({
                     title: '评论已删除',
                     okText: '确认',
                   })
                 },300)
+
               })
               
             }
@@ -745,173 +939,13 @@ export default {
       }).catch(err=>{
         
       })
-
-      
-    })
-    
-
-
-    Reply(this.$refs['resource-detail-reply'],{userdata:{}})
-    .onSubmit(prop=>{
-      console.log(prop)
-    })
-
-    // console.log(this.$routes)
-  //  let comments = Comments(this.$refs['resource-detail-comments'],{
-  //     items:[
-  //       {
-  //         id:'评论id',
-  //         content:'xxxx评论内容aaaaaaa',
-  //         user:{uid:'用户id',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //         score:'3.0',
-  //         like:'1234',
-  //         liked:true,
-  //         time:'一天前',
-  //         items:[
-  //           {
-  //             id:'评论id',
-  //             content:'xxxx评论内容bbbbbb',
-  //             usera:{uid:'用户id',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //             userb:{uid:'用户id',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //             like:'3333',
-  //             liked:false,
-  //             time:'一天前'
-  //           },
-  //           {
-  //             id:'评论id',
-  //             content:'xxxx评论内容cccccccccc',
-  //             usera:{uid:'用户id',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //             userb:{uid:'用户id',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //             like:'33334',
-  //             liked:false,
-  //             time:'二天前'
-  //           }
-  //         ]
-  //       },
-  //       {
-  //         id:'评论id',
-  //         content:'xxxx评论内容',
-  //         user:{uid:'uid-a',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //         score:'4.0',
-  //         like:'1234',
-  //         liked:false,
-  //         time:'一天前',
-  //         items:[
-  //           {
-  //             id:'评论id',
-  //             content:'xxxx评论内容',
-  //             usera:{uid:'用户id',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //             userb:{uid:'用户id',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //             like:'3333',
-  //             time:'一天前'
-  //           },
-  //           {
-  //             id:'评论id',
-  //             content:'xxxx评论内容2',
-  //             usera:{uid:'uid-a',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //             userb:{uid:'用户id',name:'name',nickname:'nickname',imgurl:'https://avatars2.githubusercontent.com/u/18524392?s=460&v=4'},
-  //             like:'33334',
-  //             time:'一天前'
-  //           }
-  //         ]
-  //       }
-  //     ],
-  //     userdata:{
-  //       uid:'uid-a'
-  //     }
-  //   })
-
-
-    // var that = this
-    // comments.onDel(prop=>{
-    //   console.log('comments del:', prop)
-    //   //comments.removeCommentByProp(prop)
-    //   this.$Modal.confirm({
-    //     title: '确认删除该条评论?',
-    //     okText: '确认',
-    //     okType: 'danger',
-    //     cancelText: '取消',
-    //     onOk: () => {
-    //       comments.removeCommentByProp(prop)
-    //       setTimeout(()=>{
-    //         this.$Modal.success({
-    //           title: '评论已删除',
-    //           okText: '确认',
-    //         })
-    //       },300)
-    //     }
-    //   })
-      
-    // })
-    
-
-    // comments.onLike(prop=>{
-    //   console.log('comments like:', prop)
-    //   if(prop.liked){
-    //     comments.dislikeByProp(prop)
-    //   }else{
-    //     comments.likeByProp(prop)
-    //   }
-    // })
-    // comments.onReply(prop=>{
-    //   console.log('comments reply:', prop)
-    // })
-
-
-
-  // // Initializes and creates emoji set from sprite sheet
-    
-  //   var emojiPicker = new EmojiPicker({
-  //     emojiable_selector: '[data-emojiable=true]',
-  //     assetsPath: './lib/img/',
-  //     popupButtonClasses: 'fa fa-smile-o'
-  //   })
-  //   // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
-  //   // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
-  //   // It can be called as many times as necessary; previously converted input fields will not be converted again
-  //   emojiPicker.discover()
-
-
-    setTimeout(()=>{
-
-      //console.log(document.querySelector('.gallery-thumbs')  )
-
-      var galleryThumbs = new Swiper('.gallery-thumbs', {
-        spaceBetween: 10,
-        slidesPerView: 4,
-        freeMode: true,
-        watchSlidesVisibility: true,
-        watchSlidesProgress: true,
-      })
-
-      
-      var galleryTop = new Swiper('.gallery-top', {
-        spaceBetween: 10,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        thumbs: {
-          swiper: galleryThumbs
-        }
-      })
-
-    },0)
-    
-
-  },
-  methods:{
-    handleLike(){
-      // this.$message.success('已关注')
-      this.$Message.success('已关注')
     },
-    handleRate(v){
+    dpClick(e,v){
+      //console.log(e.target,v)
 
-      //console.log('handleRate:',this.rate2,v)
+      this.sortBy =  e.target.textContent === '按时间排序'?'time':'hot'
 
-    },
-    dpClick(o){
-      this.sortBy = o.key
+      this.createComment()
     },
     handleDown(){
       
