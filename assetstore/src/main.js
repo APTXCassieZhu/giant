@@ -39,9 +39,9 @@ import 'ant-design-vue/lib/tooltip/style/css'
 Vue.component(Rate.name, Rate)
 Vue.component(Tooltip.name, Tooltip)
 
-// import Antd from 'ant-design-vue'
-// import 'ant-design-vue/dist/antd.css'
-// Vue.use(Antd)
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css'
+Vue.use(Antd)
 
 axios.defaults.baseURL='/'       
 //axios post setting
