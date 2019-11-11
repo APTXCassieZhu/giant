@@ -63,7 +63,7 @@ export default new Router({
       }
     },
     {
-      path: '/visit',
+      path: '/:userId/visit',
       name: 'Visit',
       component: visit,
       meta: {
