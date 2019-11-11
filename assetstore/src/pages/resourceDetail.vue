@@ -239,8 +239,9 @@
 
   #resource-rate-a{
     color:#7f7f7f;
-
   }
+
+  
   #resource-comment-a{
     color:#7f7f7f;
   }
