@@ -29,9 +29,10 @@
                     <a @click="readAll('info')" :class="markRead"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
                     <Divider/>
                     <div v-for="(item,index) in totalInfo" :key="index" :class="infoContentClass">
-                        {{item}}
-                        <!-- TODO 时间戳 -->
-                        <span class="time-slot">刚刚</span>
+                        <ul>
+                            {{item}}
+                            <span class="time-slot">刚刚</span>
+                        </ul>
                         <Divider/>
                     </div>
                 </div>
@@ -194,6 +195,9 @@ export default {
 .time-slot{
     float: right;
     margin-left: 995px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1.13px;
 }
 .info-content{
     font-size: 18px;
