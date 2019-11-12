@@ -247,8 +247,6 @@ export default {
             var leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
             var seconds=Math.round(leave3/1000)
             console.log(" 相差 "+dayDiff+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
-            console.log(dateDiff+"时间差的毫秒数",dayDiff+"计算出相差天数",leave1+"计算天数后剩余的毫秒数"
-                ,hours+"计算出小时数",minutes+"计算相差分钟数",seconds+"计算相差秒数");
             // 1、 刚刚（10分钟内）
             // 2、 ? 分钟以前（10分钟以上60分钟内）
             // 3、 ? 小时以前（60分钟以上24小时内）

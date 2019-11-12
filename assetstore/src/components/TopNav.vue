@@ -28,11 +28,96 @@
                     <DropdownMenu slot="list" class="topnav-dropdown-notice" style="margin-left: -250px;">
                         <Tabs value="name1" style="width:408px;">
                             <TabPane label="提醒" icon="ios-notifications" name="name1">
+                                
                                 <div v-for="(item,index) in totalUnreadInfo" :key="index" class="notice-content">
-                                    <p style="cursor:pointer;padding: 0px 30px;">{{item}}</p>
+                                    <div v-if="item.targetType === 'starResourceUpgrade'">
+                                        <div class="font-image">{{item.resource.name.charAt(0)}}</div>
+                                        你关注的资源<span class="mark-green"> {{item.resource.name}} </span>更新了！
+                                    </div>
+                                    <div v-else-if="item.targetType === 'starSoftwareUpgrade'">
+                                        <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
+                                        你的软件 {{item.software.name}} 更新了, 访问<span class="mark-green"> 这里</span> 快速更新
+                                    </div>
+                                    <div v-else-if="item.targetType === 'replyComment'">
+                                        <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
+                                        <span v-if="item.sourceUsers.length<=3">
+                                            <span v-for="(value, n) in item.sourceUsers" :key="n">
+                                                <span v-if="value.nickName">
+                                                    {{value.nickName}}, 
+                                                </span>
+                                                <span v-else>
+                                                    {{value.name}}, 
+                                                </span>
+                                            </span>  
+                                        </span>
+                                        <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
+                                        <span v-else>
+                                            <span v-if="item.sourceUsers[0].nickName">
+                                                {{item.sourceUsers[0].nickName}}, 
+                                            </span>
+                                            <span v-else>
+                                                {{item.sourceUsers[0].name}}, 
+                                            </span>
+                                            <span v-if="item.sourceUsers[1].nickName">
+                                                {{item.sourceUsers[1].nickName}}, 
+                                            </span>
+                                            <span v-else>
+                                                {{item.sourceUsers[1].name}}, 
+                                            </span>
+                                            <span v-if="item.sourceUsers[2].nickName">
+                                                {{item.sourceUsers[2].nickName}}, 
+                                            </span>
+                                            <span v-else>
+                                                {{item.sourceUsers[2].name}}, 
+                                            </span>
+                                            等
+                                        </span>
+                                        回复了你的<span class="mark-green"> 评论 </span>
+                                    </div>
+                                    <div v-else-if="item.targetType === 'resourceCommented'">
+                                        <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
+                                        <span v-if="item.sourceUsers.length<=3">
+                                            <span v-for="(user, i) in item.sourceUsers" :key="i">
+                                                <span v-if="user.nickName">
+                                                    {{user.nickName}}, 
+                                                </span>
+                                                <span v-else>
+                                                    {{user.name}}, 
+                                                </span>
+                                            </span> 
+                                        </span>
+                                        <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
+                                        <span v-else>
+                                            <span v-if="item.sourceUsers[0].nickName">
+                                                {{item.sourceUsers[0].nickName}}, 
+                                            </span>
+                                            <span v-else>
+                                                {{item.sourceUsers[0].name}}, 
+                                            </span>
+                                            <span v-if="item.sourceUsers[1].nickName">
+                                                {{item.sourceUsers[1].nickName}}, 
+                                            </span>
+                                            <span v-else>
+                                                {{item.sourceUsers[1].name}}, 
+                                            </span>
+                                            <span v-if="item.sourceUsers[2].nickName">
+                                                {{item.sourceUsers[2].nickName}}, 
+                                            </span>
+                                            <span v-else>
+                                                {{item.sourceUsers[2].name}}, 
+                                            </span>
+                                            等
+                                        </span>
+                                        评论了你的<span class="mark-green"> {{item.resource.name}} </span> 
+                                    </div>
+                                    <div v-else>
+                                        <div class="font-image">{{item.resource.name.charAt(0)}}</div>
+                                        你关注的资源<span class="mark-green"> {{item.resource.name}} </span>被评论
+                                    </div>
                                     <font-awesome-icon :icon="['fas','times']" class="close-icon-btn" @click="deleteUnread(item)"/>
                                     <Divider/>
                                 </div>
+                                
                                 <ul style="position:absolute;" class="ignore-all-ul"><Button class="ignore-all-btn" @click="ignoreAllInfo()">忽略全部</Button>
                                 <Button class="ignore-all-btn" @click="goPage('/notice')">查看更多</Button></ul>
                             </TabPane>
@@ -100,8 +185,7 @@ export default {
             profile: null,
             userName: '神',
             totalUnreadNum: 100,
-            totalUnreadInfo: ['你关注的资源 天空的材质包 更新了！','你的软件 Axure 更新了，访问 这里 快速更新！',
-            'JOE 评论了你 天空资源的贴图', '前沿技术部 回答了你的问题'],
+            totalUnreadInfo: [],
             totalUnreadNotice: ['软件领取通知：您已成功申领 ADOBE CS SUITE 软件，请下载','您已成功提交 ADOBE CS SUITE 软件申请 '],  
         }
     },
@@ -117,23 +201,19 @@ export default {
         }
     },
     mounted(){
-        // axios.get('/user/describe').then((res)=>{
-        //     if(res.data.code == 0){
-        //         this.$store.commit('ADD_COUNT', res.headers.Authorization)
-        //         this.profile = res.data.data.profilePic
-        //         if(res.data.data.nickName == null){
-        //             this.userName = res.data.data.name
-        //         }else{
-        //             this.userName = res.data.data.nickName
-        //         }
-        //     }
-        //     else if(res.data.code == 404){
-        //         alert('user not found')
-        //     }
-        // }, (res)=>{
-        //     // 请求失败
-        // })
-        this.totalUnreadNum = this.totalUnreadInfo.length + this.totalUnreadNotice.length
+        axios.get('/api/remind', {
+            params: {
+                page: 1,
+                pageSize: 5
+            }
+        }).then(res=>{
+            if(res.data.code === 0){
+                this.totalUnreadNum = res.data.data.dropdownCount + this.totalUnreadNotice.length
+                this.totalUnreadInfo = res.data.data.list
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
     },
     methods:{
         logout(){
@@ -382,7 +462,7 @@ export default {
 .close-icon-btn{
     position: absolute;
     margin-top: -20px;
-    right: 30px;
+    right: 20px;
     float: right;
     cursor: pointer;
     color: #7f7f7f;
@@ -408,7 +488,37 @@ export default {
     border-radius: 4px;
     z-index: 100;
 }
-
+.mark-green{
+    color: #1ebf73;
+}
+.font-image{
+    width: 41px;
+    height: 41px;
+    border-radius: 3px;
+    background-color: #d8d8d8;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1.13px;
+    color: #ffffff;
+    display: inline-block;
+    text-align: center;
+    line-height: 41px;
+    margin-right: 10px;
+    margin-left: 20px;
+}
+.font-icon{
+    width: 36px;
+    height: 36px;
+    font-size: 36px;
+    color: #d8d8d8;
+    display: inline-block;
+    text-align: center;
+    line-height: 36px;
+    margin-right: 10px;
+    margin-left: 20px;
+    position: relative;
+    top: 10px;
+}
 .divide{
     position: fixed;
     top: 80px;
