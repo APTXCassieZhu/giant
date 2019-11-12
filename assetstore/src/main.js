@@ -24,6 +24,7 @@ import brands from '@fortawesome/fontawesome-free-brands'
 fontawesome.library.add(solid)
 fontawesome.library.add(regular)
 fontawesome.library.add(brands)
+
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(ViewUI);
@@ -47,7 +48,7 @@ import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 Vue.use(Antd)
 
-axios.defaults.baseURL='/'  
+axios.defaults.baseURL='/'       
 //axios post setting
 // axios.defaults.baseURL='http://192.168.94.135:8080'
 global.axios=axios
@@ -165,17 +166,17 @@ router.beforeEach((to,from,next) => {
   // loading 效果
   ViewUI.LoadingBar.start();
   // 获取本地存储的token
-  store.state.token = localStorage.getItem("token");
-  store.state.user = localStorage.getItem("user");
+  store.state.token = localStorage.getItem("token")
+  store.state.user = localStorage.getItem("user")
   // 判断这个url是否需要登录权限
   if(to.meta.requireAuth) {
     if(store.state.token && store.state.user) {
-      next();
+      next()
     }else{
-      next({path:'/login', query:{redirect: to.fullPath}});
+      next({path:'/login', query:{redirect: to.fullPath}})
     }
   }else{
-    next();
+    next()
   }
 })
 router.afterEach(route => {

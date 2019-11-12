@@ -246,15 +246,16 @@
     color:#7f7f7f;
   }
 
-
   &-t{
-    
+      
   }
 
   &-des-content{  
     overflow: hidden;
     height: 200px;
   }
+
+
 
   &-des{
     // border:1px solid blue;
@@ -580,16 +581,16 @@
 }
 </style>
 <script>
-import TopNavigation from '../components/TopNav.vue'
+import TopNavigation from '@/components/TopNav.vue'
 import moment from 'moment'
-import Footer from '../components/footer.vue'
+import Footer from '@/components/footer.vue'
 import axios from 'axios'
 // import Rate from 'ant-design-vue/lib/rate';
 // import 'ant-design-vue/lib/rate/style'; // 或者 ant-design-vue/lib/button/style/css 加载 css 文件
 
 
 // console.log('TopNavigation:', TopNavigation)
-import E from '../widget/emojiReply/'
+import E from '@/widget/emojiReply/'
 
 const {Reply,Comments} = E
 

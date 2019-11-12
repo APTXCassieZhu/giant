@@ -178,7 +178,7 @@
 }
 </style>
 <script>
-import TopNavigation from '../components/TopNav'
+import TopNavigation from '@/components/TopNav'
 import marked from 'marked'
 import Vue from 'vue'
 
