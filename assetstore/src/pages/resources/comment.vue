@@ -60,6 +60,8 @@
 .resource-detail-page-wrap{
 
 }
+
+
 .resource-detail{
   width: 100%;
   max-width: 1380px;

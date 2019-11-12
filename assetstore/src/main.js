@@ -20,6 +20,7 @@ import brands from '@fortawesome/fontawesome-free-brands'
 fontawesome.library.add(solid)
 fontawesome.library.add(regular)
 fontawesome.library.add(brands)
+
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(ViewUI);
