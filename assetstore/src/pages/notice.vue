@@ -31,33 +31,90 @@
                     <Divider/>
                     <div v-for="(item,index) in totalInfo" :key="index" :class="infoContentClass(item.view)">
                         <div class="shorthand-content">
-                            <div v-if="item.targetType === 'starResourceUpgrade'">你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>更新了！</div>
-                            <div v-else-if="item.targetType === 'starSoftwareUpgrade'">你的软件 {{item.software.name}} 更新了, 访问<span :class="markGreen(item.view)"> 这里</span> 快速更新</div>
+                            <div v-if="item.targetType === 'starResourceUpgrade'">
+                                <div class="font-image">{{item.resource.name.charAt(0)}}</div>
+                                你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>更新了！
+                            </div>
+                            <div v-else-if="item.targetType === 'starSoftwareUpgrade'">
+                                <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
+                                你的软件 {{item.software.name}} 更新了, 访问<span :class="markGreen(item.view)"> 这里</span> 快速更新
+                            </div>
                             <div v-else-if="item.targetType === 'replyComment'">
+                                <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
                                 <span v-if="item.sourceUsers.length<=3">
                                     <span v-for="(value, n) in item.sourceUsers" :key="n">
-                                        {{value.name}}, 
+                                        <span v-if="value.nickName">
+                                            {{value.nickName}}, 
+                                        </span>
+                                        <span v-else>
+                                            {{value.name}}, 
+                                        </span>
                                     </span>  
                                 </span>
                                 <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
                                 <span v-else>
-                                    {{item.sourceUsers[0].name}}, {{item.sourceUsers[1].name}}, {{item.sourceUsers[2].name}} 等
+                                    <span v-if="item.sourceUsers[0].nickName">
+                                        {{item.sourceUsers[0].nickName}}, 
+                                    </span>
+                                    <span v-else>
+                                        {{item.sourceUsers[0].name}}, 
+                                    </span>
+                                    <span v-if="item.sourceUsers[1].nickName">
+                                        {{item.sourceUsers[1].nickName}}, 
+                                    </span>
+                                    <span v-else>
+                                        {{item.sourceUsers[1].name}}, 
+                                    </span>
+                                    <span v-if="item.sourceUsers[2].nickName">
+                                        {{item.sourceUsers[2].nickName}}, 
+                                    </span>
+                                    <span v-else>
+                                        {{item.sourceUsers[2].name}}, 
+                                    </span>
+                                    等
                                 </span>
                                 回复了你的<span :class="markGreen(item.view)"> 评论 </span>
                             </div>
                             <div v-else-if="item.targetType === 'resourceCommented'">
+                                <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
                                 <span v-if="item.sourceUsers.length<=3">
                                     <span v-for="(user, i) in item.sourceUsers" :key="i">
-                                        {{user.name}} 
+                                        <span v-if="user.nickName">
+                                            {{user.nickName}}, 
+                                        </span>
+                                        <span v-else>
+                                            {{user.name}}, 
+                                        </span>
                                     </span> 
                                 </span>
                                 <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
                                 <span v-else>
-                                    {{item.sourceUsers[0].name}}, {{item.sourceUsers[1].name}}, {{item.sourceUsers[2].name}} 等
+                                    <span v-if="item.sourceUsers[0].nickName">
+                                        {{item.sourceUsers[0].nickName}}, 
+                                    </span>
+                                    <span v-else>
+                                        {{item.sourceUsers[0].name}}, 
+                                    </span>
+                                    <span v-if="item.sourceUsers[1].nickName">
+                                        {{item.sourceUsers[1].nickName}}, 
+                                    </span>
+                                    <span v-else>
+                                        {{item.sourceUsers[1].name}}, 
+                                    </span>
+                                    <span v-if="item.sourceUsers[2].nickName">
+                                        {{item.sourceUsers[2].nickName}}, 
+                                    </span>
+                                    <span v-else>
+                                        {{item.sourceUsers[2].name}}, 
+                                    </span>
+                                    等
                                 </span>
                                 评论了你的<span :class="markGreen(item.view)"> {{item.resource.name}} </span> 
                             </div>
-                            <div v-else>你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>被评论</div>
+                            <div v-else>
+                                <div class="font-image">{{item.resource.name.charAt(0)}}</div>
+                                你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>被评论
+                            </div>
                             <div class="time-slot">刚刚</div>
                         </div>
                         <Divider/>
@@ -265,6 +322,32 @@ export default {
     width: 16px;
     height: 14px;
     font-size: 18px;
+}
+.font-image{
+    width: 41px;
+    height: 41px;
+    border-radius: 3px;
+    background-color: #d8d8d8;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1.13px;
+    color: #ffffff;
+    display: inline-block;
+    text-align: center;
+    line-height: 41px;
+    margin-right: 30px;
+}
+.font-icon{
+    width: 36px;
+    height: 36px;
+    font-size: 36px;
+    color: #d8d8d8;
+    display: inline-block;
+    text-align: center;
+    line-height: 36px;
+    margin-right: 30px;
+    position: relative;
+    top: 10px;
 }
 .time-slot{
     float: right;
