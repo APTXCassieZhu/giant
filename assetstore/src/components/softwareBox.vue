@@ -47,10 +47,10 @@ export default {
             /* 提示用户已关注 */
             if(this.favoriteIcon){
                 this.$Message.success('已关注')
-                this.$store.commit('ADD_FAVORITE', this.sourceID);
+                this.$store.commit('ADD_FAVORITE', this.sourceID)
             }else{
                 this.$Message.success('已取消关注')
-                this.$store.commit('REMOVE_FAVORITE', this.sourceID);
+                this.$store.commit('REMOVE_FAVORITE', this.sourceID)
             }  
         },
 

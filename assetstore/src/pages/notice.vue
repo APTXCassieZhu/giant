@@ -19,6 +19,7 @@
                     <div v-if="noticeNotRead!=0" class="not-read">{{noticeNotRead}}</div>
                 </MenuItem>
             </Menu>
+            <!-- 提醒 -->
             <div v-if="!this.showNotices" class="notice-card">
                 <div v-if="this.totalInfo.length == 0" class="empty">
                     <Divider/>
@@ -28,15 +29,42 @@
                 <div v-else class="display-infoOrNotice">
                     <a @click="readAll('info')" :class="markRead"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
                     <Divider/>
-                    <div v-for="(item,index) in totalInfo" :key="index" :class="infoContentClass">
-                        <ul>
-                            {{item}}
-                            <span class="time-slot">刚刚</span>
-                        </ul>
+                    <div v-for="(item,index) in totalInfo" :key="index" :class="infoContentClass(item.view)">
+                        <div class="shorthand-content">
+                            <div v-if="item.targetType === 'starResourceUpgrade'">你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>更新了！</div>
+                            <div v-else-if="item.targetType === 'starSoftwareUpgrade'">你的软件 {{item.software.name}} 更新了, 访问<span :class="markGreen(item.view)"> 这里</span> 快速更新</div>
+                            <div v-else-if="item.targetType === 'replyComment'">
+                                <span v-if="item.sourceUsers.length<=3">
+                                    <span v-for="(value, n) in item.sourceUsers" :key="n">
+                                        {{value.name}}, 
+                                    </span>  
+                                </span>
+                                <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
+                                <span v-else>
+                                    {{item.sourceUsers[0].name}}, {{item.sourceUsers[1].name}}, {{item.sourceUsers[2].name}} 等
+                                </span>
+                                回复了你的<span :class="markGreen(item.view)"> 评论 </span>
+                            </div>
+                            <div v-else-if="item.targetType === 'resourceCommented'">
+                                <span v-if="item.sourceUsers.length<=3">
+                                    <span v-for="(user, i) in item.sourceUsers" :key="i">
+                                        {{user.name}} 
+                                    </span> 
+                                </span>
+                                <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
+                                <span v-else>
+                                    {{item.sourceUsers[0].name}}, {{item.sourceUsers[1].name}}, {{item.sourceUsers[2].name}} 等
+                                </span>
+                                评论了你的<span :class="markGreen(item.view)"> {{item.resource.name}} </span> 
+                            </div>
+                            <div v-else>你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>被评论</div>
+                            <div class="time-slot">刚刚</div>
+                        </div>
                         <Divider/>
                     </div>
                 </div>
             </div>
+            <!-- 通知 -->
             <div v-if="this.showNotices" class="notice-card">
                 <div v-if="this.totalNotice.length == 0" class="empty">
                     <Divider/>
@@ -72,19 +100,37 @@ export default {
         },
     },
     mounted() {
-        // this.personalActive = this.$store.state.personalActive       
+        // this.personalActive = this.$store.state.personalActive 
+        axios.get('/api/remind', {
+            params: {
+                page: this.infoPage,
+                pageSize: this.infoPageSize
+            }
+        }).then(res=>{
+            if(res.data.code === 0){
+                this.infoNotRead = res.data.data.webCount
+                this.totalInfo = res.data.data.list
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })   
     },
     data () {
         return {
+            infoPage: 1,
+            infoPageSize: 20,               // 加载更多时每次从后端拿pagesize个数的新信息
+            noticePage: 1,
+            noticePageSize: 20,
             showNotices: false,
             /* info-提醒 notice-通知 */
             infoNotRead: 3,
-            totalInfo: ['你关注的资源 天空的材质包 更新了！','你的软件 Axure 更新了，访问 这里 快速更新！',
-            'JOE 评论了你 天空资源的贴图', '前沿技术部 回答了你的问题'],
+            totalInfo: [],
             noticeNotRead: 0,
             totalNotice: ['软件领取通知：您已成功申领 ADOBE CS SUITE 软件，请下载','您已成功提交 ADOBE CS SUITE 软件申请 '],  
             markRead: 'mark-read',
-            infoContentClass: 'info-content',
+            // markGreen: 'mark-green',
+            // 改变class
+            // infoContentClass: 'info-content',
             noticeContentClass: 'info-content',
         }
     },
@@ -101,8 +147,10 @@ export default {
                 onOk: () => {
                     this.markRead = 'mark-readed'
                     if(type == 'info'){
-                        this.infoContentClass = 'info-content-readed'
                         this.infoNotRead = 0
+                        for(var i=0; i<this.totalInfo.length; i++){
+                            this.totalInfo[i].view = true
+                        }
                     }
                     else{
                         this.noticeContentClass = 'info-content-readed'
@@ -113,6 +161,20 @@ export default {
                     this.$Message.info('您已取消');
                 }
             });
+        },
+        infoContentClass(view){
+            if(view){
+                return 'info-content-readed'
+            }else{
+                return 'info-content'
+            }
+        },
+        markGreen(view){
+            if(view){
+                return 'mark-grey'
+            }else{
+                return 'mark-green'
+            }
         }
     },
 }
@@ -176,15 +238,27 @@ export default {
     display: flex;
     flex-direction: column;
 }
+.shorthand-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 .mark-read{
     float: right;
     margin-left: 995px;
     font-size: 14px;
     color: #1ebf73;
 }
+.mark-green{
+    color: #1ebf73;
+}
 .mark-readed{
     font-size: 14px;
     margin-left: 995px;
+    color: #7f7f7f;
+}
+.mark-grey{
     color: #7f7f7f;
 }
 .mark-icon{
@@ -194,17 +268,18 @@ export default {
 }
 .time-slot{
     float: right;
-    margin-left: 995px;
     font-size: 18px;
     font-weight: 600;
     letter-spacing: 1.13px;
 }
 .info-content{
+    cursor: pointer;
     font-size: 18px;
     font-weight: 600;
     color: black;
 }
 .info-content-readed{
+    cursor: pointer;
     color: #7f7f7f;
     font-size: 18px;
     font-weight: 600;
