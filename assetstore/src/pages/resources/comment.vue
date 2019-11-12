@@ -58,7 +58,7 @@
 </style>
 <style scoped lang="less">
 .resource-detail-page-wrap{
-
+  
 }
 
 
