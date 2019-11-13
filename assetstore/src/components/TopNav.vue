@@ -330,10 +330,12 @@ export default {
                     alert('参数格式不正确')
                 }
             })
+            this.infoDropdownCount = 0
             this.totalUnreadInfo = [];
         },
         ignoreAllNotice(){
             this.totalUnreadNum -= this.noticeDropdownCount
+            this.noticeDropdownCount = 0
             this.totalUnreadNotice = [];
         },
         getTime(t){
