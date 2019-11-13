@@ -30,94 +30,95 @@
                             <TabPane label="提醒" icon="ios-notifications" name="name1">
                                 
                                 <div v-for="(item,index) in totalUnreadInfo" :key="index" class="notice-content">
-                                    <div v-if="item.targetType === 'starResourceUpgrade'">
-                                        <div class="font-image">{{item.resource.name.charAt(0)}}</div>
-                                        你关注的资源<span class="mark-green"> {{item.resource.name}} </span>更新了！
-                                    </div>
-                                    <div v-else-if="item.targetType === 'starSoftwareUpgrade'">
-                                        <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
-                                        你的软件 {{item.software.name}} 更新了, 访问<span class="mark-green"> 这里</span> 快速更新
-                                    </div>
-                                    <div v-else-if="item.targetType === 'replyComment'">
-                                        <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
-                                        <span v-if="item.sourceUsers.length<=3">
-                                            <span v-for="(value, n) in item.sourceUsers" :key="n">
-                                                <span v-if="value.nickName">
-                                                    {{value.nickName}}, 
+                                    <div v-if="!item.ignore">
+                                        <div v-if="item.targetType === 'starResourceUpgrade'" class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}`)">
+                                            <div class="font-image">{{item.resource.name.charAt(0)}}</div>
+                                            你关注的资源<span class="mark-green"> {{item.resource.name}} </span>更新了！
+                                        </div>
+                                        <div v-else-if="item.targetType === 'starSoftwareUpgrade'" class="jump" @click="goLike('software')">
+                                            <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
+                                            你的软件 {{item.software.name}} 更新了, 访问<span class="mark-green"> 这里</span> 快速更新
+                                        </div>
+                                        <div v-else-if="item.targetType === 'replyComment'" class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)">
+                                            <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
+                                            <span v-if="item.sourceUsers.length<=3">
+                                                <span v-for="(value, n) in item.sourceUsers" :key="n">
+                                                    <span v-if="value.nickName">
+                                                        {{value.nickName}}, 
+                                                    </span>
+                                                    <span v-else>
+                                                        {{value.name}}, 
+                                                    </span>
+                                                </span>  
+                                            </span>
+                                            <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
+                                            <span v-else>
+                                                <span v-if="item.sourceUsers[0].nickName">
+                                                    {{item.sourceUsers[0].nickName}}, 
                                                 </span>
                                                 <span v-else>
-                                                    {{value.name}}, 
+                                                    {{item.sourceUsers[0].name}}, 
                                                 </span>
-                                            </span>  
-                                        </span>
-                                        <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
-                                        <span v-else>
-                                            <span v-if="item.sourceUsers[0].nickName">
-                                                {{item.sourceUsers[0].nickName}}, 
-                                            </span>
-                                            <span v-else>
-                                                {{item.sourceUsers[0].name}}, 
-                                            </span>
-                                            <span v-if="item.sourceUsers[1].nickName">
-                                                {{item.sourceUsers[1].nickName}}, 
-                                            </span>
-                                            <span v-else>
-                                                {{item.sourceUsers[1].name}}, 
-                                            </span>
-                                            <span v-if="item.sourceUsers[2].nickName">
-                                                {{item.sourceUsers[2].nickName}}, 
-                                            </span>
-                                            <span v-else>
-                                                {{item.sourceUsers[2].name}}, 
-                                            </span>
-                                            等
-                                        </span>
-                                        回复了你的<span class="mark-green"> 评论 </span>
-                                    </div>
-                                    <div v-else-if="item.targetType === 'resourceCommented'">
-                                        <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
-                                        <span v-if="item.sourceUsers.length<=3">
-                                            <span v-for="(user, i) in item.sourceUsers" :key="i">
-                                                <span v-if="user.nickName">
-                                                    {{user.nickName}}, 
+                                                <span v-if="item.sourceUsers[1].nickName">
+                                                    {{item.sourceUsers[1].nickName}}, 
                                                 </span>
                                                 <span v-else>
-                                                    {{user.name}}, 
+                                                    {{item.sourceUsers[1].name}}, 
                                                 </span>
-                                            </span> 
-                                        </span>
-                                        <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
-                                        <span v-else>
-                                            <span v-if="item.sourceUsers[0].nickName">
-                                                {{item.sourceUsers[0].nickName}}, 
+                                                <span v-if="item.sourceUsers[2].nickName">
+                                                    {{item.sourceUsers[2].nickName}}, 
+                                                </span>
+                                                <span v-else>
+                                                    {{item.sourceUsers[2].name}}, 
+                                                </span>
+                                                等
                                             </span>
+                                            回复了你的<span class="mark-green"> 评论 </span>
+                                        </div>
+                                        <div v-else-if="item.targetType === 'resourceCommented'" class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)">
+                                            <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
+                                            <span v-if="item.sourceUsers.length<=3">
+                                                <span v-for="(user, i) in item.sourceUsers" :key="i">
+                                                    <span v-if="user.nickName">
+                                                        {{user.nickName}}, 
+                                                    </span>
+                                                    <span v-else>
+                                                        {{user.name}}, 
+                                                    </span>
+                                                </span> 
+                                            </span>
+                                            <!-- 三人以上不显示人名，直接xx,xx,xx等 -->
                                             <span v-else>
-                                                {{item.sourceUsers[0].name}}, 
+                                                <span v-if="item.sourceUsers[0].nickName">
+                                                    {{item.sourceUsers[0].nickName}}, 
+                                                </span>
+                                                <span v-else>
+                                                    {{item.sourceUsers[0].name}}, 
+                                                </span>
+                                                <span v-if="item.sourceUsers[1].nickName">
+                                                    {{item.sourceUsers[1].nickName}}, 
+                                                </span>
+                                                <span v-else>
+                                                    {{item.sourceUsers[1].name}}, 
+                                                </span>
+                                                <span v-if="item.sourceUsers[2].nickName">
+                                                    {{item.sourceUsers[2].nickName}}, 
+                                                </span>
+                                                <span v-else>
+                                                    {{item.sourceUsers[2].name}}, 
+                                                </span>
+                                                等
                                             </span>
-                                            <span v-if="item.sourceUsers[1].nickName">
-                                                {{item.sourceUsers[1].nickName}}, 
-                                            </span>
-                                            <span v-else>
-                                                {{item.sourceUsers[1].name}}, 
-                                            </span>
-                                            <span v-if="item.sourceUsers[2].nickName">
-                                                {{item.sourceUsers[2].nickName}}, 
-                                            </span>
-                                            <span v-else>
-                                                {{item.sourceUsers[2].name}}, 
-                                            </span>
-                                            等
-                                        </span>
-                                        评论了你的<span class="mark-green"> {{item.resource.name}} </span> 
+                                            评论了你的<span class="mark-green"> {{item.resource.name}} </span> 
+                                        </div>
+                                        <div v-else class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}`)">
+                                            <div class="font-image">{{item.resource.name.charAt(0)}}</div>
+                                            你关注的资源<span class="mark-green"> {{item.resource.name}} </span>被评论
+                                        </div>
+                                        <font-awesome-icon :icon="['fas','times']" class="close-icon-btn" @click="deleteUnread(item)"/>
+                                        <Divider/>
                                     </div>
-                                    <div v-else>
-                                        <div class="font-image">{{item.resource.name.charAt(0)}}</div>
-                                        你关注的资源<span class="mark-green"> {{item.resource.name}} </span>被评论
-                                    </div>
-                                    <font-awesome-icon :icon="['fas','times']" class="close-icon-btn" @click="deleteUnread(item)"/>
-                                    <Divider/>
                                 </div>
-                                
                                 <ul style="position:absolute;" class="ignore-all-ul"><Button class="ignore-all-btn" @click="ignoreAllInfo()">忽略全部</Button>
                                 <Button class="ignore-all-btn" @click="goPage('/notice')">查看更多</Button></ul>
                             </TabPane>
@@ -185,6 +186,8 @@ export default {
             profile: null,
             userName: '神',
             totalUnreadNum: 100,
+            infoDropdownCount: 0,
+            noticeDropdownCount: 2,
             totalUnreadInfo: [],
             totalUnreadNotice: ['软件领取通知：您已成功申领 ADOBE CS SUITE 软件，请下载','您已成功提交 ADOBE CS SUITE 软件申请 '],  
         }
@@ -210,6 +213,7 @@ export default {
             if(res.data.code === 0){
                 this.totalUnreadNum = res.data.data.dropdownCount + this.totalUnreadNotice.length
                 this.totalUnreadInfo = res.data.data.list
+                this.infoDropdownCount = res.data.data.dropdownCount
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -242,6 +246,8 @@ export default {
                 this.$store.commit('PERSONAL_ACTIVE', "name1")
             }else if(type === 'like'){
                 this.$store.commit('PERSONAL_ACTIVE', "name3")
+            }else if(type === 'software'){
+                this.$store.commit('PERSONAL_ACTIVE', "name2")
             }
             this.$router.push('/personal')
         },
@@ -257,24 +263,44 @@ export default {
                 if(this.totalUnreadInfo[i] == item) {
                     console.log("delete info")
                     this.totalUnreadInfo.splice(i, 1);
-                    break;
+                    this.totalUnreadNum --
+                    this.infoDropdownCount --
+                    axios.put(`/api/remind/${item.id}/ignore`).then(res=>{
+                        if(res.data.code === 0){
+                            
+                        }else if(res.data.code === 400){
+                            alert('参数格式不正确')
+                        }
+                    })
+                    break
                 }
             }
             for(var i = 0; i < this.totalUnreadNotice.length; i++) {
                 if(this.totalUnreadNotice[i] == item) {
                     console.log('delete notice')
                     this.totalUnreadNotice.splice(i, 1);
-                    break;
+                    this.totalUnreadNum --
+                    this.noticeDropdownCount --
+                    break
                 }
             }
             /*TODO axios put*/
         },
         ignoreAllInfo(){
+            this.totalUnreadNum -= this.infoDropdownCount
+            /*TODO 忽略全部 */
+            axios.put(`/api/remind/ignore`).then(res=>{
+                if(res.data.code === 0){
+                    
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })
             this.totalUnreadInfo = [];
         },
         ignoreAllNotice(){
+            this.totalUnreadNum -= this.noticeDropdownCount
             this.totalUnreadNotice = [];
-
         },
     }   
 }
@@ -453,7 +479,7 @@ export default {
     font-size: 18px;
     letter-spacing: 1.13px;
     color: #8a8a8a;
-    width: 205.5px;
+    width: 204px;
     height: 62px;
 }
 .ignore-all-btn:hover{
@@ -491,6 +517,9 @@ export default {
 .mark-green{
     color: #1ebf73;
 }
+.jump{
+    cursor: pointer;
+}
 .font-image{
     width: 41px;
     height: 41px;
@@ -505,6 +534,7 @@ export default {
     line-height: 41px;
     margin-right: 10px;
     margin-left: 20px;
+    cursor: pointer;
 }
 .font-icon{
     width: 36px;
@@ -518,6 +548,7 @@ export default {
     margin-left: 20px;
     position: relative;
     top: 10px;
+    cursor: pointer;
 }
 .divide{
     position: fixed;

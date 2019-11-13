@@ -9,23 +9,24 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.get('/', jsonParser, function(req,res){
-    console.log("remind page: "+req.params.page)
-    console.log("remind pagesize: "+req.params.pageSize)
+    console.log("remind page: "+req.query.page)
+    console.log("remind pagesize: "+req.query.pageSize)
     res.status(200).json({'code': 0,
     "data": {
         "count": 5,
-        "dropdownCount": 4,
+        "dropdownCount": 3,
         "webCount": 4,
         "list": [
             {
                 "id": 1,
                 "targetType": "replyComment",
-                "createdAt": "2019-11-12T10:02:44.000Z",
-                "updatedAt": "2019-11-12T10:02:47.000Z",
+                "createdAt": "2019-11-13T10:02:44.000Z",
+                "updatedAt": "2019-11-13T10:02:47.000Z",
                 "resourceId": 1,
-                "commentId": null,
+                "commentId": 11,
                 "softwareId": null,
                 "view": false,
+                "ignore": false,
                 "sourceUsers": [
                     {
                         "id": 1,
@@ -58,6 +59,7 @@ router.get('/', jsonParser, function(req,res){
             {
                 "id": 2,
                 "view": false,
+                "ignore": false,
                 "targetType": "starResourceUpgrade",
                 "createdAt": "2019-11-12T08:05:43.000Z",
                 "updatedAt": "2019-11-12T08:05:45.000Z",
@@ -75,6 +77,7 @@ router.get('/', jsonParser, function(req,res){
             {
                 "id": 3,
                 "view": false,
+                "ignore": false,
                 "targetType": "starSoftwareUpgrade",
                 "createdAt": "2019-11-04T15:05:43.000Z",
                 "updatedAt": "2019-11-04T15:05:45.000Z",
@@ -92,11 +95,12 @@ router.get('/', jsonParser, function(req,res){
             {
                 "id": 4,
                 "view": false,
+                "ignore": true,
                 "targetType": "resourceCommented",
                 "createdAt": "2019-11-01T10:02:44.000Z",
                 "updatedAt": "2019-11-01T10:02:47.000Z",
                 "resourceId": 1,
-                "commentId": null,
+                "commentId": 999,
                 "softwareId": null,
                 "sourceUsers": [
                     {
@@ -149,11 +153,12 @@ router.get('/', jsonParser, function(req,res){
             {
                 "id": 3,
                 "view": true,
+                "ignore": true,
                 "targetType": "starResourceCommented",
                 "createdAt": "2019-10-04T15:05:43.000Z",
                 "updatedAt": "2019-10-04T15:05:45.000Z",
                 "resourceId": 1,
-                "commentId": null,
+                "commentId": 233,
                 "softwareId": null,
                 "sourceUsers": [],
                 "software": null,
@@ -167,6 +172,13 @@ router.get('/', jsonParser, function(req,res){
             },
         ]
     }});
+});
+router.put('/ignore', jsonParser, function(req,res){
+    res.status(200).json({'code': 0})
+});
+
+router.put('/:id/ignore', jsonParser, function(req,res){
+    res.status(200).json({'code': 0})
 });
 //export this router to use in our index.js
 module.exports = router;

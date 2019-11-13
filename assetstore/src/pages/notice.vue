@@ -31,15 +31,15 @@
                     <Divider/>
                     <div v-for="(item,index) in totalInfo" :key="index" :class="infoContentClass(item.view)">
                         <div class="shorthand-content">
-                            <div v-if="item.targetType === 'starResourceUpgrade'">
+                            <div v-if="item.targetType === 'starResourceUpgrade'" @click="goPage(`/resourceDetail/${item.resource.id}`)">
                                 <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                 你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>更新了！
                             </div>
-                            <div v-else-if="item.targetType === 'starSoftwareUpgrade'">
+                            <div v-else-if="item.targetType === 'starSoftwareUpgrade'" @click="goPage('/personal')">
                                 <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
                                 你的软件 {{item.software.name}} 更新了, 访问<span :class="markGreen(item.view)"> 这里</span> 快速更新
                             </div>
-                            <div v-else-if="item.targetType === 'replyComment'">
+                            <div v-else-if="item.targetType === 'replyComment'" @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)">
                                 <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
                                 <span v-if="item.sourceUsers.length<=3">
                                     <span v-for="(value, n) in item.sourceUsers" :key="n">
@@ -75,7 +75,7 @@
                                 </span>
                                 回复了你的<span :class="markGreen(item.view)"> 评论 </span>
                             </div>
-                            <div v-else-if="item.targetType === 'resourceCommented'">
+                            <div v-else-if="item.targetType === 'resourceCommented'"  @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)">
                                 <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
                                 <span v-if="item.sourceUsers.length<=3">
                                     <span v-for="(user, i) in item.sourceUsers" :key="i">
@@ -111,7 +111,7 @@
                                 </span>
                                 评论了你的<span :class="markGreen(item.view)"> {{item.resource.name}} </span> 
                             </div>
-                            <div v-else>
+                            <div v-else  @click="goPage(`/resourceDetail/${item.resource.id}`)">
                                 <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                 你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>被评论
                             </div>
@@ -191,6 +191,16 @@ export default {
         }
     },
     methods:{
+        goPage(url){
+            if(this.$route.path===url){
+                location.reload()
+            }else if(this.$route.path==='/personal'){
+                this.$store.commit('PERSONAL_ACTIVE', "name2")
+                this.$router.push(url)
+            }else{
+                this.$router.push(url)
+            }
+        },
         showNotice(){
             this.showNotices = true
         },
