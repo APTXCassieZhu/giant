@@ -128,8 +128,8 @@
                         </div>
                         <Divider/>
                     </div>
+                    <Button style="color:#1ebf73;width:150px;margin-left:43%" @click="addMoreInfo()" size="large">加载更多</Button>
                 </div>
-                <Button style="color:#1ebf73;" @click="addMoreInfo()" size="large">加载更多</Button>
             </div>
             <!-- 通知 -->
             <div v-if="this.showNotices" class="notice-card">
@@ -142,9 +142,16 @@
                     <a @click="readAll('notice')" :class="markRead"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
                     <Divider/>
                     <div v-for="(item,index) in totalNotice" :key="index" :class="noticeContentClass">
-                        <span style="cursor:pointer">{{item}}</span>
+                        <div class="shorthand-content">
+                            <div v-if="item.targetType === 'software'" class="font-container">
+                                <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
+                                <div class="font-content">{{item.title}}</div>
+                            </div>
+                        </div>
+                        <!-- <span style="cursor:pointer">{{item}}</span> -->
                         <Divider/>
                     </div>
+                    <Button style="color:#1ebf73;width:150px;margin-left:43%" @click="addMoreNotice()" size="large">加载更多</Button>
                 </div>
             </div>
         </div>
@@ -176,6 +183,19 @@ export default {
             if(res.data.code === 0){
                 this.infoNotRead = res.data.data.webCount
                 this.totalInfo = res.data.data.list
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })   
+        axios.get('/api/bulletin', {
+            params: {
+                page: this.noticePage,
+                pageSize: this.noticePageSize
+            }
+        }).then(res=>{
+            if(res.data.code === 0){
+                this.noticeNotRead = res.data.data.webCount
+                this.totalNotice = res.data.data.list
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -299,6 +319,21 @@ export default {
                 }
             })   
         },
+        addMoreNotice(){
+            axios.get('/api/bulletin', {
+                params: {
+                    page: this.noticePage,
+                    pageSize: this.noticePageSize
+                }
+            }).then(res=>{
+                if(res.data.code === 0){
+                    this.noticeNotRead = res.data.data.webCount
+                    this.totalNotice = this.totalNotice.concat(res.data.data.list)
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })   
+        }
     },
 }
 </script>
@@ -361,6 +396,7 @@ export default {
 .display-infoOrNotice{
     display: flex;
     flex-direction: column;
+    text-align:center;
 }
 .shorthand-content{
     display: flex;

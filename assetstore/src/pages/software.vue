@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div v-show="showPage == 'general'" class="software-page">
-                <div class="card-title">通用软件（{{generalNum}}款已收录）</div>
+                <span class="card-title">通用软件（{{generalNum}}款已收录）</span>
                 <Divider/>
                 <div v-for="n in 10" :key="n">
                     <software-download></software-download>
@@ -379,17 +379,17 @@ export default {
 }
 .more{
     text-align: center;
-    width: 250px;
+    width: 193px;
     height: 44px;
-    background-color: #e8f8f0;
+    /* background-color: #e8f8f0; */
     color: #1ebf73;
-    border: solid 1px #1ebf73;
+    /* border: solid 1px #1ebf73; */
     font-size: 18px;
     font-weight: 600;
 }
-.more:hover{
+/* .more:hover{
     color: white;
     background-color: #1ebf73;
-}
+} */
 </style>
 

@@ -280,8 +280,8 @@ export default {
     height: 37px;
     line-height: 37px;
     text-align: center;
-    color: white;
-    background-color: #1aa463;
+    color: #1ebf73;
+    background-color: #9bf1c6;
     border-width: 0px;
     font-weight:600;
     font-size:16px;
