@@ -36,12 +36,14 @@
                                                 <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                                 <div class="font-content">
                                                     你关注的资源<span class="mark-green"> {{item.resource.name}} </span>更新了！
+                                                    <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                 </div>
                                             </div>
                                             <div v-else-if="item.targetType === 'starSoftwareUpgrade'" class="jump" @click="goLike('software')">
                                                 <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
                                                 <div class="font-content">
                                                     你的软件 {{item.software.name}} 更新了, 访问<span class="mark-green"> 这里</span> 快速更新
+                                                    <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                 </div>
                                             </div>
                                             <div v-else-if="item.targetType === 'replyComment'" class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)">
@@ -80,6 +82,7 @@
                                                         等
                                                     </span>
                                                     回复了你的<span class="mark-green"> 评论 </span>
+                                                    <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                 </div>
                                             </div>
                                             <div v-else-if="item.targetType === 'resourceCommented'" class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)">
@@ -118,12 +121,15 @@
                                                         等
                                                     </span>
                                                     评论了你的<span class="mark-green"> {{item.resource.name}} </span> 
+                                                    <div class="time-slot">{{getTime(item.updatedAt)}}</div>
+                                                    <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                 </div>
                                             </div>
                                             <div v-else class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}`)">
                                                 <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                                 <div class="font-content">
                                                     你关注的资源<span class="mark-green"> {{item.resource.name}} </span>被评论
+                                                    <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                 </div>
                                             </div>
                                             <font-awesome-icon :icon="['fas','times']" class="close-icon-btn" @click="deleteUnread(item)"/>
@@ -313,6 +319,38 @@ export default {
         ignoreAllNotice(){
             this.totalUnreadNum -= this.noticeDropdownCount
             this.totalUnreadNotice = [];
+        },
+        getTime(t){
+            var begin = new Date(t)
+            var end = new Date()
+            var dateDiff = end.getTime() - begin.getTime();
+            //时间差的毫秒数
+            var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));//计算出相差天数
+            var leave1=dateDiff%(24*3600*1000)    //计算天数后剩余的毫秒数
+            var hours=Math.floor(leave1/(3600*1000))//计算出小时数
+            //计算相差分钟数
+            var leave2=leave1%(3600*1000)    //计算小时数后剩余的毫秒数
+            var minutes=Math.floor(leave2/(60*1000))//计算相差分钟数
+            //计算相差秒数
+            var leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
+            var seconds=Math.round(leave3/1000)
+            console.log(" 相差 "+dayDiff+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
+            // 1、 刚刚（10分钟内）
+            // 2、 ? 分钟以前（10分钟以上60分钟内）
+            // 3、 ? 小时以前（60分钟以上24小时内）
+            // 4、 昨天（24小时以上48小时内）
+            // 5、 ? 天前（48小时以上）
+            if(dayDiff >= 2){
+                return dayDiff+"天前"
+            }else if(dayDiff == 1){
+                return "昨天"
+            }else if(hours >= 1 && hours <= 23){
+                return hours+"小时以前"
+            }else if(minutes >= 11 && minutes <= 59){
+                return minutes+"分钟以前"
+            }else{
+                return "刚刚"
+            }
         },
     }   
 }
@@ -541,6 +579,11 @@ export default {
 }
 .mark-green{
     color: #1ebf73;
+}
+.time-slot{
+    font-size: 12px;
+    letter-spacing: 0.75px;
+    color: #7f7f7f;
 }
 .jump{
     cursor: pointer;
