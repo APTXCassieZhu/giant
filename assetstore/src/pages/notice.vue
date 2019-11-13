@@ -141,7 +141,7 @@
                 <div v-else class="display-infoOrNotice">
                     <a @click="readAll('notice')" :class="markRead"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
                     <Divider/>
-                    <div v-for="(item,index) in totalNotice" :key="index" :class="noticeContentClass">
+                    <div v-for="(item,index) in totalNotice" :key="index" :class="noticeContentClass(item.view)">
                         <div class="shorthand-content">
                             <div v-if="item.targetType === 'software'" class="font-container">
                                 <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
@@ -213,12 +213,8 @@ export default {
             infoNotRead: 3,
             totalInfo: [],
             noticeNotRead: 0,
-            totalNotice: ['软件领取通知：您已成功申领 ADOBE CS SUITE 软件，请下载','您已成功提交 ADOBE CS SUITE 软件申请 '],  
+            totalNotice: [],  
             markRead: 'mark-read',
-            // markGreen: 'mark-green',
-            // 改变class
-            // infoContentClass: 'info-content',
-            noticeContentClass: 'info-content',
         }
     },
     methods:{
@@ -264,7 +260,6 @@ export default {
                         })   
                     }
                     else{
-                        this.noticeContentClass = 'info-content-readed'
                         this.noticeNotRead = 0
                         /* 设置全部已读 */
                         axios.put('/bulletin/view').then(res=>{
@@ -281,6 +276,13 @@ export default {
             });
         },
         infoContentClass(view){
+            if(view){
+                return 'info-content-readed'
+            }else{
+                return 'info-content'
+            }
+        },
+        noticeContentClass(view){
             if(view){
                 return 'info-content-readed'
             }else{
