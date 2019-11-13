@@ -306,6 +306,21 @@ export default {
                             alert('参数格式不正确')
                         }
                     })
+                    /* 每当×掉一个消息，要进行补位，保证drop down一直显示五条未读消息 */
+                    if(this.infoDropdownCount > this.totalUnreadIndo.length){
+                        axios.get('/api/remind', {
+                            params: {
+                                page: 1,
+                                pageSize: 5
+                            }
+                        }).then(res=>{
+                            if(res.data.code === 0){
+                                this.totalUnreadInfo = res.data.data.list
+                            }else if(res.data.code === 400){
+                                alert('参数格式不正确')
+                            }
+                        })
+                    }
                     break
                 }
             }
