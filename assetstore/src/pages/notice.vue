@@ -30,19 +30,19 @@
                     <Divider/>
                     <div v-for="(item,index) in totalInfo" :key="index" :class="infoContentClass(item.view)">
                         <div class="shorthand-content">
-                            <div v-if="item.targetType === 'starResourceUpgrade'" @click="goPage(`/resourceDetail/${item.resource.id}`)" class="font-container">
+                            <div v-if="item.targetType === 'starResourceUpgrade'" @click="goPage(`/resourceDetail/${item.resource.id}`,item)" class="font-container">
                                 <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                 <div class="font-content">
                                     你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>更新了！
                                 </div>
                             </div>
-                            <div v-else-if="item.targetType === 'starSoftwareUpgrade'" @click="goPage('/personal')" class="font-container">
+                            <div v-else-if="item.targetType === 'starSoftwareUpgrade'" @click="goPage('/personal',item)" class="font-container">
                                 <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
                                 <div class="font-content">
                                     你的软件 {{item.software.name}} 更新了, 访问<span :class="markGreen(item.view)"> 这里</span> 快速更新
                                 </div>
                             </div>
-                            <div v-else-if="item.targetType === 'replyComment'" @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)" class="font-container">
+                            <div v-else-if="item.targetType === 'replyComment'" @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`,item)" class="font-container">
                                 <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
                                 <div class="font-content">
                                     <span v-if="item.sourceUsers.length<=3">
@@ -80,7 +80,7 @@
                                     回复了你的<span :class="markGreen(item.view)"> 评论 </span>
                                 </div>
                             </div>
-                            <div v-else-if="item.targetType === 'resourceCommented'"  @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)" class="font-container">
+                            <div v-else-if="item.targetType === 'resourceCommented'"  @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`,item)" class="font-container">
                                 <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
                                 <div class="font-content">
                                     <span v-if="item.sourceUsers.length<=3">
@@ -118,7 +118,7 @@
                                     评论了你的<span :class="markGreen(item.view)"> {{item.resource.name}} </span> 
                                 </div>
                             </div>
-                            <div v-else  @click="goPage(`/resourceDetail/${item.resource.id}`)" class="font-container">
+                            <div v-else  @click="goPage(`/resourceDetail/${item.resource.id}`,item)" class="font-container">
                                 <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                 <div class="font-content">
                                     你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>被评论
@@ -147,6 +147,7 @@
                                 <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
                                 <div class="font-content">{{item.title}}</div>
                             </div>
+                            <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                         </div>
                         <!-- <span style="cursor:pointer">{{item}}</span> -->
                         <Divider/>
@@ -221,7 +222,14 @@ export default {
         }
     },
     methods:{
-        goPage(url){
+        goPage(url,item){
+            /* 跳转之前告知后端已读 */
+            axios.put(`/remind/${item.id}/view`).then(res=>{
+                if(res.data.code === 0){
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })   
             if(this.$route.path===url){
                 location.reload()
             }else if(this.$route.path==='/personal'){
@@ -247,10 +255,24 @@ export default {
                         for(var i=0; i<this.totalInfo.length; i++){
                             this.totalInfo[i].view = true
                         }
+                        /* 设置全部已读 */
+                        axios.put('/remind/view').then(res=>{
+                            if(res.data.code === 0){
+                            }else if(res.data.code === 400){
+                                alert('参数格式不正确')
+                            }
+                        })   
                     }
                     else{
                         this.noticeContentClass = 'info-content-readed'
                         this.noticeNotRead = 0
+                        /* 设置全部已读 */
+                        axios.put('/bulletin/view').then(res=>{
+                            if(res.data.code === 0){
+                            }else if(res.data.code === 400){
+                                alert('参数格式不正确')
+                            }
+                        })   
                     }
                 },
                 onCancel: () => {

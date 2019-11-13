@@ -173,6 +173,13 @@ router.get('/', jsonParser, function(req,res){
         ]
     }});
 });
+router.put('/view', jsonParser, function(req,res){
+    res.status(200).json({'code': 0})
+});
+router.put('/:id/view', jsonParser, function(req,res){
+    res.status(200).json({'code': 0})
+});
+
 router.put('/ignore', jsonParser, function(req,res){
     res.status(200).json({'code': 0})
 });

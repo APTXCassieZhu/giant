@@ -157,9 +157,19 @@
                                 </div>
                                 <div v-else>
                                     <div v-for="(item,index) in totalUnreadNotice" :key="index" class="notice-content">
-                                        <p style="cursor:pointer;padding: 0px 30px;">{{item}}</p>
-                                        <font-awesome-icon :icon="['fas','times']" class="close-icon-btn1" @click="deleteUnread(item)"/>
-                                        <Divider/>
+                                        <div v-if="!item.ignore">
+                                            <div class="shorthand-content">
+                                                <div v-if="item.targetType === 'software'" class="jump">
+                                                    <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
+                                                    <div class="font-content">
+                                                        {{item.title}}
+                                                        <div class="time-slot">{{getTime(item.updatedAt)}}</div>
+                                                    </div>
+                                                </div>
+                                                <font-awesome-icon :icon="['fas','times']" class="close-icon-btn" @click="deleteUnread(item)"/>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                     <ul style="position:absolute;" class="ignore-all-ul" >
                                         <Button class="ignore-all-btn" @click="ignoreAllNotice()">忽略全部</Button>
@@ -221,9 +231,9 @@ export default {
             userName: '神',
             totalUnreadNum: 100,
             infoDropdownCount: 0,
-            noticeDropdownCount: 2,
+            noticeDropdownCount: 0,
             totalUnreadInfo: [],
-            totalUnreadNotice: ['软件领取通知：您已成功申领 ADOBE CS SUITE 软件，请下载','您已成功提交 ADOBE CS SUITE 软件申请 '],  
+            totalUnreadNotice: [],  
         }
     },
     computed:{
@@ -245,9 +255,23 @@ export default {
             }
         }).then(res=>{
             if(res.data.code === 0){
-                this.totalUnreadNum = res.data.data.dropdownCount + this.totalUnreadNotice.length
+                this.totalUnreadNum = res.data.data.dropdownCount
                 this.totalUnreadInfo = res.data.data.list
                 this.infoDropdownCount = res.data.data.dropdownCount
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
+        axios.get('/api/bulletin', {
+            params: {
+                page: 1,
+                pageSize: 5
+            }
+        }).then(res=>{
+            if(res.data.code === 0){
+                this.totalUnreadNum += res.data.data.dropdownCount
+                this.totalUnreadNotice = res.data.data.list
+                this.noticeDropdownCount = res.data.data.dropdownCount
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -307,7 +331,7 @@ export default {
                         }
                     })
                     /* 每当×掉一个消息，要进行补位，保证drop down一直显示五条未读消息 */
-                    if(this.infoDropdownCount > this.totalUnreadIndo.length){
+                    if(this.infoDropdownCount > this.totalUnreadInfo.length){
                         axios.get('/api/remind', {
                             params: {
                                 page: 1,
@@ -330,10 +354,31 @@ export default {
                     this.totalUnreadNotice.splice(i, 1);
                     this.totalUnreadNum --
                     this.noticeDropdownCount --
+                    axios.put(`/api/bulletin/${item.id}/ignore`).then(res=>{
+                        if(res.data.code === 0){
+                            
+                        }else if(res.data.code === 400){
+                            alert('参数格式不正确')
+                        }
+                    })
+                    /* 每当×掉一个消息，要进行补位，保证drop down一直显示五条未读消息 */
+                    if(this.noticeDropdownCount > this.totalUnreadNotice.length){
+                        axios.get('/api/bulletin', {
+                            params: {
+                                page: 1,
+                                pageSize: 5
+                            }
+                        }).then(res=>{
+                            if(res.data.code === 0){
+                                this.totalUnreadNotice = res.data.data.list
+                            }else if(res.data.code === 400){
+                                alert('参数格式不正确')
+                            }
+                        })
+                    }
                     break
                 }
             }
-            /*TODO axios put*/
         },
         ignoreAllInfo(){
             this.totalUnreadNum -= this.infoDropdownCount
@@ -350,6 +395,13 @@ export default {
         },
         ignoreAllNotice(){
             this.totalUnreadNum -= this.noticeDropdownCount
+            axios.put(`/api/bulletin/view`).then(res=>{
+                if(res.data.code === 0){
+                    
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })
             this.noticeDropdownCount = 0
             this.totalUnreadNotice = [];
         },
