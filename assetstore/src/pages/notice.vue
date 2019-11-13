@@ -129,7 +129,7 @@
                         <Divider/>
                     </div>
                 </div>
-                <Button style="color:#1ebf73;text-align:center;" size="large">加载更多</Button>
+                <Button style="color:#1ebf73;" @click="addMoreInfo()" size="large">加载更多</Button>
             </div>
             <!-- 通知 -->
             <div v-if="this.showNotices" class="notice-card">
@@ -284,6 +284,21 @@ export default {
                 return "刚刚"
             }
         },
+        addMoreInfo(){
+            axios.get('/api/remind', {
+                params: {
+                    page: this.infoPage,
+                    pageSize: this.infoPageSize
+                }
+            }).then(res=>{
+                if(res.data.code === 0){
+                    this.infoNotRead = res.data.data.webCount
+                    this.totalInfo = this.totalInfo.concat(res.data.data.list)
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })   
+        },
     },
 }
 </script>
@@ -341,6 +356,7 @@ export default {
     border-radius: 3px;
     background-color: #ffffff;
     overflow: auto;
+    text-align: center;
 }
 .display-infoOrNotice{
     display: flex;
