@@ -392,12 +392,16 @@ export default {
       //   this.$message.error('Image must smaller than 2MB!')
       // }
       // return isJPG && isLt2M
-      
       return isJPG
     },
     handleUnityCheckBox(){
       this.unity_checkall ^= true
       if(this.unity_checkall){
+
+
+
+
+        
         
         
         //console.log(this.form.getFieldsValue('resource-name'))
