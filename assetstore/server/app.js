@@ -23,8 +23,134 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 app.use('/script', express.static(__dirname +'/script'))
 app.use('/fonts', express.static(__dirname +'/fonts'))
 
+
+// -------------- o(=•ェ•=)m   start tag ------------------
+
+{
+	app.get('/tag/tree',(req,res)=>{
+
+		if(req.query.type==='engine_ver'){
+			res.status(200)
+			res.json({
+				"msg": "string",
+				"code": 0,
+				"data": 
+					[
+						{
+							value: 'unity',
+							label: 'unity',
+							children: [
+								{
+									value: 'unity.1',
+									label: 'unity.1'
+								},
+								{
+									value: 'unity.2',
+									label: 'unity.2'
+								}
+							]
+						},
+						{
+							value: 'unreal',
+							label: 'unreal',
+							children: [
+								{
+									value: 'unreal.1',
+									label: 'unreal.1'
+								},
+								{
+									value: 'unreal.2',
+									label: 'unreal.2'
+								}
+							]
+						}
+					]
+				
+			})
+		}else{
+			res.status(200)
+			res.json({
+				"msg": "string",
+				"code": 0,
+				"data": [
+						{
+							value: '二次元',
+							label: `二次元`,
+							children: [
+								{
+									value: '动画',
+									label: '动画',
+									children: [
+										{
+											value: '人物',
+											label: '人物',
+										},
+									],
+								},
+							]
+						},
+						{
+							value: '模型',
+							label: `模型`,
+							children: [
+								{
+									value: '角色',
+									label: '角色',
+									children: [
+										{
+											value: '动物',
+											label: '动物'
+										},
+									]
+								}
+							]
+						}
+					]
+			})
+		}
+	
+	})
+}
+// -------------- o(=•ェ•=)m   end tag ------------------
+
+
+
+// -------------- o(=•ェ•=)m   start 文件 ------------------
+{
+	app.post('/file/upload',(req,res)=>{
+		res.status(200)
+		res.json({
+			"msg": "string",
+			"code": 0,
+			"data": {
+				"fileId": Date.now()
+			}
+		})
+	})
+}
+// -------------- o(=•ェ•=)m   end 文件 ------------------
+
+
+
+
 // -------------- o(=•ェ•=)m   start 资源 ------------------
 {
+
+	app.post(`/resource`,(req,res)=>{
+		res.status(200)
+		res.json({
+			"msg": "string",
+			"code": 0
+		})
+	})
+
+	app.put('/resource',(req,res)=>{
+		res.status(200)
+		res.json({
+			"msg": "string",
+			"code": 0
+		})
+	})
 
 	app.post('/resource/:id/star',(req,res)=>{
 		res.status(200)
@@ -32,6 +158,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 			code:0
 		})
 	})
+
 
 	app.get('/resource/:id', (req, res) => {
 		res.status(200)
@@ -210,23 +337,23 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 			"data": {
 				"list": [
 					{
-						"id": 1,
+						"id": 11, //一层评论id
 						"content": "1", //评论内容
 						"hot":444, // 点赞数
 						"createdAt": "2019-11-07T07:46:14.000Z", //几天前
 						"userId": 1,
 						"replyUserId": '1',
-						"pid": 'pid34', //一层评论id
+						"pid": 'pid34', 
 						"rateId": null,
 						"items": [
 							{
-								"id": 2, 
+								"id": 2, //二层评论id
 								"content": "2",
 								"hot": 4324, // 二层点赞数
 								"createdAt": "2019-11-07T07:46:14.000Z",
 								"userId": 1,
 								"replyUserId": 2,
-								"pid": 1, //二层评论id
+								"pid": 1, 
 								"rateId": null,
 								"user": {
 									"id": 1,
@@ -278,7 +405,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 						"stars": []  //大于零说明点过赞
 					},
 					{
-						"id": 1,
+						"id":22,
 						"content": "1", //评论内容
 						"hot":444, // 点赞数
 						"createdAt": "2019-11-07T07:46:14.000Z", //几天前
@@ -288,7 +415,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 						"rateId": null,
 						"items": [
 							{
-								"id": 2, 
+								"id": 33, 
 								"content": "2",
 								"hot": 4324, // 二层点赞数
 								"createdAt": "2019-11-07T07:46:14.000Z",
@@ -312,7 +439,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 								"stars": []
 							},
 							{
-								"id": 3,
+								"id": 44,
 								"content": "3",
 								"hot": 123,
 								"createdAt": "2019-11-07T07:46:14.000Z",
@@ -345,8 +472,6 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 						"rate": {value:'2'}, // 一层评分
 						"stars": []  //大于零说明点过赞
 					}
-				
-				
 				],
 				"count": 2
 			}
@@ -356,9 +481,6 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 	})
 }
 // -------------- o(=•ェ•=)m   end ------------------
-
-
-
 
 app.get('/',function(req, res){
     res.send("success")

@@ -25,11 +25,13 @@ fontawesome.library.add(solid)
 fontawesome.library.add(regular)
 fontawesome.library.add(brands)
 
+
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.use(Vuex)
+
 
 // import ElementUI from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
@@ -37,16 +39,17 @@ Vue.use(Vuex)
 
 // console.log(ElementUI)
 
-import { Rate ,Tooltip} from "ant-design-vue";
-import 'ant-design-vue/lib/rate/style/css'
-import 'ant-design-vue/lib/tooltip/style/css'
+// import { Rate ,Tooltip} from "ant-design-vue";
+// import 'ant-design-vue/lib/rate/style/css'
+// import 'ant-design-vue/lib/tooltip/style/css'
 
-Vue.component(Rate.name, Rate)
-Vue.component(Tooltip.name, Tooltip)
+// Vue.component(Rate.name, Rate)
+// Vue.component(Tooltip.name, Tooltip)
 
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 Vue.use(Antd)
+
 
 axios.defaults.baseURL='/'       
 //axios post setting
@@ -61,7 +64,7 @@ Vue.prototype.$axios = axios
 // }, function (error) {
 //   // 对请求错误做些什么
 //   return Promise.reject(error);
-// });
+// })
 
 axios.interceptors.response.use(
   response => {
@@ -106,6 +109,9 @@ var store = new Vuex.Store({
     activenum: 1,
     personalActive: "",
     favoriteList: [],
+    breadListState: sessionStorage['gdrc-breadlist']?JSON.parse(sessionStorage['gdrc-breadlist']):[],
+    // { path:'',resourceId:'' }
+    curResourceId: sessionStorage['gdrc-curResourceId']
   },
   mutations:{
     // login
@@ -157,14 +163,57 @@ var store = new Vuex.Store({
       }
       console.log("cancel favorite")
       localStorage.setItem("favorite", state.favoriteList)
-    }
+    },
+
+    SAVE_BREADLIST(state,{breadlist,resourceId}={}){
+      state.breadListState =  [
+        {fullPath:'/home', name:'主页'},
+        ...breadlist,
+        {fullPath:`/resourceDetail/${resourceId}`, name:'资源详情'}
+      ]
+      //debugger
+      state.curResourceId = resourceId
+      // debugger
+      sessionStorage['gdrc-breadlist'] = JSON.stringify( state.breadListState )
+      sessionStorage['gdrc-curResourceId'] = state.curResourceId
+      
+    },  
+		breadListStateRemove(state,n){
+
+			while(n--){
+				state.breadListState.shift()
+			}
+			normalBreadList(state)
+		}
   }
 })
 
+const normalResourceBreadList  = (store, to)=>{
+  // 直接链接进入resourceDetail 如果有session并且resourceId是最近session中的resourceId
+  // 从页面点进去重新处理session
+  let {params,path} = to
+  // debugger
+  if(/resourceDetail/.test(path)){
+    if(params.resourceId!=store.state.curResourceId*1){
+      store.state.breadListState =  [
+        {fullPath:'/home', name:'主页'},
+        {fullPath:`/resourceDetail/${params.resourceId}`, name:'资源详情'}
+      ]
+
+      store.state.curResourceId = params.resourceId
+      // debugger
+      sessionStorage['gdrc-breadlist'] = JSON.stringify( store.state.breadListState )
+      sessionStorage['gdrc-curResourceId'] = store.state.curResourceId
+    }
+  }
+}
 
 router.beforeEach((to,from,next) => {
+
+  normalResourceBreadList(store,to)
+
   // loading 效果
-  ViewUI.LoadingBar.start();
+  ViewUI.LoadingBar.start()
   // 获取本地存储的token
   store.state.token = localStorage.getItem("token")
   store.state.user = localStorage.getItem("user")
@@ -179,6 +228,7 @@ router.beforeEach((to,from,next) => {
     next()
   }
 })
+
 router.afterEach(route => {
   ViewUI.LoadingBar.finish();
 })

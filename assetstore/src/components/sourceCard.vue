@@ -25,12 +25,19 @@
 <script>
 export default {
     name: "SourceCard",
-    props: {
-        sourceID: {
-            type: Number,
-            default: 233,
-        },
-    },
+    // props: {
+    //     sourceID: {
+    //         type: String,
+    //         default: 233,
+    //     },
+    //     styname:{
+    //         type:String,
+    //         default:'默认分类是？'
+    //     }
+    // },
+    props:['sourceID','breadlist'],
+
+
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
@@ -56,9 +63,23 @@ export default {
             }else{
                 this.$Message.success('已取消关注')
                 this.$store.commit('REMOVE_FAVORITE', this.sourceID);
-            }  
+            }
         },
         goPage(url){
+            // debugger
+
+            //debugger
+            this.$store.commit('SAVE_BREADLIST', {
+                // breadlist:[
+                //     {fullPath:'/home',name: this.styname}  
+                // ],
+                breadlist:[
+                    ...this.breadlist
+                ],
+                resourceId:this.sourceID
+                
+            })
+
             if(this.jumpOrNot){
                 this.$router.push(url)
             }

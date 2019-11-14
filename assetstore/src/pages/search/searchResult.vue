@@ -47,7 +47,9 @@
                     </div>
                 </ul>
                 <br>
-                <source-card v-for="n in 15" :key="n" class="card-style"></source-card>
+                <source-card v-for="n in 15" :key="n" :sourceID="n*100" 
+                    :breadlist="[{fullPath:`/searchresult#tags=['aaa','bbbb','ccc']`,name:'资源搜索'}]" 
+                 class="card-style"></source-card>
                 <Page class="page-style" :total="100" show-elevator />
             </div>
             <corner></corner>
