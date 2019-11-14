@@ -174,17 +174,21 @@ router.get('/', jsonParser, function(req,res){
     }});
 });
 router.put('/view', jsonParser, function(req,res){
+    console.log('提醒全部已读')
     res.status(200).json({'code': 0})
 });
 router.put('/:id/view', jsonParser, function(req,res){
+    console.log('这个id：'+req.params.id+'的提醒已读')
     res.status(200).json({'code': 0})
 });
 
 router.put('/ignore', jsonParser, function(req,res){
+    console.log('已忽视全部提醒')
     res.status(200).json({'code': 0})
 });
 
 router.put('/:id/ignore', jsonParser, function(req,res){
+    console.log('这个id：'+req.params.id+'的提醒已忽视')
     res.status(200).json({'code': 0})
 });
 //export this router to use in our index.js

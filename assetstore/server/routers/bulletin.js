@@ -71,17 +71,21 @@ router.get('/', jsonParser, function(req,res){
     }});
 });
 router.put('/view', jsonParser, function(req,res){
+    console.log('通知全部已读')
     res.status(200).json({'code': 0})
 });
 router.put('/:id/view', jsonParser, function(req,res){
+    console.log('这个id：'+req.params.id+'的通知已读')
     res.status(200).json({'code': 0})
 });
 
 router.put('/ignore', jsonParser, function(req,res){
+    console.log('已忽视全部通知')
     res.status(200).json({'code': 0})
 });
 
 router.put('/:id/ignore', jsonParser, function(req,res){
+    console.log('这个id：'+req.params.id+'的通知已忽视')
     res.status(200).json({'code': 0})
 });
 //export this router to use in our index.js

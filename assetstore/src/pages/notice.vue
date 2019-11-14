@@ -139,7 +139,7 @@
                     <div class="empty-notes">没有新的通知</div>
                 </div>
                 <div v-else class="display-infoOrNotice">
-                    <a @click="readAll('notice')" :class="markRead"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
+                    <a @click="readAll('notice')" :class="markRead1"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
                     <Divider/>
                     <div v-for="(item,index) in totalNotice" :key="index" :class="noticeContentClass(item.view)">
                         <div class="shorthand-content">
@@ -214,13 +214,14 @@ export default {
             totalInfo: [],
             noticeNotRead: 0,
             totalNotice: [],  
-            markRead: 'mark-read',
+            markRead: 'mark-read',          // 提醒的全部已读button
+            markRead1: 'mark-read',         // 通知的全部已读button
         }
     },
     methods:{
         goPage(url,item){
             /* 跳转之前告知后端已读 */
-            axios.put(`/remind/${item.id}/view`).then(res=>{
+            axios.put(`/api/remind/${item.id}/view`).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -245,14 +246,14 @@ export default {
             this.$Modal.confirm({
                 title: '是否确认要清空 未读消息？',
                 onOk: () => {
-                    this.markRead = 'mark-readed'
                     if(type == 'info'){
+                        this.markRead = 'mark-readed'
                         this.infoNotRead = 0
                         for(var i=0; i<this.totalInfo.length; i++){
                             this.totalInfo[i].view = true
                         }
                         /* 设置全部已读 */
-                        axios.put('/remind/view').then(res=>{
+                        axios.put('/api/remind/view').then(res=>{
                             if(res.data.code === 0){
                             }else if(res.data.code === 400){
                                 alert('参数格式不正确')
@@ -260,9 +261,13 @@ export default {
                         })   
                     }
                     else{
+                        this.markRead1 = 'mark-readed'
                         this.noticeNotRead = 0
+                        for(var i=0; i<this.totalNotice.length; i++){
+                            this.totalNotice[i].view = true
+                        }
                         /* 设置全部已读 */
-                        axios.put('/bulletin/view').then(res=>{
+                        axios.put('/api/bulletin/view').then(res=>{
                             if(res.data.code === 0){
                             }else if(res.data.code === 400){
                                 alert('参数格式不正确')

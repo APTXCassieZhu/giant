@@ -347,10 +347,10 @@ export default {
 }
 @keyframes drive { 
     from { 
-        transform: translate(-210px); 
+        transform: translateY(-210px); 
     } 
     to { 
-        transform: translate(0); 
+        transform: translateY(0); 
     } 
 }
 .fb-success-icon{

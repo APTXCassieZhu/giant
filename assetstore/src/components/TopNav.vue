@@ -40,21 +40,21 @@
                                     <div v-for="(item,index) in totalUnreadInfo" :key="index" class="notice-content">
                                         <div v-if="!item.ignore">
                                             <div class="shorthand-content">
-                                                <div v-if="item.targetType === 'starResourceUpgrade'" class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}`)">
+                                                <div v-if="item.targetType === 'starResourceUpgrade'" class="jump"  @click="goPage1(`/resourceDetail/${item.resource.id}`,item)">
                                                     <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                                     <div class="font-content">
                                                         你关注的资源<span class="mark-green"> {{item.resource.name}} </span>更新了！
                                                         <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                     </div>
                                                 </div>
-                                                <div v-else-if="item.targetType === 'starSoftwareUpgrade'" class="jump" @click="goLike('software')">
+                                                <div v-else-if="item.targetType === 'starSoftwareUpgrade'" class="jump" @click="goLike1(item)">
                                                     <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
                                                     <div class="font-content">
                                                         你的软件 {{item.software.name}} 更新了, 访问<span class="mark-green"> 这里</span> 快速更新
                                                         <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                     </div>
                                                 </div>
-                                                <div v-else-if="item.targetType === 'replyComment'" class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)">
+                                                <div v-else-if="item.targetType === 'replyComment'" class="jump"  @click="goPage1(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`,item)">
                                                     <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
                                                     <div class="font-content">
                                                         <span v-if="item.sourceUsers.length<=3">
@@ -93,7 +93,7 @@
                                                         <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                     </div>
                                                 </div>
-                                                <div v-else-if="item.targetType === 'resourceCommented'" class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`)">
+                                                <div v-else-if="item.targetType === 'resourceCommented'" class="jump"  @click="goPage1(`/resourceDetail/${item.resource.id}/comment?cID=${item.commentId}`,item)">
                                                     <font-awesome-icon :icon="['fas', 'comments']" class="font-icon"/>
                                                     <div class="font-content">
                                                         <span v-if="item.sourceUsers.length<=3">
@@ -133,7 +133,7 @@
                                                         <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                     </div>
                                                 </div>
-                                                <div v-else class="jump"  @click="goPage(`/resourceDetail/${item.resource.id}`)">
+                                                <div v-else class="jump"  @click="goPage1(`/resourceDetail/${item.resource.id}`,item)">
                                                     <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                                     <div class="font-content">
                                                         你关注的资源<span class="mark-green"> {{item.resource.name}} </span>被评论
@@ -299,14 +299,36 @@ export default {
                 this.$router.push(url)
             }
         },
+        /* 用于通知提醒icon dropdown跳转前通知后端已读 */
+        goPage1(url, item){
+            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+                if(res.data.code === 0){
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })   
+            if(this.$route.path===url){
+                location.reload()
+            }else{
+                this.$router.push(url)
+            }
+        },
         goLike(type){
             if(type === 'personal'){
                 this.$store.commit('PERSONAL_ACTIVE', "name1")
             }else if(type === 'like'){
                 this.$store.commit('PERSONAL_ACTIVE', "name3")
-            }else if(type === 'software'){
-                this.$store.commit('PERSONAL_ACTIVE', "name2")
             }
+            this.$router.push('/personal')
+        },
+        goLike1(item){
+            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+                if(res.data.code === 0){
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })   
+            this.$store.commit('PERSONAL_ACTIVE', "name2")
             this.$router.push('/personal')
         },
         mircophone(){
@@ -395,9 +417,8 @@ export default {
         },
         ignoreAllNotice(){
             this.totalUnreadNum -= this.noticeDropdownCount
-            axios.put(`/api/bulletin/view`).then(res=>{
+            axios.put(`/api/bulletin/ignore`).then(res=>{
                 if(res.data.code === 0){
-                    
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
                 }
