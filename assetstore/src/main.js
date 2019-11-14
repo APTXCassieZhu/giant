@@ -96,6 +96,8 @@ const NOW_ACTIVE = 'NOW_ACTIVE'
 const PERSONAL_ACTIVE = 'PERSONAL_ACTIVE'
 const ADD_FAVORITE = 'ADD_FAVORITE'
 const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
+const READ_NOTICE = 'READ_NOTICE'
+const NOTICE_READED = 'NOTICE_READED'
 // const localstorage = require('./localstorage')
 // 注册状态管理全局参数
 var store = new Vuex.Store({
@@ -106,6 +108,7 @@ var store = new Vuex.Store({
         activenum: 1,
         personalActive: "",
         favoriteList: [],
+        curNotice: localStorage['curNotice'],
     },
     mutations: {
         // login
@@ -157,6 +160,14 @@ var store = new Vuex.Store({
             }
             console.log("cancel favorite")
             localStorage.setItem("favorite", state.favoriteList)
+        },
+        // 从导航栏点击通知，前往消息中心，存储当前点击的通知内容
+        [READ_NOTICE](state, item) {
+            localStorage.setItem('curNotice', JSON.stringify(item))
+        },
+        [NOTICE_READED](state, item){
+            localStorage.removeItem('curNotice', item)
+            state.curNotice = undefined
         }
     }
 })

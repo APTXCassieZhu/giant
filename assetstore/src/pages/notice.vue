@@ -19,7 +19,7 @@
                 </MenuItem>
             </Menu>
             <!-- 提醒 -->
-            <div v-if="!this.showNotices" class="notice-card">
+            <div v-if="!this.showNotices && !this.showNotices" class="notice-card">
                 <div v-if="this.totalInfo.length == 0" class="empty">
                     <Divider/>
                     <font-awesome-icon :icon="['fas','bell']" class="empty-icon"/>
@@ -132,7 +132,7 @@
                 </div>
             </div>
             <!-- 通知 -->
-            <div v-if="this.showNotices" class="notice-card">
+            <div v-if="this.showNotices && !this.showNoticeDetail" class="notice-card">
                 <div v-if="this.totalNotice.length == 0" class="empty">
                     <Divider/>
                     <font-awesome-icon :icon="['fas','envelope-open']" class="empty-icon"/>
@@ -142,17 +142,27 @@
                     <a @click="readAll('notice')" :class="markRead1"><font-awesome-icon :icon="['fas','check-circle']" class="mark-icon"/>  全部标为已读</a>
                     <Divider/>
                     <div v-for="(item,index) in totalNotice" :key="index" :class="noticeContentClass(item.view)">
-                        <div class="shorthand-content">
+                        <div class="shorthand-content" @click="showNoticeDetails(item)">
                             <div v-if="item.targetType === 'software'" class="font-container">
                                 <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
                                 <div class="font-content">{{item.title}}</div>
                             </div>
                             <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                         </div>
-                        <!-- <span style="cursor:pointer">{{item}}</span> -->
                         <Divider/>
                     </div>
                     <Button style="color:#1ebf73;width:150px;margin-left:43%" @click="addMoreNotice()" size="large">加载更多</Button>
+                </div>
+            </div>
+            <!-- 系统通知的具体内容 -->
+            <div v-if="this.showNoticeDetail" class="notice-card" style="z-index:10">
+                <div class="shorthand-content notice-detail-head">
+                    <a @click="showNotice()" class="back-btn"><font-awesome-icon :icon="['fas','chevron-left']" class="back-icon"/>返回</a>
+                    <span>{{this.curNoticeItem.title}}</span>
+                    <span>{{getTime(this.curNoticeItem.updatedAt)}}</span>
+                </div>
+                <Divider/>
+                <div class="notice-detail-content" v-html="this.curNoticeItem.content">
                 </div>
             </div>
         </div>
@@ -174,7 +184,6 @@ export default {
         },
     },
     mounted() {
-        // this.personalActive = this.$store.state.personalActive 
         axios.get('/api/remind', {
             params: {
                 page: this.infoPage,
@@ -200,7 +209,22 @@ export default {
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
-        })   
+        })  
+        // 判断是否时由导航栏的通知跳转过来的
+        // debugger
+
+       // console.log(this.$store.state)
+        if(this.$store.state.curNotice){
+            let o = JSON.parse(this.$store.state.curNotice) 
+            if(o.title != null){
+                console.log('lalal')
+                this.showNotices = true
+                this.showNoticeDetail = true
+                this.curNoticeItem = o
+                this.$store.commit('NOTICE_READED', o)
+            }
+
+        }
     },
     data () {
         return {
@@ -208,7 +232,7 @@ export default {
             infoPageSize: 20,               // 加载更多时每次从后端拿pagesize个数的新信息
             noticePage: 1,
             noticePageSize: 20,
-            showNotices: false,
+            showNotices: false,             // 展示通知还是提醒
             /* info-提醒 notice-通知 */
             infoNotRead: 3,
             totalInfo: [],
@@ -216,6 +240,8 @@ export default {
             totalNotice: [],  
             markRead: 'mark-read',          // 提醒的全部已读button
             markRead1: 'mark-read',         // 通知的全部已读button
+            showNoticeDetail: false,        // 是否展示具体的通知内容
+            curNoticeItem: {},              // 展示的通知
         }
     },
     methods:{
@@ -238,9 +264,11 @@ export default {
         },
         showNotice(){
             this.showNotices = true
+            this.showNoticeDetail = false
         },
         showInfo(){
             this.showNotices = false
+            this.showNoticeDetail = false
         },
         readAll(type){
             this.$Modal.confirm({
@@ -315,7 +343,7 @@ export default {
             //计算相差秒数
             var leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
             var seconds=Math.round(leave3/1000)
-            console.log(" 相差 "+dayDiff+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
+            // console.log(" 相差 "+dayDiff+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
             // 1、 刚刚（10分钟内）
             // 2、 ? 分钟以前（10分钟以上60分钟内）
             // 3、 ? 小时以前（60分钟以上24小时内）
@@ -362,7 +390,19 @@ export default {
                     alert('参数格式不正确')
                 }
             })   
-        }
+        },
+        /* 点击通知，直接在消息中心页面查看细节 */ 
+        showNoticeDetails(item){
+            this.showNoticeDetail = true
+            this.curNoticeItem = item
+            /* 告知后端通知已读 */
+            axios.put(`/api/bulletin/${item.id}/view`).then(res=>{
+                if(res.data.code === 0){
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })  
+        },
     },
 }
 </script>
@@ -528,5 +568,29 @@ export default {
     color: #7f7f7f;
     margin-top: 20px;
 }
-
+.back-btn{
+    cursor: pointer;
+    color: #7f7f7f;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1.13px;
+    color: #7f7f7f;
+}
+.back-icon{
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: normal;
+    color: #7f7f7f;
+    margin-right: 10px;
+}
+.notice-detail-head{
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1.13px;
+    color: black;
+}
+.notice-detail-content{
+    text-align:left;
+    padding: 80px 141px 140px 260px;
+}
 </style>

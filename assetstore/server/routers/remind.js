@@ -9,8 +9,8 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.get('/', jsonParser, function(req,res){
-    console.log("remind page: "+req.query.page)
-    console.log("remind pagesize: "+req.query.pageSize)
+    // console.log("remind page: "+req.query.page)
+    // console.log("remind pagesize: "+req.query.pageSize)
     res.status(200).json({'code': 0,
     "data": {
         "count": 5,

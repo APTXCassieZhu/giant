@@ -158,7 +158,7 @@
                                 <div v-else>
                                     <div v-for="(item,index) in totalUnreadNotice" :key="index" class="notice-content">
                                         <div v-if="!item.ignore">
-                                            <div class="shorthand-content">
+                                            <div class="shorthand-content" @click="goNotice(item)">
                                                 <div v-if="item.targetType === 'software'" class="jump">
                                                     <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
                                                     <div class="font-content">
@@ -331,6 +331,15 @@ export default {
             this.$store.commit('PERSONAL_ACTIVE', "name2")
             this.$router.push('/personal')
         },
+        /* 由通知的dropdown点击跳转消息中心看详情 */
+        goNotice(item){
+            this.$store.commit('READ_NOTICE', item)
+            if(this.$route.path==='/notice'){
+                location.reload()
+            }else{
+                this.$router.push('/notice')
+            }
+        },
         mircophone(){
             // let $parent = document.querySelectorAll('#top-nav .ivu-tabs-tab')[1]
 
@@ -440,7 +449,7 @@ export default {
             //计算相差秒数
             var leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
             var seconds=Math.round(leave3/1000)
-            console.log(" 相差 "+dayDiff+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
+            // console.log(" 相差 "+dayDiff+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
             // 1、 刚刚（10分钟内）
             // 2、 ? 分钟以前（10分钟以上60分钟内）
             // 3、 ? 小时以前（60分钟以上24小时内）
