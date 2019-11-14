@@ -49,7 +49,6 @@
                         </Form>
                     </div>
                     <div v-else style="text-align:center;padding:118px 16px">
-                        <!-- <font-awesome-icon :icon="['fas','check-circle']" class="fb-success-icon"/> -->
                         <lottie :options="defaultOptions" :height="60" :width="60" v-on:animCreated="handleAnimation" />
                         <div style="font-size:18px;font-weight:600;color:black;margin-bottom:20px;margin-top:10px;">感谢您的反馈</div>
                         <p style="font-size:12px;color:#7f7f7f;text-align:left;">需求已提交，我们会尽快处理。</p>
@@ -60,35 +59,45 @@
             <div v-show="showPage == 'general'" class="software-page">
                 <span class="card-title">通用软件（{{generalNum}}款已收录）</span>
                 <Divider/>
-                <div v-for="n in 10" :key="n">
-                    <software-download></software-download>
-                </div>
-                <Button v-show="!ifMoreGeneral" id="more" class="more" @click="addMore('general')">加载更多</Button>
-                <div v-if="ifMoreGeneral">
-                    <software-download v-for="n in 13" :key="n"></software-download>
+                <div class="software-container">
+                    <div>
+                        <span v-for="n in 6" :key="n">
+                            <software-download></software-download>
+                        </span>
+                    </div>
+                    <div>
+                        <Button v-show="!ifMoreGeneral" id="more" class="more" @click="addMore('general')">加载更多</Button>
+                    </div>
                 </div>
             </div>
+            <!-- TODO 功能未对接成功，暂时不上线 -->
             <div v-show="showPage == 'special'" class="software-page">
                 <span class="card-title">专用软件（{{specialNum}}款已收录）</span>
                 <Divider/>
-                <special-download :btn='btnList[0]'></special-download>
-                <special-download :btn='btnList[1]'></special-download>
-                <special-download :btn='btnList[2]'></special-download>
-                <div v-for="n in 3" :key="n">
-                    <special-download></special-download>
-                </div>
-                <Button v-show="!ifMoreSpecial" id="more" class="more" @click="addMore('special')">加载更多</Button>
-                <div v-if="ifMoreSpecial">
-                    <special-download v-for="n in 13" :key="n"></special-download>
+                <div class="software-container">
+                    <div>
+                        <special-download :btn='btnList[0]'></special-download>
+                        <special-download :btn='btnList[1]'></special-download>
+                        <special-download :btn='btnList[2]'></special-download>
+                    </div>
+                    <div>
+                        <Button v-show="!ifMoreSpecial" id="more" class="more" @click="addMore('special')">加载更多</Button>
+                    </div>
                 </div>
             </div>
             <div v-show="showPage == 'free'" class="software-page">
                 <span class="card-title">常用免费软件（{{freeNum}}款已收录）</span>
                 <Divider/>
-                <div v-for="n in 6" :key="n">
-                    <software-download></software-download>
+                <div class="software-container">
+                    <div>
+                        <span v-for="n in 6" :key="n">
+                            <software-download></software-download>
+                        </span>
+                    </div>
+                    <div>
+                        <Button v-show="!ifMoreFree" id="more" class="more" @click="addMore('free')">加载更多</Button>
+                    </div>
                 </div>
-                <Button v-show="!ifMoreFree" id="more" class="more" @click="addMore('free')">加载更多</Button>
                 <div v-if="ifMoreFree">
                     <software-download v-for="n in 13" :key="n"></software-download>
                 </div>
@@ -96,10 +105,16 @@
             <div v-show="showPage == 'schedule'" class="software-page">
                 <span class="card-title">预装软件（{{scheduleNum}}款已收录）</span>
                 <Divider/>
-                <div v-for="n in 6" :key="n">
-                    <software-download></software-download>
+                <div class="software-container">
+                    <div>
+                        <span v-for="n in 6" :key="n">
+                            <software-download></software-download>
+                        </span>
+                    </div>
+                    <div>
+                        <Button v-show="!ifMoreSchedule" id="more" class="more" @click="addMore('schedule')">加载更多</Button>
+                    </div>
                 </div>
-                <Button v-show="!ifMoreSchedule" id="more" class="more" @click="addMore('schedule')">加载更多</Button>
                 <div v-if="ifMoreSchedule">
                     <software-download v-for="n in 13" :key="n"></software-download>
                 </div>
@@ -107,10 +122,17 @@
             <div v-show="showPage == 'drive'" class="software-page">
                 <span class="card-title">驱动软件（{{driveNum}}款已收录）</span>
                 <Divider/>
-                <div v-for="n in 6" :key="n">
-                    <software-download></software-download>
+                <div class="software-container">
+                    <div>
+                        <span v-for="n in 6" :key="n">
+                            <software-download></software-download>
+                        </span>
+                    </div>
+                    <div>
+                        <Button v-show="!ifMoreDrive" id="more" class="more" @click="addMore('drive')">加载更多</Button>
+                    </div>
                 </div>
-                <Button v-show="!ifMoreDrive" id="more" class="more" @click="addMore('drive')">加载更多</Button>
+                
                 <div v-if="ifMoreDrive">
                     <software-download v-for="n in 13" :key="n"></software-download>
                 </div>
@@ -134,20 +156,41 @@ export default {
     components:{TopNavigation, Footer, Corner, SoftwareDownload, SpecialDownload},
     data(){
         return{
+            // xxxPage : 向后端要数据的当前页数
+            generalPage: 1,                 
+            specialPage: 1,
+            freePage: 1,
+            schedulePage: 1,
+            drivePage: 1,
+            // xxxPageSize : 向后端每次要多少数据回来
+            generalPageSize: 10,
+            specialPageSize: 10,
+            freePageSize: 10,
+            schedulePageSize: 10,
+            drivePageSize: 10,
+            // xxxNum : 这类软件的总个数
             generalNum: 20,
             specialNum: 25,
             freeNum: 18,
             scheduleNum: 10,
             driveNum: 8,
+            // 当前显示的是哪个分类的software
             showPage: 'general',
-            softwareList: ['微博','微信','知乎','豆瓣','人人', 'QQ', '网易云'],
+            // 各类软件列表
+            generalSWList: ['微博','微信','知乎','豆瓣','人人', 'QQ', '网易云'],
+            specialSWList: ['adobe','zeplin','PS','VPN','Office'],
+            freeSWList: ['百度','搜狗','google','outlook','淘宝'],
+            scheduleSWList: ['TODO', 'calendar', 'remainders', 'facetime'],
+            driveSWList: [],
+            // 专用软件下载的三种按钮样式，用于通知子组件用哪种button
             btnList:['btn1','btn2','btn3'],
+            // ifMoreXXXX　：用于判断　加载更多　button应不应该被看见
             ifMoreGeneral: false,
             ifMoreSpecial: false,
             ifMoreFree: false,
             ifMoreSchedule: false,
             ifMoreDrive: false,
-
+            // 软件反馈相关
             curShowFeedback: false,
             disableOrNot: true,
             fbSuccess: false,
@@ -161,16 +204,83 @@ export default {
                 softwareDetail:[{required: false, trigger:'blur'},
                             {type:'string', max: 150, message:'字太多啦', trigger:'blur'}]
             },
-
+            // lottie 相关
             defaultOptions: { animationData: animationData },
             animationSpeed: 1,
             anim: {}
         }
     },
     mounted(){
-        // this.$refs.sp1.class='btn1'
-        // this.$refs.sp2.class='btn2'
-        // this.$refs.sp3.class='btn3'
+        axios.get('/api/software', {
+            params: {
+                page: this.generalPage,
+                pageSize: this.generalPageSize,
+                classify: 'general'
+            }
+        }).then(res=>{
+            if(res.data.code === 0){
+                this.generalNum = res.data.data.count
+                this.generalSWList = res.data.data.list
+            }else{
+                alert(res)
+            }
+        })   
+        axios.get('/api/software', {
+            params: {
+                page: this.specialPage,
+                pageSize: this.specialPageSize,
+                classify: 'special'
+            }
+        }).then(res=>{
+            if(res.data.code === 0){
+                this.specialNum = res.data.data.count
+                this.specialSWList = res.data.data.list
+            }else{
+                alert(res)
+            }
+        })   
+        axios.get('/api/software', {
+            params: {
+                page: this.freePage,
+                pageSize: this.freePageSize,
+                classify: 'free'
+            }
+        }).then(res=>{
+            if(res.data.code === 0){
+                this.freeNum = res.data.data.count
+                this.freeSWList = res.data.data.list
+            }else{
+                alert(res)
+            }
+        })   
+        axios.get('/api/software', {
+            params: {
+                page: this.schedulePage,
+                pageSize: this.schedulePageSize,
+                classify: 'preload'
+            }
+        }).then(res=>{
+            if(res.data.code === 0){
+                this.scheduleNum = res.data.data.count
+                this.scheduleSWList = res.data.data.list
+            }else{
+                alert(res)
+            }
+        })
+        axios.get('/api/software', {
+            params: {
+                page: this.drivePage,
+                pageSize: this.drivePageSize,
+                classify: 'drive'
+            }
+        }).then(res=>{
+            if(res.data.code === 0){
+                this.driveNum = res.data.data.count
+                this.driveSWList = res.data.data.list
+            }else{
+                alert(res)
+            }
+        })      
     },
     methods:{
         handleAnimation: function(anim) {
@@ -339,6 +449,7 @@ export default {
     height: 37px;
     border-radius: 3px;
     background-color: #d8d8d8;
+    border-width: 0px;
     font-size: 18px;
     font-weight: bold;
     color: #ffffff;
@@ -380,6 +491,11 @@ export default {
     padding: 0px 0px 30px 30px;
     background-color: white;
     overflow-y: auto;
+}
+.software-container{
+    display:flex;
+    align-items:center;
+    flex-direction: column;
 }
 .card-title{
     font-size:16px;

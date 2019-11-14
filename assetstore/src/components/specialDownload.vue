@@ -10,7 +10,7 @@
         <Button v-if="this.curbtn==='btn1'" class='btn1' @mouseover.native="mouseover" ><Icon type="md-checkmark" size="22"/> 已获得</Button>
         <Button v-if="this.curbtn==='btn2'" class="btn2" @click="modal = true"><font-awesome-icon icon="handshake"/> 申领使用权</Button>
         <Button v-if="this.curbtn==='btn3'" disable class="btn3">Pending</Button>
-        <Button v-if="this.curbtn==='btn4'" @click="tip" @mouseout.native="mouseout" class="btn1" style="background-color: #1ebf73;color:white;">找回软件</Button>
+        <Button v-if="this.curbtn==='btn4'" @click="tip" @mouseout.native="mouseout" class="btn1" style="background-color: #49e0ae;color:white;">找回软件</Button>
         
         <div v-show="modal" class="modal-mask">
             <div class="modal">
@@ -225,8 +225,8 @@ export default {
 }
 
 .font-image{
-    color: #1ebf73;
-    background-color: #e8f8f0;
+    color: grey;
+    background-color: #d8d8d8;
     height: 88px;
     width: 88px;
     border-radius: 3px;
@@ -251,9 +251,9 @@ export default {
     text-align: center;
     font-weight:600;
     font-size:16px;
-    border: solid 1px #1ebf73;
-    background-color: #ffffff;
-    color: #1ebf73;
+    border: solid 1px #49e0ae;
+    background-color: #49e0ae;
+    color: #ffffff;
 }
 .btn2{
     position:relative;
@@ -263,14 +263,16 @@ export default {
     height: 37px;
     line-height: 37px;
     text-align: center;
-    color: white;
-    background-color: #3199ff;
+    color: #1ebf73;
+    border-color: #e8f8f0;
+    background-color: #e8f8f0;
     font-weight:600;
     font-size:16px;
 }
 .btn2:hover{
-    border-color: #6cb4fc;
-    background-color: #6cb4fc;
+    border-color: #1ebf73;
+    background-color: #1ebf73;
+    color: #e8f8f0;
 }
 .btn3{
     position:relative;

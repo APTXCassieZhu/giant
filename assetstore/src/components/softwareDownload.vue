@@ -35,8 +35,8 @@ export default {
 }
 
 .font-image{
-    color: #1ebf73;
-    background-color: #e8f8f0;
+    color: grey;
+    background-color: #d8d8d8;
     height: 88px;
     width: 88px;
     border-radius: 3px;

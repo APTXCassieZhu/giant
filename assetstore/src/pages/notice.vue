@@ -128,7 +128,7 @@
                         </div>
                         <Divider/>
                     </div>
-                    <Button style="color:#1ebf73;width:150px;margin-left:43%" @click="addMoreInfo()" size="large">加载更多</Button>
+                    <Button style="color:#1ebf73;width:150px;" @click="addMoreInfo()" size="large">加载更多</Button>
                 </div>
             </div>
             <!-- 通知 -->
@@ -151,7 +151,7 @@
                         </div>
                         <Divider/>
                     </div>
-                    <Button style="color:#1ebf73;width:150px;margin-left:43%" @click="addMoreNotice()" size="large">加载更多</Button>
+                    <Button style="color:#1ebf73;width:150px;" @click="addMoreNotice()" size="large">加载更多</Button>
                 </div>
             </div>
             <!-- 系统通知的具体内容 -->
@@ -211,9 +211,6 @@ export default {
             }
         })  
         // 判断是否时由导航栏的通知跳转过来的
-        // debugger
-
-       // console.log(this.$store.state)
         if(this.$store.state.curNotice){
             let o = JSON.parse(this.$store.state.curNotice) 
             if(o.title != null){
@@ -362,6 +359,7 @@ export default {
             }
         },
         addMoreInfo(){
+            this.infoPage = this.infoPage+1
             axios.get('/api/remind', {
                 params: {
                     page: this.infoPage,
@@ -377,6 +375,7 @@ export default {
             })   
         },
         addMoreNotice(){
+            this.noticePage = this.noticePage+1
             axios.get('/api/bulletin', {
                 params: {
                     page: this.noticePage,
@@ -465,7 +464,7 @@ export default {
 .display-infoOrNotice{
     display: flex;
     flex-direction: column;
-    text-align:center;
+    align-items: center;
 }
 .shorthand-content{
     display: flex;
