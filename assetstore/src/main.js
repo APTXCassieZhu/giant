@@ -11,10 +11,12 @@ import ViewUI from 'view-design';
 import VueCropper from 'vue-cropper'
 // import style
 import 'view-design/dist/styles/iview.css';
-import '../my-theme/index.less';       // change theme color
-
+import '../my-theme/index.less';         // change theme color
 import 'ant-design-vue/dist/antd.css';
 import '../my-theme/ant.less';
+// import 动画特效
+import lottie from 'vue-lottie';
+Vue.component('lottie', lottie)
 
 // fontawesome icon
 import fontawesome from '@fortawesome/fontawesome'

@@ -49,8 +49,9 @@
                         </Form>
                     </div>
                     <div v-else style="text-align:center;padding:118px 16px">
-                        <font-awesome-icon :icon="['fas','check-circle']" class="fb-success-icon"/>
-                        <div style="font-size:18px;font-weight:600;color:black;margin-bottom:20px">感谢您的反馈</div>
+                        <!-- <font-awesome-icon :icon="['fas','check-circle']" class="fb-success-icon"/> -->
+                        <lottie :options="defaultOptions" :height="60" :width="60" v-on:animCreated="handleAnimation" />
+                        <div style="font-size:18px;font-weight:600;color:black;margin-bottom:20px;margin-top:10px;">感谢您的反馈</div>
                         <p style="font-size:12px;color:#7f7f7f;text-align:left;">需求已提交，我们会尽快处理。</p>
                         <p style="font-size:12px;color:#7f7f7f;text-align:left;">我们将通过<span style="font-weight:bold"> 消息—站内信 </span>的形式通知您反馈结果</p>
                     </div>
@@ -127,6 +128,7 @@ import Corner from '../components/corner.vue'
 import SoftwareDownload from '../components/softwareDownload.vue'
 import SpecialDownload from '../components/specialDownload.vue'
 import specialDownloadVue from '../components/specialDownload.vue'
+import * as animationData from "../assets/misoon.json";
 export default {
     name:"software",
     components:{TopNavigation, Footer, Corner, SoftwareDownload, SpecialDownload},
@@ -158,7 +160,11 @@ export default {
                 softwareWant: [{required: true, message:'*请填写您需要的软件', trigger:'blur'}],
                 softwareDetail:[{required: false, trigger:'blur'},
                             {type:'string', max: 150, message:'字太多啦', trigger:'blur'}]
-            }
+            },
+
+            defaultOptions: { animationData: animationData },
+            animationSpeed: 1,
+            anim: {}
         }
     },
     mounted(){
@@ -167,6 +173,10 @@ export default {
         // this.$refs.sp3.class='btn3'
     },
     methods:{
+        handleAnimation: function(anim) {
+            this.anim = anim;
+            console.log(anim); //这里可以看到 lottie 对象的全部属性
+        },
         addMore(more){
             switch(more){
                 case 'general':

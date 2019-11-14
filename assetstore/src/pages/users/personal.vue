@@ -42,6 +42,7 @@
                     </TabPane>
                     <TabPane :label="`关注(${this.$store.state.favoriteList.length})`" name="name3">
                         <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
+                            <cartoon></cartoon>
                             <Button class="like-btn" @click="goPage('/')">去关注</Button>
                         </div>
                         <div v-else v-for="n in this.$store.state.favoriteList.length" :key="n" style="display:inline-block;">
@@ -65,11 +66,12 @@ import LikeBox from '../../components/likeBox.vue'
 import SoftwareBox from '../../components/softwareBox.vue'
 import SoftwareUpBox from '../../components/softwareUpBox.vue'
 import SoftwarePendBox from '../../components/softwarePendBox.vue'
+import Cartoon from '../../components/cartoon.vue'
 
 export default {
     name:"Personal",
     components:{TopNavigation, Footer, Corner, SourceBox, SoftwareBox, 
-    SoftwareUpBox, SoftwarePendBox, LikeBox},
+    SoftwareUpBox, SoftwarePendBox, LikeBox, Cartoon},
     computed:{
         getUser(){ 
             let o = JSON.parse(this.$store.state.user)
