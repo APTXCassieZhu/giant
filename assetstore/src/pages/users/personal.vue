@@ -4,8 +4,10 @@
         <div class="middle-card-wrapper">
             <div class="self-card">
                 <div class="self">
-                    <ul><img src="../../assets/绿头像.jpg" class="avatar">
-                    <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/></ul>
+                    <!-- <img src="../../assets/绿头像.jpg" class="avatar"> -->
+                    <div v-if="this.profilePic != null"><img class="avatar" :src="profilePic"></div>
+                    <div v-else class="font-avatar">{{getUser.charAt(0)}}</div>
+                    <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/>
                     <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
                     <ul style="font-size: 14px; color: #7f7f7f;">{{getDep}}</ul>
                 </div>
@@ -42,6 +44,7 @@
                     </TabPane>
                     <TabPane :label="`关注(${this.$store.state.favoriteList.length})`" name="name3">
                         <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
+                            <cartoon></cartoon>
                             <Button class="like-btn" @click="goPage('/')">去关注</Button>
                         </div>
                         <div v-else v-for="n in this.$store.state.favoriteList.length" :key="n" style="display:inline-block;">
@@ -65,15 +68,15 @@ import LikeBox from '../../components/likeBox.vue'
 import SoftwareBox from '../../components/softwareBox.vue'
 import SoftwareUpBox from '../../components/softwareUpBox.vue'
 import SoftwarePendBox from '../../components/softwarePendBox.vue'
+import Cartoon from '../../components/cartoon.vue'
 
 export default {
     name:"Personal",
     components:{TopNavigation, Footer, Corner, SourceBox, SoftwareBox, 
-    SoftwareUpBox, SoftwarePendBox, LikeBox},
+    SoftwareUpBox, SoftwarePendBox, LikeBox, Cartoon},
     computed:{
         getUser(){ 
             let o = JSON.parse(this.$store.state.user)
-            this.profile = o.profilePic
             if(o.nickName == null){
                 return o.name
             }else{
@@ -92,9 +95,13 @@ export default {
     mounted() {
         this.personalActive = this.$store.state.personalActive
         // this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
+        // 拿到头像
+        let o = JSON.parse(this.$store.state.user)
+        this.profilePic = o.profilePic
     },
     data () {
         return {
+            profilePic: null,
             uploadFolderStyle: "upload-folder-style",
             tab1: "资源(2)",
             tab2: "软件(1)",
@@ -159,11 +166,25 @@ export default {
     font-family: MicrosoftYaHei;
     text-align: center;
 }
+.font-avatar{
+    border-radius: 50%; 
+    width: 104px; 
+    height:104px;
+    text-align: center;
+    line-height: 104px;
+    background-color: #e8f8f0;
+    color: #1ebf73;
+    font-size: 50px;
+    margin: auto;
+    margin-bottom: 15px;
+}
 .avatar{
     border-radius: 50%; 
     width: 104px; 
     height:104px;
     text-align: center;
+    margin: auto;
+    margin-bottom: 15px;
 }
 .edit-self{
     position: absolute;
