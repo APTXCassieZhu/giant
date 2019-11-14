@@ -167,7 +167,8 @@
                 <a-upload
                   action="/api/file/upload"
                   listType="picture-card"
-                  :multiple="true"
+                  :multiple="false"
+                  :beforeUpload="beforeUpload2"
                   v-decorator="[
                     'thumbnail',
                     {
@@ -221,6 +222,9 @@
 }
 .ant-row{
   margin:30px 0;
+}
+.ant-upload.ant-upload-drag{
+  padding:15px 0;
 }
 </style>
 <style scoped lang="less">
@@ -280,7 +284,7 @@
   }
 }
 #components-form-demo-validate-other .dropbox {
-  height: 180px;
+  //height: 180px;
   line-height: 1.5;
 }
 </style>
@@ -379,31 +383,42 @@ export default {
     
   },
   methods:{
-    beforeUpload(file){
+    beforeUpload2(file){
+      const isJPG = /jpg|jpeg|png/.test(file.type)
 
+      //console.log(file.size) // 字节
+      if (!isJPG) {
+        this.$message.error('文件格式不对')
+      }
+      // return false
+      const isLt5M = file.size / 1024 / 1024 < 5
+
+      if (!isLt5M) {
+        this.$message.error('资源必须小于5MB')
+      }
+
+      return isJPG && isLt5M
+    },
+    beforeUpload(file){
       const isJPG = /zip|fbx/.test(file.type)
 
+      //console.log(file.size) // 字节
       if (!isJPG) {
         this.$message.error('文件格式不对')
       }
 
-      // const isLt2M = file.size / 1024 / 1024 < 2
-      // if (!isLt2M) {
-      //   this.$message.error('Image must smaller than 2MB!')
-      // }
-      // return isJPG && isLt2M
-      return isJPG
+      // return false
+      const isLt200M = file.size / 1024 / 1024 < 200
+
+      if (!isLt200M) {
+        this.$message.error('资源必须小于200MB')
+      }
+
+      return isJPG && isLt200M
     },
     handleUnityCheckBox(){
       this.unity_checkall ^= true
       if(this.unity_checkall){
-
-
-
-
-        
-        
-        
         //console.log(this.form.getFieldsValue('resource-name'))
       }else{
         
