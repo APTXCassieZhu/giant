@@ -339,6 +339,8 @@ export default {
             this.$http.put('/user',{profilePic:this.imageUrl, nickName:personalForm.nickname, 
             signature:personalForm.sign}).then(res => {
                 if(res.data.code == 0){
+                    // 更新全局变量信息
+                    this.$store.commit('ADD_USER', res.data.data);
                     // 用户基本资料修改成功
                     this.$Message.warning({
                         background: true,

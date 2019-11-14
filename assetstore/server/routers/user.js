@@ -26,7 +26,7 @@ router.post('/login', jsonParser, function(req,res){
 				'account':'xiamu@ztgame.com',
 
 				"id": 123, 
-				"profilePic": "//avatars2.githubusercontent.com/u/18524392?s=460&v=4",
+				"profilePic": "//avatars1.githubusercontent.com/u/38572741?s=460&v=4",
 				"dept": "前沿技术部",
 				"title": "string",
 			}

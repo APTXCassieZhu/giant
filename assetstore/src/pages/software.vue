@@ -225,20 +225,20 @@ export default {
                 alert(res)
             }
         })   
-        axios.get('/api/software', {
-            params: {
-                page: this.specialPage,
-                pageSize: this.specialPageSize,
-                classify: 'special'
-            }
-        }).then(res=>{
-            if(res.data.code === 0){
-                this.specialNum = res.data.data.count
-                this.specialSWList = res.data.data.list
-            }else{
-                alert(res)
-            }
-        })   
+        // axios.get('/api/software', {
+        //     params: {
+        //         page: this.specialPage,
+        //         pageSize: this.specialPageSize,
+        //         classify: 'special'
+        //     }
+        // }).then(res=>{
+        //     if(res.data.code === 0){
+        //         this.specialNum = res.data.data.count
+        //         this.specialSWList = res.data.data.list
+        //     }else{
+        //         alert(res)
+        //     }
+        // })   
         axios.get('/api/software', {
             params: {
                 page: this.freePage,
