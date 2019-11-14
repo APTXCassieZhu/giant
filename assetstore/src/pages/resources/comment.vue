@@ -3,7 +3,7 @@
       <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
       
       <section class="resource-detail">
-
+        <bct></bct>
         <div class="resource-detail-b-bar">
           <div>
             <span>{{resource.commentCount}}条评论</span> 
@@ -114,12 +114,13 @@
 <script>
 import TopNavigation from '@/components/TopNav.vue'
 import Footer from '@/components/footer.vue'
+import bct from '@/widget/bct.vue'
 import E from '@/widget/emojiReply/'
 
 const {Reply,Comments} = E
 
 export default {
-    components:{TopNavigation,Footer},
+    components:{TopNavigation,Footer,bct},
     data() {
       return {
         sortBy:'time',

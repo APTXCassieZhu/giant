@@ -793,6 +793,15 @@ export default {
       
     },
     handleCommentLink(){
+
+       this.$store.commit('SAVE_COMMENT_BREADLIST', {
+        breadlist:[
+            {fullPath:`/resourceDetail/${this.$route.params.resourceId}`,name:'资源详情'}
+        ],
+        resourceId:this.$route.params.resourceId
+            
+      })
+
       this.$router.push(`/resourceDetail/${this.$route.params.resourceId}/comment`)
     },
     getYYMMDD(t){
