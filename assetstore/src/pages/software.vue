@@ -61,8 +61,8 @@
                 <Divider/>
                 <div class="software-container">
                     <div>
-                        <span v-for="n in 6" :key="n">
-                            <software-download></software-download>
+                        <span v-for="(item, n) in this.generalSWList" :key="n">
+                            <software-download :sw="item"></software-download>
                         </span>
                     </div>
                     <div>
@@ -90,7 +90,7 @@
                 <Divider/>
                 <div class="software-container">
                     <div>
-                        <span v-for="n in 6" :key="n">
+                        <span v-for="(item, n) in this.freeSWList" :key="n">
                             <software-download></software-download>
                         </span>
                     </div>
@@ -98,16 +98,13 @@
                         <Button v-show="!ifMoreFree" id="more" class="more" @click="addMore('free')">加载更多</Button>
                     </div>
                 </div>
-                <div v-if="ifMoreFree">
-                    <software-download v-for="n in 13" :key="n"></software-download>
-                </div>
             </div>
             <div v-show="showPage == 'schedule'" class="software-page">
                 <span class="card-title">预装软件（{{scheduleNum}}款已收录）</span>
                 <Divider/>
                 <div class="software-container">
                     <div>
-                        <span v-for="n in 6" :key="n">
+                        <span v-for="(item, n) in this.scheduleSWList" :key="n">
                             <software-download></software-download>
                         </span>
                     </div>
@@ -115,26 +112,19 @@
                         <Button v-show="!ifMoreSchedule" id="more" class="more" @click="addMore('schedule')">加载更多</Button>
                     </div>
                 </div>
-                <div v-if="ifMoreSchedule">
-                    <software-download v-for="n in 13" :key="n"></software-download>
-                </div>
             </div>
             <div v-show="showPage == 'drive'" class="software-page">
                 <span class="card-title">驱动软件（{{driveNum}}款已收录）</span>
                 <Divider/>
                 <div class="software-container">
                     <div>
-                        <span v-for="n in 6" :key="n">
+                        <span v-for="(item, n) in this.driveSWList" :key="n">
                             <software-download></software-download>
                         </span>
                     </div>
                     <div>
                         <Button v-show="!ifMoreDrive" id="more" class="more" @click="addMore('drive')">加载更多</Button>
                     </div>
-                </div>
-                
-                <div v-if="ifMoreDrive">
-                    <software-download v-for="n in 13" :key="n"></software-download>
                 </div>
             </div>
         </div>

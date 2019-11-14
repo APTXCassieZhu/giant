@@ -66,6 +66,8 @@ router.get('/describe', function(req, res){
 			'code': 0
 	})
 });
-
+router.put('/', jsonParser, function(req,res){
+	res.status(200).json({'code':0})
+});
 //export this router to use in our index.js
 module.exports = router;

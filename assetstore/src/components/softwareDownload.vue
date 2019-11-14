@@ -3,9 +3,9 @@
     <div class="source-box">
         <div class="font-image">LOGO</div>
         <div class="font-title">
-            <p style="font-size:16px;font-weight:600">{{software}}</p>
-            <p style="position:relative;top:8px;font-size:14px;font-weight:600;color:#7f7f7f;">当前版本 {{currentVersion}}</p>
-            <p style="position:relative; top: 25px;font-size:14px;color:#7f7f7f;">最后更新 {{latestUpdate}}</p>
+            <p style="font-size:16px;font-weight:600">{{this.software}}</p>
+            <p style="position:relative;top:8px;font-size:14px;font-weight:600;color:#7f7f7f;">当前版本 {{this.currentVersion}}</p>
+            <p style="position:relative; top: 25px;font-size:14px;color:#7f7f7f;">最后更新 {{this.latestUpdate}}</p>
         </div>
         <Button class="btn" type="success"><Icon type="md-download" />下载软件</Button>
     </div>
@@ -13,13 +13,15 @@
 <script>
 export default {
     name: "SoftwareDownload",
-    //props: ['softwareName'],
+    props: ['sw'],
     data() {
         return {
             software: "XXX客户端", //this.softwareName
             currentVersion: "3.0.1",
             latestUpdate: "2019.02.29"
         }
+    },
+    mounted(){
     },
     methods:{
     }
