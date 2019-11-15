@@ -598,6 +598,10 @@ import Footer from '@/components/footer.vue'
 import axios from 'axios'
 import breadCrumb from '@/widget/breadcrumb.vue'
 
+
+
+
+
 // import Rate from 'ant-design-vue/lib/rate';
 // import 'ant-design-vue/lib/rate/style'; // 或者 ant-design-vue/lib/button/style/css 加载 css 文件
 

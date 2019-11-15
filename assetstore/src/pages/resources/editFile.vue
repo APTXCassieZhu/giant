@@ -1,5 +1,5 @@
 <template>
-  <div style="background:#eff2f5;">
+  <div style="background:#eff2f5;padding-bottom:200px;">
     <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
     <section class="uploadfile">
 
@@ -7,8 +7,8 @@
         <div class="form-wrap">
           <div class="uploadfile-l">
             <section class="">
-              <header class="uploadfile-header">STEP.1 <br/>资源更新</header>
-              <a-form-item v-bind="formItemLayout" label="资源上传" style="">
+              <header class="uploadfile-header">STEP.1 <br/>资源编辑</header>
+              <a-form-item v-bind="formItemLayout" label="" style="">
                 <div class="dropbox" style="margin:10px 0;">
                   <a-upload-dragger
 
@@ -32,7 +32,7 @@
                     </p>
                     <p class="ant-upload-hint">
                       <p>*支持资源打包上传，请按照规定的目录结构打包</p>
-                      <p>支持 ZIP / FBX / 3DS ，请将单个文件控制在 $000 MB之内</p>
+                      <p>支持 ZIP ，请将单个文件控制在 200 MB之内</p>
                     </p>
                   </a-upload-dragger>
                 </div>
@@ -54,10 +54,18 @@
                   v-decorator="['resource-version', { rules: [{ required: true, message: '请填写版本号' }] }]"
                 />
               </a-form-item>
-              <a-form-item v-bind="formItemLayout" label="文件描述："  :label-col="labelCol" :wrapper-col="wrapperCol ">
+              <!-- <a-form-item v-bind="formItemLayout" label="文件描述："  :label-col="labelCol" :wrapper-col="wrapperCol ">
                 <a-textarea v-decorator="['resource-description', { rules: [{ required: true, message: '请填写文件描述' }] }]"
                 placeholder="Basic usage" :rows="4" />
-              </a-form-item>
+              </a-form-item> -->
+              <section class="editor-wrap">
+                <div class="editor-label"> <span>文件描述：</span> </div>
+                <div>
+                  <div ref="editor-owo" class="editor-owo"></div>
+                  <div ref="editor-owo-content" class="editor-owo-content"></div>
+                </div>
+                
+              </section>
               <a-form-item v-bind="formItemLayout" label="资源分类：" :label-col="labelCol" :wrapper-col="wrapperCol ">
                 <a-select
                   v-decorator="[
@@ -95,6 +103,7 @@
                   </a-select>
                 </a-form-item>
               </template>
+
 
               <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
               <a-radio-group v-decorator="['radio-group']">
@@ -199,12 +208,16 @@
                 其他设置
               </header>
             
-              <a-form-item v-bind="formItemLayout" label="是否公开">
+              <a-form-item v-bind="formItemLayout" label="是否公开" :label-col="{span:8}" :wrapperCol="{span:5,offset:11}">
                 <a-switch v-decorator="['public', { valuePropName: 'checked' }]" />
               </a-form-item>
+              <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
             
           </section>
+
+
+         
         </div>
       </a-form>
     </section>
@@ -228,6 +241,40 @@
 }
 </style>
 <style scoped lang="less">
+.editor-wrap{
+  display:flex;
+  >div{
+    width:570px;
+    height:200px;
+  }
+  .editor-owo{
+    // border:1px solid blue;
+    border: 1px solid #ccc;
+  }
+  .editor-owo-content{
+    height:180px;
+    border: 1px solid #ccc;
+    // border:1px solid red;
+  }
+  .editor-label{
+    width:233px;
+    font-size: 16px;
+    color: #7f7f7f;
+    font-weight: bold;
+    // border:1px solid black;
+    
+    &::before {
+      display: inline-block;
+      margin-right: 4px;
+      color: #f5222d;
+      font-size: 14px;
+      font-family: SimSun, sans-serif;
+      line-height: 1;
+      content: '*';
+    }
+    
+  }
+}
 .form-wrap{
   display:flex;
   background:#fff;
@@ -245,11 +292,12 @@
 .uploadfile{
   // display: flex;
   // box-sizing: border-box;
+  position: relative;
+  margin-top:75px;
   &-header{
     color:#7f7f7f;
     font-size:23px;
     font-weight: bold;
-
   }
   color:#7f7f7f;
   padding:20px;
@@ -274,12 +322,13 @@
     // flex:1;
   }
   &-r-wrap{
+
     border-left: 1px solid #e5e5e5;
     height: 301px;
-    width: 300px;
+    width: 363px;
     margin-left: 84px;
     box-sizing: border-box;
-    padding-left: 89px;
+    padding-left: 86px;
 
   }
 }
@@ -305,6 +354,7 @@ export default {
         unity:[],
         unreal:[]
       },
+      editor:null,
       
       labelCol:{span:4},
       wrapperCol:{ span: 17 ,offset:3},
@@ -339,11 +389,11 @@ export default {
            let o = fields[keys[0]]
            that.showCheckBoxGroup = o.value
          }
+        
 
 
         //  if(keys.length ===1 && keys[0] === 'checkbox-group-unreal' || keys[0] === 'checkbox-group-unity'){
           
-
         //  }    
        }
     })
@@ -355,12 +405,36 @@ export default {
       if(e.keyCode===13 && e.target.classList.contains('ant-input-sm')){
         e.preventDefault()
       }
-    
+
     })
+
     
-    // let E = window.wangEditor
-    // let editor = new E(this.$refs['editor-owo'])
-    // editor.create()
+    let E = window.wangEditor
+    let editor = new E(this.$refs['editor-owo'],this.$refs['editor-owo-content'])
+    editor.customConfig.zIndex = 2
+    this.editor = editor
+    
+     // 自定义菜单配置
+    editor.customConfig.menus = [
+      'head',
+      'bold',
+      'italic',
+      'underline',
+      'backColor',  // 背景颜色
+      'link',  // 插入链接
+      'list',  // 列表
+      'justify',  // 对齐方式
+      'quote',  // 引用
+      'emoticon',  // 表情
+    ]
+
+    editor.create()
+
+
+    addEventListener('keydown',e=>{
+      //console.log(editor)
+      //editor.txt.html()
+    })
     
     // console.log('matched:', this.$route.matched)
     axios.get(`/api/tag/tree`,{ params:{type:'engine_ver'} }).then(response=>{
@@ -384,37 +458,43 @@ export default {
   },
   methods:{
     beforeUpload2(file){
-      const isJPG = /jpg|jpeg|png/.test(file.type)
+      // const isJPG = /jpg|jpeg|png/.test(file.type)
 
-      //console.log(file.size) // 字节
-      if (!isJPG) {
-        this.$message.error('文件格式不对')
-      }
-      // return false
-      const isLt5M = file.size / 1024 / 1024 < 5
+      // //console.log(file.size) // 字节
+      // if (!isJPG) {
+      //   this.$message.error('文件格式不对')
+      // }
+      // // return false
+      // const isLt5M = file.size / 1024 / 1024 < 5
 
-      if (!isLt5M) {
-        this.$message.error('资源必须小于5MB')
-      }
+      // if (!isLt5M) {
+      //   this.$message.error('资源必须小于5MB')
+      // }
 
-      return isJPG && isLt5M
+      // return isJPG && isLt5M
+
+      return true
     },
     beforeUpload(file){
-      const isJPG = /zip|fbx/.test(file.type)
 
-      //console.log(file.size) // 字节
-      if (!isJPG) {
-        this.$message.error('文件格式不对')
-      }
 
-      // return false
-      const isLt200M = file.size / 1024 / 1024 < 200
+      // console.log('type:',file.type)
+      // const isJPG = /zip/.test(file.type)
+      // //console.log(file.size) // 字节
+      // if (!isJPG) {
+      //   this.$message.error('文件格式不对')
+      // }
 
-      if (!isLt200M) {
-        this.$message.error('资源必须小于200MB')
-      }
+      // // return false
+      // const isLt200M = file.size / 1024 / 1024 < 200
 
-      return isJPG && isLt200M
+      // if (!isLt200M) {
+      //   this.$message.error('资源必须小于200MB')
+      // }
+
+      // return isJPG && isLt200M
+
+      return true
     },
     handleUnityCheckBox(){
       this.unity_checkall ^= true
@@ -458,11 +538,18 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
 
-        console.log(values)
+       console.log(values)
 
-        if(!values.dragger) return this.$message.warning('你什么资源都没上传啊！')
+         //console.log(this.editor.txt.html(),this.editor.txt.html().length)
+        
+        // console.log('txt html:', this.editor.txt.html())
+        
 
         if(err){ return  }
+
+        if(!values.dragger) return this.$message.warning('请上传一个资源')
+       
+        //if(!this.editor.txt.text().length ) return this.$message.warning('请填写文件描述')
 
         var tag1 = values['resource-cascader']?values['resource-cascader']:[]
         var tag2 = [values['resource-art-type']]
@@ -472,6 +559,8 @@ export default {
         // debugger
 
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
+
+        debugger
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
 
         axios.post(`/api/resource`,{
@@ -492,7 +581,7 @@ export default {
             "images": [ // 资源缩略图fileid
               ...images
             ],
-            "descriptipon": values['resource-description'] //资源描述
+            "descriptipon": this.editor.txt.html() //资源描述
           }
         }).then(response=>{
           

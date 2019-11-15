@@ -121,6 +121,9 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 // -------------- o(=•ェ•=)m   start 文件 ------------------
 {
 	app.post('/file/upload',(req,res)=>{
+
+		console.log('#########################################################')
+		
 		res.status(200)
 		res.json({
 			"msg": "string",
