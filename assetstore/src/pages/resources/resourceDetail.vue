@@ -1,7 +1,17 @@
 <template>
   <div>
     <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
+   
+
     <section class="resource-detail">
+      <!-- <Breadcrumb style="margin:30px 0;font-size:14px;">
+        <BreadcrumbItem to="/">首页</BreadcrumbItem>
+        <BreadcrumbItem to="/searchresult">搜索</BreadcrumbItem>
+        <BreadcrumbItem>资源详情</BreadcrumbItem>
+      </Breadcrumb> -->
+      <div style="margin:30px 0;font-size:14px;">
+        <bread-crumb></bread-crumb>
+      </div>
       <div class="resource-detail-t">
         <div class="resource-detail-t-topwrap">
           <div class="resource-detail-lightbox"> 
@@ -19,7 +29,7 @@
                <div class="swiper-slide" v-for="(src,i) in resource.images" :key="i" 
                  :attrx="src" :style="{backgroundImage: `url(${src})`}">
                 </div>
-              </div>             
+              </div> 
             </div>
           </div>
           <div class="resource-detail-deslist">
@@ -60,7 +70,7 @@
               <div><a id="resource-comment-a" href="javascript:void 0;" @click="handleCommentLink">{{resource.commentCount}}条评论</a></div>  
             </div>
             <div class="resource-detail-deslist-part5">
-              <div>
+              <div>  
                 <!-- <a-icon type="folder" theme="twoTone" twoToneColor="#1ebf73"/>  -->
                 <font-awesome-icon :icon="['fas','folder']" style="color:#1ebf73;width:15px;height:15px;"/>
                 <span>资源包</span> 
@@ -226,7 +236,8 @@
   width:100%;
   max-width:1380px;
   margin:0 auto;
-  margin-top:50px;
+  // margin-top:50px;
+  // margin-top:15px;
   position: relative;
   overflow: hidden;
 
@@ -585,9 +596,14 @@ import TopNavigation from '@/components/TopNav.vue'
 import moment from 'moment'
 import Footer from '@/components/footer.vue'
 import axios from 'axios'
+import breadCrumb from '@/widget/breadcrumb.vue'
+
+
+
+
+
 // import Rate from 'ant-design-vue/lib/rate';
 // import 'ant-design-vue/lib/rate/style'; // 或者 ant-design-vue/lib/button/style/css 加载 css 文件
-
 
 // console.log('TopNavigation:', TopNavigation)
 import E from '@/widget/emojiReply/'
@@ -595,7 +611,7 @@ import E from '@/widget/emojiReply/'
 const {Reply,Comments} = E
 
 export default {
-  components:{TopNavigation,Footer},
+  components:{TopNavigation,Footer,breadCrumb},
   props:[],
   data(){
     return{
@@ -651,6 +667,7 @@ export default {
 					},
         ],
         "tags": [ // 引擎版本
+
           
         ]
         
@@ -685,7 +702,6 @@ export default {
 		const {params} = this.$route
 
     // debugger
-
 		
     axios.get(`/api/resource/${params.resourceId}`).then(response=>{
       var res = response.data
@@ -744,6 +760,7 @@ export default {
         this.$Message.success('评论提交成功~')
         replyx.clearContent()
       })
+
       
     })
 
@@ -780,6 +797,15 @@ export default {
       
     },
     handleCommentLink(){
+
+       this.$store.commit('SAVE_COMMENT_BREADLIST', {
+        breadlist:[
+            {fullPath:`/resourceDetail/${this.$route.params.resourceId}`,name:'资源详情'}
+        ],
+        resourceId:this.$route.params.resourceId
+            
+      })
+
       this.$router.push(`/resourceDetail/${this.$route.params.resourceId}/comment`)
     },
     getYYMMDD(t){
@@ -827,7 +853,7 @@ export default {
         items = res.data.list.map(o=>{
           var item = {
             items:[],
-            id:o.pid,
+            id:o.id,
             content:o.content,
             score:o.rate.value,
             like:o.hot,
@@ -843,7 +869,7 @@ export default {
           }
           item.items = o.items.map(o=>{  
             return{
-              id: o.pid,
+              id: o.id,
               content:o.content,
               like:o.hot,
               liked:o.stars.length>1,
@@ -870,6 +896,7 @@ export default {
             uid:this.userid
           }
         })
+
 
         comments.onLike(prop=>{
           console.log('comments like:', prop)

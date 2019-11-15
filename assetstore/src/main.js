@@ -27,11 +27,13 @@ fontawesome.library.add(solid)
 fontawesome.library.add(regular)
 fontawesome.library.add(brands)
 
+
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.use(Vuex)
+
 
 // import ElementUI from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
@@ -43,8 +45,8 @@ import { Rate, Tooltip } from "ant-design-vue";
 import 'ant-design-vue/lib/rate/style/css'
 import 'ant-design-vue/lib/tooltip/style/css'
 
-Vue.component(Rate.name, Rate)
-Vue.component(Tooltip.name, Tooltip)
+// Vue.component(Rate.name, Rate)
+// Vue.component(Tooltip.name, Tooltip)
 
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
@@ -63,7 +65,7 @@ Vue.prototype.$axios = axios
 // }, function (error) {
 //   // 对请求错误做些什么
 //   return Promise.reject(error);
-// });
+// })
 
 axios.interceptors.response.use(
     response => {
@@ -103,95 +105,177 @@ const NOTICE_READED = 'NOTICE_READED'
 // const localstorage = require('./localstorage')
 // 注册状态管理全局参数
 var store = new Vuex.Store({
-    state: {
-        token: localStorage['token'],
-        user: localStorage['user'],
-        searchContent: '',
-        activenum: 1,
-        personalActive: "",
-        favoriteList: [],
-        curNotice: localStorage['curNotice'],
-    },
-    mutations: {
-        // login
-        [ADD_COUNT](state, token) {
-            localStorage.setItem("token", token)
-            state.token = token
-            // 让所有请求header里面都有token
-            console.log('token ' + token)
-            axios.defaults.headers.common['Authorization'] = state.token
-        },
-        // logout
-        [REMOVE_COUNT](state, token) {
-            localStorage.removeItem("token", token)
-            state.token = undefined
-        },
-        [ADD_USER](state, user) {
-            console.log('user ' + user)
-            localStorage.setItem("user", JSON.stringify(user))
-            state.user = user
-        },
-        // 存放用户搜索内容
-        [SEARCH_COUNT](state, searchContent) {
-            sessionStorage.setItem("search", searchContent)
-            state.searchContent = searchContent
-        },
-        // 判断当前在那个页面
-        [NOW_ACTIVE](state, activenum) {
-            sessionStorage.setItem("active", activenum)
-            state.activenum = activenum
-        },
-        // 判读当前在个人中心的两个标签页中
-        [PERSONAL_ACTIVE](state, personalActive) {
-            sessionStorage.setItem("personalActive", personalActive)
-            state.personalActive = personalActive
-        },
-        // 添加关注到用户关注列表
-        [ADD_FAVORITE](state, favorite) {
-            state.favoriteList.push(favorite)
-            localStorage.setItem("favorite", state.favoriteList)
-        },
-        // 取消关注
-        [REMOVE_FAVORITE](state, favorite) {
-            localStorage.removeItem("favorite", favorite)
-            for (var i = 0; i < state.favoriteList.length; i++) {
-                if (state.favoriteList[i] == favorite) {
-                    state.favoriteList.splice(i, 1);
-                    break;
-                }
-            }
-            console.log("cancel favorite")
-            localStorage.setItem("favorite", state.favoriteList)
-        },
-        // 从导航栏点击通知，前往消息中心，存储当前点击的通知内容
-        [READ_NOTICE](state, item) {
-            localStorage.setItem('curNotice', JSON.stringify(item))
-        },
-        [NOTICE_READED](state, item){
-            localStorage.removeItem('curNotice', item)
-            state.curNotice = undefined
+  state:{
+    token:localStorage['token'],
+    user:localStorage['user'],
+    searchContent:'',
+    activenum: 1,
+    personalActive: "",
+    favoriteList: [],
+    breadListState: sessionStorage['gdrc-breadlist']?JSON.parse(sessionStorage['gdrc-breadlist']):[],
+    breadCommentListState: sessionStorage['gdrc-breadlist-comment']?JSON.parse(sessionStorage['gdrc-breadlist-comment']):[],
+    // { path:'',resourceId:'' }
+    curResourceId: sessionStorage['gdrc-curResourceId'],
+    curCommentResourceId:sessionStorage['gdrc-curCommentResourceId'],
+
+    curNotice: localStorage['curNotice'],
+  },
+  mutations:{
+   
+      // login
+      [ADD_COUNT](state, token) {
+          localStorage.setItem("token", token)
+          state.token = token
+          // 让所有请求header里面都有token
+          console.log('token ' + token)
+          axios.defaults.headers.common['Authorization'] = state.token
+      },
+      // logout
+      [REMOVE_COUNT](state, token) {
+          localStorage.removeItem("token", token)
+          state.token = undefined
+      },
+      [ADD_USER](state, user) {
+          console.log('user ' + user)
+          localStorage.setItem("user", JSON.stringify(user))
+          state.user = user
+      },
+      // 存放用户搜索内容
+      [SEARCH_COUNT](state, searchContent) {
+          sessionStorage.setItem("search", searchContent)
+          state.searchContent = searchContent
+      },
+      // 判断当前在那个页面
+      [NOW_ACTIVE](state, activenum) {
+          sessionStorage.setItem("active", activenum)
+          state.activenum = activenum
+      },
+      // 判读当前在个人中心的两个标签页中
+      [PERSONAL_ACTIVE](state, personalActive) {
+          sessionStorage.setItem("personalActive", personalActive)
+          state.personalActive = personalActive
+      },
+      // 添加关注到用户关注列表
+      [ADD_FAVORITE](state, favorite) {
+          state.favoriteList.push(favorite)
+          localStorage.setItem("favorite", state.favoriteList)
+      },
+      // 取消关注
+      [REMOVE_FAVORITE](state, favorite) {
+          localStorage.removeItem("favorite", favorite)
+          for (var i = 0; i < state.favoriteList.length; i++) {
+              if (state.favoriteList[i] == favorite) {
+                  state.favoriteList.splice(i, 1);
+                  break;
+              }
+          }
+          console.log("cancel favorite")
+          localStorage.setItem("favorite", state.favoriteList)
+      },
+      // 从导航栏点击通知，前往消息中心，存储当前点击的通知内容
+      [READ_NOTICE](state, item) {
+          localStorage.setItem('curNotice', JSON.stringify(item))
+      },
+      [NOTICE_READED](state, item){
+          localStorage.removeItem('curNotice', item)
+          state.curNotice = undefined
+      },
+
+      SAVE_COMMENT_BREADLIST(state,{breadlist,resourceId}={ }){
+        state.breadCommentListState =  [
+          {fullPath:'/home', name:'主页'},
+          ...breadlist,
+          {fullPath:`/resourceDetail/${resourceId}/comment`, name:'全部评论'}
+        ]
+        //debugger
+        state.curCommentResourceId = resourceId
+        // debugger
+        sessionStorage['gdrc-breadlist-comment'] = JSON.stringify( state.breadCommentListState )
+        sessionStorage['gdrc-curCommentResourceId'] = state.curCommentResourceId
+
+      },
+      SAVE_BREADLIST(state,{breadlist,resourceId}={}){
+        state.breadListState =  [
+          {fullPath:'/home', name:'主页'},
+          ...breadlist,
+          {fullPath:`/resourceDetail/${resourceId}`, name:'资源详情'}
+        ]
+        //debugger
+        state.curResourceId = resourceId
+        // debugger
+        sessionStorage['gdrc-breadlist'] = JSON.stringify( state.breadListState )
+        sessionStorage['gdrc-curResourceId'] = state.curResourceId
+        
+      },  
+      breadListStateRemove(state,n){
+  
+        while(n--){
+          state.breadListState.shift()
         }
-    }
-})
+        normalBreadList(state)
+      }
 
 
-router.beforeEach((to, from, next) => {
-    // loading 效果
-    ViewUI.LoadingBar.start();
-    // 获取本地存储的token
-    store.state.token = localStorage.getItem("token")
-    store.state.user = localStorage.getItem("user")
-    // 判断这个url是否需要登录权限
-    if (to.meta.requireAuth) {
-        if (store.state.token && store.state.user) {
-            next()
-        } else {
-            next({ path: '/login', query: { redirect: to.fullPath } })
-        }
-    } else {
-        next()
     }
+
+   
 })
+
+const normalResourceBreadList  = (store, to)=>{
+  // 直接链接进入resourceDetail 如果有session并且resourceId是最近session中的resourceId
+  // 从页面点进去重新处理session
+  let {params,path} = to
+  
+  // debugger
+  if(/resourceDetail/.test(path) && to.name==='资源详情'){
+    if(params.resourceId!=store.state.curResourceId*1){
+      store.state.breadListState =  [
+        {fullPath:'/home', name:'主页'},
+        {fullPath:`/resourceDetail/${params.resourceId}`, name:'资源详情'}
+      ]
+
+      store.state.curResourceId = params.resourceId
+      // debugger
+      sessionStorage['gdrc-breadlist'] = JSON.stringify( store.state.breadListState )
+      sessionStorage['gdrc-curResourceId'] = store.state.curResourceId
+    }
+  }
+
+
+  if(/comment/.test(path) && to.name === 'resourceComment'){
+    if(params.resourceId!=store.state.curCommentResourceId*1){
+      store.state.breadCommentListState =  [
+        {fullPath:'/home', name:'主页'},
+        {fullPath:`/resourceDetail/${params.resourceId}/comment`, name:'全部评论'}
+      ]
+
+      store.state.curCommentResourceId = params.resourceId
+      // debugger
+      sessionStorage['gdrc-breadlist-comment'] = JSON.stringify( state.breadCommentListState )
+      sessionStorage['gdrc-curCommentResourceId'] = state.curCommentResourceId
+    }
+  }
+}
+
+router.beforeEach((to,from,next) => {
+
+  normalResourceBreadList(store,to)
+
+  // loading 效果
+  ViewUI.LoadingBar.start()
+  // 获取本地存储的token
+  store.state.token = localStorage.getItem("token")
+  store.state.user = localStorage.getItem("user")
+  // 判断这个url是否需要登录权限
+  if(to.meta.requireAuth) {
+    if(store.state.token && store.state.user) {
+      next()
+    }else{
+      next({path:'/login', query:{redirect: to.fullPath}})
+    }
+  }
+})
+
 router.afterEach(route => {
     ViewUI.LoadingBar.finish();
 })

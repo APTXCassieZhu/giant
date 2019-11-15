@@ -27,12 +27,17 @@ import { faComment, faEye } from '@fortawesome/free-solid-svg-icons'
 library.add(faComment, faEye)
 export default {
     name: "SpecialCard",
-    props: {
-        sourceID: {
-            type: Number,
-            default: 233,
-        },
-    },
+    // props: {
+    //     sourceID: {
+    //         type: String,
+    //         default: 233,
+    //     },
+    //     styname:{
+    //         type:String,
+    //         default:'默认分类是？'
+    //     }
+    // },
+    props:['sourceID','breadlist'],
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
@@ -60,6 +65,15 @@ export default {
             }         
         },
         goPage(url){
+
+            //debugger
+             this.$store.commit('SAVE_BREADLIST', {
+                breadlist:[
+                    ...this.breadlist
+                ],
+                resourceId:this.sourceID
+                
+            })
             if(this.jumpOrNot){
                 this.$router.push(url)
             }

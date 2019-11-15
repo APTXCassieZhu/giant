@@ -8,7 +8,7 @@
         </div>
         <div class="card-wrapper">
             <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
-            <ul><div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-角色.png') + ')'}"></div>
+            <ul><div class="advise-card" @click="handleClick" :style="{backgroundImage: 'url(' + require('../../assets/资源-角色.png') + ')'}"></div>
             <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-环境.png') + ')'}"></div>
             <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-道具.png') + ')'}"></div>
             <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-载具.png') + ')'}"></div>
@@ -48,6 +48,9 @@ export default {
         
     },
     methods:{
+        handleClick(){
+            this.$router.push('/artShow/role')
+        }
     },
 }
 </script>

@@ -4,20 +4,20 @@
         <div class="body-style">
             <div id='advise' class="advise-wrapper">
                 <div class="advise-container">
-                    <span>&emsp;推荐搜索&emsp;</span>
-                    <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
-                    <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
-                    <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
-                    <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
-                    <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
-                    <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" />  
+                  <span>&emsp;推荐搜索&emsp;</span>
+                  <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
+                  <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
+                  <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
+                  <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
+                  <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
+                  <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" />  
                 </div>
             </div>
             <div class="title-wrapper">
-                <strong>美术类资源</strong>
+                <strong>美术类资源/角色</strong>
             </div>
             <div class="button-wrapper">
-                <choice></choice>
+              <choice></choice>
             </div>
             <div class="card-wrapper">
                 <ul>
@@ -28,7 +28,7 @@
                                 {{currentOrder}}<Icon type='md-arrow-dropdown' size='20' />
                             </span>
                             <DropdownMenu slot="list">
-                                <DropdownItem class="box-link-a" name="按推荐排序">推荐</DropdownItem>
+                              <DropdownItem class="box-link-a" name="按推荐排序">推荐</DropdownItem>
                                 <DropdownItem class="box-link-a" name="按热度排序">热度</DropdownItem>
                                 <DropdownItem class="box-link-a" name="按时间排序">时间</DropdownItem>
                             </DropdownMenu>
@@ -37,9 +37,12 @@
                 </ul>
                 <br>
                 <source-card v-for="n in 15" :key="n" 
-                    :sourceID="n*1000" 
-                    :breadlist="[{fullPath:`/artShow#tags=['111','222','333']`,name:'美术类资源'}]"  
-                class="card-style"></source-card>
+                    :sourceID="n*1000"  
+                    :breadlist="[
+                      {fullPath:`/artShow/role#tags=['111','222','333']`,name:'美术类资源'},
+                      {fullPath:`/artShow/role#tags=['111','222','333']`,name:'角色'}
+                    ]"  
+                class="card-style"></source-card>  
                 <Page class="page-style" :total="100" show-elevator />
                 <corner></corner>
             </div>

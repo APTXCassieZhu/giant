@@ -12,7 +12,11 @@
         </strong>
     </div>
     <div class="card-wrapper">
-        <source-card v-for="n in 5" :key="n" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
+        <!-- <source-card v-for="n in 5" :key="n" styname="美术类资源" :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card> -->
+        <source-card v-for="n in 5" :key="n" 
+        :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
+        :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
+
     </div>
     <div class="type-title" @click="goPage('/artFilter')">推荐分类</div>
     <div style="text-align:center;position:relative;">-各类高实用性的项目集合-
@@ -32,37 +36,37 @@
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
     <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop class="carousel-style">
         <CarouselItem>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="1111"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="2222"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="3333" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="4444"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         </CarouselItem>
         <CarouselItem>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="5555"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="6666"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="7777"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="8888"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
         </CarouselItem>
         <CarouselItem>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-            <special-card style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="1234" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="5678" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="4234" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="5666" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
         </CarouselItem>
     </Carousel>
     <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
     <div class="card-wrapper" style="margin-bottom: 0px;">
-        <special-card ref="child" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card ref="child3" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card ref="child4" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card ref="child5" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="111"  ref="child" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="222" ref="child3" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="333"  ref="child4" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="444"  ref="child5" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
     </div>
     <div class="card-wrapper" style="margin-top: 0px; margin-bottom: 200px;">    
-        <special-card ref="child6" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card ref="child7" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card ref="child8" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card ref="child9" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="555" ref="child6" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="666" ref="child7" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="777" ref="child8" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="999" ref="child9" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
     </div>
     <corner></corner>
     <Footer style="position: relative;"></Footer>

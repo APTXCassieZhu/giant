@@ -7,10 +7,11 @@
         <div class="form-wrap">
           <div class="uploadfile-l">
             <section class="">
-              <header class="uploadfile-header">STEP.1 <br/>资源上传</header>
-              <a-form-item v-bind="formItemLayout" label="资源上传" style="">
+              <header class="uploadfile-header">STEP.1 <br/>资源编辑</header>
+              <a-form-item v-bind="formItemLayout" label="" style="">
                 <div class="dropbox" style="margin:10px 0;">
                   <a-upload-dragger
+
                     v-decorator="[
                       'dragger',
                       {
@@ -103,6 +104,7 @@
                 </a-form-item>
               </template>
 
+
               <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
               <a-radio-group v-decorator="['radio-group']">
                 <a-radio value="none">
@@ -133,6 +135,7 @@
                     全选
                   </a-checkbox>
                   <a-checkbox-group :options="plainOptions_unreal" v-model="checkedList_unreal" @change="checkboxChangeUnreal" />
+
                 </div>
               </template>
             </section>
@@ -194,6 +197,7 @@
               </a-form-item>
             </section>
 
+
             <a-form-item style="border:none;">
               <input style="background:#1ebf73;margin-top:60px; border:none;outline:none;cursor:pointer;width:100%;height:67px;font-size:17px;font-weight:bold;color:#fff;" 
               @click="handleSubmit"  type="button" value="保存"/>
@@ -205,12 +209,13 @@
               <header class="uploadfile-header">
                 其他设置
               </header>
-              <!-- :label-col="labelCol" :wrapper-col="wrapperCol " -->
+            
               <a-form-item v-bind="formItemLayout" label="是否公开" :label-col="{span:8}" :wrapperCol="{span:5,offset:11}">
                 <a-switch v-decorator="['public', { valuePropName: 'checked' }]" />
               </a-form-item>
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
+            
           </section>
         </div>
       </a-form>
@@ -340,11 +345,16 @@ import TopNavigation from '@/components/TopNav'
 import marked from 'marked'
 import Vue from 'vue'
 
+
+
 var plainOptions = []
 var defaultCheckedList = []
 
 var plainOptions_unreal = []
 var defaultCheckedList_unreal = []
+
+
+
 
 export default {
   components:{TopNavigation},
@@ -360,7 +370,6 @@ export default {
       indeterminate_unreal: true,
       checkAll_unreal: false,
       plainOptions_unreal,
-
 
 
 
@@ -404,6 +413,7 @@ export default {
 
          if(keys.length === 1 && keys[0] === 'radio-group'){
            let o = fields[keys[0]]
+         
            that.showCheckBoxGroup = o.value
            that.checkedList = []
            that.checkedList_unreal = []
@@ -448,8 +458,8 @@ export default {
     ]
 
     editor.create()
-
-
+    
+    
     addEventListener('keydown',e=>{
       //console.log(editor)
       //editor.txt.html()
@@ -474,10 +484,12 @@ export default {
             plainOptions_unreal.push({
               label:o2.label,
               value:o2.value
+
             })
           }
           
         })
+        
       })
 
     })
@@ -509,8 +521,6 @@ export default {
       console.log('checkedList_unreal:',this.checkedList_unreal)
 
     },
-
-
     checkboxChange(checkedList) {
       this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length
       this.checkAll = checkedList.length === plainOptions.length
@@ -533,7 +543,6 @@ export default {
 
       console.log('checkedList:',this.checkedList)
     },
-
 
     beforeUpload2(file){
       // const isJPG = /jpg|jpeg|png/.test(file.type)
@@ -616,17 +625,11 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
 
-      // console.log(values)
+       console.log(values)
 
          //console.log(this.editor.txt.html(),this.editor.txt.html().length)
         
         // console.log('txt html:', this.editor.txt.html())
-        
-        // var tag3 = [
-        //   ...this.checkedList,
-        //   ...this.checkedList_unreal
-        // ]
-        // console.log(this.checkedList,this.checkedList_unreal)
 
         if(err){ return  }
 
@@ -640,7 +643,6 @@ export default {
           ...this.checkedList,
           ...this.checkedList_unreal
         ]
-          
         // debugger
 
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
@@ -671,7 +673,6 @@ export default {
           
           this.$message.success('发布成功')
         })
-
 
       })
     },
@@ -706,9 +707,9 @@ export default {
       //debugger
     },
     handleClose(removedTag) {
-      const tags = this.tags.filter(tag => tag !== removedTag)
-      //console.log(tags)
-      this.tags = tags
+      const tags = this.tags.filter(tag => tag !== removedTag);
+      //console.log(tags);
+      this.tags = tags;
     },
 
 
@@ -740,6 +741,8 @@ export default {
     },
     handleSave(){
       //console.log('tags:',this.tags,'fileList:',this.fileList, 'fileid:',this.fileid)
+
+      
     },
 
     handleChangex(info) {
