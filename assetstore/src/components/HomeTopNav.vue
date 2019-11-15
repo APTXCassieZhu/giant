@@ -5,9 +5,9 @@
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
             <div class="topnav-box-logo">
-                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="logo" @click="goPage('/')">      
+                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="logo" @click="goPage('/home')">      
             </div>
-            <span class="logo-text" @click="goPage('/')">GDRC</span>
+            <span class="logo-text" @click="goPage('/home')">GDRC</span>
             <!--不知道怎么清除之前div css-->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
@@ -17,7 +17,7 @@
                 <div class="topnav-box-link-a">
                     <Dropdown placement="bottom-start">
                         <a href="javascript:void(0)">美术类资源
-                            <Icon type="ios-arrow-down"></Icon>
+                            <Icon size="28" type="md-arrow-dropdown" style="position:relative; top: 3px;"></Icon>
                         </a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
                             <!--TODO 超链接导向的网页还没建-->
@@ -34,7 +34,9 @@
                 </div>
                 <div class="topnav-box-link-a">
                     <Dropdown placement="bottom-start">
-                        <a href="javascript:void(0)">研发工具<Icon type="ios-arrow-down"></Icon></a>
+                        <a href="javascript:void(0)">研发类工具
+                            <Icon size="28" type="md-arrow-dropdown" style="position:relative; top: 3px;"></Icon>
+                        </a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
                             <!--TODO 超链接导向的网页还没建-->
                             <ul><DropdownItem><router-link to="/工具/可视化脚本">可视化脚本</router-link></DropdownItem></ul>
@@ -46,7 +48,7 @@
                         </DropdownMenu>
                     </Dropdown>
                 </div>
-                <router-link class="topnav-box-link-a" to="/software" exact-active-class="router-active">常用软件</router-link>
+                <router-link class="topnav-box-link-a"  style="bottom:1px;" to="/software" exact-active-class="router-active">常用软件</router-link>
             </div>
             
             <!--提交搜索内容-->
@@ -54,15 +56,16 @@
             </div>
            
             <div class="topnav-box-user">
-                <span>欢迎回来，{{getUser}}</span>
+                <span class="welcome">欢迎回来，{{getUser}}</span>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
-                        <Icon type="ios-contact" size="48" class="topnav-user" @click="goPage('/personal')"/>
+                        <img v-if="profile" class="topnav-user" :src="profile" @click="goLike('personal')" alt="avatar">
+                        <div v-else class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
-                    <DropdownMenu slot="list" class="topnav-dropdown">
-                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">个人中心</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">我的关注</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><router-link class="user-box-link-a" to="/personal">修改资料</router-link></DropdownItem></ul>
+                    <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-25px;">
+                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
+                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem></ul>
+                        <ul><DropdownItem><router-link class="user-box-link-a" to="/editPersonal">修改资料</router-link></DropdownItem></ul>
                         <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
                     </DropdownMenu>
                 </Dropdown>
@@ -81,10 +84,39 @@
 <script>
 export default {
     name: "HomeTopNavigation",
+    data(){
+        return{
+            profile: null,
+            userName: '神之子阿目',
+        }
+    },
     computed:{
         getUser(){
-            return this.$store.state.token;
+            let o = JSON.parse(this.$store.state.user)
+            this.profile = o.profilePic
+            if(o.nickName == null){
+                return o.name
+            }else{
+                return o.nickName
+            }
         }
+    },
+    mounted(){
+        // axios.get('/user/describe').then((res)=>{
+        //     if(res.data.code == 0){
+        //         this.$store.commit('ADD_COUNT', res.headers.Authorization)
+        //         this.profile = res.data.data.profilePic
+        //         if(res.data.data.nickName == null){
+        //             this.userName = res.data.data.name
+        //         }else{
+        //             this.userName = res.data.data.nickName
+        //         }
+        //     }
+        //     else if(res.data.code == 404){
+        //         alert('user not found')
+        //     }
+        // }, (res)=>{
+        // })
     },
     methods:{
         logout(){
@@ -92,7 +124,23 @@ export default {
             this.$router.push('/login')
         },
         goPage(url){
-            this.$router.push(url)
+            if(this.$route.path===url){
+                location.reload()
+            }else{
+                this.$router.push(url)
+            }
+        },
+        goLike(type){
+            if(type === 'personal'){
+                this.$store.commit('PERSONAL_ACTIVE', "name1")
+            }else if(type === 'like'){
+                this.$store.commit('PERSONAL_ACTIVE', "name3")
+            }
+            if(this.$route.path==='/personal'){
+                location.reload()
+            }else{
+                this.$router.push('/personal')
+            }
         },
     }   
 }
@@ -181,11 +229,12 @@ export default {
     position: relative;
     font-family: MicrosoftYaHei;
     text-decoration: none;
-    width: 12%;
+    width: 15%;
     float: left;
-    padding-right: 2%;
+    padding-right: 3%;
     text-align:center;    
     color: black;
+    bottom: 4px;
 }
 
 .topnav-box-link-a a{
@@ -199,7 +248,12 @@ export default {
     font-size: 15px;
     top: 8.5px;
 }
-
+.welcome{
+    position:relative;
+    bottom: 0px;
+    font-size:14px;
+    color: rgba(0, 0, 0, 0.5);
+}
 .topnav-box-user{
     position: relative;
     font-family: MicrosoftYaHei;
@@ -209,7 +263,17 @@ export default {
     color:black;
 }
 
-.topnav-user, .user-box-link-a{
+.topnav-user{
+    color:rgba(0, 0, 0, 0.5);
+    background-color: #e8f8f0;
+    width:35px;
+    height:35px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.user-box-link-a{
     color:black;
 }
 

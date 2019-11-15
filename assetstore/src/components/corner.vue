@@ -6,18 +6,19 @@
             </div>
         </transition>
         <br>
-        <div class="corner-icon">
-            <span style="position:relative; left: 2px; font-size:20px;"><font-awesome-icon icon="edit"/></span>
+        <div class="corner-icon" @click="showFeedbackModal()">
+            <span style="position:relative; left: 2px; font-size:20px;">
+                <font-awesome-icon :icon="['fas','edit']"/>
+            </span>
         </div>
+        <feedback :showFeedback='toShow' @hideDialog="toShow=false"></feedback>
     </div>
 </template>
 <script>
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
-library.add(faEdit)
-
+import feedback from "../components/feedback.vue"
 export default {
     name:"Corner",
+    components:{feedback},
     props: {
         transitionName: {
             type: String,
@@ -35,6 +36,7 @@ export default {
         return {
             //定义定时器
             interval: null,
+            toShow: false,
         }
     },
     mounted() {
@@ -77,6 +79,10 @@ export default {
             // 将总长度设置为一半，并且时间从当前开始递减，对图像进行垂直向上平移
             return -c / 2 * (--t * (t - 2) - 1) + b
             }
+        },
+        showFeedbackModal(){
+            console.log('showing')
+            this.toShow = true            
         }
     },
 }
@@ -94,9 +100,9 @@ export default {
     width: 50px;
     background-color: #fff;
     border-radius: 50%;
+    line-height: 50px;
     text-align: center;
     /*vertical-align: middle;*/
-    padding: 10px;
     box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
     cursor: pointer;
 }

@@ -6,9 +6,9 @@
                 @click.native="changeAdvise()" @on-clear="hideAssociate()"
                 v-on:input="handleInput()" v-model.trim="searchForm.content"
                 placeholder="支持输入资源、用户、文章关键字" /></Input>
-                <Button type="primary" class="search-button" @click="searchSubmit()">
+                <span class="span-button"><Button type="primary" class="search-button" @click="searchSubmit()">
                     <Icon type="ios-search" size="30"></Icon>
-                </Button>
+                </Button></span>
                 <div class="search-card" id="content">
                     <!--TODO 热门搜索的内容暂不知-->
                     <ul class="hot-search-title">热门搜索</ul>
@@ -25,7 +25,7 @@
                         </ul>
                         <ul v-for="(item,index) in searchHistory" :key="index">
                             <Icon size="20" type="ios-time-outline" ></Icon>
-                            <span class="tag-style" @click.native="searchTag(item)">{{item}}</span>
+                            <span class="tag-style" @click="searchTag(item)">{{item}}</span>
                         </ul>
                     </div>
                 </div>
@@ -98,33 +98,37 @@ export default {
     methods: {
         searchSubmit() {
             // 清空
-            this.searchHistory = []
-            if((storage.has(1)&&storage.has(2))) {
-                storage.set(3, storage.get(2))
-                storage.set(2, storage.get(1))
-                storage.set(1, this.searchForm.content)
-                this.searchHistory.push(storage.get(1))
-                this.searchHistory.push(storage.get(2))
-                this.searchHistory.push(storage.get(3));
-            }else{
-                if(!storage.has(1)) {
-                    // empty history
-                    storage.set(1, this.searchForm.content)
-                    this.searchHistory.push(storage.get(1))
-                } else {
+            if(this.searchForm.content != ""){
+                this.searchHistory = []
+                if((storage.has(1)&&storage.has(2))) {
+                    storage.set(3, storage.get(2))
                     storage.set(2, storage.get(1))
                     storage.set(1, this.searchForm.content)
                     this.searchHistory.push(storage.get(1))
                     this.searchHistory.push(storage.get(2))
+                    this.searchHistory.push(storage.get(3));
+                }else{
+                    if(!storage.has(1)) {
+                        // empty history
+                        storage.set(1, this.searchForm.content)
+                        this.searchHistory.push(storage.get(1))
+                    } else {
+                        storage.set(2, storage.get(1))
+                        storage.set(1, this.searchForm.content)
+                        this.searchHistory.push(storage.get(1))
+                        this.searchHistory.push(storage.get(2))
+                    }
                 }
+                axios.post('/api/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
+                    //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
+                    this.$store.commit('SEARCH_COUNT', this.searchForm.content)
+                    this.reload()
+                    if(this.$route.path != '/searchResult'){
+                        this.$router.push('/searchResult')
+                    }
+                }, (response)=>{
+                })
             }
-            this.$http.post('/users/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
-                //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                this.$store.commit('SEARCH_COUNT', this.searchForm.content)
-                this.reload()
-                this.$router.push('/searchResult')
-            }, (response)=>{
-            })
         },
         handleInput(e) {
             document.getElementById("content").style.display="none"
@@ -202,34 +206,43 @@ export default {
 }
 </script>
 
+<style>
+.search-input > .ivu-input{
+    border-radius: 0;
+    height: 39px;
+}
+
+.span-button > .ivu-btn{
+    border-radius: 0;
+}
+
+.span-button > .ivu-btn > span{
+    position: relative;
+    left: -10px;
+    text-align:center;
+}
+.search-card > span > .tag-style:hover > .ivu-tag-text{
+    color: #1ebf73;
+}
+</style>
 <style scoped>
 .search-input{
     text-align: left;
     float: left;
     font-family: MicrosoftYaHei;
-    /*width: 80%;*/
     width: 333px;
-    height: 48px;
+    height: 39px;
     z-index: 0;
 }
 
 .search-button{
-    background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);
+    /*background-image: linear-gradient(to bottom, #40e1ab, #1ebf73);*/
     border-width: 0px;
     font-family: MicrosoftYaHei;
     float: left;
-    /*width: 20%;*/
-    width: 60px;
+    width: 39px;
+    height: 39px;
     cursor: pointer;
-    height: 40px;
-    z-index: 0;
-}
-
-.search-button:hover{
-    background-image: linear-gradient(to bottom, aquamarine, #40e1ab,#1ebf73);
-    border-color:aquamarine;
-    color: white;
-    border-width: 3px;
     z-index: 0;
 }
 

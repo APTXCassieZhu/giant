@@ -8,7 +8,7 @@
         </div>
         <div class="card-wrapper">
             <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
-            <ul><div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-角色.png') + ')'}"></div>
+            <ul><div class="advise-card" @click="handleClick" :style="{backgroundImage: 'url(' + require('../../assets/资源-角色.png') + ')'}"></div>
             <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-环境.png') + ')'}"></div>
             <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-道具.png') + ')'}"></div>
             <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-载具.png') + ')'}"></div>
@@ -25,7 +25,7 @@
             <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-国风.png') + ')'}"></div></ul>
         </div>
         <corner></corner>
-        <Footer style="position:relative;"></Footer>
+        <Footer style="position:relative;margin-top: 200px;"></Footer>
     </div>
 </template>
 
@@ -48,6 +48,9 @@ export default {
         
     },
     methods:{
+        handleClick(){
+            this.$router.push('/artShow/role')
+        }
     },
 }
 </script>
@@ -68,11 +71,11 @@ export default {
     position: relative;
     text-align: center;
     top: 40px;
-    margin-bottom: 200px;
 }
 
 .advise-card{
     display: inline-block; 
+    cursor: pointer;
     margin-right: 30px; 
     margin-bottom: 40px;
     width: 240px;

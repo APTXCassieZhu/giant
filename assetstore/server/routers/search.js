@@ -8,15 +8,7 @@ var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-router.post('/login', jsonParser, function(req,res){
-    console.log("back-end account: "+req.body.account)
-    console.log("pwd: " +req.body.password)
-    res.cookie('session', { current_user: req.body.account });
-    // TO DO check if the user exists
-    res.json({'status':"OK"});
-})
-
-router.post('/search', jsonParser,function(req,res){
+router.post('/', jsonParser,function(req,res){
     console.log("search "+req.body.searchcontent);
     res.json({'status':"OK"});
 })

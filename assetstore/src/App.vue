@@ -36,5 +36,16 @@ export default {
   /*text-align: center;*/
   color: #2c3e50;
   background-color: #ffffff;
+  width:auto;
+  min-width:1620px;
+  max-width:100%;
+  height:100%;
 }
+@font-face {
+  font-family: "custom-font";
+  src: url('https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+}
+#app input:-internal-autofill-selected {
+        box-shadow: 0 0 0 1000px white inset;
+    }
 </style>
