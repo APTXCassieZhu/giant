@@ -91,7 +91,7 @@
                 <div class="software-container">
                     <div>
                         <span v-for="(item, n) in this.freeSWList" :key="n">
-                            <software-download></software-download>
+                            <software-download :sw="item"></software-download>
                         </span>
                     </div>
                     <div>
@@ -105,7 +105,7 @@
                 <div class="software-container">
                     <div>
                         <span v-for="(item, n) in this.scheduleSWList" :key="n">
-                            <software-download></software-download>
+                            <software-download :sw="item"></software-download>
                         </span>
                     </div>
                     <div>
@@ -119,7 +119,7 @@
                 <div class="software-container">
                     <div>
                         <span v-for="(item, n) in this.driveSWList" :key="n">
-                            <software-download></software-download>
+                            <software-download :sw="item"></software-download>
                         </span>
                     </div>
                     <div>

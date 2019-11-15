@@ -109,6 +109,7 @@ export default {
                 okText: '确认',
                 cancelText: '取消',
                 onOk: () => {
+                    // axios.delete(`/api/resource/${sourceID}`)
                     setTimeout(() => {
                         this.$Modal.success({
                             title: '资源已删除',

@@ -4,25 +4,36 @@
         <div class="middle-card-wrapper">
             <div class="self-card">
                 <div class="self">
-                    <!-- <img src="../../assets/绿头像.jpg" class="avatar"> -->
                     <div v-if="this.profilePic != null"><img class="avatar" :src="profilePic"></div>
-                    <div v-else class="font-avatar">{{getUser.charAt(0)}}</div>
+                    <div v-else class="font-avatar">{{this.username.charAt(0)}}</div>
                     <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/>
-                    <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
-                    <ul style="font-size: 14px; color: #7f7f7f;">{{getDep}}</ul>
+                    <ul style="font-size: 21px;font-weight: bold;">{{this.username}}</ul>
+                    <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
                 </div>
                 <br>
-                <ul style="font-size: 14px; color: #7f7f7f;">{{getSign}}</ul>
+                <ul style="font-size: 14px; color: #7f7f7f;">{{this.signature}}</ul>
                 <Divider />
-                <!-- TODO 从后端数据库读取-->
                 <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
-                <span v-for="(item,index) in personalTagList" :key="index">
-                    <Tag class="tag-style" size="large">{{item}}</Tag>
+                <div v-if="this.user.labels == null" class="empty-personal">
+                    <p>暂无好友印象哦～</p>
+                    <p>快邀请好友来为您添加第一条标签吧</p>
+                </div>
+                <span v-else v-for="(item,index) in this.user.labels" :key="index">
+                    <Tag class="tag-style" size="small">&emsp;{{item}}&emsp;</Tag>
                 </span>
+
                 <Divider />
                 <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
-                <div v-for="(item, i) in productList" :key="'a'+i">
-                    <div class="font-image">{{item.charAt(0)}}</div>&emsp;{{item}}
+                <div v-if="this.user.fineResources == null" class="empty-personal">
+                    <p>暂无优秀作品哦～</p>
+                    <p>GDRC期待您的分享</p>
+                </div>
+                <div v-else v-for="(resource, i) in this.user.fineResources" :key="'a'+i">
+                    <div class="personal-fine">
+                        <div v-if="resource.images==null" class="font-image">{{resource.name.charAt(0)}}</div>
+                        <div v-else><img  class="font-image" :src="resource.images[0]"></div>
+                        <div class="font-name">{{resource.name}}</div>
+                    </div>
                     <br><br>
                 </div>
             </div>
@@ -75,38 +86,43 @@ export default {
     components:{TopNavigation, Footer, Corner, SourceBox, SoftwareBox, 
     SoftwareUpBox, SoftwarePendBox, LikeBox, Cartoon},
     computed:{
-        getUser(){ 
-            let o = JSON.parse(this.$store.state.user)
-            if(o.nickName == null){
-                return o.name
-            }else{
-                return o.nickName
-            }
-        },
-        getDep(){
-            let o = JSON.parse(this.$store.state.user)
-            return o.dept
-        },
-        getSign(){
-            let o = JSON.parse(this.$store.state.user)
-            return o.signature
-        }
     },
     mounted() {
         this.personalActive = this.$store.state.personalActive
-        // this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
-        // 拿到头像
+
         let o = JSON.parse(this.$store.state.user)
-        this.profilePic = o.profilePic
+        axios.get(`/api/user/${o.id}`).then((res)=>{
+            if(res.data.code == 0){
+                this.user = res.data.data
+                this.profilePic = res.data.data.profilePic
+                if(res.data.data.nickName == null){
+                    this.username = res.data.data.name
+                }else{
+                    this.username = res.data.data.nickName
+                }
+                if(res.data.data.signature == null){
+                    this.signature = '来都来了，留下点个性签名介绍下自己吧'
+                }else{
+                    this.signature = res.data.data.signature
+                }
+            }
+        }, (res)=>{
+            // 登录失败
+            alert(res)
+        })
     },
     data () {
         return {
             profilePic: null,
+            user: {},
+            username: '迪丽热巴的老婆--睿酱',
+            department: '拯救地球部',
+            signature: '就像阳光穿破黑夜~ 黎明悄悄划过天边~ O(∩_∩)O谢谢',
             uploadFolderStyle: "upload-folder-style",
             tab1: "资源(2)",
             tab2: "软件(1)",
             personalActive: "name1",
-            personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸','暴躁老妹'],// 从后端拿
+            personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','暴躁老妹'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息
             productList: ['二次元人物模型','天空贴图素材包'],    
             softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
@@ -154,7 +170,7 @@ export default {
 .self-card{
     font-family: MicrosoftYaHei;
     width: 360px;
-    height: 660px;
+    min-height: 660px;
     margin-top: 53px;
     /* top: 10px; */
     padding: 30px 20px 30px 25px;
@@ -195,7 +211,15 @@ export default {
     color: #1ebf73;
     cursor: pointer;
 }
-
+.tag-style{
+    margin-right:15px;
+    margin-bottom: 10px;
+}
+.empty-personal{
+    font-size: 14px;
+    color: #777777;
+    letter-spacing: 1px;
+}
 .asset-card{
     font-family: MicrosoftYaHei;
     font-size: 16px;
@@ -208,7 +232,11 @@ export default {
     background-color: #ffffff;
     overflow: auto;
 }
-
+.personal-fine{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 .font-image{
     font-size:16px;
     display: inline-block;
@@ -218,6 +246,12 @@ export default {
     width: 44px;
     text-align: center;
     line-height: 44px;
+}
+.font-name{
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #7f7f7f;
+    margin-left: 20px;
 }
 .tabpane{
     cursor: pointer;

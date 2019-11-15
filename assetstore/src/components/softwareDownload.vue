@@ -1,7 +1,8 @@
 <template>
     <!---->
     <div class="source-box">
-        <div class="font-image">{{sw.name}}</div>
+        <div v-if="sw.image != null" ><img class="font-image" :src="sw.image"></div>
+        <div v-else class="font-image">{{sw.name}}</div>
         <div class="font-title">
             <p style="font-size:16px;font-weight:600">{{sw.name}}</p>
             <p style="position:relative;top:8px;font-size:14px;font-weight:600;color:#7f7f7f;">当前版本 {{sw.version}}</p>
