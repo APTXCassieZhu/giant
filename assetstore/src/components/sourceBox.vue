@@ -2,22 +2,26 @@
 <div class="source-box-wrapper" v-if="!deleteOrNot">
     <div class="source-box">
         <div class="upper">
-            <div class="font-image">{{source.charAt(0)}}</div>
-            <a-tooltip placement="top">
-                <template slot="title">
-                    <span>{{source}}</span>
-                </template>
-                <div class="font-title">{{getResource}}</div>
-            </a-tooltip>
-            
-            <div class="font-switch">
-                <i-switch v-model="publicOrNot" size="large" @on-change="changeState()">
-                    <span slot="open">公开</span>
-                    <span slot="close">隐藏</span>
-                </i-switch>
+            <div class="upper-head">
+                <div class="font-image">{{source.name.charAt(0)}}</div>
+                <div class="font-wrapper">
+                    <a-tooltip placement="top">
+                        <template slot="title">
+                            <span>{{source.name}}</span>
+                        </template>
+                        <div class="font-title">{{getResource}}</div>
+                    </a-tooltip>
+                
+                    <div class="font-switch">
+                        <i-switch v-model="publicOrNot" size="large" @on-change="changeState()">
+                            <span slot="open">公开</span>
+                            <span slot="close">隐藏</span>
+                        </i-switch>
+                    </div>
+                </div>
             </div>
             <div class="font-content">下载次数&emsp;&emsp;&emsp;关注人数</div>
-            <div class="font-num">{{downloadCount}}<span style="margin-left: 63px;">2,019</span></div>
+            <div class="font-num">{{source.downloadCount}}<span style="margin-left: 63px;">{{getStars}}</span></div>
         </div>
         <Row class="font-footer">
             <Col span="8" class="footer-col">
@@ -48,24 +52,26 @@
 export default {
     name: "SourceBox",
     props: {
-        sourceName: {
-            type: String,
-        },
+        source: {
+            type: Object,
+            default: () => {}
+        }
     },
     computed:{
         getResource(){
-            return this.source.length > 7 ? (this.source.slice(0,6)+'...'): this.source;
+            return this.source.name.length > 7 ? (this.source.name.slice(0,6)+'...'): this.source.name;
+        },
+        // 给人数x,xxx （每三位数分个逗号）
+        getStars(){
+            return this.source.stars > 1000 ? (this.source.stars).toString().slice(0,1)+','+ (this.source.stars).toString().slice(1): this.source.stars;
         }
     },
     data() {
         return {
-            // TODO data里面的数据均需从后端拿到
-            source: this.sourceName,        //'啦啦啦啦',
             rate: 3.5,
             downloadCount: 233,
             likeCount: 2019,
             favoriteIcon: false,            // defalut favourite is false
-            sourceID: 0,                    // TODO从后端得到
             publicOrNot: false,             // 默认隐藏
             // default
             moreVisible: false,
@@ -165,8 +171,19 @@ export default {
     border: solid 2px #eaeaea;
 }
 .upper{
-    padding: 18px 18px 0px 18px;
-    margin-bottom: 10px;
+    padding: 20px 18px 0px 18px;
+    margin-bottom: 16.5px;
+}
+.upper-head{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.font-wrapper{
+    display: flex;
+    flex: 1;
+    justify-content: inherit;
+    margin-left: 8px;
 }
 .font-image{
     display: inline-block;
@@ -184,13 +201,11 @@ export default {
     margin-bottom: 30px;
     font-size: 16px;
     font-weight: bold; 
-    line-height: 21px;
 }
 .font-switch{
     display: inline-block;
     position: relative;
-    left: 15px;
-    top: -3px;
+    margin-left: 10px;
 }
 .font-content{
     position: relative;

@@ -45,9 +45,9 @@
                             <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
                             <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
                         </div>
-                        <source-box v-bind:sourceName='this.productList[0]'></source-box>
-                        <source-box v-bind:sourceName='this.productList[1]'></source-box>  
-                        <source-box v-bind:sourceName='this.productList[2]'></source-box>  
+                        <div v-for="(product, i) in this.productList" :key="'aa'+i">
+                            <source-box v-bind:source='product'></source-box>
+                        </div>
                     </TabPane>
                     <TabPane :label="tab2" name="name2">
                         <software-box v-bind:softwareName='this.softwareList[0]'></software-box>
@@ -89,13 +89,13 @@ export default {
     computed:{
     },
     mounted() {
-        debugger
+        // 判断右边展示"资源", "软件","关注"
         if(this.$store.state.personalActive == "" || this.$store.state.personalActive == null){
             this.personalActive = "name1"
         }else{
             this.personalActive = this.$store.state.personalActive
         }
-        
+        // 拿到用户的基本资料
         let o = JSON.parse(this.$store.state.user)
         axios.get(`/api/user/${o.id}`).then((res)=>{
             if(res.data.code == 0){
@@ -116,6 +116,15 @@ export default {
             // 登录失败
             alert(res)
         })
+        // 拿到用户上传的资源列表
+        axios.get(`/api/user/${o.id}/resource`).then((res)=>{
+            if(res.data.code == 0){
+                this.productList = res.data.data
+            }
+        }, (res)=>{
+            // 登录失败
+            alert(res)
+        })
     },
     data () {
         return {
@@ -130,7 +139,7 @@ export default {
             personalActive: "name1",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','暴躁老妹'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息
-            productList: ['二次元人物模型','天空贴图素材包','神迹天哪好厉害啊'],    
+            productList: [],    
             softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
         }
     },
