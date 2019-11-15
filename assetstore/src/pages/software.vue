@@ -167,10 +167,10 @@ export default {
             // 当前显示的是哪个分类的software
             showPage: 'general',
             // 各类软件列表
-            generalSWList: ['微博','微信','知乎','豆瓣','人人', 'QQ', '网易云'],
-            specialSWList: ['adobe','zeplin','PS','VPN','Office'],
-            freeSWList: ['百度','搜狗','google','outlook','淘宝'],
-            scheduleSWList: ['TODO', 'calendar', 'remainders', 'facetime'],
+            generalSWList: [],
+            specialSWList: [],
+            freeSWList: [],
+            scheduleSWList: [],
             driveSWList: [],
             // 专用软件下载的三种按钮样式，用于通知子组件用哪种button
             btnList:['btn1','btn2','btn3'],

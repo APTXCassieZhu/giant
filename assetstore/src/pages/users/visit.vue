@@ -18,9 +18,25 @@
                     <p>暂无好友印象哦～</p>
                     <p>快邀请好友来为您添加第一条标签吧</p>
                 </div>
-                <span v-else v-for="(item,index) in this.user.labels" :key="index">
-                    <Tag class="tag-style" size="small">&emsp;{{item}}&emsp;</Tag>
-                </span>
+                <div v-else>
+                    <span v-for="(item,index) in this.user.labels" :key="index">
+                        <Tag class="tag-style">&emsp;{{item}}&emsp;</Tag>
+                    </span>
+                    <a-input
+                        v-if="inputVisible"
+                        ref="input"
+                        type="text"
+                        size="small"
+                        :style="{ width: '78px' }"
+                        :value="inputValue"
+                        @change="handleInputChange"
+                        @blur="handleInputConfirm"
+                        @keyup.enter="handleInputConfirm"
+                    />
+                    <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
+                    <a-icon type="plus" /> New Tag
+                    </a-tag>
+                </div>
 
                 <Divider />
                 <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>

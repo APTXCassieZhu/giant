@@ -11,7 +11,7 @@
                     <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
                 </div>
                 <br>
-                <ul style="font-size: 14px; color: #7f7f7f;">{{this.signature}}</ul>
+                <ul style="font-size: 14px; color: #7f7f7f;text-align:center;">{{this.signature}}</ul>
                 <Divider />
                 <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
                 <div v-if="this.user.labels == null" class="empty-personal">
@@ -19,7 +19,7 @@
                     <p>快邀请好友来为您添加第一条标签吧</p>
                 </div>
                 <span v-else v-for="(item,index) in this.user.labels" :key="index">
-                    <Tag class="tag-style" size="small">&emsp;{{item}}&emsp;</Tag>
+                    <Tag class="tag-style">&emsp;{{item}}&emsp;</Tag>
                 </span>
 
                 <Divider />
@@ -29,7 +29,7 @@
                     <p>GDRC期待您的分享</p>
                 </div>
                 <div v-else v-for="(resource, i) in this.user.fineResources" :key="'a'+i">
-                    <div class="personal-fine">
+                    <div class="personal-fine" @click="goPage(`/resourceDetail/${resource.id}`)">
                         <div v-if="resource.images==null" class="font-image">{{resource.name.charAt(0)}}</div>
                         <div v-else><img  class="font-image" :src="resource.images[0]"></div>
                         <div class="font-name">{{resource.name}}</div>
@@ -47,6 +47,7 @@
                         </div>
                         <source-box v-bind:sourceName='this.productList[0]'></source-box>
                         <source-box v-bind:sourceName='this.productList[1]'></source-box>  
+                        <source-box v-bind:sourceName='this.productList[2]'></source-box>  
                     </TabPane>
                     <TabPane :label="tab2" name="name2">
                         <software-box v-bind:softwareName='this.softwareList[0]'></software-box>
@@ -88,8 +89,13 @@ export default {
     computed:{
     },
     mounted() {
-        this.personalActive = this.$store.state.personalActive
-
+        debugger
+        if(this.$store.state.personalActive == "" || this.$store.state.personalActive == null){
+            this.personalActive = "name1"
+        }else{
+            this.personalActive = this.$store.state.personalActive
+        }
+        
         let o = JSON.parse(this.$store.state.user)
         axios.get(`/api/user/${o.id}`).then((res)=>{
             if(res.data.code == 0){
@@ -124,7 +130,7 @@ export default {
             personalActive: "name1",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','暴躁老妹'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息
-            productList: ['二次元人物模型','天空贴图素材包'],    
+            productList: ['二次元人物模型','天空贴图素材包','神迹天哪好厉害啊'],    
             softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
         }
     },
@@ -236,6 +242,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
 }
 .font-image{
     font-size:16px;

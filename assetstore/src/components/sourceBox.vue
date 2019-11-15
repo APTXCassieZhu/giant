@@ -3,7 +3,19 @@
     <div class="source-box">
         <div class="upper">
             <div class="font-image">{{source.charAt(0)}}</div>
-            <div class="font-title">{{source}}</div>
+            <a-tooltip placement="top">
+                <template slot="title">
+                    <span>{{source}}</span>
+                </template>
+                <div class="font-title">{{getResource}}</div>
+            </a-tooltip>
+            
+            <div class="font-switch">
+                <i-switch v-model="publicOrNot" size="large" @on-change="changeState()">
+                    <span slot="open">公开</span>
+                    <span slot="close">隐藏</span>
+                </i-switch>
+            </div>
             <div class="font-content">下载次数&emsp;&emsp;&emsp;关注人数</div>
             <div class="font-num">{{downloadCount}}<span style="margin-left: 63px;">2,019</span></div>
         </div>
@@ -13,11 +25,12 @@
             </Col>
             <Col span="8" class="footer-col">
                 <Divider type="vertical" class="foot-divider"/>
-                <Icon size="25" type="md-create" class="foot-icon" />
+                <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon" />
             </Col>
             <Col span="8" class="footer-col1">
                 <Divider type="vertical" class="foot-divider"/>
-                <Dropdown trigger="click" :visible="moreVisible" @on-clickoutside="closeDrop()">
+                <span class="foot-icon foot-icon-del" @click="deleteSource">删除</span>
+                <!-- <Dropdown trigger="click" :visible="moreVisible" @on-clickoutside="closeDrop()">
                     <Button href="javascropt:void(0)" class="foot-btn" @click.native="openDrop()">
                         <Icon size="25" type="md-more" class="foot-icon"/>
                     </Button>
@@ -25,7 +38,7 @@
                         <DropdownItem @click.native="changeState" class="dropdown-text">{{state}}资源</DropdownItem>
                         <DropdownItem @click.native="deleteSource" class="dropdown-text-delete">删除</DropdownItem>
                     </DropdownMenu>
-                </Dropdown>
+                </Dropdown> -->
             </Col>
         </Row>
     </div>
@@ -39,6 +52,11 @@ export default {
             type: String,
         },
     },
+    computed:{
+        getResource(){
+            return this.source.length > 7 ? (this.source.slice(0,6)+'...'): this.source;
+        }
+    },
     data() {
         return {
             // TODO data里面的数据均需从后端拿到
@@ -48,7 +66,7 @@ export default {
             likeCount: 2019,
             favoriteIcon: false,            // defalut favourite is false
             sourceID: 0,                    // TODO从后端得到
-            state: '隐藏',
+            publicOrNot: false,             // 默认隐藏
             // default
             moreVisible: false,
             deleteOrNot: false,
@@ -69,7 +87,7 @@ export default {
             }  
         },
         changeState(){
-            if(this.state == '隐藏'){
+            if(this.publicOrNot){
                 this.$Modal.confirm({
                     title: '确认公开此条资源？',
                     okText: '确认',
@@ -137,6 +155,7 @@ export default {
     height:250px;
     width: 274px;
     margin-right: 50px;
+    cursor: pointer;
 }
 .source-box{
     height: 196px; 
@@ -167,6 +186,12 @@ export default {
     font-weight: bold; 
     line-height: 21px;
 }
+.font-switch{
+    display: inline-block;
+    position: relative;
+    left: 15px;
+    top: -3px;
+}
 .font-content{
     position: relative;
     font-size: 14px;
@@ -178,6 +203,7 @@ export default {
     font-weight: bold;
     margin-left: 60px;
 }
+
 .font-footer{
     background-color: #eaeaea;  
     color: #7d7d7d;
@@ -200,6 +226,13 @@ export default {
 }
 .foot-icon-hover{
     color: #1ebf73;
+}
+.foot-icon-del{
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 1px;
+    color: #7f7f7f;
 }
 .foot-divider{
     position:relative;
