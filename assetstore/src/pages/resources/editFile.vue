@@ -458,8 +458,8 @@ export default {
     ]
 
     editor.create()
-
-
+    
+    
     addEventListener('keydown',e=>{
       //console.log(editor)
       //editor.txt.html()
