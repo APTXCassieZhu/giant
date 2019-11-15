@@ -1,11 +1,11 @@
 <template>
     <!---->
     <div class="source-box">
-        <div class="font-image">LOGO</div>
+        <div class="font-image">{{sw.name}}</div>
         <div class="font-title">
-            <p style="font-size:16px;font-weight:600">{{this.software}}</p>
-            <p style="position:relative;top:8px;font-size:14px;font-weight:600;color:#7f7f7f;">当前版本 {{this.currentVersion}}</p>
-            <p style="position:relative; top: 25px;font-size:14px;color:#7f7f7f;">最后更新 {{this.latestUpdate}}</p>
+            <p style="font-size:16px;font-weight:600">{{sw.name}}</p>
+            <p style="position:relative;top:8px;font-size:14px;font-weight:600;color:#7f7f7f;">当前版本 {{sw.version}}</p>
+            <p style="position:relative; top: 25px;font-size:14px;color:#7f7f7f;">最后更新 {{getYYMMDD(sw.updatedAt)}}</p>
         </div>
         <Button class="btn" type="success"><Icon type="md-download" />下载软件</Button>
     </div>
@@ -13,7 +13,12 @@
 <script>
 export default {
     name: "SoftwareDownload",
-    props: ['sw'],
+    props: {
+        sw: {
+            type: Object,
+            default: () => {}
+        }
+    },
     data() {
         return {
             software: "XXX客户端", //this.softwareName
@@ -24,6 +29,19 @@ export default {
     mounted(){
     },
     methods:{
+        getYYMMDD(t){
+            let time = new Date(t)
+            let [yy,mm,dd] = [
+                time.getFullYear(),
+                time.getMonth()+1,
+                time.getDate()
+            ]
+            if(mm<10){
+                mm = '0' + mm
+            }
+            return  yy+'-'+mm+'.'+dd
+  
+        }
     }
 }
 </script>

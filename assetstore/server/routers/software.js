@@ -22,7 +22,7 @@ router.get('/', jsonParser, function(req,res){
     if(req.query.classify == 'general'){
         res.status(200).json({'code': 0, 
         'data':{
-            'count': 5,
+            'count': 25,
             'list': [{
                         "id": 1,
                         "name": "微信",
@@ -74,7 +74,7 @@ router.get('/', jsonParser, function(req,res){
                             "id": 0,
                             "size": 0
                         }
-                    },,
+                    },
                     {
                         "id": 5,
                         "name": "豆瓣",
@@ -92,7 +92,7 @@ router.get('/', jsonParser, function(req,res){
     }else if(req.query.classify == 'free'){
         res.status(200).json({'code': 0, 
         'data':{
-            'count': 7,
+            'count': 17,
             'list': [{
                         "id": 1,
                         "name": "free1",
@@ -228,7 +228,7 @@ router.get('/', jsonParser, function(req,res){
     }else if(req.query.classify == 'drive'){
         res.status(200).json({'code': 0, 
         'data':{
-            'count': 4,
+            'count': 10,
             'list': [{
                         "id": 1,
                         "name": "drive1",
