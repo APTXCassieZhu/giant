@@ -23,6 +23,7 @@ import versionHistory from '@/pages/resources/versionHistory'
 import resourceComment from '@/pages/resources/comment'
 import artShowRole from '@/pages/search/artShowRole'
 
+
 Vue.use(Router)
 
 export default new Router({ 
@@ -168,7 +169,7 @@ export default new Router({
       }
     },
     {
-      path: '/editFile',
+      path: '/editFile/:resourceId',
       name: 'editFile',
       component: editFile,
       meta: {
@@ -194,8 +195,7 @@ export default new Router({
         requireAuth: true
       }
     },
-    
-
+ 
     {
       path:'/resourceDetail/:resourceId/comment',
       name:'resourceComment',
@@ -204,6 +204,8 @@ export default new Router({
         requireAuth: true
       }
     },
+
+
     {
       path:'/artShow/role',
       name:'artShowRole',

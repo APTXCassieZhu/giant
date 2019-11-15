@@ -103,7 +103,6 @@
                 </a-form-item>
               </template>
 
-
               <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
               <a-radio-group v-decorator="['radio-group']">
                 <a-radio value="none">
@@ -119,22 +118,23 @@
             </a-form-item>
 
               <template v-if="showCheckBoxGroup=='unity'">
-                <a-form-item v-bind="formItemLayout" label="Unity" :label-col="labelCol" :wrapper-col="wrapperCol ">
-                  <a-checkbox-group v-decorator="['checkbox-group-unity']">
-                    <a-checkbox value="unity" @click="handleUnityCheckBox">所有 </a-checkbox>
-
-                    <a-checkbox v-for="(item,i) in engine_options.unity" :key="i" :checked="item.checked" :value="item.value">{{item.label}}</a-checkbox>
-                  </a-checkbox-group>
-                </a-form-item>     
+                <div class="checkboxgroup-wrap">
+                  <a-checkbox :indeterminate="indeterminate" @change="onCheckAllChange" :checked="checkAll">
+                    Check all
+                  </a-checkbox>
+                  <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="checkboxChange" />
+                </div>
+                
               </template>
             
               <template v-if="showCheckBoxGroup=='unreal'">
-                <a-form-item v-bind="formItemLayout" label="Unreal" :label-col="labelCol" :wrapper-col="wrapperCol ">
-                  <a-checkbox-group v-decorator="['checkbox-group-unreal']">
-                    <a-checkbox value="unreal" @click="handleUnrealCheckBox">所有</a-checkbox>
-                    <a-checkbox v-for="(item,i) in engine_options.unreal" :key="i" :checked="item.checked" :value="item.value">{{item.label}}</a-checkbox>
-                  </a-checkbox-group>
-                </a-form-item>
+                <div class="checkboxgroup-wrap">
+                  <a-checkbox :indeterminate="indeterminate_unreal" @change="onCheckAllChangeUnreal" :checked="checkAll_unreal">
+                    Check all
+                  </a-checkbox>
+                  <a-checkbox-group :options="plainOptions_unreal" v-model="checkedList_unreal" @change="checkboxChangeUnreal" />
+
+                </div>
               </template>
             </section>
 
@@ -177,6 +177,7 @@
                   listType="picture-card"
                   :multiple="false"
                   :beforeUpload="beforeUpload2"
+                  @preview="handlePreview"
                   v-decorator="[
                     'thumbnail',
                     {
@@ -188,12 +189,11 @@
                     <a-icon type="plus" />
                     <div class="ant-upload-text">Upload</div>
                 </a-upload>
-                <a-modal :visible="previewVisible" :footer="null" >
+                <a-modal :visible="previewVisible" :footer="null"  @cancel="handleCancel">
                   <img alt="example" style="width: 100%" :src="previewImage" />
                 </a-modal>
               </a-form-item>
             </section>
-
 
             <a-form-item style="border:none;">
               <input style="background:#1ebf73;margin-top:60px; border:none;outline:none;cursor:pointer;width:100%;height:67px;font-size:17px;font-weight:bold;color:#fff;" 
@@ -212,9 +212,7 @@
               </a-form-item>
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
-            
           </section>
-
         </div>
       </a-form>
     </section>
@@ -238,6 +236,10 @@
 }
 </style>
 <style scoped lang="less">
+.checkboxgroup-wrap{
+  margin-left: 289px;
+  margin-top: -18px;
+}
 .editor-wrap{
   display:flex;
   >div{
@@ -339,11 +341,40 @@ import TopNavigation from '@/components/TopNav'
 import marked from 'marked'
 import Vue from 'vue'
 
+const plainOptions = [
+  {label: 'Apple', value: 'aa'},
+  {label: 'Pear', value: 'pp'},
+  {label: 'Orange', value: 'oo'}
+]
+const defaultCheckedList = []
+
+
+const plainOptions_unreal = [
+  {label: 'Apple2', value: 'aa2'},
+  {label: 'Pear2', value: 'pp2'},
+  {label: 'Orange2', value: 'oo2'}
+]
+const defaultCheckedList_unreal = []
+
+
 export default {
   components:{TopNavigation},
   props:[],
   data(){
     return{
+      checkedList: defaultCheckedList,
+      indeterminate: true,
+      checkAll: false,
+      plainOptions,
+
+      checkedList_unreal: defaultCheckedList_unreal,
+      indeterminate_unreal: true,
+      checkAll_unreal: false,
+      plainOptions_unreal,
+
+
+
+
       showArtStyle:false,
       art_v : '',
       art_options:[{value:'q',label:'q版风格'},{value:'j',label:'日漫'}],
@@ -385,6 +416,8 @@ export default {
          if(keys.length === 1 && keys[0] === 'radio-group'){
            let o = fields[keys[0]]
            that.showCheckBoxGroup = o.value
+           that.checkedList = []
+           that.checkedList_unreal = []
          }
         
 
@@ -454,6 +487,55 @@ export default {
     
   },
   methods:{
+    checkboxChangeUnreal(checkedList){
+      this.indeterminate_unreal = !!checkedList.length && checkedList.length < plainOptions_unreal.length
+      this.checkAll_unreal = checkedList.length === plainOptions_unreal.length
+
+      this.checkedList_unreal = checkedList
+      console.log('checkedList_unreal:',this.checkedList_unreal)
+
+    },
+    onCheckAllChangeUnreal(e){
+       Object.assign(this, {
+        checkedList_unreal: e.target.checked ? plainOptions : [],
+        indeterminate_unreal: false,
+        checkAll_unreal: e.target.checked
+      })
+
+      if(e.target.checked){
+        this.checkedList_unreal = plainOptions_unreal.map(o=>o.value)
+      }else{
+        this.checkedList_unreal = []
+      }
+      console.log('checkedList_unreal:',this.checkedList_unreal)
+
+    },
+
+
+    checkboxChange(checkedList) {
+      this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length
+      this.checkAll = checkedList.length === plainOptions.length
+
+      this.checkedList = checkedList
+      console.log('checkedList:',this.checkedList)
+    },
+    onCheckAllChange(e) {
+      Object.assign(this, {
+        checkedList: e.target.checked ? plainOptions : [],
+        indeterminate: false,
+        checkAll: e.target.checked
+      })
+
+      if(e.target.checked){
+        this.checkedList = plainOptions.map(o=>o.value)
+      }else{
+        this.checkedList = []
+      }
+
+      console.log('checkedList:',this.checkedList)
+    },
+
+
     beforeUpload2(file){
       // const isJPG = /jpg|jpeg|png/.test(file.type)
 
@@ -535,12 +617,17 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
 
-       console.log(values)
+      // console.log(values)
 
          //console.log(this.editor.txt.html(),this.editor.txt.html().length)
         
         // console.log('txt html:', this.editor.txt.html())
         
+        // var tag3 = [
+        //   ...this.checkedList,
+        //   ...this.checkedList_unreal
+        // ]
+        // console.log(this.checkedList,this.checkedList_unreal)
 
         if(err){ return  }
 
@@ -550,14 +637,15 @@ export default {
 
         var tag1 = values['resource-cascader']?values['resource-cascader']:[]
         var tag2 = [values['resource-art-type']]
-        var tag3 = 
-          values['checkbox-group-unity']?values['checkbox-group-unity']:
-          values['checkbox-group-unreal']
+        var tag3 = [
+          ...this.checkedList,
+          ...this.checkedList_unreal
+        ]
+          
         // debugger
 
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
 
-        debugger
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
 
         axios.post(`/api/resource`,{
@@ -619,9 +707,9 @@ export default {
       //debugger
     },
     handleClose(removedTag) {
-      const tags = this.tags.filter(tag => tag !== removedTag);
-      //console.log(tags);
-      this.tags = tags;
+      const tags = this.tags.filter(tag => tag !== removedTag)
+      //console.log(tags)
+      this.tags = tags
     },
 
 
@@ -653,8 +741,6 @@ export default {
     },
     handleSave(){
       //console.log('tags:',this.tags,'fileList:',this.fileList, 'fileid:',this.fileid)
-
-      
     },
 
     handleChangex(info) {

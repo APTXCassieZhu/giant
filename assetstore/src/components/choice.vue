@@ -188,6 +188,7 @@ export default {
                 }
                 console.log("repeat")
             }
+
             for(var i=0; i<this.toolGroup.length; i++){
                 if(this.toolGroup[i] == this.tagTotal[index]){
                     this.toolGroup.splice(i, 1)
@@ -223,6 +224,7 @@ export default {
                     break 
                 }
             }
+
             this.tagTotal.splice(index, 1)
             // TODO 重新筛选
         },
