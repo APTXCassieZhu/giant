@@ -95,6 +95,14 @@
                   </a-select>
                 </a-form-item>
               </template>
+              <section class="editor-wrap">
+                <div class="editor-label"> <span>文件描述：</span> </div>
+                <div>
+                  <div ref="editor-owo" class="editor-owo"></div>
+                  <div ref="editor-owo-content" class="editor-owo-content"></div>
+                </div>
+                
+              </section>
 
               <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
               <a-radio-group v-decorator="['radio-group']">
@@ -205,6 +213,9 @@
             </div>
             
           </section>
+
+
+         
         </div>
       </a-form>
     </section>
@@ -228,6 +239,40 @@
 }
 </style>
 <style scoped lang="less">
+.editor-wrap{
+  display:flex;
+  >div{
+    width:566px;
+    height:200px;
+  }
+  .editor-owo{
+    // border:1px solid blue;
+    border: 1px solid #ccc;
+  }
+  .editor-owo-content{
+    height:180px;
+    border: 1px solid #ccc;
+    // border:1px solid red;
+  }
+  .editor-label{
+    width:230px;
+    font-size: 16px;
+    color: #7f7f7f;
+    font-weight: bold;
+    // border:1px solid black;
+    
+    &::before {
+      display: inline-block;
+      margin-right: 4px;
+      color: #f5222d;
+      font-size: 14px;
+      font-family: SimSun, sans-serif;
+      line-height: 1;
+      content: '*';
+    }
+    
+  }
+}
 .form-wrap{
   display:flex;
   background:#fff;
@@ -249,7 +294,6 @@
     color:#7f7f7f;
     font-size:23px;
     font-weight: bold;
-
   }
   color:#7f7f7f;
   padding:20px;
@@ -355,12 +399,36 @@ export default {
       if(e.keyCode===13 && e.target.classList.contains('ant-input-sm')){
         e.preventDefault()
       }
-    
+
     })
+
     
-    // let E = window.wangEditor
-    // let editor = new E(this.$refs['editor-owo'])
-    // editor.create()
+    let E = window.wangEditor
+    // debugger
+    let editor = new E(this.$refs['editor-owo'],this.$refs['editor-owo-content'])
+    editor.customConfig.zIndex = 2
+    
+     // 自定义菜单配置
+    editor.customConfig.menus = [
+      'head',
+      'bold',
+      'italic',
+      'underline',
+      'backColor',  // 背景颜色
+      'link',  // 插入链接
+      'list',  // 列表
+      'justify',  // 对齐方式
+      'quote',  // 引用
+      'emoticon',  // 表情
+    ]
+
+    editor.create()
+
+
+    addEventListener('keydown',e=>{
+      //console.log(editor)
+      //editor.txt.html()
+    })
     
     // console.log('matched:', this.$route.matched)
     axios.get(`/api/tag/tree`,{ params:{type:'engine_ver'} }).then(response=>{
