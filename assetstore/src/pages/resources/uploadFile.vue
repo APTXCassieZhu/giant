@@ -120,7 +120,7 @@
               <template v-if="showCheckBoxGroup=='unity'">
                 <div class="checkboxgroup-wrap">
                   <a-checkbox :indeterminate="indeterminate" @change="onCheckAllChange" :checked="checkAll">
-                    Check all
+                    全选
                   </a-checkbox>
                   <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="checkboxChange" />
                 </div>
@@ -130,10 +130,9 @@
               <template v-if="showCheckBoxGroup=='unreal'">
                 <div class="checkboxgroup-wrap">
                   <a-checkbox :indeterminate="indeterminate_unreal" @change="onCheckAllChangeUnreal" :checked="checkAll_unreal">
-                    Check all
+                    全选
                   </a-checkbox>
                   <a-checkbox-group :options="plainOptions_unreal" v-model="checkedList_unreal" @change="checkboxChangeUnreal" />
-
                 </div>
               </template>
             </section>
@@ -341,21 +340,11 @@ import TopNavigation from '@/components/TopNav'
 import marked from 'marked'
 import Vue from 'vue'
 
-const plainOptions = [
-  {label: 'Apple', value: 'aa'},
-  {label: 'Pear', value: 'pp'},
-  {label: 'Orange', value: 'oo'}
-]
-const defaultCheckedList = []
+var plainOptions = []
+var defaultCheckedList = []
 
-
-const plainOptions_unreal = [
-  {label: 'Apple2', value: 'aa2'},
-  {label: 'Pear2', value: 'pp2'},
-  {label: 'Orange2', value: 'oo2'}
-]
-const defaultCheckedList_unreal = []
-
+var plainOptions_unreal = []
+var defaultCheckedList_unreal = []
 
 export default {
   components:{TopNavigation},
@@ -473,11 +462,21 @@ export default {
       options.forEach(o=>{
         this.engine_options[o.label] = []
         o.children.forEach((o2)=>{
-          this.engine_options[o.label].push({
-            label:o2.label,
-            value:o2.value,
-            checked:false
-          })
+
+          if(o.label === 'unity'){
+            plainOptions.push({
+              label:o2.label,
+              value:o2.value
+            })
+          }
+
+          if(o.label === 'unreal'){
+            plainOptions_unreal.push({
+              label:o2.label,
+              value:o2.value
+            })
+          }
+          
         })
       })
 
