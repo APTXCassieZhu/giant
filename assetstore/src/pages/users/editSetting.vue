@@ -337,7 +337,7 @@ export default {
         },
         submitPersonalForm(){
             axios.put('/api/user',{profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
-            signature:this.personalForm.sign}).then(res => {
+            signature:this.personalForm.sign},{emulateJSON:true}).then(res => {
                 if(res.data.code == 0){
                     // 更新全局变量信息
                     axios.get('/api/user/describe').then(res => {
@@ -370,7 +370,7 @@ export default {
         submitSetting(){
             /* TODO swagger 接口还没写好 */
             axios.put('/api/user',{profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
-            signature:this.personalForm.sign}).then(res => {
+            signature:this.personalForm.sign},{emulateJSON:true}).then(res => {
                 if(res.data.code == 0){
                     // 用户基本资料修改成功
                     this.$Message.warning({

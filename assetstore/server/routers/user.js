@@ -174,14 +174,14 @@ router.get('/:id/resource', jsonParser, function(req,res){
 				"downloadCount": 250,
 				"stars": 1024
 			},{
-				"id": 0,
+				"id": 294,
 				"name": "神迹是我和你共同降下的",
 				"images": null,
 				"label": "string",
 				"downloadCount": 270,
 				"stars": 570
 			},{
-				"id": 0,
+				"id": 9647,
 				"name": "攘外并先安内！",
 				"images": null,
 				"label": "string",

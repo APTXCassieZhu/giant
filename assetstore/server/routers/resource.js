@@ -8,6 +8,14 @@ var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+router.delete('/:id', jsonParser, function(req,res){
+    console.log('delete source : '+req.params.id)
+    res.status(200).json({'code': 0})
+})
+router.put('/:id',jsonParser, function(req,res){
+    console.log(req.body.state+' source : '+req.params.id)
+    res.status(200).json({'code': 0})
+})
 router.get('/:id/version', jsonParser, function(req,res){
     res.status(200).json({
         'msg':'msg-233333',

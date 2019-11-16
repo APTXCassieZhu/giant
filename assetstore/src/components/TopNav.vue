@@ -18,7 +18,7 @@
                 <Search style="z-index: 1000;"></Search>
             </div>
             <div class="topnav-box-user">
-                <Icon class="topnav-user" type="md-cloud-upload" size="29" @click="goPage('/upFile')"/>
+                <Icon class="topnav-user" type="md-cloud-upload" size="29" @click="goPage('/uploadFile')"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <Badge :count="totalUnreadNum" overflow-count="99">

@@ -26,11 +26,11 @@
         </div>
         <Row class="font-footer">
             <Col span="8" class="footer-col">
-                <font-awesome-icon :icon="['fas','sync-alt']" class="foot-icon" />
+                <font-awesome-icon :icon="['fas','sync-alt']" class="foot-icon" @click="goPage(`/updateFile/${source.id}`)"/>
             </Col>
             <Col span="8" class="footer-col">
                 <Divider type="vertical" class="foot-divider"/>
-                <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon" />
+                <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon" @click="goPage(`/editFile/${source.id}`)"/>
             </Col>
             <Col span="8" class="footer-col1">
                 <Divider type="vertical" class="foot-divider"/>
@@ -69,10 +69,6 @@ export default {
     },
     data() {
         return {
-            rate: 3.5,
-            downloadCount: 233,
-            likeCount: 2019,
-            favoriteIcon: false,            // defalut favourite is false
             publicOrNot: false,             // 默认隐藏
             // default
             moreVisible: false,
@@ -80,6 +76,13 @@ export default {
         }
     },
     methods:{
+        goPage(url){
+            if(this.$route.path===url){
+                location.reload()
+            }else{
+                this.$router.push(url)
+            }
+        },
         cancelFavorite(){
             //TODO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
@@ -100,14 +103,14 @@ export default {
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
-                        
-                        setTimeout(() => {
-                            this.$Modal.success({
-                                title: '资源已公开',
-                            })
-                            this.state = '公开'
-                            // TODO 告诉后端这个资源已公开
-                        }, 1000);
+                        axios.put(`/api/resource/${this.source.id}`,{'state':'public'},{emulateJSON:true}).then((res)=>{
+                            setTimeout(() => {
+                                this.$Modal.success({
+                                    title: '资源已公开',
+                                })
+                                this.state = '公开'
+                            }, 1000);
+                        })
                     },
                     onCancel: () => {
                         this.publicOrNot = !this.publicOrNot
@@ -121,13 +124,15 @@ export default {
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
-                        setTimeout(() => {
-                            this.$Modal.success({
-                                title: '资源已隐藏',
-                            })
-                            this.state = '隐藏'
-                            // TODO 告诉后端这个资源已隐藏
-                        }, 1000);
+                        axios.put(`/api/resource/${this.source.id}`,{'state':'private'},{emulateJSON:true}).then((res)=>{
+                            setTimeout(() => {
+                                this.$Modal.success({
+                                    title: '资源已隐藏',
+                                })
+                                this.state = '隐藏'
+                                // TODO 告诉后端这个资源已隐藏
+                            }, 1000);
+                        })
                     },
                     onCancel: () => {
                         this.publicOrNot = !this.publicOrNot
@@ -141,14 +146,16 @@ export default {
                 okText: '确认',
                 cancelText: '取消',
                 onOk: () => {
-                    // axios.delete(`/api/resource/${sourceID}`)
-                    setTimeout(() => {
-                        this.$Modal.success({
-                            title: '资源已删除',
-                        })
-                        // TODO 告诉后端这个资源已删除
-                        this.deleteOrNot = true
-                    }, 1000);
+                    axios.delete(`/api/resource/${this.source.id}`).then((res)=>{
+                        if(res.data.code == 0){
+                            setTimeout(() => {
+                                this.$Modal.success({
+                                    title: '资源已删除',
+                                })
+                                this.deleteOrNot = true
+                            }, 1000);
+                        }
+                    })
                 },
             });
         },

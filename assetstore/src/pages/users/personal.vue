@@ -41,7 +41,7 @@
             <div class="asset-card" >
                 <Tabs :value="personalActive" :animated="false">
                     <TabPane :label="tab1" name="name1">
-                        <div class="upload-style" @click="goPage('/upFile')">
+                        <div class="upload-style" @click="goPage('/uploadFile')">
                             <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
                             <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
                         </div>
@@ -113,7 +113,6 @@ export default {
                 }
             }
         }, (res)=>{
-            // 登录失败
             alert(res)
         })
         // 拿到用户上传的资源列表
