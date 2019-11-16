@@ -31,7 +31,7 @@
                 <div v-else v-for="(resource, i) in this.user.fineResources" :key="'a'+i">
                     <div class="personal-fine" @click="goPage(`/resourceDetail/${resource.id}`)">
                         <div v-if="resource.images==null" class="font-image">{{resource.name.charAt(0)}}</div>
-                        <div v-else><img  class="font-image" :src="resource.images[0]"></div>
+                        <div v-else><img class="font-image" :src="resource.images[0]"></div>
                         <div class="font-name">{{resource.name}}</div>
                     </div>
                     <br><br>

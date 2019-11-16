@@ -490,6 +490,9 @@ export default {
     padding-bottom: 62px;
     position: relative;
  }
+ .topnav-box-user > .ivu-dropdown > .ivu-select-dropdown > .ivu-dropdown-menu{
+    box-shadow: 0 0 4px 0 rgba(0, 0, 4, 0.1);
+ }
 .topnav-box-user > .ivu-dropdown > .ivu-select-dropdown > .ivu-dropdown-menu > .ivu-tabs > .ivu-tabs-bar{
     margin-bottom: 0px;
 }

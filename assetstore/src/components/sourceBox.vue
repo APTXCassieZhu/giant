@@ -3,7 +3,8 @@
     <div class="source-box">
         <div class="upper">
             <div class="upper-head">
-                <div class="font-image">{{source.name.charAt(0)}}</div>
+                <div v-if="source.images != null" ><img class="font-image" :src="source.images[0]"></div>
+                <div v-else class="font-image">{{source.name.charAt(0)}}</div>
                 <div class="font-wrapper">
                     <a-tooltip placement="top">
                         <template slot="title">
@@ -99,6 +100,7 @@ export default {
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
+                        
                         setTimeout(() => {
                             this.$Modal.success({
                                 title: '资源已公开',
@@ -107,6 +109,9 @@ export default {
                             // TODO 告诉后端这个资源已公开
                         }, 1000);
                     },
+                    onCancel: () => {
+                        this.publicOrNot = !this.publicOrNot
+                    }
                 });
                 
             }
@@ -124,6 +129,9 @@ export default {
                             // TODO 告诉后端这个资源已隐藏
                         }, 1000);
                     },
+                    onCancel: () => {
+                        this.publicOrNot = !this.publicOrNot
+                    }
                 });
             }
         },
