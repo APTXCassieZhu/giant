@@ -171,7 +171,7 @@ router.get('/:id/resource', jsonParser, function(req,res){
 					"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=ef9c6b2c38fa828bd1239ae5c5242609/54fbb2fb43166d221ce8fabd4d2309f79052d278.jpg",
 				],
 				"label": "string",
-				"downloadCount": 250,
+				"downloadCount": 8250,
 				"stars": 1024
 			},{
 				"id": 294,

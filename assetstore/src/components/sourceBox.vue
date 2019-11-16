@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="font-content">下载次数&emsp;&emsp;&emsp;关注人数</div>
-            <div class="font-num">{{source.downloadCount}}<span style="margin-left: 63px;">{{getStars}}</span></div>
+            <div class="font-num">{{getDownloadCount}}<span style="margin-left: 63px;">{{getStars}}</span></div>
         </div>
         <Row class="font-footer">
             <Col span="8" class="footer-col">
@@ -65,6 +65,9 @@ export default {
         // 给人数x,xxx （每三位数分个逗号）
         getStars(){
             return this.source.stars > 1000 ? (this.source.stars).toString().slice(0,1)+','+ (this.source.stars).toString().slice(1): this.source.stars;
+        },
+        getDownloadCount(){
+            return this.source.stars > 1000 ? (this.source.downloadCount).toString().slice(0,1)+','+ (this.source.downloadCount).toString().slice(1): this.source.downloadCount;
         }
     },
     data() {

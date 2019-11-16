@@ -21,7 +21,7 @@
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/api/upload"
+                    action="/api/file/upload"
                 >
                     <div v-if="finished" class="demo-upload-list">
                         <img class="camera" :src="imageUrl" alt="avatar" />
@@ -70,7 +70,7 @@
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/api/upload"
+                    action="/api/file/upload"
                 >
                     <Button class="camera-btn" type="success"><font-awesome-icon :icon="['fas','upload']"/> 上传</Button>
                 </Upload>
