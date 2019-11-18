@@ -1,43 +1,70 @@
 <template>
     <div style="background-color: #eff2f5">
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
-        <div class="self-card">
-            <div class="self">
-                <img src="../../assets/绿头像.jpg" class="avatar">
-                <ul style="font-size: 21px;font-weight: bold;">{{this.resName}}</ul>
-                <!-- TODO 属于哪个部门从amt那里得到-->
-                <ul style="font-size: 14px; color: #7f7f7f;">前沿技术部门</ul>
+        <div class="middle-card-wrapper">
+            <div class="self-card">
+                <div class="self">
+                    <div v-if="this.profilePic != null"><img class="avatar" :src="profilePic"></div>
+                    <div v-else class="font-avatar">{{this.resName.charAt(0)}}</div>
+                    <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/>
+                    <ul style="font-size: 21px;font-weight: bold;">{{this.resName}}</ul>
+                    <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
+                </div>
+                <br>
+                <ul style="font-size: 14px; color: #7f7f7f;">{{this.signature}}</ul>
+                <Divider />
+                <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
+                <div v-if="this.user.labels == null" class="empty-personal">
+                    <p>暂无好友印象哦～</p>
+                    <p>快邀请好友来为您添加第一条标签吧</p>
+                </div>
+                <div v-else>
+                    <span v-for="(item,index) in this.user.labels" :key="index">
+                        <Tag class="tag-style">&emsp;{{item}}&emsp;</Tag>
+                    </span>
+                    <a-input
+                        v-if="inputVisible"
+                        ref="input"
+                        type="text"
+                        size="small"
+                        :style="{ width: '78px' }"
+                        :value="inputValue"
+                        @change="handleInputChange"
+                        @blur="handleInputConfirm"
+                        @keyup.enter="handleInputConfirm"
+                    />
+                    <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
+                    <a-icon type="plus" /> New Tag
+                    </a-tag>
+                </div>
+
+                <Divider />
+                <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
+                <div v-if="this.user.fineResources == null" class="empty-personal">
+                    <p>暂无优秀作品哦～</p>
+                </div>
+                <div v-else v-for="(resource, i) in this.user.fineResources" :key="'a'+i">
+                    <div class="personal-fine">
+                        <div v-if="resource.images==null" class="font-image">{{resource.name.charAt(0)}}</div>
+                        <div v-else><img  class="font-image" :src="resource.images[0]"></div>
+                        <div class="font-name">{{resource.name}}</div>
+                    </div>
+                    <br><br>
+                </div>
+                <Button class="ask-btn">向TA提问</Button>
             </div>
-            <br>
-            <!-- TODO 用户自己输入-->
-            <ul style="font-size: 14px; color: #7f7f7f;">
-                我不要你觉得，我要我觉得，必须改 = =
-            </ul>
-            <Divider />
-            <!-- TODO 从后端数据库读取-->
-            <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
-            <span v-for="(item,index) in personalTagList" :key="index">
-                <Tag class="tag-style" size="large">{{item}}</Tag>
-            </span>
-            <Divider />
-            <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
-            <div v-for="(item, i) in productList" :key="'a'+i">
-                <div class="font-image">{{item.charAt(0)}}</div>&emsp;{{item}}
-                <br><br>
-            </div>
-            <Button class="ask-btn">向TA提问</Button>
-        </div>
         
-        <div class="asset-card" >
-            <Tabs value="name" :animated="false">
-                <TabPane :label="tab" name="name">
-                    <div v-if="this.sourceList.length==0" class="like-btn-container">
-                    </div>
-                    <div v-else v-for="(item, n) in this.sourceList" :key="n" style="display:inline-block;">
-                        <like-box :softwareName="item" :whoShared="resName"></like-box>
-                    </div>
-                </TabPane>
-            </Tabs>
+            <div class="asset-card" >
+                <Tabs value="name" :animated="false">
+                    <TabPane :label="tab" name="name">
+                        <div v-if="this.sourceList.length==0" class="like-btn-container">
+                        </div>
+                        <div v-else v-for="(item, n) in this.sourceList" :key="n" style="display:inline-block;">
+                            <like-box :softwareName="item" :whoShared="resName"></like-box>
+                        </div>
+                    </TabPane>
+                </Tabs>
+            </div>
         </div>
         <corner></corner>
         <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
@@ -56,15 +83,24 @@ export default {
     computed:{
     },
     mounted() {
-        axios.get(`/api/user/${this.$route.userId}`).then(res=>{
-            if(res.data.code === 0){
-                if(res.data.data.nickName === null){
+        axios.get(`/api/user/${this.$route.userId}`).then((res)=>{
+            if(res.data.code == 0){
+                this.user = res.data.data
+                this.profilePic = res.data.data.profilePic
+                if(res.data.data.nickName == null){
                     this.resName = res.data.data.name
                 }else{
                     this.resName = res.data.data.nickName
                 }
-                this.personalTagList = res.data.data.labels
+                if(res.data.data.signature == null){
+                    this.signature = '来都来了，留下点个性签名介绍下自己吧'
+                }else{
+                    this.signature = res.data.data.signature
+                }
             }
+        }, (res)=>{
+            // 登录失败
+            alert(res)
         })
         this.tab = "资源("+this.sourceList.length+")"
     },
@@ -104,12 +140,18 @@ export default {
 }
 </style>
 <style scoped>
+.middle-card-wrapper{
+    width:100%;
+    display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-ms-flexbox;display:flex;flex-wrap:wrap;
+    justify-content:center;
+    /* align-items:center; */
+}
 .self-card{
     position: relative;
     display:inline-block;
     font-family: MicrosoftYaHei;
     width: 360px;
-    height: 730px;
+    min-height: 730px;
     left: 50px;
     top: 50px;
     padding: 30px 20px 40px 25px;
@@ -162,7 +204,20 @@ export default {
     background-color: #ffffff;
     overflow: auto;
 }
-
+.tag-style{
+    margin-right:15px;
+    margin-bottom: 10px;
+}
+.empty-personal{
+    font-size: 14px;
+    color: #777777;
+    letter-spacing: 1px;
+}
+.personal-fine{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 .font-image{
     font-size:16px;
     display: inline-block;
@@ -172,6 +227,12 @@ export default {
     width: 44px;
     text-align: center;
     line-height: 44px;
+}
+.font-name{
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #7f7f7f;
+    margin-left: 20px;
 }
 .tabpane{
     cursor: pointer;

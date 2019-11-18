@@ -73,9 +73,21 @@
             </div>
 
             <div to='/login' class="topnav-box-user-login">
-                <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
-                    <Icon type="ios-contact" size="48"/>
-                </Tooltip>
+                <Dropdown placement="bottom-start">
+                    <a href="javascript:void(0)">
+                        <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
+                            <img v-if="profile" class="topnav-user" :src="profile" @click="goLike('personal')" alt="avatar">
+                            <div v-else class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
+                        </Tooltip>
+                    </a>
+                    <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-25px;">
+                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
+                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem></ul>
+                        <ul><DropdownItem><router-link class="user-box-link-a" to="/editPersonal">修改资料</router-link></DropdownItem></ul>
+                        <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
+                    </DropdownMenu>
+                </Dropdown>
+                
             </div>
         </div>
     </div>
@@ -370,7 +382,7 @@ export default {
         width:70%;
     }
 
-    .topnav-box-user span{
+    .welcome{
         display: none;
     }
 }

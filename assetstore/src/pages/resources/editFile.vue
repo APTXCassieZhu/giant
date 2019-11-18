@@ -22,7 +22,7 @@
                     :beforeUpload="beforeUpload"
                     name="files"
                     action="/api/file/upload"
-										:headers="{token:this.$store.state.token}"
+										:headers="{authorization:this.$store.state.token}"
                     :multiple="false"
                   >
                     <p class="ant-upload-drag-icon">
@@ -180,7 +180,7 @@
                   listType="picture-card"
                   :multiple="false"
                   :beforeUpload="beforeUpload2"
-									:headers="{token:this.$store.state.token}"
+									:headers="{authorization:this.$store.state.token}"
                   @preview="handlePreview"
                   v-decorator="[
                     'thumbnail',
@@ -365,8 +365,6 @@ var plainOptions_unreal = []
 var defaultCheckedList_unreal = []
 
 
-
-
 export default {
   components:{TopNavigation},
   props:[],
@@ -429,8 +427,6 @@ export default {
            that.checkedList = []
            that.checkedList_unreal = []
          }
-        
-
 
         //  if(keys.length ===1 && keys[0] === 'checkbox-group-unreal' || keys[0] === 'checkbox-group-unity'){
           

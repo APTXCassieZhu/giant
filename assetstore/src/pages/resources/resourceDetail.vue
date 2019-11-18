@@ -702,17 +702,20 @@ export default {
 		const {params} = this.$route
 		const that = this
     // debugger
-		
 
-		
 
     axios.get(`/api/resource/${params.resourceId}`).then(response=>{
       var res = response.data
 
       this.resource = Object.assign(this.resource,res.data)
 
+      this.resource.images = this.resource.images.map(o=>{
+        return `//192.168.94.238:3000/file/download/${o.id}/token=${this.$store.state.token}`
+      })
+      //console.log(this.resource.images)
+
       this.$nextTick(()=>{
-				
+
 				var lightbox = LightBox(document.body,{
 					zIndex:100,
 					topImgs:this.resource.images,

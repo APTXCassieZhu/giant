@@ -11,7 +11,7 @@ var upload = multer({ dest: 'uploads/', storage: storage })
 // create unique id
 var uniqid = require("uniqid");
 
-router.post('/',upload.single('avatar'),function(req,res){
+router.post('/upload',upload.single('avatar'),function(req,res){
     req.body['id'] = uniqid();
     if(req.file != undefined){
         res.json({'status':'OK','id':req.body['id']});

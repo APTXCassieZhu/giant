@@ -14,7 +14,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        target: "http://localhost:3000",
+        // target: "http://localhost:3000",
+        target: "http://192.168.94.238:3000",
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
@@ -30,7 +31,7 @@ module.exports = {
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
-    poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
+    poll: false,  // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
     // Use Eslint Loader?
     // If true, your code will be linted during bundling and

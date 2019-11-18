@@ -4,25 +4,36 @@
         <div class="middle-card-wrapper">
             <div class="self-card">
                 <div class="self">
-                    <!-- <img src="../../assets/绿头像.jpg" class="avatar"> -->
                     <div v-if="this.profilePic != null"><img class="avatar" :src="profilePic"></div>
-                    <div v-else class="font-avatar">{{getUser.charAt(0)}}</div>
+                    <div v-else class="font-avatar">{{this.username.charAt(0)}}</div>
                     <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/>
-                    <ul style="font-size: 21px;font-weight: bold;">{{getUser}}</ul>
-                    <ul style="font-size: 14px; color: #7f7f7f;">{{getDep}}</ul>
+                    <ul style="font-size: 21px;font-weight: bold;">{{this.username}}</ul>
+                    <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
                 </div>
                 <br>
-                <ul style="font-size: 14px; color: #7f7f7f;">{{getSign}}</ul>
+                <ul style="font-size: 14px; color: #7f7f7f;text-align:center;">{{this.signature}}</ul>
                 <Divider />
-                <!-- TODO 从后端数据库读取-->
                 <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
-                <span v-for="(item,index) in personalTagList" :key="index">
-                    <Tag class="tag-style" size="large">{{item}}</Tag>
+                <div v-if="this.user.labels == null" class="empty-personal">
+                    <p>暂无好友印象哦～</p>
+                    <p>快邀请好友来为您添加第一条标签吧</p>
+                </div>
+                <span v-else v-for="(item,index) in this.user.labels" :key="index">
+                    <Tag class="tag-style">&emsp;{{item}}&emsp;</Tag>
                 </span>
+
                 <Divider />
                 <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
-                <div v-for="(item, i) in productList" :key="'a'+i">
-                    <div class="font-image">{{item.charAt(0)}}</div>&emsp;{{item}}
+                <div v-if="this.user.fineResources == null" class="empty-personal">
+                    <p>暂无优秀作品哦～</p>
+                    <p>GDRC期待您的分享</p>
+                </div>
+                <div v-else v-for="(resource, i) in this.user.fineResources" :key="'a'+i">
+                    <div class="personal-fine" @click="goPage(`/resourceDetail/${resource.id}`)">
+                        <div v-if="resource.images==null" class="font-image">{{resource.name.charAt(0)}}</div>
+                        <div v-else><img class="font-image" :src="resource.images[0]"></div>
+                        <div class="font-name">{{resource.name}}</div>
+                    </div>
                     <br><br>
                 </div>
             </div>
@@ -30,25 +41,25 @@
             <div class="asset-card" >
                 <Tabs :value="personalActive" :animated="false">
                     <TabPane :label="tab1" name="name1">
-                        <div class="upload-style" @click="goPage('/upFile')">
+                        <div class="upload-style" @click="goPage('/uploadFile')">
                             <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
                             <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
                         </div>
-                        <source-box v-bind:sourceName='this.productList[0]'></source-box>
-                        <source-box v-bind:sourceName='this.productList[1]'></source-box>  
+                        <div v-for="(product, i) in this.productList" :key="'aa'+i">
+                            <source-box v-bind:source='product'></source-box>
+                        </div>
                     </TabPane>
                     <TabPane :label="tab2" name="name2">
                         <software-box v-bind:softwareName='this.softwareList[0]'></software-box>
                         <software-up-box v-bind:softwareName='this.softwareList[1]'></software-up-box>
                         <software-pend-box v-bind:softwareName='this.softwareList[2]'></software-pend-box>
                     </TabPane>
-                    <TabPane :label="`关注(${this.$store.state.favoriteList.length})`" name="name3">
-                        <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
-                            <cartoon></cartoon>
+                    <TabPane :label="tab3" name="name3">
+                        <div v-if="this.favoriteList.length==0" class="like-btn-container">
                             <Button class="like-btn" @click="goPage('/')">去关注</Button>
                         </div>
-                        <div v-else v-for="n in this.$store.state.favoriteList.length" :key="n" style="display:inline-block;">
-                            <like-box></like-box>
+                        <div v-else v-for="(like, n) in favoriteList" :key="n" style="display:inline-block;">
+                            <like-box :source='like'></like-box>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -75,46 +86,79 @@ export default {
     components:{TopNavigation, Footer, Corner, SourceBox, SoftwareBox, 
     SoftwareUpBox, SoftwarePendBox, LikeBox, Cartoon},
     computed:{
-        getUser(){ 
-            let o = JSON.parse(this.$store.state.user)
-            if(o.nickName == null){
-                return o.name
-            }else{
-                return o.nickName
-            }
-        },
-        getDep(){
-            let o = JSON.parse(this.$store.state.user)
-            return o.dept
-        },
-        getSign(){
-            let o = JSON.parse(this.$store.state.user)
-            return o.signature
-        }
     },
     mounted() {
-        this.personalActive = this.$store.state.personalActive
-        // this.tab3 = "关注("+this.$store.state.favoriteList.length+")"
-        // 拿到头像
+        // 判断右边展示"资源", "软件","关注"
+        if(this.$store.state.personalActive == "" || this.$store.state.personalActive == null){
+            this.personalActive = "name1"
+        }else{
+            this.personalActive = this.$store.state.personalActive
+        }
+        // 拿到用户的基本资料
         let o = JSON.parse(this.$store.state.user)
-        this.profilePic = o.profilePic
+        axios.get(`/api/user/${o.id}`).then((res)=>{
+            if(res.data.code == 0){
+                this.user = res.data.data
+                this.profilePic = res.data.data.profilePic
+                if(res.data.data.nickName == null){
+                    this.username = res.data.data.name
+                }else{
+                    this.username = res.data.data.nickName
+                }
+                if(res.data.data.signature == null){
+                    this.signature = '来都来了，留下点个性签名介绍下自己吧'
+                }else{
+                    this.signature = res.data.data.signature
+                }
+            }
+        }, (res)=>{
+            alert(res)
+        })
+        // 拿到用户上传的资源列表
+        axios.get(`/api/user/${o.id}/resource`).then((res)=>{
+            if(res.data.code == 0){
+                this.productList = res.data.data.list
+                this.tab1 = `资源(${res.data.data.count})`
+            }
+        }, (res)=>{
+            alert(res)
+        })
+        // 拿到用户关注的资源列表
+        axios.get(`/api/user/${o.id}/stars`).then((res)=>{
+            if(res.data.code == 0){
+                this.favoriteList = res.data.data.list
+                this.tab3 = `关注(${res.data.data.count})`
+            }
+        }, (res)=>{
+            alert(res)
+        })
     },
     data () {
         return {
             profilePic: null,
+            user: {},
+            username: '迪丽热巴的老婆--睿酱',
+            department: '拯救地球部',
+            signature: '就像阳光穿破黑夜~ 黎明悄悄划过天边~ O(∩_∩)O谢谢',
             uploadFolderStyle: "upload-folder-style",
             tab1: "资源(2)",
-            tab2: "软件(1)",
+            tab2: "软件(3)",
+            tab3: "关注(0)",
             personalActive: "name1",
-            personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸','暴躁老妹'],// 从后端拿
+            personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','暴躁老妹'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息
-            productList: ['二次元人物模型','天空贴图素材包'],    
+            productList: [],    
             softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
+            favoriteList: [],
         }
     },
     methods:{
         goPage(url){
-            this.$router.push(url)
+            if(this.$route.path===url){
+                location.reload()
+            }else{
+                this.$router.push(url)
+            }
         },
         bright(){
             this.uploadFolderStyle = "upload-folder-style-hover"
@@ -154,7 +198,7 @@ export default {
 .self-card{
     font-family: MicrosoftYaHei;
     width: 360px;
-    height: 660px;
+    min-height: 660px;
     margin-top: 53px;
     /* top: 10px; */
     padding: 30px 20px 30px 25px;
@@ -195,7 +239,15 @@ export default {
     color: #1ebf73;
     cursor: pointer;
 }
-
+.tag-style{
+    margin-right:15px;
+    margin-bottom: 10px;
+}
+.empty-personal{
+    font-size: 14px;
+    color: #777777;
+    letter-spacing: 1px;
+}
 .asset-card{
     font-family: MicrosoftYaHei;
     font-size: 16px;
@@ -208,7 +260,12 @@ export default {
     background-color: #ffffff;
     overflow: auto;
 }
-
+.personal-fine{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
 .font-image{
     font-size:16px;
     display: inline-block;
@@ -218,6 +275,12 @@ export default {
     width: 44px;
     text-align: center;
     line-height: 44px;
+}
+.font-name{
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #7f7f7f;
+    margin-left: 20px;
 }
 .tabpane{
     cursor: pointer;

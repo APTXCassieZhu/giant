@@ -8,12 +8,11 @@
         </div>
         <Row class="font-footer">
             <Col span="12" class="footer-col">
-                <Icon size="25" type="md-download" class="foot-icon" />
+                <font-awesome-icon :icon="['fas','download']" class="foot-icon"/>
             </Col>
             <Col span="12" class="footer-col">
                 <Divider type="vertical" class="foot-divider"/>
-                <font-awesome-icon :icon="['fas','trash']" class="foot-icon"/>
-                <!--<Icon size="25" type="ios-trash-outline" class="foot-icon" />-->
+                <font-awesome-icon :icon="['fas','trash-alt']" class="foot-icon"/>
             </Col>
         </Row>
     </div>

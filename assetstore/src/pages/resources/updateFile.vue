@@ -24,7 +24,7 @@
                     :beforeUpload="beforeUpload"
                     name="files"
                     action="/api/file/upload"
-										:headers="{token:this.$store.state.token}"
+										:headers="{authorization:this.$store.state.token}"
                     :multiple="false"
                   >
                     <p class="ant-upload-drag-icon">

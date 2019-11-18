@@ -21,7 +21,7 @@
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/api/upload"
+                    action="/api/file/upload"
                 >
                     <div v-if="finished" class="demo-upload-list">
                         <img class="camera" :src="imageUrl" alt="avatar" />
@@ -70,7 +70,7 @@
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/api/upload"
+                    action="/api/file/upload"
                 >
                     <Button class="camera-btn" type="success"><font-awesome-icon :icon="['fas','upload']"/> 上传</Button>
                 </Upload>
@@ -337,7 +337,7 @@ export default {
         },
         submitPersonalForm(){
             axios.put('/api/user',{profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
-            signature:this.personalForm.sign}).then(res => {
+            signature:this.personalForm.sign},{emulateJSON:true}).then(res => {
                 if(res.data.code == 0){
                     // 更新全局变量信息
                     axios.get('/api/user/describe').then(res => {
@@ -370,7 +370,7 @@ export default {
         submitSetting(){
             /* TODO swagger 接口还没写好 */
             axios.put('/api/user',{profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
-            signature:this.personalForm.sign}).then(res => {
+            signature:this.personalForm.sign},{emulateJSON:true}).then(res => {
                 if(res.data.code == 0){
                     // 用户基本资料修改成功
                     this.$Message.warning({

@@ -17,9 +17,9 @@
                     <MenuItem name="1" @click.native="showPage = 'general'">
                         <Icon size="18" type="ios-apps" />通用软件
                     </MenuItem>
-                    <MenuItem name="2" @click.native="showPage = 'special'">
+                    <!-- <MenuItem name="2" @click.native="showPage = 'special'">
                         <Icon size="18" type="md-key" />专用软件
-                    </MenuItem>
+                    </MenuItem> -->
                     <MenuItem name="3" @click.native="showPage = 'free'">
                         <Icon size="18" type="md-list-box" />常用免费软件
                     </MenuItem>
@@ -66,12 +66,12 @@
                         </span>
                     </div>
                     <div>
-                        <Button v-show="!ifMoreGeneral" id="more" class="more" @click="addMore('general')">加载更多</Button>
+                        <Button v-show="ifMoreGeneral" id="more" class="more" @click="addMore('general')">加载更多</Button>
                     </div>
                 </div>
             </div>
             <!-- TODO 功能未对接成功，暂时不上线 -->
-            <div v-show="showPage == 'special'" class="software-page">
+            <!-- <div v-show="showPage == 'special'" class="software-page">
                 <span class="card-title">专用软件（{{specialNum}}款已收录）</span>
                 <Divider/>
                 <div class="software-container">
@@ -81,21 +81,21 @@
                         <special-download :btn='btnList[2]'></special-download>
                     </div>
                     <div>
-                        <Button v-show="!ifMoreSpecial" id="more" class="more" @click="addMore('special')">加载更多</Button>
+                        <Button v-show="ifMoreSpecial" id="more" class="more" @click="addMore('special')">加载更多</Button>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div v-show="showPage == 'free'" class="software-page">
                 <span class="card-title">常用免费软件（{{freeNum}}款已收录）</span>
                 <Divider/>
                 <div class="software-container">
                     <div>
                         <span v-for="(item, n) in this.freeSWList" :key="n">
-                            <software-download></software-download>
+                            <software-download :sw="item"></software-download>
                         </span>
                     </div>
                     <div>
-                        <Button v-show="!ifMoreFree" id="more" class="more" @click="addMore('free')">加载更多</Button>
+                        <Button v-show="ifMoreFree" id="more" class="more" @click="addMore('free')">加载更多</Button>
                     </div>
                 </div>
             </div>
@@ -105,11 +105,11 @@
                 <div class="software-container">
                     <div>
                         <span v-for="(item, n) in this.scheduleSWList" :key="n">
-                            <software-download></software-download>
+                            <software-download :sw="item"></software-download>
                         </span>
                     </div>
                     <div>
-                        <Button v-show="!ifMoreSchedule" id="more" class="more" @click="addMore('schedule')">加载更多</Button>
+                        <Button v-show="ifMoreSchedule" id="more" class="more" @click="addMore('schedule')">加载更多</Button>
                     </div>
                 </div>
             </div>
@@ -119,11 +119,11 @@
                 <div class="software-container">
                     <div>
                         <span v-for="(item, n) in this.driveSWList" :key="n">
-                            <software-download></software-download>
+                            <software-download :sw="item"></software-download>
                         </span>
                     </div>
                     <div>
-                        <Button v-show="!ifMoreDrive" id="more" class="more" @click="addMore('drive')">加载更多</Button>
+                        <Button v-show="ifMoreDrive" id="more" class="more" @click="addMore('drive')">加载更多</Button>
                     </div>
                 </div>
             </div>
@@ -167,19 +167,19 @@ export default {
             // 当前显示的是哪个分类的software
             showPage: 'general',
             // 各类软件列表
-            generalSWList: ['微博','微信','知乎','豆瓣','人人', 'QQ', '网易云'],
-            specialSWList: ['adobe','zeplin','PS','VPN','Office'],
-            freeSWList: ['百度','搜狗','google','outlook','淘宝'],
-            scheduleSWList: ['TODO', 'calendar', 'remainders', 'facetime'],
+            generalSWList: [],
+            specialSWList: [],
+            freeSWList: [],
+            scheduleSWList: [],
             driveSWList: [],
             // 专用软件下载的三种按钮样式，用于通知子组件用哪种button
             btnList:['btn1','btn2','btn3'],
             // ifMoreXXXX　：用于判断　加载更多　button应不应该被看见
-            ifMoreGeneral: false,
-            ifMoreSpecial: false,
-            ifMoreFree: false,
-            ifMoreSchedule: false,
-            ifMoreDrive: false,
+            ifMoreGeneral: true,
+            ifMoreSpecial: true,
+            ifMoreFree: true,
+            ifMoreSchedule: true,
+            ifMoreDrive: true,
             // 软件反馈相关
             curShowFeedback: false,
             disableOrNot: true,
@@ -210,6 +210,10 @@ export default {
         }).then(res=>{
             if(res.data.code === 0){
                 this.generalNum = res.data.data.count
+                // 判断是否还需要加载更多的这类软件
+                if(this.generalNum <= this.generalPageSize){
+                    this.ifMoreGeneral = false
+                }
                 this.generalSWList = res.data.data.list
             }else{
                 alert(res)
@@ -224,6 +228,9 @@ export default {
         // }).then(res=>{
         //     if(res.data.code === 0){
         //         this.specialNum = res.data.data.count
+        //         if(this.specialNum <= this.specialPageSize){
+        //             this.ifMoreSpecial = false
+        //         }
         //         this.specialSWList = res.data.data.list
         //     }else{
         //         alert(res)
@@ -238,6 +245,9 @@ export default {
         }).then(res=>{
             if(res.data.code === 0){
                 this.freeNum = res.data.data.count
+                if(this.freeNum <= this.freePageSize){
+                    this.ifMoreFree = false
+                }
                 this.freeSWList = res.data.data.list
             }else{
                 alert(res)
@@ -252,6 +262,9 @@ export default {
         }).then(res=>{
             if(res.data.code === 0){
                 this.scheduleNum = res.data.data.count
+                if(this.scheduleNum <= this.schedulePageSize){
+                    this.ifMoreSchedule = false
+                }
                 this.scheduleSWList = res.data.data.list
             }else{
                 alert(res)
@@ -266,6 +279,9 @@ export default {
         }).then(res=>{
             if(res.data.code === 0){
                 this.driveNum = res.data.data.count
+                if(this.driveNum <= this.drivePageSize){
+                    this.ifMoreDrive = false
+                }
                 this.driveSWList = res.data.data.list
             }else{
                 alert(res)
@@ -280,19 +296,109 @@ export default {
         addMore(more){
             switch(more){
                 case 'general':
-                    this.ifMoreGeneral = true
+                    this.generalPage += 1
+                    axios.get('/api/software', {
+                        params: {
+                            page: this.generalPage,
+                            pageSize: this.generalPageSize,
+                            classify: 'general'
+                        }
+                    }).then(res=>{
+                        if(res.data.code === 0){
+                            this.generalNum = res.data.data.count
+                            this.generalSWList = this.generalSWList.concat(res.data.data.list)
+                            // 判断是否还需要加载更多的这类软件
+                            if(this.generalNum <= this.generalSWList.length){
+                                this.ifMoreGeneral = false
+                            }
+                        }else{
+                            alert(res)
+                        }
+                    }) 
                     break;
                 case 'special':
-                    this.ifMoreSpecial = true
+                    this.specialPage += 1
+                    axios.get('/api/software', {
+                        params: {
+                            page: this.specialPage,
+                            pageSize: this.specialPageSize,
+                            classify: 'special'
+                        }
+                    }).then(res=>{
+                        if(res.data.code === 0){
+                            this.specialNum = res.data.data.count
+                            this.specialSWList = this.specialSWList.concat(res.data.data.list)
+                            // 判断是否还需要加载更多的这类软件
+                            if(this.specialNum <= this.specialSWList.length){
+                                this.ifMoreSpecial = false
+                            }
+                        }else{
+                            alert(res)
+                        }
+                    })   
                     break;
                 case 'free':
-                    this.ifMoreFree = true
+                    this.freePage += 1
+                    axios.get('/api/software', {
+                        params: {
+                            page: this.freePage,
+                            pageSize: this.freePageSize,
+                            classify: 'free'
+                        }
+                    }).then(res=>{
+                        if(res.data.code === 0){
+                            this.freeNum = res.data.data.count
+                            this.freeSWList = this.freeSWList.concat(res.data.data.list)
+                            // 判断是否还需要加载更多的这类软件
+                            if(this.freeNum <= this.freeSWList.length){
+                                this.ifMoreFree = false
+                            }
+                        }else{
+                            alert(res)
+                        }
+                    })   
                     break;
                 case 'schedule':
-                    this.ifMoreSchedule = true
+                    this.schedulePage += 1
+                    axios.get('/api/software', {
+                        params: {
+                            page: this.schedulePage,
+                            pageSize: this.schedulePageSize,
+                            classify: 'preload'
+                        }
+                    }).then(res=>{
+                        if(res.data.code === 0){
+                            this.scheduleNum = res.data.data.count
+                            this.scheduleSWList = this.scheduleSWList.concat(res.data.data.list)
+                            // 判断是否还需要加载更多的这类软件
+                            if(this.scheduleNum <= this.scheduleSWList.length){
+                                this.ifMoreSchedule = false
+                            }
+                        }else{
+                            alert(res)
+                        }
+                    })
                     break;
                 case 'drive':
-                    this.ifMoreDrive = true
+                    this.drivePage += 1
+                    axios.get('/api/software', {
+                        params: {
+                            page: this.drivePage,
+                            pageSize: this.drivePageSize,
+                            classify: 'drive'
+                        }
+                    }).then(res=>{
+                        if(res.data.code === 0){
+                            this.driveNum = res.data.data.count
+                            this.driveSWList = this.driveSWList.concat(res.data.data.list)
+                            // 判断是否还需要加载更多的这类软件
+                            if(this.driveNum <= this.driveSWList.length){
+                                this.ifMoreDrive = false
+                            }
+                        }else{
+                            alert(res)
+                        }
+                    })   
             }
         },
         showFeedback(){

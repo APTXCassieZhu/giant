@@ -740,7 +740,8 @@
 					if ($.fn.textcomplete) {
 							autocomplete();
 					} else {
-							$.getScript("https://cdn.rawgit.com/yuku-t/jquery-textcomplete/v1.3.4/dist/jquery.textcomplete.js", autocomplete);
+							//$.getScript("https://cdn.rawgit.com/yuku-t/jquery-textcomplete/v1.3.4/dist/jquery.textcomplete.js", autocomplete);
+							$.getScript('https://cdn.bootcss.com/jquery.textcomplete/1.8.5/jquery.textcomplete.js',autocomplete)
 					}
 			}
 			if (self.inline) {

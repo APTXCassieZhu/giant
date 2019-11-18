@@ -1,23 +1,41 @@
 <template>
-<div class="source-box-wrapper" v-if="!deleteOrNot">
+<div class="source-box-wrapper" v-if="!deleteOrNot" @click="goPage(`/resourceDetail/${source.id}`)">
     <div class="source-box">
         <div class="upper">
-            <div class="font-image">{{source.charAt(0)}}</div>
-            <div class="font-title">{{source}}</div>
+            <div class="upper-head">
+                <div v-if="source.images != null" ><img class="font-image" :src="source.images[0]"></div>
+                <div v-else class="font-image">{{source.name.charAt(0)}}</div>
+                <div class="font-wrapper">
+                    <a-tooltip placement="top">
+                        <template slot="title">
+                            <span>{{source.name}}</span>
+                        </template>
+                        <div class="font-title">{{getResource}}</div>
+                    </a-tooltip>
+                
+                    <div class="font-switch">
+                        <i-switch v-model="publicOrNot" size="large" @on-change="changeState()">
+                            <span slot="open">公开</span>
+                            <span slot="close">隐藏</span>
+                        </i-switch>
+                    </div>
+                </div>
+            </div>
             <div class="font-content">下载次数&emsp;&emsp;&emsp;关注人数</div>
-            <div class="font-num">{{downloadCount}}<span style="margin-left: 63px;">2,019</span></div>
+            <div class="font-num">{{getDownloadCount}}<span style="margin-left: 63px;">{{getStars}}</span></div>
         </div>
         <Row class="font-footer">
-            <Col span="8" class="footer-col">
+            <Col span="8" class="footer-col" @click="goPage(`/updateFile/${source.id}`)">
                 <font-awesome-icon :icon="['fas','sync-alt']" class="foot-icon" />
             </Col>
-            <Col span="8" class="footer-col">
+            <Col span="8" class="footer-col" @click="goPage(`/editFile/${source.id}`)">
                 <Divider type="vertical" class="foot-divider"/>
-                <Icon size="25" type="md-create" class="foot-icon" />
+                <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon"/>
             </Col>
             <Col span="8" class="footer-col1">
                 <Divider type="vertical" class="foot-divider"/>
-                <Dropdown trigger="click" :visible="moreVisible" @on-clickoutside="closeDrop()">
+                <span class="foot-icon foot-icon-del" @click="deleteSource">删除</span>
+                <!-- <Dropdown trigger="click" :visible="moreVisible" @on-clickoutside="closeDrop()">
                     <Button href="javascropt:void(0)" class="foot-btn" @click.native="openDrop()">
                         <Icon size="25" type="md-more" class="foot-icon"/>
                     </Button>
@@ -25,7 +43,7 @@
                         <DropdownItem @click.native="changeState" class="dropdown-text">{{state}}资源</DropdownItem>
                         <DropdownItem @click.native="deleteSource" class="dropdown-text-delete">删除</DropdownItem>
                     </DropdownMenu>
-                </Dropdown>
+                </Dropdown> -->
             </Col>
         </Row>
     </div>
@@ -35,26 +53,43 @@
 export default {
     name: "SourceBox",
     props: {
-        sourceName: {
-            type: String,
+        source: {
+            type: Object,
+            default: () => {}
+        }
+    },
+    computed:{
+        getResource(){
+            return this.source.name.length > 7 ? (this.source.name.slice(0,6)+'...'): this.source.name;
         },
+        // 给人数x,xxx （每三位数分个逗号）
+        getStars(){
+            return this.source.stars > 1000 ? (this.source.stars).toString().slice(0,1)+','+ (this.source.stars).toString().slice(1): this.source.stars;
+        },
+        getDownloadCount(){
+            return this.source.stars > 1000 ? (this.source.downloadCount).toString().slice(0,1)+','+ (this.source.downloadCount).toString().slice(1): this.source.downloadCount;
+        }
     },
     data() {
         return {
-            // TODO data里面的数据均需从后端拿到
-            source: this.sourceName,        //'啦啦啦啦',
-            rate: 3.5,
-            downloadCount: 233,
-            likeCount: 2019,
-            favoriteIcon: false,            // defalut favourite is false
-            sourceID: 0,                    // TODO从后端得到
-            state: '隐藏',
+            publicOrNot: false,             // 默认隐藏
             // default
             moreVisible: false,
             deleteOrNot: false,
+            jumpOrNot: true,
         }
     },
     methods:{
+        goPage(url){
+            if(this.jumpOrNot){
+                if(this.$route.path===url){
+                    location.reload()
+                }else{
+                    this.$router.push(url)
+                }
+            }
+            this.jumpOrNot = true
+        },
         cancelFavorite(){
             //TODO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
@@ -69,20 +104,25 @@ export default {
             }  
         },
         changeState(){
-            if(this.state == '隐藏'){
+            this.jumpOrNot = false
+            if(this.publicOrNot){
                 this.$Modal.confirm({
                     title: '确认公开此条资源？',
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
-                        setTimeout(() => {
-                            this.$Modal.success({
-                                title: '资源已公开',
-                            })
-                            this.state = '公开'
-                            // TODO 告诉后端这个资源已公开
-                        }, 1000);
+                        axios.put(`/api/resource/${this.source.id}`,{'state':'public'},{emulateJSON:true}).then((res)=>{
+                            setTimeout(() => {
+                                this.$Modal.success({
+                                    title: '资源已公开',
+                                })
+                                this.state = '公开'
+                            }, 1000);
+                        })
                     },
+                    onCancel: () => {
+                        this.publicOrNot = !this.publicOrNot
+                    }
                 });
                 
             }
@@ -92,30 +132,39 @@ export default {
                     okText: '确认',
                     cancelText: '取消',
                     onOk: () => {
-                        setTimeout(() => {
-                            this.$Modal.success({
-                                title: '资源已隐藏',
-                            })
-                            this.state = '隐藏'
-                            // TODO 告诉后端这个资源已隐藏
-                        }, 1000);
+                        axios.put(`/api/resource/${this.source.id}`,{'state':'private'},{emulateJSON:true}).then((res)=>{
+                            setTimeout(() => {
+                                this.$Modal.success({
+                                    title: '资源已隐藏',
+                                })
+                                this.state = '隐藏'
+                                // TODO 告诉后端这个资源已隐藏
+                            }, 1000);
+                        })
                     },
+                    onCancel: () => {
+                        this.publicOrNot = !this.publicOrNot
+                    }
                 });
             }
         },
         deleteSource(){
+            this.jumpOrNot = false
             this.$Modal.confirm({
                 title: '确认删除此条资源？',
                 okText: '确认',
                 cancelText: '取消',
                 onOk: () => {
-                    setTimeout(() => {
-                        this.$Modal.success({
-                            title: '资源已删除',
-                        })
-                        // TODO 告诉后端这个资源已删除
-                        this.deleteOrNot = true
-                    }, 1000);
+                    axios.delete(`/api/resource/${this.source.id}`).then((res)=>{
+                        if(res.data.code == 0){
+                            setTimeout(() => {
+                                this.$Modal.success({
+                                    title: '资源已删除',
+                                })
+                                this.deleteOrNot = true
+                            }, 1000);
+                        }
+                    })
                 },
             });
         },
@@ -135,7 +184,8 @@ export default {
     float: left;
     height:250px;
     width: 274px;
-    margin-right: 50px;
+    margin-right: 30px;
+    cursor: pointer;
 }
 .source-box{
     height: 196px; 
@@ -145,8 +195,19 @@ export default {
     border: solid 2px #eaeaea;
 }
 .upper{
-    padding: 18px 18px 0px 18px;
-    margin-bottom: 10px;
+    padding: 20px 18px 0px 18px;
+    margin-bottom: 16.5px;
+}
+.upper-head{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.font-wrapper{
+    display: flex;
+    flex: 1;
+    justify-content: inherit;
+    margin-left: 8px;
 }
 .font-image{
     display: inline-block;
@@ -164,7 +225,11 @@ export default {
     margin-bottom: 30px;
     font-size: 16px;
     font-weight: bold; 
-    line-height: 21px;
+}
+.font-switch{
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
 }
 .font-content{
     position: relative;
@@ -177,6 +242,7 @@ export default {
     font-weight: bold;
     margin-left: 60px;
 }
+
 .font-footer{
     background-color: #eaeaea;  
     color: #7d7d7d;
@@ -199,6 +265,13 @@ export default {
 }
 .foot-icon-hover{
     color: #1ebf73;
+}
+.foot-icon-del{
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 1px;
+    color: #7f7f7f;
 }
 .foot-divider{
     position:relative;

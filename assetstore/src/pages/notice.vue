@@ -528,6 +528,9 @@ export default {
     display:inline-block; 
     text-align: left;
     /* height:32px; */
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
     width:900px;
 }
 .time-slot{

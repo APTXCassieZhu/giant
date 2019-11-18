@@ -38,9 +38,10 @@ export default {
         
     },
     mounted(){
-        axios.get(`/api/resource/${this.$route.resourceId}/version`).then(res=>{
+        axios.get(`/api/resource/${this.$route.params.resourceId}/vers`).then(res=>{
             if(res.data.code === 0){
-                this.versionList = res.data.data.list
+                // debugger
+                this.versionList = res.data.data
             }
         })
     },

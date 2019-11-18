@@ -9,7 +9,7 @@
         </div>
         <Button v-if="this.curbtn==='btn1'" class='btn1' @mouseover.native="mouseover" ><Icon type="md-checkmark" size="22"/> 已获得</Button>
         <Button v-if="this.curbtn==='btn2'" class="btn2" @click="modal = true"><font-awesome-icon icon="handshake"/> 申领使用权</Button>
-        <Button v-if="this.curbtn==='btn3'" disable class="btn3">Pending</Button>
+        <Button v-if="this.curbtn==='btn3'" disabled class="btn3">Pending</Button>
         <Button v-if="this.curbtn==='btn4'" @click="tip" @mouseout.native="mouseout" class="btn1" style="background-color: #49e0ae;color:white;">找回软件</Button>
         
         <div v-show="modal" class="modal-mask">
