@@ -7,7 +7,6 @@
         <div class="resource-detail-b-bar">
           <div>
             <span>{{resource.commentCount}}条评论</span> 
-            <!-- <span>仅显示{{comment_pagesize}}条评论</span> -->
           </div>
           <Dropdown trigger="click" style="margin-right:10px;cursor:pointer;font-size:16px;color:#7f7f7f;" >
             <span > {{sortBy==='time'?'按时间排序':'按热度排序'}} <Icon type="ios-arrow-down"></Icon> </span>
@@ -22,15 +21,7 @@
         </div>
 
 				<div class="resource-detail-rate-wrap" >
-          <!-- <template v-if="resource.isRate">
-            <a-rate v-model="resource.rateAvg" size="large" disabled   />
-            <span class="resource-detail-rate-text">{{resource.rateAvg+'.0'}}</span>
-          </template> -->
-         
-          <!-- <template v-if="!resource.isRate">
-            <a-rate size="large"  :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
-            <span class="resource-detail-rate-text">{{rate2+'.0'}}</span>
-          </template> -->
+
           <a-rate size="large" v-model="rate2" :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
           <a name="resource-rate"><span class="resource-detail-rate-text">{{rate2+'.0'}}</span></a>
         </div>
@@ -198,7 +189,20 @@ export default {
 
         this.describe.dept = res.data.dept
 
-				this.createComment()
+				this.createComment().then(()=>{
+					//console.log(this.$route.query.cID)
+
+					//location.hash = `cid-${this.$route.query.cID}`
+				
+						var $findedComment = document.querySelector(`#cid-${this.$route.query.cID}`)
+						if($findedComment){
+							document.documentElement.scrollTop = $findedComment.offsetTop
+
+						}
+					
+				
+	
+				})
       })
 
     },
@@ -230,152 +234,160 @@ export default {
 			handlePageChange(v){
 				this.comment_page = v
 
-				this.createComment()
+				this.createComment().then(()=>{
+					
+				})
 			},
       createComment(){
-        const {params} = this.$route
-        axios.get(`/api/comment`,{params:{ resourceId:params.resourceId,page:this.comment_page,pageSize:this.comment_pagesize,order:this.sortBy}}).then(response=>{
-          var res = response.data 
-
-          let items = [] 
-
-          items = res.data.list.map(o=>{
-
-            var item = {
-              items:[],
-              id:o.pid,
-              content:o.content,
-              score:o.rate.value,
-              like:o.hot,
-              liked:o.stars.length>1,
-              time: this.getYYMMDD(o.createdAt)  ,
-              replyUserId:o.replyUserId,
-              user:{
-                uid:o.user.id,
-                name:o.user.name,
-                nickname:o.user.nickName,
-                imgurl:o.user.profilePic
-              }
-            }
-            item.items = o.items.map(o=>{  
-              return{
-                id: o.pid,
-                content:o.content,
-                like:o.hot,
-                liked:o.stars.length>1,
-                replyUserId:o.replyUserId,
-                usera:{
-                  uid:o.user.id,name:o.user.name,nickname:o.user.nickName,imgurl:o.user.profilePic
-                },
-                userb:{
-                  uid:o.followUser.id,name:o.followUser.name,nickname:o.followUser.nickName,imgurl:o.followUser.profilePic
-                },
-                time: this.getYYMMDD(o.createdAt)
+				const {params} = this.$route
+				
+				return new Promise(resolve=>{
+					axios.get(`/api/comment`,{params:{ resourceId:params.resourceId,page:this.comment_page,pageSize:this.comment_pagesize,order:this.sortBy}}).then(response=>{
+						var res = response.data 
+	
+						let items = [] 
+	
+						items = res.data.list.map(o=>{
+	
+							var item = {
+								items:[],
+								id:o.id,
+								content:o.content,
+								score:o.rate.value,
+								like:o.hot,
+								liked:o.stars.length>1,
+								time: this.getYYMMDD(o.createdAt)  ,
+								replyUserId:o.replyUserId,
+								user:{
+									uid:o.user.id,
+									name:o.user.name,
+									nickname:o.user.nickName,
+									imgurl:o.user.profilePic
+								}
 							}
+							item.items = o.items.map(o=>{  
+								return{
+									id: o.id,
+									content:o.content,
+									like:o.hot,
+									liked:o.stars.length>1,
+									replyUserId:o.replyUserId,
+									usera:{
+										uid:o.user.id,name:o.user.name,nickname:o.user.nickName,imgurl:o.user.profilePic
+									},
+									userb:{
+										uid:o.followUser.id,name:o.followUser.name,nickname:o.followUser.nickName,imgurl:o.followUser.profilePic
+									},
+									time: this.getYYMMDD(o.createdAt)
+								}
+								
+							})
+							return item
+						})
+					 
+							//console.log(response)
+						let comments = Comments(this.$refs['resource-detail-comments'],{
+							items,
+							userdata:{
+								uid:this.userid
+							}
+						})
+				 
+	
+						comments.onLike(prop=>{
+							console.log('comments like:', prop)
+	
+							if(prop.liked){
+								axios.post(`/api/comment/${prop.id}/star`,{star:false}).then(response=>{
+									comments.dislikeByProp(prop)
+								})
+	
+							}else{
+								axios.post(`/api/comment/${prop.id}/star`,{star:true}).then(response=>{
+									comments.likeByProp(prop)
+								})
+								
+							}
+						})
+	
+	
+						comments.onReply(prop=>{
+							// 	"pid": 0,
+							// 	"content": "string",
+							// 	"replyUserId": 0
+	
+							// 触发了回复评论, 但从没有评分过
+							if(!this.resource.isRate){
+								return this.$Message.warning('请先进行评分哦~')
+							}
+							if(!prop.content.length){
+								return this.$Message.warning('请输入你的回复内容~')
+							}
+	
+							//让他回复
+							axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id,replyUserId:prop.replyUserId}).then(response=>{
+								this.$Message.success('评论提交成功~')
+								prop.reply.clearContent()
+							})
+							//console.log('comments reply:', prop)
+						})
+	
+	
+						comments.onDel(prop=>{
+							console.log('comments del:', prop)
+							//comments.removeCommentByProp(prop)
+							this.$Modal.confirm({
+								title: '确认删除该条评论?',
+								okText: '确认',
+								okType: 'danger',
+								cancelText: '取消',
+								onOk: () => {
+									
+									axios.delete(`/api/comment/${prop.id}`,{pid:prop.id}).then(response=>{
+										
+										comments.removeCommentByProp(prop)
+	
+										setTimeout(()=>{
+											this.$Modal.success({
+												title: '评论已删除',
+												okText: '确认',
+											})
+										},300)
+	
+									})
+									
+								}
+							})
 							
-            })
-            return item
-          })
-         
-            //console.log(response)
-          let comments = Comments(this.$refs['resource-detail-comments'],{
-            items,
-            userdata:{
-              uid:this.userid
-            }
-          })
-       
+						})
+	
+	
+						let replyx = Reply(this.$refs['resource-detail-reply'],{userdata:{}})
+						replyx.onSubmit(prop=>{
+							if(!this.resource.isRate){
+								return this.$Message.warning('请先进行评分哦~')
+							}
 
-          comments.onLike(prop=>{
-            console.log('comments like:', prop)
+							if(!prop.content.length){
+								return this.$Message.warning('请输入你的评论内容~')
+							}
+	
+							
+							//让他回复
+							axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id}).then(response=>{
+								this.$Message.success('评论提交成功~')
+								replyx.clearContent()
+							})
+							
+						})
 
-            if(prop.liked){
-              axios.post(`/api/comment/${prop.id}/star`,{star:false}).then(response=>{
-                comments.dislikeByProp(prop)
-              })
+						resolve()
+	
+					}).catch(err=>{
+						resolve(err)
+					})
 
-            }else{
-              axios.post(`/api/comment/${prop.id}/star`,{star:true}).then(response=>{
-                comments.likeByProp(prop)
-              })
-              
-            }
-          })
-
-
-          comments.onReply(prop=>{
-            // 	"pid": 0,
-            // 	"content": "string",
-            // 	"replyUserId": 0
-
-            // 触发了回复评论, 但从没有评分过
-            if(!this.resource.isRate){
-              return this.showAlertComment = true
-            }
-            if(!prop.content.length){
-              return this.$Message.warning('请输入你的回复内容~')
-            }
-
-            //让他回复
-            axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id,replyUserId:prop.replyUserId}).then(response=>{
-              this.$Message.success('评论提交成功~')
-              prop.reply.clearContent()
-            })
-            //console.log('comments reply:', prop)
-          })
-
-
-          comments.onDel(prop=>{
-            console.log('comments del:', prop)
-            //comments.removeCommentByProp(prop)
-            this.$Modal.confirm({
-              title: '确认删除该条评论?',
-              okText: '确认',
-              okType: 'danger',
-              cancelText: '取消',
-              onOk: () => {
-                
-                axios.delete(`/api/comment/${prop.id}`,{pid:prop.id}).then(response=>{
-                  
-                  comments.removeCommentByProp(prop)
-
-                  setTimeout(()=>{
-                    this.$Modal.success({
-                      title: '评论已删除',
-                      okText: '确认',
-                    })
-                  },300)
-
-                })
-                
-              }
-            })
-            
-          })
-
-
-          let replyx = Reply(this.$refs['resource-detail-reply'],{userdata:{}})
-          replyx.onSubmit(prop=>{
-            if(!this.resource.isRate){
-              return this.$Message.warning('请先进行评分哦~')
-            }
-
-            if(!prop.content.length){
-              return this.$Message.warning('请输入你的评论内容~')
-            }
-
-            
-            //让他回复
-            axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id}).then(response=>{
-              this.$Message.success('评论提交成功~')
-              replyx.clearContent()
-            })
-            
-          })
-
-        }).catch(err=>{
-          
-        })
+				})
       },
       dpClick(e,v){
         //console.log(e.target,v)

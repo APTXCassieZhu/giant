@@ -24,6 +24,7 @@
                     :beforeUpload="beforeUpload"
                     name="files"
                     action="/api/file/upload"
+										:headers="{token:this.$store.state.token}"
                     :multiple="false"
                   >
                     <p class="ant-upload-drag-icon">
@@ -79,9 +80,14 @@
                 其他设置
               </header>
             
-              <a-form-item v-bind="formItemLayout" label="是否公开" :label-col="{span:8}" :wrapperCol="{span:5,offset:11}">
-                <a-switch v-decorator="['public', { valuePropName: 'checked' }]" />
-              </a-form-item>
+              <!-- <a-form-item v-bind="formItemLayout" label="是否公开" :label-col="{span:8}" :wrapperCol="{span:5,offset:11}">
+                <a-switch v-decorator="['public', { valuePropName: 'defaultChecked' }]" />
+              </a-form-item> -->
+							<div class="file-public-switch">
+								<span>是否公开</span>
+								<a-switch :defaultChecked="this.isPublic" @change="onChangeSwitch" />
+							</div>
+							
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
             
@@ -112,6 +118,14 @@
 }
 </style>
 <style scoped lang="less">
+.file-public-switch{
+	margin: 30px 0;
+	display: flex;
+	font-size: 16px;
+	color: #7f7f7f;
+	font-weight: bold;
+	justify-content: space-between;
+}
 .curVer{
   display: flex;
   font-size: 16px;
@@ -259,7 +273,8 @@ export default {
       },
       editor:null,
       resource_name:'',
-      resource_ver:'',
+			resource_ver:'',
+			isPublic :true,
       
       labelCol:{span:4},
       wrapperCol:{ span: 17 ,offset:3},
@@ -305,6 +320,8 @@ export default {
   },
   mounted(){
 
+
+
     document.querySelector('#components-form-demo-validate-other').addEventListener('keydown',e=>{
 
       if(e.keyCode===13 && e.target.classList.contains('ant-input-sm')){
@@ -335,19 +352,15 @@ export default {
 
     editor.create()
 
-
-    addEventListener('keydown',e=>{
-      //console.log(editor)
-      //editor.txt.html()
-    })
-
     axios.get(`/api/resource/${this.$route.params.resourceId}`).then(response=>{
       var res = response.data
       var data = res.data
       
       this.resource_name = data.name
-      this.resource_ver = data.ver[0].verNum
-
+			this.resource_ver = data.ver[0].verNum
+			this.isPublic = data.state
+			
+			this.editor.txt.html(data.description)
     })
 
     // console.log('matched:', this.$route.matched)
@@ -371,42 +384,23 @@ export default {
     
   },
   methods:{
-    beforeUpload2(file){
-      // const isJPG = /jpg|jpeg|png/.test(file.type)
+		onChangeSwitch(e){
+			this.isPublic = e
+		},
 
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-      // // return false
-      // const isLt5M = file.size / 1024 / 1024 < 5
-
-      // if (!isLt5M) {
-      //   this.$message.error('资源必须小于5MB')
-      // }
-
-      // return isJPG && isLt5M
-
-      return true
-    },
     beforeUpload(file){
 
+			//
+			if(file.type != 'application/x-zip-compressed'){
+				this.$message.warning('请上传一个zip')
+				return Promise.reject()
+			}
 
-      // console.log('type:',file.type)
-      // const isJPG = /zip/.test(file.type)
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-
-      // // return false
-      // const isLt200M = file.size / 1024 / 1024 < 200
-
-      // if (!isLt200M) {
-      //   this.$message.error('资源必须小于200MB')
-      // }
-
-      // return isJPG && isLt200M
+			let isLt200 = file.size/1024/1024  < 200
+			if(isLt200 > 200){
+			  this.$message.warning('文件太大')
+				return Promise.reject()
+			}
 
       return true
     },
@@ -452,12 +446,12 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
 
-       console.log(values)
+       //console.log(values)
 
          //console.log(this.editor.txt.html(),this.editor.txt.html().length)
         
         // console.log('txt html:', this.editor.txt.html())
-        
+        // debugger
 
         if(err){ return  }
 
@@ -465,36 +459,19 @@ export default {
        
         //if(!this.editor.txt.text().length ) return this.$message.warning('请填写文件描述')
 
-        var tag1 = values['resource-cascader']?values['resource-cascader']:[]
-        var tag2 = [values['resource-art-type']]
-        var tag3 = 
-          values['checkbox-group-unity']?values['checkbox-group-unity']:
-          values['checkbox-group-unreal']
+    
         // debugger
 
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
 
-        debugger
-        var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
 
-        axios.post(`/api/resource`,{
+        axios.put(`/api/resource/:${this.$route.params.resourceId}`,{
           params:{
-            "state": values.public?'public':'private', // 是否公开
+            "state": this.isPublic?'public':'private', // 是否公开
             "type": values['resource-type']=="art_classify"?'art':'dev', // 资源分类
             "name": values['resource-name'], //资源名称
-            "tags":[
-              ...tag1,
-              ...tag2,
-              ...tag3
-            ], // dropdown下的所有选项 风格，引擎选项
+           
             "file": file,  // 资源上传fileid
-            "version": values['resource-version'], //资源版本号
-            "label": [ //自定义标签
-              ...this.tags
-            ],
-            "images": [ // 资源缩略图fileid
-              ...images
-            ],
             "descriptipon": this.editor.txt.html() //资源描述
           }
         }).then(response=>{

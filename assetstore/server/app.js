@@ -13,8 +13,8 @@ var remind = require('./routers/remind')
 var bulletin = require('./routers/bulletin')
 
 app.use(cookieParser())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded( {extended: false}))
+app.use(bodyParser.urlencoded({ limit:'200mb',extended:true}))
+app.use(bodyParser.json({limit:'200mb'}))
 app.use('/user', user)
 app.use('/search', search)
 app.use('/feedback', feedback)
@@ -23,9 +23,10 @@ app.use('/upload', upload)
 app.use('/resource', resource)
 app.use('/remind', remind)
 app.use('/bulletin', bulletin)
-app.use('/script', express.static(__dirname +'/script'))
-app.use('/fonts', express.static(__dirname +'/fonts'))
 
+// app.use('/script', express.static(__dirname +'/script'))
+// app.use('/fonts', express.static(__dirname +'/fonts'))
+app.use('/',express.static(__dirname+''))
 
 // -------------- o(=•ェ•=)m   start tag ------------------
 

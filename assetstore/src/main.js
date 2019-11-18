@@ -58,14 +58,14 @@ axios.defaults.baseURL = '/'
 global.axios = axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios
-// axios.interceptors.request.use(function (config) {
-//   config.headers.common['Authorization'] = state.token
-//   debugger
-//   return config
-// }, function (error) {
-//   // 对请求错误做些什么
-//   return Promise.reject(error);
-// })
+axios.interceptors.request.use(function (config) {
+	//console.log('request interceptors config:',config)
+	config.headers.common['token'] = store.state.token
+  return config
+}, function (error) {
+	// 对请求错误做些什么
+  return Promise.reject(error);
+})
 
 axios.interceptors.response.use(
     response => {
@@ -241,7 +241,6 @@ const normalResourceBreadList  = (store, to)=>{
     }
   }
 
-
   if(/comment/.test(path) && to.name === 'resourceComment'){
     if(params.resourceId!=store.state.curCommentResourceId*1){
       store.state.breadCommentListState =  [
@@ -251,8 +250,8 @@ const normalResourceBreadList  = (store, to)=>{
 
       store.state.curCommentResourceId = params.resourceId
       // debugger
-      sessionStorage['gdrc-breadlist-comment'] = JSON.stringify( state.breadCommentListState )
-      sessionStorage['gdrc-curCommentResourceId'] = state.curCommentResourceId
+      sessionStorage['gdrc-breadlist-comment'] = JSON.stringify( store.state.breadCommentListState )
+      sessionStorage['gdrc-curCommentResourceId'] = store.state.curCommentResourceId
     }
   }
 }
@@ -265,19 +264,36 @@ router.beforeEach((to,from,next) => {
   ViewUI.LoadingBar.start()
   // 获取本地存储的token
   store.state.token = localStorage.getItem("token")
-  store.state.user = localStorage.getItem("user")
-  // 判断这个url是否需要登录权限
-  if(to.meta.requireAuth) {
-    if(store.state.token && store.state.user) {
-      next()
-    }else{
-      next({path:'/login', query:{redirect: to.fullPath}})
-    }
-  }
+	store.state.user = localStorage.getItem("user")
+	
+
+	////////////////////////////////////
+  // // 判断这个url是否需要登录权限
+  // if(to.meta.requireAuth) {
+  //   if(store.state.token && store.state.user) {
+  //     next()
+  //   }else{
+  //     next({path:'/login', query:{redirect: to.fullPath}})
+  //   }
+	// }
+	///////////////////////////////////
+
+	  // 判断这个url是否需要登录权限
+		if(to.meta.requireAuth) {
+			// debugger
+			if(store.state.token && store.state.user) {
+				next()
+			}else{
+				next({path:'/login', query:{redirect: to.fullPath}})
+			}
+		}else{
+			
+			next()
+		}
 })
 
 router.afterEach(route => {
-    ViewUI.LoadingBar.finish();
+    ViewUI.LoadingBar.finish()
 })
 /* eslint-disable no-new */
 new Vue({

@@ -22,6 +22,7 @@
                     :beforeUpload="beforeUpload"
                     name="files"
                     action="/api/file/upload"
+										:headers="{token:this.$store.state.token}"
                     :multiple="false"
                   >
                     <p class="ant-upload-drag-icon">
@@ -45,7 +46,7 @@
    
                <a-form-item label="资源名称：" :label-col="labelCol" :wrapper-col="wrapperCol ">
                 <a-input
-                  v-decorator="['note', { rules: [{ required: true, message: '请输入资源名称' }] }]"
+                  v-decorator="['resource-name', { rules: [{ required: true, message: '请输入资源名称' }] }]"
                 />
               </a-form-item>
 
@@ -179,6 +180,7 @@
                   listType="picture-card"
                   :multiple="false"
                   :beforeUpload="beforeUpload2"
+									:headers="{token:this.$store.state.token}"
                   @preview="handlePreview"
                   v-decorator="[
                     'thumbnail',
@@ -210,9 +212,10 @@
                 其他设置
               </header>
             
-              <a-form-item v-bind="formItemLayout" label="是否公开" :label-col="{span:8}" :wrapperCol="{span:5,offset:11}">
-                <a-switch v-decorator="['public', { valuePropName: 'checked' }]" />
-              </a-form-item>
+              <div class="file-public-switch">
+								<span>是否公开</span>
+								<a-switch :defaultChecked="this.isPublic" @change="onChangeSwitch" />
+							</div>
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
             
@@ -240,6 +243,14 @@
 }
 </style>
 <style scoped lang="less">
+.file-public-switch{
+	margin: 30px 0;
+	display: flex;
+	font-size: 16px;
+	color: #7f7f7f;
+	font-weight: bold;
+	justify-content: space-between;
+}
 .checkboxgroup-wrap{
   margin-left: 289px;
   margin-top: -18px;
@@ -372,7 +383,7 @@ export default {
       plainOptions_unreal,
 
 
-
+			isPublic:true,
       showArtStyle:false,
       art_v : '',
       art_options:[{value:'q',label:'q版风格'},{value:'j',label:'日漫'}],
@@ -442,7 +453,8 @@ export default {
     let editor = new E(this.$refs['editor-owo'],this.$refs['editor-owo-content'])
     editor.customConfig.zIndex = 2
     this.editor = editor
-    
+		
+		
      // 自定义菜单配置
     editor.customConfig.menus = [
       'head',
@@ -457,12 +469,25 @@ export default {
       'emoticon',  // 表情
     ]
 
+
     editor.create()
     
-    
-    addEventListener('keydown',e=>{
-      //console.log(editor)
-      //editor.txt.html()
+  
+		axios.get(`/api/resource/${this.$route.params.resourceId}`).then(response=>{
+      var res = response.data
+      var data = res.data
+      
+      this.resource_name = data.name
+			this.resource_ver = data.ver[0].verNum
+			this.isPublic = data.state
+
+			this.form.setFieldsValue({
+				'resource-name':this.resource_name,
+				'resource-version':this.resource_ver
+			})
+			
+			this.editor.txt.html(data.description)
+			
     })
     
     // console.log('matched:', this.$route.matched)
@@ -544,42 +569,32 @@ export default {
       console.log('checkedList:',this.checkedList)
     },
 
+
+		onChangeSwitch(e){
+			this.isPublic = e
+		},
+
     beforeUpload2(file){
-      // const isJPG = /jpg|jpeg|png/.test(file.type)
-
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-      // // return false
-      // const isLt5M = file.size / 1024 / 1024 < 5
-
-      // if (!isLt5M) {
-      //   this.$message.error('资源必须小于5MB')
-      // }
-
-      // return isJPG && isLt5M
+			if(!/jpg|jpeg|png|gif/.test(file.type)){
+				this.$message.warning('请上传图片')
+				return Promise.reject()
+			}
 
       return true
     },
     beforeUpload(file){
+			console.log(file)
+			//
+			if(file.type != 'application/x-zip-compressed'){
+				this.$message.warning('请上传一个zip')
+				return Promise.reject()
+			}
 
-
-      // console.log('type:',file.type)
-      // const isJPG = /zip/.test(file.type)
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-
-      // // return false
-      // const isLt200M = file.size / 1024 / 1024 < 200
-
-      // if (!isLt200M) {
-      //   this.$message.error('资源必须小于200MB')
-      // }
-
-      // return isJPG && isLt200M
+			let isLt200 = file.size/1024/1024  < 200
+			if(isLt200 > 200){
+			  this.$message.warning('文件太大')
+				return Promise.reject()
+			}
 
       return true
     },

@@ -19,6 +19,7 @@
                       }
                     ]"
                     :beforeUpload="beforeUpload"
+										:headers="{token:this.$store.state.token}"
                     name="files"
                     action="/api/file/upload"
                     :multiple="false"
@@ -176,6 +177,7 @@
                   listType="picture-card"
                   :multiple="false"
                   :beforeUpload="beforeUpload2"
+									:headers="{token:this.$store.state.token}"
                   @preview="handlePreview"
                   v-decorator="[
                     'thumbnail',
@@ -212,6 +214,8 @@
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
           </section>
+
+
         </div>
       </a-form>
     </section>
@@ -536,41 +540,26 @@ export default {
 
 
     beforeUpload2(file){
-      // const isJPG = /jpg|jpeg|png/.test(file.type)
-
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-      // // return false
-      // const isLt5M = file.size / 1024 / 1024 < 5
-
-      // if (!isLt5M) {
-      //   this.$message.error('资源必须小于5MB')
-      // }
-
-      // return isJPG && isLt5M
+			if(!/jpg|jpeg|png|gif/.test(file.type)){
+				this.$message.warning('请上传图片')
+				return Promise.reject()
+			}
 
       return true
     },
     beforeUpload(file){
+			//console.log(file)
+			//
+			// if(file.type != 'application/x-zip-compressed'){
+			// 	this.$message.warning('请上传一个zip')
+			// 	return Promise.reject()
+			// }
 
-
-      // console.log('type:',file.type)
-      // const isJPG = /zip/.test(file.type)
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-
-      // // return false
-      // const isLt200M = file.size / 1024 / 1024 < 200
-
-      // if (!isLt200M) {
-      //   this.$message.error('资源必须小于200MB')
-      // }
-
-      // return isJPG && isLt200M
+			// let isLt200 = file.size/1024/1024  < 200
+			// if(isLt200 > 200){
+			//   this.$message.warning('文件太大')
+			// 	return Promise.reject()
+			// }
 
       return true
     },
@@ -616,7 +605,7 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
 
-      // console.log(values)
+      console.log(values)
 
          //console.log(this.editor.txt.html(),this.editor.txt.html().length)
         
