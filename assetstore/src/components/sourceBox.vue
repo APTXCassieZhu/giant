@@ -178,7 +178,7 @@ export default {
     float: left;
     height:250px;
     width: 274px;
-    margin-right: 50px;
+    margin-right: 30px;
     cursor: pointer;
 }
 .source-box{

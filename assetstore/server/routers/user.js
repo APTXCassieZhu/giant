@@ -164,7 +164,9 @@ router.get('/:id', jsonParser, function(req,res){
 router.get('/:id/resource', jsonParser, function(req,res){
 	res.status(200).json({
 		'code': 0,
-		'data':[{
+		'data':{
+			'count': 3,
+			"list": [{
 				"id": 0,
 				"name": "尊老爱幼",
 				"images": [
@@ -188,8 +190,69 @@ router.get('/:id/resource', jsonParser, function(req,res){
 				"downloadCount": 332,
 				"stars": 56
 			}]
+		}
 	})
 });
+router.get('/:id/stars', jsonParser, function(req,res){
+	res.status(200).json({
+		'code': 0,
+		'data':{
+			"count": 5,
+			"list" :[{
+				"id": 000,
+				"name": "我关注的尊老爱幼",
+				"images": [
+					"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=ef9c6b2c38fa828bd1239ae5c5242609/54fbb2fb43166d221ce8fabd4d2309f79052d278.jpg",
+				],
+				"rateAvg": 5,
+				"user":{
+					"id": 007,
+					"name": "社会主义的接班人",
+				}
+			},{
+				"id": 999,
+				"name": "我关注的你",
+				"images": null,
+				"rateAvg": 0,
+				"user":{
+					"id": 250,
+					"name": "憨批",
+					"nickName": "小可爱",
+				}
+			},
+			{
+				"id": 111,
+				"name": "我关注的大宝贝",
+				"images": null,
+				"rateAvg": 4.5,
+				"user":{
+					"id": 250,
+					"name": "baby",
+					"nickName": "热巴",
+				}
+			},
+			{
+				"id": 666,
+				"name": "我关注的皮卡丘",
+				"images": null,
+				"rateAvg": 4.8,
+				"user":{
+					"id": 250,
+					"name": "pikaqiu",
+				}
+			},{
+				"id": 4399,
+				"name": "我关注的是你",
+				"images": null,
+				"rateAvg": 3.5,
+				"user":{
+					"id": 520,
+					"name": "丘比特"
+				}
+			}]
+		}
+	})
+})
 router.put('/', jsonParser, function(req,res){
 	res.status(200).json({'code':0})
 });

@@ -54,13 +54,12 @@
                         <software-up-box v-bind:softwareName='this.softwareList[1]'></software-up-box>
                         <software-pend-box v-bind:softwareName='this.softwareList[2]'></software-pend-box>
                     </TabPane>
-                    <TabPane :label="`关注(${this.$store.state.favoriteList.length})`" name="name3">
-                        <div v-if="this.$store.state.favoriteList.length==0" class="like-btn-container">
-                            <cartoon></cartoon>
+                    <TabPane :label="tab3" name="name3">
+                        <div v-if="this.favoriteList.length==0" class="like-btn-container">
                             <Button class="like-btn" @click="goPage('/')">去关注</Button>
                         </div>
-                        <div v-else v-for="n in this.$store.state.favoriteList.length" :key="n" style="display:inline-block;">
-                            <like-box></like-box>
+                        <div v-else v-for="(like, n) in favoriteList" :key="n" style="display:inline-block;">
+                            <like-box :source='like'></like-box>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -118,10 +117,19 @@ export default {
         // 拿到用户上传的资源列表
         axios.get(`/api/user/${o.id}/resource`).then((res)=>{
             if(res.data.code == 0){
-                this.productList = res.data.data
+                this.productList = res.data.data.list
+                this.tab1 = `资源(${res.data.data.count})`
             }
         }, (res)=>{
-            // 登录失败
+            alert(res)
+        })
+        // 拿到用户关注的资源列表
+        axios.get(`/api/user/${o.id}/stars`).then((res)=>{
+            if(res.data.code == 0){
+                this.favoriteList = res.data.data.list
+                this.tab3 = `关注(${res.data.data.count})`
+            }
+        }, (res)=>{
             alert(res)
         })
     },
@@ -134,17 +142,23 @@ export default {
             signature: '就像阳光穿破黑夜~ 黎明悄悄划过天边~ O(∩_∩)O谢谢',
             uploadFolderStyle: "upload-folder-style",
             tab1: "资源(2)",
-            tab2: "软件(1)",
+            tab2: "软件(3)",
+            tab3: "关注(0)",
             personalActive: "name1",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','暴躁老妹'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息
             productList: [],    
             softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
+            favoriteList: [],
         }
     },
     methods:{
         goPage(url){
-            this.$router.push(url)
+            if(this.$route.path===url){
+                location.reload()
+            }else{
+                this.$router.push(url)
+            }
         },
         bright(){
             this.uploadFolderStyle = "upload-folder-style-hover"

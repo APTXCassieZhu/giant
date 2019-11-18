@@ -1,10 +1,11 @@
 <template>
     <div class="source-box" v-if="!deleteOrNot">
         <div class="upper">
-            <div class="font-image">{{softwareName.charAt(0)}}</div>
-            <div class="font-title">{{softwareName}}</div>
-            <div class="font-content">来源: <span style="margin-left:10px;">{{whoShared}}</span></div>
-            <Rate class="font-content" disabled v-model="rate" />
+            <div v-if="source.images != null" ><img class="font-image" :src="source.images[0]"></div>
+            <div v-else class="font-image">{{source.name.charAt(0)}}</div>
+            <div class="font-title">{{source.name}}</div>
+            <div class="font-content">来源: <span style="margin-left:10px;">{{getWhoShared}}</span></div>
+            <Rate class="font-content" icon="md-star" disabled v-model="source.rateAvg" />
         </div>
         <Row class="font-footer">
             <Col span="12" class="footer-col">
@@ -22,26 +23,18 @@ export default {
     name: "LikeBox",
     inject: ['reload'],
     props: {
-        sourceID:{
-            type: Number,
-            default: 233
-        },
-        softwareName: {
-            type: String,
-            default: '我关注的资源名字'
-        },
-        whoShared:{
-            type: String,
-            default: '圣母玛利亚'
+        source: {
+            type: Object,
+            default: () => {}
+        }
+    },
+    computed:{
+        getWhoShared(){
+            return this.source.user.nickName == null ? this.source.user.name : this.source.user.nickName
         }
     },
     data() {
         return {
-            // TODO data里面的数据均需从后端拿到
-            rate: 3.5,
-            downloadCount: 233,
-            likeCount: 2019,
-            rate: 3.8,
             // default
             deleteOrNot: false,
         }
@@ -70,6 +63,11 @@ export default {
     }
 }
 </script>
+<style>
+.font-content > .ivu-rate-star-chart{
+    margin-right: 0px;
+}
+</style>
 <style scoped>
 .source-box{
     display:inline-block;
