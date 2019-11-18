@@ -59,13 +59,14 @@ axios.defaults.baseURL = '/'
 global.axios = axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios
+
 axios.interceptors.request.use(function (config) {
+  //console.log('request interceptors config:',config)
   config.headers.common['authorization'] = store.state.token
-  // debugger
   return config
 }, function (error) {
   // 对请求错误做些什么
-  return Promise.reject(error);
+  return Promise.reject(error)
 })
 
 axios.interceptors.response.use(
@@ -133,8 +134,8 @@ var store = new Vuex.Store({
 
     curNotice: localStorage['curNotice'],
   },
+  
   mutations:{
-   
       // login
       [ADD_COUNT](state, token) {
           localStorage.setItem("token", token)
@@ -210,52 +211,8 @@ var store = new Vuex.Store({
           state.breadListState.shift()
         }
       }
-      console.log("cancel favorite")
-      localStorage.setItem("favorite", state.favoriteList)
-    },
-    // 从导航栏点击通知，前往消息中心，存储当前点击的通知内容
-    [READ_NOTICE](state, item) {
-      localStorage.setItem('curNotice', JSON.stringify(item))
-    },
-    [NOTICE_READED](state, item) {
-      localStorage.removeItem('curNotice', item)
-      state.curNotice = undefined
-    },
-
-    SAVE_COMMENT_BREADLIST(state, { breadlist, resourceId } = {}) {
-      state.breadCommentListState = [
-        { fullPath: '/home', name: '主页' },
-        ...breadlist,
-        { fullPath: `/resourceDetail/${resourceId}/comment`, name: '全部评论' }
-      ]
-      //debugger
-      state.curCommentResourceId = resourceId
-      // debugger
-      sessionStorage['gdrc-breadlist-comment'] = JSON.stringify(state.breadCommentListState)
-      sessionStorage['gdrc-curCommentResourceId'] = state.curCommentResourceId
-
-    },
-    SAVE_BREADLIST(state, { breadlist, resourceId } = {}) {
-      state.breadListState = [
-        { fullPath: '/home', name: '主页' },
-        ...breadlist,
-        { fullPath: `/resourceDetail/${resourceId}`, name: '资源详情' }
-      ]
-      //debugger
-      state.curResourceId = resourceId
-      // debugger
-      sessionStorage['gdrc-breadlist'] = JSON.stringify(state.breadListState)
-      sessionStorage['gdrc-curResourceId'] = state.curResourceId
-
-    },
-    breadListStateRemove(state, n) {
-
-      while (n--) {
-        state.breadListState.shift()
-      }
-      normalBreadList(state)
     }
-  }
+  
 })
 
 
