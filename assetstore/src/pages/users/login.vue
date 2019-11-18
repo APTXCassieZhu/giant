@@ -75,6 +75,7 @@ export default {
             }
             axios.post('/api/user/login',{account:this.loginForm.account, pwd:this.loginForm.password},{emulateJSON:true}).then((res)=>{
                 // 登录成功
+                // debugger
                 if(res.data.code == 0){
                     this.$store.commit('ADD_COUNT', res.headers.authorization);
                     this.$store.commit('ADD_USER', res.data.data);
@@ -83,7 +84,7 @@ export default {
                 else if(res.data.code == 40101){
                     this.$Modal.error({
                         title: '抱歉，账号或密码错误，请确认之后重试',
-                    });
+                    })
                 }else if(res.data.code == 40103){
                     this.$Modal.error({
                         title: '抱歉，连接域账号服务器失败，请稍后再试',

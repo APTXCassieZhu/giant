@@ -1,0 +1,70 @@
+.gdrc-lightbox{
+	position: fixed;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	background:rgba(0,0,0,.9);
+
+	.gdrc-lightbox-close{
+		@r:40px;
+		width:@r;
+		height:@r;
+		border-radius:@r;
+		position: absolute;
+		top:20px;
+		right:30px;
+		cursor:pointer;
+		svg{
+			width:100%;
+			height:100%;
+		}
+	}
+
+	.gdrc-lightbox-thumbs{
+		position: absolute;
+		left:50%;
+		bottom:0;
+		width:1300px;
+		height:80px;
+		transform: translate3d(-50%,0,0);
+
+	}
+	.gdrc-lightbox-top{
+		width:768px;
+		height:451px;
+		position: absolute;
+		left:50%;
+		top:50%;
+		transform:translate3d(-50%,-50%,0);
+	}
+
+	@gap:20px;
+	.swiper-button-next {
+		margin-right:@gap;
+		outline: none;
+	}
+	.swiper-button-prev {
+		margin-left:@gap;
+		outline: none;
+	}
+	.swiper-slide {
+		background-size: cover;
+		background-position: center;
+	}
+	.gdrc-lightbox-thumbs {
+		height:80px;
+		box-sizing: border-box;
+		padding-top:10px;
+	}
+	.gdrc-lightbox-thumbs .swiper-slide {
+		height: 100%;
+		opacity: 0.4;
+	}
+	.gdrc-lightbox-thumbs .swiper-slide-thumb-active {
+		opacity: 1;
+	}
+}
+
+
+

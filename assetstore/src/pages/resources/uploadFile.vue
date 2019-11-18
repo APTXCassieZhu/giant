@@ -19,7 +19,8 @@
                       }
                     ]"
                     :beforeUpload="beforeUpload"
-                    name="files"
+										:headers="{authorization:this.$store.state.token}"
+                    :data="{target:'resourceFile'}"
                     action="/api/file/upload"
                     :multiple="false"
                   >
@@ -44,7 +45,7 @@
    
                <a-form-item label="资源名称：" :label-col="labelCol" :wrapper-col="wrapperCol ">
                 <a-input
-                  v-decorator="['note', { rules: [{ required: true, message: '请输入资源名称' }] }]"
+                  v-decorator="['resource-name', { rules: [{ required: true, message: '请输入资源名称' }] }]"
                 />
               </a-form-item>
 
@@ -176,6 +177,8 @@
                   listType="picture-card"
                   :multiple="false"
                   :beforeUpload="beforeUpload2"
+									:headers="{authorization:this.$store.state.token}"
+                  :data="{target:'resourceImage'}"
                   @preview="handlePreview"
                   v-decorator="[
                     'thumbnail',
@@ -212,6 +215,8 @@
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
           </section>
+
+
         </div>
       </a-form>
     </section>
@@ -457,6 +462,7 @@ export default {
     
     // console.log('matched:', this.$route.matched)
     axios.get(`/api/tag/tree`,{ params:{type:'engine_ver'} }).then(response=>{
+    // axios.get(`/api/tag/tree`,{ params:{type:'engine_ver'} }).then(response=>{
       var res = response.data 
       var options = res.data
       options.forEach(o=>{
@@ -507,7 +513,6 @@ export default {
         this.checkedList_unreal = []
       }
       console.log('checkedList_unreal:',this.checkedList_unreal)
-
     },
 
 
@@ -536,41 +541,26 @@ export default {
 
 
     beforeUpload2(file){
-      // const isJPG = /jpg|jpeg|png/.test(file.type)
-
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-      // // return false
-      // const isLt5M = file.size / 1024 / 1024 < 5
-
-      // if (!isLt5M) {
-      //   this.$message.error('资源必须小于5MB')
-      // }
-
-      // return isJPG && isLt5M
+			if(!/jpg|jpeg|png|gif/.test(file.type)){
+				this.$message.warning('请上传图片')
+				return Promise.reject()
+			}
 
       return true
     },
     beforeUpload(file){
+			//console.log(file)
+			//
+			// if(file.type != 'application/x-zip-compressed'){
+			// 	this.$message.warning('请上传一个zip')
+			// 	return Promise.reject()
+			// }
 
-
-      // console.log('type:',file.type)
-      // const isJPG = /zip/.test(file.type)
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-
-      // // return false
-      // const isLt200M = file.size / 1024 / 1024 < 200
-
-      // if (!isLt200M) {
-      //   this.$message.error('资源必须小于200MB')
-      // }
-
-      // return isJPG && isLt200M
+			// let isLt200 = file.size/1024/1024  < 200
+			// if(isLt200 > 200){
+			//   this.$message.warning('文件太大')
+			// 	return Promise.reject()
+			// }
 
       return true
     },
@@ -595,7 +585,8 @@ export default {
       this.art_v = val 
       if(this.art_v == 'art_classify'){
         this.showArtStyle = true
-        axios.get(`/api/tag/tree`,{ params:{type:'art_style'} }).then(response=>{
+          axios.get(`/api/tag/tree`,{ params:{type:'art_style'} }).then(response=>{
+        // axios.get(`/api/tag/tree`,{ params:{type:'art_style'} }).then(response=>{
            var res = response.data 
            var options = res.data
            this.art_options = options
@@ -616,7 +607,7 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
 
-      // console.log(values)
+      console.log(values)
 
          //console.log(this.editor.txt.html(),this.editor.txt.html().length)
         
@@ -647,27 +638,28 @@ export default {
 
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
 
-        axios.post(`/api/resource`,{
-          params:{
+
+        axios.post(`/api/resource`,
+          {
             "state": values.public?'public':'private', // 是否公开
             "type": values['resource-type']=="art_classify"?'art':'dev', // 资源分类
             "name": values['resource-name'], //资源名称
-            "tags":[
+            "tags":[ // 级联
               ...tag1,
               ...tag2,
               ...tag3
             ], // dropdown下的所有选项 风格，引擎选项
             "file": file,  // 资源上传fileid
             "version": values['resource-version'], //资源版本号
-            "label": [ //自定义标签
+            "labels": [ //自定义标签
               ...this.tags
             ],
             "images": [ // 资源缩略图fileid
               ...images
             ],
-            "descriptipon": this.editor.txt.html() //资源描述
+            "description": this.editor.txt.html() //资源描述
           }
-        }).then(response=>{
+        ).then(response=>{
           
           this.$message.success('发布成功')
         })
@@ -709,6 +701,7 @@ export default {
       const tags = this.tags.filter(tag => tag !== removedTag)
       //console.log(tags)
       this.tags = tags
+      this.tags = this.tags.filter(v=>v.slice(0,8))
     },
 
 
@@ -725,7 +718,8 @@ export default {
 
 
     handleInputConfirm() {
-      const inputValue = this.inputValue;
+      const inputValue = this.inputValue.slice(0,8)
+      
       let tags = this.tags;
       if (inputValue && tags.indexOf(inputValue) === -1) {
         tags = [...tags, inputValue];

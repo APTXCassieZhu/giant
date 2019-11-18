@@ -7,11 +7,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Vuex from 'vuex'
 import axios from 'axios'
 // import VueResource from 'vue-resource'
-import ViewUI from 'view-design';
+import ViewUI from 'view-design'
 import VueCropper from 'vue-cropper'
 // import style
 import 'view-design/dist/styles/iview.css';
-import '../my-theme/index.less';         // change theme color
+import '../my-theme/index.less';     // change theme color
 import 'ant-design-vue/dist/antd.css';
 import '../my-theme/ant.less';
 // import 动画特效
@@ -27,21 +27,18 @@ fontawesome.library.add(solid)
 fontawesome.library.add(regular)
 fontawesome.library.add(brands)
 
-
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
-
 // import ElementUI from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
 // // Vue.use(ElementUI)
 
 // console.log(ElementUI)
-
-import { Rate, Tooltip } from "ant-design-vue";
+import { Rate, Tooltip } from "ant-design-vue"
 import 'ant-design-vue/lib/rate/style/css'
 import 'ant-design-vue/lib/tooltip/style/css'
 
@@ -52,9 +49,13 @@ import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 Vue.use(Antd)
 
+// console.log(process.env.NODE_ENV)
+
+// axios.defaults.baseURL = process.env.NODE_ENV==='test' ?
+// '//192.168.94.238:3000':
+// '/'
 axios.defaults.baseURL = '/'
-//axios post setting
-// axios.defaults.baseURL='http://192.168.94.135:8080'
+
 global.axios = axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios
@@ -68,20 +69,35 @@ axios.interceptors.request.use(function (config) {
 })
 
 axios.interceptors.response.use(
-    response => {
-        if (response.data.code == "401") {
-            console.log('test 401 success')
-            store.commit('REMOVE_COUNT', store.state.token)
-            router.push('/login')
-            return Promise.reject()
-            //return response;
-        } else {
-            return response;
-        }
-    },
-    error => {
-        alert(error)   // 返回接口返回的错误信息
-    });
+  response => {
+    if (response.data.code == "401") {
+      console.log('test 401 success')
+      store.commit('REMOVE_COUNT', store.state.token)
+      router.push('/login')
+      return Promise.reject(response)
+    }
+    return Promise.resolve(response)
+  },
+  error => {
+    if (error.response.status) {
+      // debugger
+      switch (error.response.status) {
+        // 401: 未登录                
+        // 未登录则跳转登录页面，并携带当前页面的路径                
+        // 在登录成功后返回当前页面，这一步需要在登录页操作。                
+        case 401:
+          router.replace({                   
+            path: "/login",                    
+            query: {                    
+              redirect: router.currentRoute.fullPath                    
+            }                    
+          });                    
+          break
+      }
+
+      return Promise.reject(error.response)
+    }
+})
 
 Vue.use(VueCropper)
 
@@ -103,17 +119,17 @@ const NOTICE_READED = 'NOTICE_READED'
 // const localstorage = require('./localstorage')
 // 注册状态管理全局参数
 var store = new Vuex.Store({
-  state:{
-    token:localStorage['token'],
-    user:localStorage['user'],
-    searchContent:'',
+  state: {
+    token: localStorage['token'],
+    user: localStorage['user'],
+    searchContent: '',
     activenum: 1,
     personalActive: "",
     breadListState: sessionStorage['gdrc-breadlist']?JSON.parse(sessionStorage['gdrc-breadlist']):[],
     breadCommentListState: sessionStorage['gdrc-breadlist-comment']?JSON.parse(sessionStorage['gdrc-breadlist-comment']):[],
     // { path:'',resourceId:'' }
     curResourceId: sessionStorage['gdrc-curResourceId'],
-    curCommentResourceId:sessionStorage['gdrc-curCommentResourceId'],
+    curCommentResourceId: sessionStorage['gdrc-curCommentResourceId'],
 
     curNotice: localStorage['curNotice'],
   },
@@ -193,54 +209,95 @@ var store = new Vuex.Store({
         while(n--){
           state.breadListState.shift()
         }
-        normalBreadList(state)
       }
+      console.log("cancel favorite")
+      localStorage.setItem("favorite", state.favoriteList)
+    },
+    // 从导航栏点击通知，前往消息中心，存储当前点击的通知内容
+    [READ_NOTICE](state, item) {
+      localStorage.setItem('curNotice', JSON.stringify(item))
+    },
+    [NOTICE_READED](state, item) {
+      localStorage.removeItem('curNotice', item)
+      state.curNotice = undefined
+    },
 
+    SAVE_COMMENT_BREADLIST(state, { breadlist, resourceId } = {}) {
+      state.breadCommentListState = [
+        { fullPath: '/home', name: '主页' },
+        ...breadlist,
+        { fullPath: `/resourceDetail/${resourceId}/comment`, name: '全部评论' }
+      ]
+      //debugger
+      state.curCommentResourceId = resourceId
+      // debugger
+      sessionStorage['gdrc-breadlist-comment'] = JSON.stringify(state.breadCommentListState)
+      sessionStorage['gdrc-curCommentResourceId'] = state.curCommentResourceId
 
+    },
+    SAVE_BREADLIST(state, { breadlist, resourceId } = {}) {
+      state.breadListState = [
+        { fullPath: '/home', name: '主页' },
+        ...breadlist,
+        { fullPath: `/resourceDetail/${resourceId}`, name: '资源详情' }
+      ]
+      //debugger
+      state.curResourceId = resourceId
+      // debugger
+      sessionStorage['gdrc-breadlist'] = JSON.stringify(state.breadListState)
+      sessionStorage['gdrc-curResourceId'] = state.curResourceId
+
+    },
+    breadListStateRemove(state, n) {
+
+      while (n--) {
+        state.breadListState.shift()
+      }
+      normalBreadList(state)
     }
-
-   
+  }
 })
 
-const normalResourceBreadList  = (store, to)=>{
+
+const normalResourceBreadList = (store, to) => {
   // 直接链接进入resourceDetail 如果有session并且resourceId是最近session中的resourceId
   // 从页面点进去重新处理session
-  let {params,path} = to
-  
+  let { params, path } = to
+
   // debugger
-  if(/resourceDetail/.test(path) && to.name==='资源详情'){
-    if(params.resourceId!=store.state.curResourceId*1){
-      store.state.breadListState =  [
-        {fullPath:'/home', name:'主页'},
-        {fullPath:`/resourceDetail/${params.resourceId}`, name:'资源详情'}
+  if (/resourceDetail/.test(path) && to.name === '资源详情') {
+    if (params.resourceId != store.state.curResourceId * 1) {
+      store.state.breadListState = [
+        { fullPath: '/home', name: '主页' },
+        { fullPath: `/resourceDetail/${params.resourceId}`, name: '资源详情' }
       ]
 
       store.state.curResourceId = params.resourceId
       // debugger
-      sessionStorage['gdrc-breadlist'] = JSON.stringify( store.state.breadListState )
+      sessionStorage['gdrc-breadlist'] = JSON.stringify(store.state.breadListState)
       sessionStorage['gdrc-curResourceId'] = store.state.curResourceId
     }
   }
 
-
-  if(/comment/.test(path) && to.name === 'resourceComment'){
-    if(params.resourceId!=store.state.curCommentResourceId*1){
-      store.state.breadCommentListState =  [
-        {fullPath:'/home', name:'主页'},
-        {fullPath:`/resourceDetail/${params.resourceId}/comment`, name:'全部评论'}
+  if (/comment/.test(path) && to.name === 'resourceComment') {
+    if (params.resourceId != store.state.curCommentResourceId * 1) {
+      store.state.breadCommentListState = [
+        { fullPath: '/home', name: '主页' },
+        { fullPath: `/resourceDetail/${params.resourceId}/comment`, name: '全部评论' }
       ]
 
       store.state.curCommentResourceId = params.resourceId
       // debugger
-      sessionStorage['gdrc-breadlist-comment'] = JSON.stringify( state.breadCommentListState )
-      sessionStorage['gdrc-curCommentResourceId'] = state.curCommentResourceId
+      sessionStorage['gdrc-breadlist-comment'] = JSON.stringify(store.state.breadCommentListState)
+      sessionStorage['gdrc-curCommentResourceId'] = store.state.curCommentResourceId
     }
   }
 }
 
-router.beforeEach((to,from,next) => {
 
-  normalResourceBreadList(store,to)
+router.beforeEach((to, from, next) => {
+
+  normalResourceBreadList(store, to)
 
   // loading 效果
   ViewUI.LoadingBar.start()
@@ -248,25 +305,25 @@ router.beforeEach((to,from,next) => {
   store.state.token = localStorage.getItem("token")
   store.state.user = localStorage.getItem("user")
   // 判断这个url是否需要登录权限
-  if(to.meta.requireAuth) {
-    if(store.state.token && store.state.user) {
+  if (to.meta.requireAuth) {
+    if (store.state.token && store.state.user) {
       next()
-    }else{
-      next({path:'/login', query:{redirect: to.fullPath}})
+    } else {
+      next({ path: '/login', query: { redirect: to.fullPath } })
     }
-  }else{
-		next()
-	}
+  } else {
+    next()
+  }
 })
 
 router.afterEach(route => {
-    ViewUI.LoadingBar.finish();
+  ViewUI.LoadingBar.finish()
 })
 /* eslint-disable no-new */
 new Vue({
-    el: '#app',
-    router,
-    store,
-    components: { App },
-    template: '<App/>'
+  el: '#app',
+  router,
+  store,
+  components: { App },
+  template: '<App/>'
 })

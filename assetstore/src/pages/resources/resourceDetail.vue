@@ -1,7 +1,6 @@
 <template>
   <div>
     <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
-   
 
     <section class="resource-detail">
       <!-- <Breadcrumb style="margin:30px 0;font-size:14px;">
@@ -15,14 +14,14 @@
       <div class="resource-detail-t">
         <div class="resource-detail-t-topwrap">
           <div class="resource-detail-lightbox"> 
-            <div class="swiper-container gallery-top" ref="gallery-top">
+            <div class="swiper-container gallery-top" ref="gallery-top" style="cursor:pointer;">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(src,i) in resource.images" :key="i" 
                  :attrx="src" :style="{backgroundImage: `url(${src})`}">
                 </div>
               </div>
-              <div class="swiper-button-next swiper-button-white"></div>
-              <div class="swiper-button-prev swiper-button-white"></div>
+              <!-- <div class="swiper-button-next swiper-button-white"></div>
+              <div class="swiper-button-prev swiper-button-white"></div> -->
             </div>
             <div class="swiper-container gallery-thumbs" ref="gallery-thumbs">
               <div class="swiper-wrapper">
@@ -200,9 +199,8 @@
       color:#7f7f7f;
       font-size:16px;
       
-    }
-  }
-    .swiper-container {
+		}
+		.swiper-container {
       width: 100%;
       height: 300px;
       margin-left: auto;
@@ -228,6 +226,8 @@
     .gallery-thumbs .swiper-slide-thumb-active {
       opacity: 1;
     }
+  }
+    
 </style>
 <style scoped lang="less">
 
@@ -598,15 +598,12 @@ import Footer from '@/components/footer.vue'
 import axios from 'axios'
 import breadCrumb from '@/widget/breadcrumb.vue'
 
-
-
-
-
 // import Rate from 'ant-design-vue/lib/rate';
 // import 'ant-design-vue/lib/rate/style'; // 或者 ant-design-vue/lib/button/style/css 加载 css 文件
 
 // console.log('TopNavigation:', TopNavigation)
 import E from '@/widget/emojiReply/'
+import LightBox from '@/widget/lightbox/'
 
 const {Reply,Comments} = E
 
@@ -623,7 +620,10 @@ export default {
       rate2:0,
       sortBy:'time',
       userid:'',
-      model1:'333333333',
+			model1:'333333333',
+			
+			previewVisible:false,
+			previewImage:'',
 
       showAlertComment:false,
 
@@ -700,15 +700,31 @@ export default {
 		console.log('matched:', this.$route.matched)
 
 		const {params} = this.$route
-
+		const that = this
     // debugger
-		
+
+
     axios.get(`/api/resource/${params.resourceId}`).then(response=>{
       var res = response.data
 
       this.resource = Object.assign(this.resource,res.data)
 
+      this.resource.images = this.resource.images.map(o=>{
+        return `//192.168.94.238:3000/file/download/${o.id}/token=${this.$store.state.token}`
+      })
+      //console.log(this.resource.images)
+
       this.$nextTick(()=>{
+
+				var lightbox = LightBox(document.body,{
+					zIndex:100,
+					topImgs:this.resource.images,
+					thumbImgs:this.resource.images
+				})
+
+				// lightbox.setCurIdx(0)
+				// lightbox.hide()
+
         var galleryThumbs = new Swiper('.gallery-thumbs', {
           spaceBetween: 10,
           slidesPerView: 4,
@@ -717,15 +733,30 @@ export default {
           watchSlidesProgress: true
         })
 
-        new Swiper('.gallery-top', {
-          spaceBetween: 10,
+        this.swiper = new Swiper('.gallery-top', {
+					spaceBetween: 10,
+					on:{
+						click(){
+
+							if(typeof this.clickedIndex != undefined){
+								lightbox.setCurIdx(this.clickedIndex)
+							  lightbox.show()
+							}
+
+							
+						}
+					},
           navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev'
           },
           thumbs: {
             swiper: galleryThumbs
-          }
+					},
+					autoplay:{
+						delay: 5000,  // 设置轮播的时间
+						disableOnInteraction: false,  // 这一行是为了避免手动滑动轮播图后，自动轮播失效，默认为true
+					},
         })
       })
       
