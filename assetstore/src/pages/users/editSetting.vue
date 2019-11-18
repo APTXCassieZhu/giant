@@ -13,8 +13,10 @@
             <div v-if="this.showPersonal" class="setting-card">
                 <Upload 
                     name='avatar'
+                    :data="{target:''}"
                     :format="['jpg','png']" 
                     :max-size="1024" 
+                    :headers="{authorization:this.$store.state.token}"
                     :before-upload="handleBeforeUpload"
                     :on-format-error="handleFormatError" 
                     :on-exceeded-size="handleMaxSize"
@@ -64,6 +66,7 @@
                     name='avatar'
                     :format="['jpg','png']" 
                     :max-size="1024" 
+                    :headers="{authorization:this.$store.state.token}"
                     :before-upload="handleBeforeUpload"
                     :on-format-error="handleFormatError" 
                     :on-exceeded-size="handleMaxSize"
@@ -171,25 +174,19 @@ export default {
         this.account = u.account
         this.personalForm.nickname = u.nickName
         this.personalForm.sign = u.signature
-        // axios.get('/user/describe').then((res)=>{
-        //     if(res.data.code == 0){
-        //         this.$store.commit('ADD_COUNT', res.headers.Authorization)
-        //         if(res.data.data.profilePic != null){
-        //             this.finished = true
-        //             this.imageUrl = res.data.data.profilePic
-        //         }
-        //         this.account = res.data.data.account
-        //         this.personalForm.nickname = res.data.data.nickName
-        //         this.personalForm.sign = res.data.data.signature
-        //     }
-        //     else if(res.data.code == 404){
-        //         alert('user not found')
-        //     }
-        // }, (res)=>{
-        //     // 请求失败
-        //     alert(res)
-        // })
-        /*TODO 从后端get setting的数据 */
+        axios.get('/api/user/remind/setting',{"starResourceUpgrade":this.switch1,"starSoftwareUpgrade": this.switch2,
+            "replyComment": this.switch3, "resourceCommented": this.switch4, "starResourceCommented": this.switch5 },{emulateJSON:true}).then((res)=>{
+                if(res.data.code == 0){
+                    this.switch1 = res.data.data.starResourceUpgrade
+                    this.switch2 = res.data.data.starSoftwareUpgrade
+                    this.switch3 = res.data.data.replyComment
+                    this.switch4 = res.data.data.resourceCommented
+                    this.switch5 = res.data.data.starResourceCommented
+                }
+            }, (res)=>{
+                // 请求失败
+                alert(res)
+            })
     },
     data () {
         /* TODO 检查是否含有敏感词 */
@@ -353,6 +350,7 @@ export default {
                     });
                 }
                 else if(res.data.code == 400){
+                    console.log('400了')
                     alert('bad request (form error)')
                 }
             }, res => {
@@ -368,22 +366,18 @@ export default {
             // this.personalForm.nickname=this.personalForm.nickname.replace(/[/d]/g,'') 
         },
         submitSetting(){
-            /* TODO swagger 接口还没写好 */
-            axios.put('/api/user',{profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
-            signature:this.personalForm.sign},{emulateJSON:true}).then(res => {
+            axios.put('/api/user/remind/setting',{"starResourceUpgrade":this.switch1,"starSoftwareUpgrade": this.switch2,
+            "replyComment": this.switch3, "resourceCommented": this.switch4, "starResourceCommented": this.switch5 },{emulateJSON:true}).then((res)=>{
                 if(res.data.code == 0){
-                    // 用户基本资料修改成功
                     this.$Message.warning({
                         background: true,
                         content: '修改设置成功'
                     });
                 }
-                else if(res.data.code == 400){
-                    alert('bad request (form error)')
-                }
-            }, res => {
-                // error callback
-            });
+            }, (res)=>{
+                // 请求失败
+                alert(res)
+            })
         },
     },
 }

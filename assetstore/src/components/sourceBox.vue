@@ -1,7 +1,7 @@
 <template>
-<div class="source-box-wrapper" v-if="!deleteOrNot" @click="goPage(`/resourceDetail/${source.id}`)">
+<div class="source-box-wrapper">
     <div class="source-box">
-        <div class="upper">
+        <div class="upper" @click="goPage(`/resourceDetail/${source.id}`)">
             <div class="upper-head">
                 <div v-if="source.images != null" ><img class="font-image" :src="source.images[0]"></div>
                 <div v-else class="font-image">{{source.name.charAt(0)}}</div>
@@ -25,16 +25,16 @@
             <div class="font-num">{{getDownloadCount}}<span style="margin-left: 63px;">{{getStars}}</span></div>
         </div>
         <Row class="font-footer">
-            <Col span="8" class="footer-col" @click="goPage(`/updateFile/${source.id}`)">
+            <Col span="8" class="footer-col" @click.native="goPage(`/updateFile/${source.id}`)">
                 <font-awesome-icon :icon="['fas','sync-alt']" class="foot-icon" />
             </Col>
-            <Col span="8" class="footer-col" @click="goPage(`/editFile/${source.id}`)">
+            <Col span="8" class="footer-col" @click.native="goPage(`/editFile/${source.id}`)">
                 <Divider type="vertical" class="foot-divider"/>
                 <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon"/>
             </Col>
-            <Col span="8" class="footer-col1">
+            <Col span="8" class="footer-col1" @click.native="deleteSource">
                 <Divider type="vertical" class="foot-divider"/>
-                <span class="foot-icon foot-icon-del" @click="deleteSource">删除</span>
+                <span class="foot-icon foot-icon-del">删除</span>
                 <!-- <Dropdown trigger="click" :visible="moreVisible" @on-clickoutside="closeDrop()">
                     <Button href="javascropt:void(0)" class="foot-btn" @click.native="openDrop()">
                         <Icon size="25" type="md-more" class="foot-icon"/>
@@ -75,7 +75,6 @@ export default {
             publicOrNot: false,             // 默认隐藏
             // default
             moreVisible: false,
-            deleteOrNot: false,
             jumpOrNot: true,
         }
     },
@@ -89,19 +88,6 @@ export default {
                 }
             }
             this.jumpOrNot = true
-        },
-        cancelFavorite(){
-            //TODO add user favourite to favorite list so that they can check in personal
-            console.log('favorite')
-            this.favoriteIcon = !this.favoriteIcon
-            /* 提示用户已关注 */
-            if(this.favoriteIcon){
-                this.$Message.success('已关注')
-                this.$store.commit('ADD_FAVORITE', this.sourceID);
-            }else{
-                this.$Message.success('已取消关注')
-                this.$store.commit('REMOVE_FAVORITE', this.sourceID);
-            }  
         },
         changeState(){
             this.jumpOrNot = false
@@ -138,7 +124,6 @@ export default {
                                     title: '资源已隐藏',
                                 })
                                 this.state = '隐藏'
-                                // TODO 告诉后端这个资源已隐藏
                             }, 1000);
                         })
                     },
@@ -149,7 +134,6 @@ export default {
             }
         },
         deleteSource(){
-            this.jumpOrNot = false
             this.$Modal.confirm({
                 title: '确认删除此条资源？',
                 okText: '确认',
@@ -161,7 +145,7 @@ export default {
                                 this.$Modal.success({
                                     title: '资源已删除',
                                 })
-                                this.deleteOrNot = true
+                                this.$emit('onDel',this.source.id)
                             }, 1000);
                         }
                     })

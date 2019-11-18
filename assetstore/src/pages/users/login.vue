@@ -73,20 +73,12 @@ export default {
             if(!this.expire) {
                 this.expireTime = 2
             }
-              axios.post('/api/user/login',{account:this.loginForm.account, pwd:this.loginForm.password
-            },{emulateJSON:true}).then((res)=>{
-
-                // console.log(res)
-                // debugger
-                // debugger
-            // axios.post('/api/user/login',{account:this.loginForm.account, pwd:this.loginForm.password, 
-            // expire:this.expireTime},{emulateJSON:true}).then((res)=>{
+            axios.post('/api/user/login',{account:this.loginForm.account, pwd:this.loginForm.password},{emulateJSON:true}).then((res)=>{
                 // 登录成功
                 // debugger
                 if(res.data.code == 0){
-                    //this.$store.commit('ADD_COUNT', res.headers.Authorization);
-                    this.$store.commit('ADD_COUNT',res.headers.authorization)
-                    this.$store.commit('ADD_USER', res.data.data)
+                    this.$store.commit('ADD_COUNT', res.headers.authorization);
+                    this.$store.commit('ADD_USER', res.data.data);
                     this.$router.push('/')
                 }
                 else if(res.data.code == 40101){
@@ -96,7 +88,11 @@ export default {
                 }else if(res.data.code == 40103){
                     this.$Modal.error({
                         title: '抱歉，连接域账号服务器失败，请稍后再试',
-                    })
+                    });
+                }else{
+                    this.$Modal.error({
+                        title: '参数错误',
+                    });
                 }
             }, (res)=>{
                 // 登录失败
@@ -176,6 +172,7 @@ export default {
 .text-center{
     position: relative;
     margin-top:35px;
+    clear: both;
 }
 
 .login-remember{
