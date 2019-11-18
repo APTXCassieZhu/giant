@@ -1,7 +1,7 @@
 <template>
     <div class="source-box" v-if="!deleteOrNot">
         <div class="upper">
-            <div v-if="source.images != null" ><img class="font-image" :src="source.images[0]"></div>
+            <img v-if="source.images != null" class="font-image" :src="source.images[0]">
             <div v-else class="font-image">{{source.name.charAt(0)}}</div>
             <div class="font-title">{{source.name}}</div>
             <div class="font-content">来源: <span style="margin-left:10px;">{{getWhoShared}}</span></div>

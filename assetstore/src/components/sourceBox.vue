@@ -1,5 +1,5 @@
 <template>
-<div class="source-box-wrapper" v-if="!deleteOrNot">
+<div class="source-box-wrapper" v-if="!deleteOrNot" @click="goPage(`/resourceDetail/${source.id}`)">
     <div class="source-box">
         <div class="upper">
             <div class="upper-head">
@@ -25,12 +25,12 @@
             <div class="font-num">{{getDownloadCount}}<span style="margin-left: 63px;">{{getStars}}</span></div>
         </div>
         <Row class="font-footer">
-            <Col span="8" class="footer-col">
-                <font-awesome-icon :icon="['fas','sync-alt']" class="foot-icon" @click="goPage(`/updateFile/${source.id}`)"/>
+            <Col span="8" class="footer-col" @click="goPage(`/updateFile/${source.id}`)">
+                <font-awesome-icon :icon="['fas','sync-alt']" class="foot-icon" />
             </Col>
-            <Col span="8" class="footer-col">
+            <Col span="8" class="footer-col" @click="goPage(`/editFile/${source.id}`)">
                 <Divider type="vertical" class="foot-divider"/>
-                <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon" @click="goPage(`/editFile/${source.id}`)"/>
+                <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon"/>
             </Col>
             <Col span="8" class="footer-col1">
                 <Divider type="vertical" class="foot-divider"/>
@@ -76,15 +76,19 @@ export default {
             // default
             moreVisible: false,
             deleteOrNot: false,
+            jumpOrNot: true,
         }
     },
     methods:{
         goPage(url){
-            if(this.$route.path===url){
-                location.reload()
-            }else{
-                this.$router.push(url)
+            if(this.jumpOrNot){
+                if(this.$route.path===url){
+                    location.reload()
+                }else{
+                    this.$router.push(url)
+                }
             }
+            this.jumpOrNot = true
         },
         cancelFavorite(){
             //TODO add user favourite to favorite list so that they can check in personal
@@ -100,6 +104,7 @@ export default {
             }  
         },
         changeState(){
+            this.jumpOrNot = false
             if(this.publicOrNot){
                 this.$Modal.confirm({
                     title: '确认公开此条资源？',
@@ -144,6 +149,7 @@ export default {
             }
         },
         deleteSource(){
+            this.jumpOrNot = false
             this.$Modal.confirm({
                 title: '确认删除此条资源？',
                 okText: '确认',
