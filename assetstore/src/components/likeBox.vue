@@ -1,5 +1,5 @@
 <template>
-    <div class="source-box" v-if="!deleteOrNot">
+    <div class="source-box">
         <div class="upper">
             <img v-if="source.images != null" class="font-image" :src="source.images[0]">
             <div v-else class="font-image">{{source.name.charAt(0)}}</div>
@@ -36,7 +36,6 @@ export default {
     data() {
         return {
             // default
-            deleteOrNot: false,
         }
     },
     methods:{
@@ -47,14 +46,16 @@ export default {
                 okText: '确认',
                 cancelText: '取消',
                 onOk: () => {
-                    setTimeout(() => {
-                        this.$Modal.success({
-                            title: '已取消关注',
-                        })
-                        this.$store.commit('REMOVE_FAVORITE', this.sourceID); 
-                        // TODO 告诉后端这个已取消关注
-                        this.deleteOrNot = true
-                    }, 1000);
+                    axios.post(`/api/resource/${this.source.id}/star`,{"star": false},{emulateJSON:true}).then((res)=>{
+                        if(res.data.code === 0) {
+                            setTimeout(() => {
+                                this.$Modal.success({
+                                    title: '已取消关注',
+                                })
+                                this.$store.commit('REMOVE_FAVORITE', this.sourceID); 
+                            }, 1000);
+                        }
+                    })
                 },
             });
             this.deleteOrNot = true

@@ -19,7 +19,7 @@
                     <p>快邀请好友来为您添加第一条标签吧</p>
                 </div>
                 <span v-else v-for="(item,index) in this.user.labels" :key="index">
-                    <Tag class="tag-style">&emsp;{{item}}&emsp;</Tag>
+                    <a-tag class="tag-style">&emsp;{{item}}&emsp;</a-tag>
                 </span>
 
                 <Divider />
@@ -46,7 +46,7 @@
                             <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
                         </div>
                         <div v-for="(product, i) in this.productList" :key="'aa'+i">
-                            <source-box v-bind:source='product'></source-box>
+                            <source-box v-bind:source='product'  @onDel="onDel"></source-box>
                         </div>
                     </TabPane>
                     <TabPane :label="tab2" name="name2">
@@ -96,7 +96,7 @@ export default {
         }
         // 拿到用户的基本资料
         let o = JSON.parse(this.$store.state.user)
-        axios.get(`/api/user/${o.id}`).then((res)=>{
+        axios.get(`/api/user/${o.userId}`).then((res)=>{
             if(res.data.code == 0){
                 this.user = res.data.data
                 this.profilePic = res.data.data.profilePic
@@ -115,7 +115,7 @@ export default {
             alert(res)
         })
         // 拿到用户上传的资源列表
-        axios.get(`/api/user/${o.id}/resource`).then((res)=>{
+        axios.get(`/api/user/${o.userId}/resource`).then((res)=>{
             if(res.data.code == 0){
                 this.productList = res.data.data.list
                 this.tab1 = `资源(${res.data.data.count})`
@@ -124,7 +124,7 @@ export default {
             alert(res)
         })
         // 拿到用户关注的资源列表
-        axios.get(`/api/user/${o.id}/stars`).then((res)=>{
+        axios.get(`/api/user/star`).then((res)=>{
             if(res.data.code == 0){
                 this.favoriteList = res.data.data.list
                 this.tab3 = `关注(${res.data.data.count})`
@@ -132,6 +132,13 @@ export default {
         }, (res)=>{
             alert(res)
         })
+    },
+    watch:{
+        // productList(){
+        //     // debugger
+        //     this.tab1 = `资源(${this.productList.length})`
+        // },
+        // deep:true
     },
     data () {
         return {
@@ -160,6 +167,16 @@ export default {
                 this.$router.push(url)
             }
         },
+        onDel(pid){
+            for (var i = 0; i < this.productList.length; i++) {
+                if (this.productList[i].id == pid) {
+                    this.productList.splice(i, 1);
+                    break;
+                }
+            }
+            this.tab1 = `资源${this.productList.length}`
+            
+        },
         bright(){
             this.uploadFolderStyle = "upload-folder-style-hover"
         },
@@ -187,6 +204,11 @@ export default {
 > .ivu-tabs-nav-scroll{
     position: sticky;
 }
+/* .self-card > span > .tag-style > .ivu-tag-text{
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+} */
 </style>
 <style scoped>
 .middle-card-wrapper{

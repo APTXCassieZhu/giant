@@ -58,14 +58,14 @@ axios.defaults.baseURL = '/'
 global.axios = axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios
-// axios.interceptors.request.use(function (config) {
-//   config.headers.common['Authorization'] = state.token
-//   debugger
-//   return config
-// }, function (error) {
-//   // 对请求错误做些什么
-//   return Promise.reject(error);
-// })
+axios.interceptors.request.use(function (config) {
+  config.headers.common['authorization'] = store.state.token
+  // debugger
+  return config
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error);
+})
 
 axios.interceptors.response.use(
     response => {
@@ -128,7 +128,7 @@ var store = new Vuex.Store({
           state.token = token
           // 让所有请求header里面都有token
           console.log('token ' + token)
-          axios.defaults.headers.common['Authorization'] = state.token
+          axios.defaults.headers.common['authorization'] = state.token
       },
       // logout
       [REMOVE_COUNT](state, token) {
