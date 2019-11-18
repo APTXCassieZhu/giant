@@ -59,7 +59,7 @@
                             <Button class="like-btn" @click="goPage('/')">去关注</Button>
                         </div>
                         <div v-else v-for="(like, n) in favoriteList" :key="n" style="display:inline-block;">
-                            <like-box :source='like'></like-box>
+                            <like-box :source='like' @unFavorite="unFavorite"></like-box>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -96,7 +96,7 @@ export default {
         }
         // 拿到用户的基本资料
         let o = JSON.parse(this.$store.state.user)
-        axios.get(`/api/user/${o.userId}`).then((res)=>{
+        axios.get(`/api/user/${o.id}`).then((res)=>{
             if(res.data.code == 0){
                 this.user = res.data.data
                 this.profilePic = res.data.data.profilePic
@@ -110,12 +110,14 @@ export default {
                 }else{
                     this.signature = res.data.data.signature
                 }
+            }else{
+                alert(res.data.code)
             }
         }, (res)=>{
             alert(res)
         })
         // 拿到用户上传的资源列表
-        axios.get(`/api/user/${o.userId}/resource`).then((res)=>{
+        axios.get(`/api/user/${o.id}/resource`).then((res)=>{
             if(res.data.code == 0){
                 this.productList = res.data.data.list
                 this.tab1 = `资源(${res.data.data.count})`
@@ -175,7 +177,15 @@ export default {
                 }
             }
             this.tab1 = `资源${this.productList.length}`
-            
+        },
+        unFavorite(lid){
+            for (var i = 0; i < this.favoriteList.length; i++) {
+                if (this.favoriteList[i].id == lid) {
+                    this.favoriteList.splice(i, 1);
+                    break;
+                }
+            }
+            this.tab3 = `关注${this.favoriteList.length}`
         },
         bright(){
             this.uploadFolderStyle = "upload-folder-style-hover"

@@ -238,13 +238,19 @@ export default {
     },
     computed:{
         getUser(){ 
-            let o = JSON.parse(this.$store.state.user)
-            this.profile = o.profilePic
-            if(o.nickName == null){
-                return o.name
-            }else{
-                return o.nickName
-            }
+            try{
+                console.log(typeof this.$store.state.user)
+                // debugger
+                let o = JSON.parse(this.$store.state.user)
+                console.log(o)
+                this.profile = o.profilePic
+                if(o.nickName == null){
+                    return o.name
+                }else{
+                    return o.nickName
+                }
+
+            }catch(e){console.log(e)}
         }
     },
     mounted(){

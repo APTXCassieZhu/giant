@@ -137,8 +137,9 @@ var store = new Vuex.Store({
       },
       [ADD_USER](state, user) {
           console.log('user ' + user)
-          localStorage.setItem("user", JSON.stringify(user))
-          state.user = user
+          const s = JSON.stringify(user)
+          localStorage.setItem("user", s)
+          state.user = s
       },
       // 存放用户搜索内容
       [SEARCH_COUNT](state, searchContent) {

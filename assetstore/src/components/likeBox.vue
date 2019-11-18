@@ -40,7 +40,6 @@ export default {
     },
     methods:{
         cancelFavorite(){
-            //TODO add user favourite to favorite list so that they can check in personal
             this.$Modal.confirm({
                 title: '确认取消关注此条资源？',
                 okText: '确认',
@@ -52,13 +51,12 @@ export default {
                                 this.$Modal.success({
                                     title: '已取消关注',
                                 })
-                                this.$store.commit('REMOVE_FAVORITE', this.sourceID); 
+                                this.$emit('unFavorite',this.source.id)
                             }, 1000);
                         }
                     })
                 },
             });
-            this.deleteOrNot = true
         },
 
     }
