@@ -210,6 +210,7 @@ export default {
                 alert('参数格式不正确')
             }
         })  
+        debugger
         // 判断是否时由导航栏的通知跳转过来的
         if(this.$store.state.curNotice){
             let o = JSON.parse(this.$store.state.curNotice) 

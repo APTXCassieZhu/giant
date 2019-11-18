@@ -98,8 +98,6 @@ const ADD_USER = 'ADD_USER'
 const SEARCH_COUNT = 'SEARCH_COUNT'
 const NOW_ACTIVE = 'NOW_ACTIVE'
 const PERSONAL_ACTIVE = 'PERSONAL_ACTIVE'
-const ADD_FAVORITE = 'ADD_FAVORITE'
-const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
 const READ_NOTICE = 'READ_NOTICE'
 const NOTICE_READED = 'NOTICE_READED'
 // const localstorage = require('./localstorage')
@@ -111,7 +109,6 @@ var store = new Vuex.Store({
     searchContent:'',
     activenum: 1,
     personalActive: "",
-    favoriteList: [],
     breadListState: sessionStorage['gdrc-breadlist']?JSON.parse(sessionStorage['gdrc-breadlist']):[],
     breadCommentListState: sessionStorage['gdrc-breadlist-comment']?JSON.parse(sessionStorage['gdrc-breadlist-comment']):[],
     // { path:'',resourceId:'' }
@@ -155,23 +152,6 @@ var store = new Vuex.Store({
       [PERSONAL_ACTIVE](state, personalActive) {
           sessionStorage.setItem("personalActive", personalActive)
           state.personalActive = personalActive
-      },
-      // 添加关注到用户关注列表
-      [ADD_FAVORITE](state, favorite) {
-          state.favoriteList.push(favorite)
-          localStorage.setItem("favorite", state.favoriteList)
-      },
-      // 取消关注
-      [REMOVE_FAVORITE](state, favorite) {
-          localStorage.removeItem("favorite", favorite)
-          for (var i = 0; i < state.favoriteList.length; i++) {
-              if (state.favoriteList[i] == favorite) {
-                  state.favoriteList.splice(i, 1);
-                  break;
-              }
-          }
-          console.log("cancel favorite")
-          localStorage.setItem("favorite", state.favoriteList)
       },
       // 从导航栏点击通知，前往消息中心，存储当前点击的通知内容
       [READ_NOTICE](state, item) {
