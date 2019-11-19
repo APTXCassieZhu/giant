@@ -35,6 +35,67 @@ router.post('/login', jsonParser, function(req,res){
     }
     
 })
+router.get('/star', jsonParser, function(req,res){
+	console.log('关注列表')
+	res.status(200).json({
+		'code': 0,
+		'data':{
+			"count": 5,
+			"list" :[{
+				"id": 000,
+				"name": "我关注的尊老爱幼",
+				"images": [
+					"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=ef9c6b2c38fa828bd1239ae5c5242609/54fbb2fb43166d221ce8fabd4d2309f79052d278.jpg",
+				],
+				"rateAvg": 5,
+				"user":{
+					"id": 007,
+					"name": "社会主义的接班人",
+				}
+			},{
+				"id": 999,
+				"name": "我关注的你",
+				"images": null,
+				"rateAvg": 0,
+				"user":{
+					"id": 250,
+					"name": "憨批",
+					"nickName": "小可爱",
+				}
+			},
+			{
+				"id": 111,
+				"name": "我关注的大宝贝",
+				"images": null,
+				"rateAvg": 4.5,
+				"user":{
+					"id": 250,
+					"name": "baby",
+					"nickName": "热巴",
+				}
+			},
+			{
+				"id": 666,
+				"name": "我关注的皮卡丘",
+				"images": null,
+				"rateAvg": 4.8,
+				"user":{
+					"id": 250,
+					"name": "pikaqiu",
+				}
+			},{
+				"id": 4399,
+				"name": "我关注的是你",
+				"images": null,
+				"rateAvg": 3.5,
+				"user":{
+					"id": 520,
+					"name": "丘比特"
+				}
+			}]
+		}
+	})
+})
 router.get('/describe', function(req, res){
 	res.status(200).json({
 			'msg':'msg-233333',
@@ -78,8 +139,8 @@ router.get('/:id', jsonParser, function(req,res){
 			"profilePic": "//avatars1.githubusercontent.com/u/38572741?s=460&v=4",
 			"dept": "前沿技术部",
 			"title": "string",
-			// "labels": ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸','暴躁老妹'],
-			"labels": null,
+			"labels": ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸','暴躁老妹'],
+			// "labels": null,
 			"fineResources": [
 				{
 					"id": 0,
@@ -194,66 +255,9 @@ router.get('/:id/resource', jsonParser, function(req,res){
 		}
 	})
 });
-router.get('/:id/stars', jsonParser, function(req,res){
-	res.status(200).json({
-		'code': 0,
-		'data':{
-			"count": 5,
-			"list" :[{
-				"id": 000,
-				"name": "我关注的尊老爱幼",
-				"images": [
-					"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=ef9c6b2c38fa828bd1239ae5c5242609/54fbb2fb43166d221ce8fabd4d2309f79052d278.jpg",
-				],
-				"rateAvg": 5,
-				"user":{
-					"id": 007,
-					"name": "社会主义的接班人",
-				}
-			},{
-				"id": 999,
-				"name": "我关注的你",
-				"images": null,
-				"rateAvg": 0,
-				"user":{
-					"id": 250,
-					"name": "憨批",
-					"nickName": "小可爱",
-				}
-			},
-			{
-				"id": 111,
-				"name": "我关注的大宝贝",
-				"images": null,
-				"rateAvg": 4.5,
-				"user":{
-					"id": 250,
-					"name": "baby",
-					"nickName": "热巴",
-				}
-			},
-			{
-				"id": 666,
-				"name": "我关注的皮卡丘",
-				"images": null,
-				"rateAvg": 4.8,
-				"user":{
-					"id": 250,
-					"name": "pikaqiu",
-				}
-			},{
-				"id": 4399,
-				"name": "我关注的是你",
-				"images": null,
-				"rateAvg": 3.5,
-				"user":{
-					"id": 520,
-					"name": "丘比特"
-				}
-			}]
-		}
-	})
-})
+router.delete('/label/:id', jsonParser, function(req,res){
+	res.status(200).json({'code':0})
+});
 router.put('/', jsonParser, function(req,res){
 	res.status(200).json({'code':0})
 });

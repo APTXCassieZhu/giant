@@ -138,7 +138,10 @@ export default {
     },
     data () {
         return {
-            user: {},
+            user: {
+                labels:[],
+                fineResources:[]
+            },
             page: 1,
             pageSize: 10,
             resName: "受访者张佳",

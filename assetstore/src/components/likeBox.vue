@@ -1,19 +1,19 @@
 <template>
     <div class="source-box">
-        <div class="upper">
+        <div class="upper" @click="goPage(`/resourceDetail/${source.id}`)">
             <img v-if="source.images != null" class="font-image" :src="source.images[0]">
             <div v-else class="font-image">{{source.name.charAt(0)}}</div>
             <div class="font-title">{{source.name}}</div>
             <div class="font-content">来源: <span style="margin-left:10px;">{{getWhoShared}}</span></div>
-            <Rate class="font-content" icon="md-star" disabled v-model="source.rateAvg" />
+            <Rate class="font-content" style="font-size: 18px;" icon="md-star" disabled v-model="source.rateAvg" />
         </div>
         <Row class="font-footer">
             <Col span="12" class="footer-col">
-                <Icon size="25" type="md-download" class="foot-icon" />
+                <font-awesome-icon :icon="['fas','download']" class="foot-icon"/>
             </Col>
-            <Col span="12" class="footer-col">
+            <Col span="12" class="footer-col"  @click.native="cancelFavorite()">
                 <Divider type="vertical" class="foot-divider"/>
-                <Icon size="25" type="md-heart" class="foot-icon" @click.native="cancelFavorite()"/>
+                <Icon size="22" type="md-heart" class="foot-icon"/>
             </Col>
         </Row>
     </div>
@@ -39,6 +39,9 @@ export default {
         }
     },
     methods:{
+        goPage(url){
+            this.$router.push(url)
+        },
         cancelFavorite(){
             this.$Modal.confirm({
                 title: '确认取消关注此条资源？',
@@ -78,6 +81,7 @@ export default {
 }
 .upper{
     padding: 18px 18px 0px 18px;
+    cursor: pointer;
 }
 .font-image{
     display: inline-block;
@@ -93,7 +97,7 @@ export default {
     position: relative;
     top: -10px;
     right: -10px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-size: 16px;
     font-weight: bold; 
     line-height: 21px;
@@ -102,7 +106,7 @@ export default {
     position: relative;
     font-size: 14px;
     margin-left: 60px;
-    margin-top: 8px;
+    top: -15px;
 }
 .font-num{
     position: relative;
@@ -117,7 +121,7 @@ export default {
     height: 56px;
     line-height: 56px;
     text-align: center;
-    margin-top: 16px;
+    margin-top: 25px;
 }
 .footer-col {
     /*border-right:2px solid #7d7d7d;*/

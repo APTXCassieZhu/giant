@@ -1,5 +1,10 @@
 <template>
     <div style="background-color: #eff2f5">
+        <!-- <p> {{this.productList.length}}</p> -->
+        <!-- <p> {{this.favoriteList.length}}</p> -->
+
+
+
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <div class="middle-card-wrapper">
             <div class="self-card">
@@ -9,17 +14,21 @@
                     <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/>
                     <ul style="font-size: 21px;font-weight: bold;">{{this.username}}</ul>
                     <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
+
                 </div>
                 <br>
                 <ul style="font-size: 14px; color: #7f7f7f;text-align:center;">{{this.signature}}</ul>
                 <Divider />
                 <ul style="font-size: 16px; font-weight: bold">印象</ul><br>
-                <div v-if="this.user.labels == null" class="empty-personal">
+                <div v-if="this.user.labels == null || this.user.labels.length == 0" class="empty-personal">
                     <p>暂无好友印象哦～</p>
                     <p>快邀请好友来为您添加第一条标签吧</p>
                 </div>
                 <span v-else v-for="(item,index) in this.user.labels" :key="index">
-                    <a-tag class="tag-style">&emsp;{{item}}&emsp;</a-tag>
+                    <a-tag class="tag-style">
+                        &emsp;{{item}}&emsp;
+                        <font-awesome-icon :icon="['fas', 'times']" class="tag-style-close" @click="handleCloseTag(item)"/>
+                    </a-tag>
                 </span>
 
                 <Divider />
@@ -125,11 +134,12 @@ export default {
         }, (res)=>{
             alert(res)
         })
+
         // 拿到用户关注的资源列表
-        axios.get(`/api/user/star`).then((res)=>{
-            if(res.data.code == 0){
-                this.favoriteList = res.data.data.list
-                this.tab3 = `关注(${res.data.data.count})`
+        axios.get('/api/user/star').then((res1)=>{
+            if(res1.data.code == 0){
+                this.favoriteList = res1.data.data.list
+                this.tab3 = `关注(${res1.data.data.count})`
             }
         }, (res)=>{
             alert(res)
@@ -145,7 +155,9 @@ export default {
     data () {
         return {
             profilePic: null,
-            user: {},
+            user: {
+                fineResources:[]
+            },
             username: '迪丽热巴的老婆--睿酱',
             department: '拯救地球部',
             signature: '就像阳光穿破黑夜~ 黎明悄悄划过天边~ O(∩_∩)O谢谢',
@@ -176,7 +188,7 @@ export default {
                     break;
                 }
             }
-            this.tab1 = `资源${this.productList.length}`
+            this.tab1 = `资源(${this.productList.length})`
         },
         unFavorite(lid){
             for (var i = 0; i < this.favoriteList.length; i++) {
@@ -185,7 +197,18 @@ export default {
                     break;
                 }
             }
-            this.tab3 = `关注${this.favoriteList.length}`
+            this.tab3 = `关注(${this.favoriteList.length})`
+        },
+        handleCloseTag(removedTag){
+            const tags = this.user.labels.filter(tag => tag !== removedTag);
+            console.log(tags);
+            this.user.labels = tags;
+            axios.delete(`/api/user/label/${removedTag.id}`).then((res1)=>{
+                if(res1.data.code == 0){
+                }
+            }, (res)=>{
+                alert(res)
+            })
         },
         bright(){
             this.uploadFolderStyle = "upload-folder-style-hover"
@@ -274,6 +297,18 @@ export default {
 .tag-style{
     margin-right:15px;
     margin-bottom: 10px;
+}
+.tag-style-close{
+    width: 10px;
+    height: 10px;
+    color: #7f7f7f;
+    line-height: 21px;
+    text-align: center;
+    top: -2px;
+    position: relative;
+}
+.tag-style-close:hover{
+    color: red;
 }
 .empty-personal{
     font-size: 14px;
