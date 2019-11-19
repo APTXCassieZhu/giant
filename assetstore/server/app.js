@@ -28,6 +28,38 @@ app.use('/bulletin', bulletin)
 // app.use('/fonts', express.static(__dirname +'/fonts'))
 app.use('/',express.static(__dirname+''))
 
+app.get('/:id/resource',(req, res) => {
+	res.status(200).json({
+		'code': 0,
+		'data':{
+			'count': 3,
+			"list": [{
+				"id": 0,
+				"name": "尊老爱幼",
+				"images": [
+					"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=ef9c6b2c38fa828bd1239ae5c5242609/54fbb2fb43166d221ce8fabd4d2309f79052d278.jpg",
+				],
+				"label": "string",
+				"downloadCount": 8250,
+				"stars": 1024
+			},{
+				"id": 294,
+				"name": "神迹是我和你共同降下的",
+				"images": null,
+				"label": "string",
+				"downloadCount": 270,
+				"stars": 570
+			},{
+				"id": 9647,
+				"name": "攘外并先安内！",
+				"images": null,
+				"label": "string",
+				"downloadCount": 332,
+				"stars": 56
+			}]
+		}
+	});
+})
 // -------------- o(=•ェ•=)m   start tag ------------------
 
 {

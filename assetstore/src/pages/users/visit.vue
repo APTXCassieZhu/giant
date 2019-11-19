@@ -11,33 +11,45 @@
                     <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
                 </div>
                 <br>
-                <ul style="font-size: 14px; color: #7f7f7f;">{{this.signature}}</ul>
+                <ul style="font-size: 14px; color: #7f7f7f;text-align: center">{{this.signature}}</ul>
                 <Divider />
-                <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
-                <div v-if="this.user.labels == null" class="empty-personal">
-                    <p>暂无好友印象哦～</p>
-                    <p>快邀请好友来为您添加第一条标签吧</p>
-                </div>
-                <div v-else>
-                    <span v-for="(item,index) in this.user.labels" :key="index">
-                        <Tag class="tag-style">&emsp;{{item}}&emsp;</Tag>
-                    </span>
-                    <a-input
-                        v-if="inputVisible"
-                        ref="input"
-                        type="text"
-                        size="small"
-                        :style="{ width: '78px' }"
-                        :value="inputValue"
-                        @change="handleInputChange"
-                        @blur="handleInputConfirm"
-                        @keyup.enter="handleInputConfirm"
-                    />
-                    <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
-                    <a-icon type="plus" /> New Tag
+                <ul style="font-size: 16px; font-weight: bold">印象</ul><br>
+    
+                <span v-for="(item,index) in this.user.labels" :key="index">
+                    <a-tag class="tag-style">
+                        &emsp;{{item}}&emsp;
+                        <font-awesome-icon :icon="['fas', 'times']" class="tag-style-close" @click="handleCloseTag(item)"/>
                     </a-tag>
+                </span>
+                
+                <a-form v-if="inputVisible" :form="form">
+                    <a-form-item class="form-ant-style">
+                        <a-input
+                            ref="input"
+                            type="text"
+                            size="small"
+                            :style="{ width: '321px' }"
+                            placeholder="请输入2-8个字符"
+                            @change="handleInputChange"
+                            @blur="handleInputConfirm"
+                            @keyup.enter="handleInputConfirm"
+                            v-decorator="[
+                                'entertag',
+                                {rules: 
+                                    [{type:'string', min: 2, max: 8, message:'请输入2-8个字符', trigger:'keydown'}]
+                                },
+                            ]"
+                        >
+                            <Icon slot="suffix" type="md-return-left" />
+                        </a-input>
+                    </a-form-item>
+                </a-form>
+                <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
+                    <a-icon type="plus" class="plus-ant-style"/> <span style="color: #1ebf73;font-size: 12px">增加标签</span>
+                </a-tag>
+                <div v-if="this.user.labels.length == 0" class="tag-hint">
+                    美术大佬？IT精英？为Ta添加第一条标签吧！
                 </div>
-
                 <Divider />
                 <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
                 <div v-if="this.user.fineResources == null" class="empty-personal">
@@ -46,7 +58,7 @@
                 <div v-else v-for="(resource, i) in this.user.fineResources" :key="'a'+i">
                     <div class="personal-fine">
                         <div v-if="resource.images==null" class="font-image">{{resource.name.charAt(0)}}</div>
-                        <div v-else><img  class="font-image" :src="resource.images[0]"></div>
+                        <div v-else><img class="font-image" :src="resource.images[0]"></div>
                         <div class="font-name">{{resource.name}}</div>
                     </div>
                     <br><br>
@@ -60,7 +72,7 @@
                         <div v-if="this.sourceList.length==0" class="like-btn-container">
                         </div>
                         <div v-else v-for="(item, n) in this.sourceList" :key="n" style="display:inline-block;">
-                            <like-box :softwareName="item" :whoShared="resName"></like-box>
+                            <others-box :source="item" :whoShared="resName"></others-box>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -75,15 +87,19 @@
 import TopNavigation from '../../components/TopNav.vue'
 import Footer from '../../components/footer.vue'
 import Corner from '../../components/corner.vue'
-import LikeBox from '../../components/likeBox.vue'
+import OthersBox from '../../components/othersBox.vue'
 
 export default {
     name:"Visit",
-    components:{TopNavigation, Footer, Corner, LikeBox},
+    components:{TopNavigation, Footer, Corner, OthersBox},
     computed:{
     },
+    beforeCreate() {
+        var that = this
+        this.form = this.$form.createForm(this, {name: 'validate_other'})
+    },
     mounted() {
-        axios.get(`/api/user/${this.$route.userId}`).then((res)=>{
+        axios.get(`/api/user/${this.$route.params.userId}`).then((res)=>{
             if(res.data.code == 0){
                 this.user = res.data.data
                 this.profilePic = res.data.data.profilePic
@@ -93,30 +109,82 @@ export default {
                     this.resName = res.data.data.nickName
                 }
                 if(res.data.data.signature == null){
-                    this.signature = '来都来了，留下点个性签名介绍下自己吧'
+                    this.signature = '该用户暂未填写描述'
                 }else{
                     this.signature = res.data.data.signature
+                }
+                if(res.data.data.labels == null){
+                    this.user.labels = []
                 }
             }
         }, (res)=>{
             // 登录失败
             alert(res)
         })
-        this.tab = "资源("+this.sourceList.length+")"
+        axios.get(`/api/${this.$route.params.userId}/resource`, {
+            params: {
+                page: this.page,
+                pageSize: this.pageSize,
+            }
+        }).then((res)=>{
+            if(res.data.code == 0){
+                this.sourceList = res.data.data.list
+                this.tab = `资源(${res.data.data.count})`
+            }
+        }, (res)=>{
+            // 登录失败
+            alert(res)
+        })
     },
     data () {
         return {
+            user: {},
+            page: 1,
+            pageSize: 10,
             resName: "受访者张佳",
-            tab: "资源(3)",
+            profilePic: null,
+            tab: `资源(0)`,
+            signature: "",
             personalTagList: ['改需求狂人','纠结','evil','偶尔良心发现','冷酷无情','无理取闹','债主'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息
             productList: ['批判大会','忆往昔峥嵘岁月'],    
-            sourceList: ['受访者上传资源1', '受访者上传资源2','受访者上传资源3'],
+            sourceList: [],
+            inputVisible: false,
+            inputValue: '',
         }
     },
     methods:{
         goPage(url){
             this.$router.push(url)
+        },
+        showInput() {
+            this.inputVisible = true;
+            this.$nextTick(function() {
+                this.$refs.input.focus();
+            });
+        },
+        handleCloseTag(removedTag){
+            const tags = this.user.labels.filter(tag => tag !== removedTag);
+            console.log(tags);
+            this.user.labels = tags;
+        },
+        handleInputChange(e) {
+            this.inputValue = e.target.value;
+        },
+
+        handleInputConfirm() {
+            const inputValue = this.inputValue;
+            console.log(inputValue.length)
+            let personalTagList = this.user.labels;
+            if (inputValue && personalTagList.indexOf(inputValue) === -1 && inputValue.length <= 8 
+            && inputValue.length >= 2) {
+                personalTagList = [...personalTagList, inputValue];
+                this.user.labels = personalTagList
+                Object.assign(this, {
+                    inputVisible: false,
+                    inputValue: '',
+                });
+            }
         },
     },
 }
@@ -137,6 +205,12 @@ export default {
 .asset-card > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container > .ivu-tabs-nav-wrap
 > .ivu-tabs-nav-scroll{
     position: sticky;
+}
+.plus-ant-style > svg{
+    color: #1ebf73;
+}
+.form-ant-style,.ant-form-item {
+    margin-bottom: 0px;
 }
 </style>
 <style scoped>
@@ -169,6 +243,18 @@ export default {
     height:104px;
     text-align: center;
 }
+.font-avatar{
+    border-radius: 50%; 
+    width: 104px; 
+    height:104px;
+    text-align: center;
+    line-height: 104px;
+    background-color: #e8f8f0;
+    color: #1ebf73;
+    font-size: 50px;
+    margin: auto;
+    margin-bottom: 15px;
+}
 .edit-self{
     position: absolute;
     top: 0px;
@@ -177,6 +263,12 @@ export default {
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;
+}
+.tag-hint{
+    font-size: 12px;
+    letter-spacing: 0.86px;
+    color: #7f7f7f;
+    margin-top: 5px;
 }
 .ask-btn{
     width: 316px;
@@ -207,6 +299,19 @@ export default {
 .tag-style{
     margin-right:15px;
     margin-bottom: 10px;
+}
+.tag-style-close{
+    width: 10px;
+    height: 10px;
+    color: #7f7f7f;
+    line-height: 21px;
+    text-align: center;
+    top: -2px;
+    position: relative;
+}
+.tag-style-close:hover{
+    color: red;
+
 }
 .empty-personal{
     font-size: 14px;

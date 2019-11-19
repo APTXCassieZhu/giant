@@ -13,7 +13,7 @@
                 <br>
                 <ul style="font-size: 14px; color: #7f7f7f;text-align:center;">{{this.signature}}</ul>
                 <Divider />
-                <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
+                <ul style="font-size: 16px; font-weight: bold">印象</ul><br>
                 <div v-if="this.user.labels == null" class="empty-personal">
                     <p>暂无好友印象哦～</p>
                     <p>快邀请好友来为您添加第一条标签吧</p>
@@ -24,7 +24,7 @@
 
                 <Divider />
                 <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
-                <div v-if="this.user.fineResources == null" class="empty-personal">
+                <div v-if="this.user.fineResources.length == 0" class="empty-personal">
                     <p>暂无优秀作品哦～</p>
                     <p>GDRC期待您的分享</p>
                 </div>

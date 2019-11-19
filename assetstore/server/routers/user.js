@@ -78,7 +78,8 @@ router.get('/:id', jsonParser, function(req,res){
 			"profilePic": "//avatars1.githubusercontent.com/u/38572741?s=460&v=4",
 			"dept": "前沿技术部",
 			"title": "string",
-			"labels": ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸','暴躁老妹'],
+			// "labels": ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸','暴躁老妹'],
+			"labels": null,
 			"fineResources": [
 				{
 					"id": 0,
