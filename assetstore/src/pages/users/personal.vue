@@ -1,10 +1,5 @@
 <template>
     <div style="background-color: #eff2f5">
-        <!-- <p> {{this.productList.length}}</p> -->
-        <!-- <p> {{this.favoriteList.length}}</p> -->
-
-
-
         <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
         <div class="middle-card-wrapper">
             <div class="self-card">
@@ -14,7 +9,6 @@
                     <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/>
                     <ul style="font-size: 21px;font-weight: bold;">{{this.username}}</ul>
                     <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
-
                 </div>
                 <br>
                 <ul style="font-size: 14px; color: #7f7f7f;text-align:center;">{{this.signature}}</ul>
@@ -50,12 +44,19 @@
             <div class="asset-card" >
                 <Tabs :value="personalActive" :animated="false">
                     <TabPane :label="tab1" name="name1">
-                        <div class="upload-style" @click="goPage('/uploadFile')">
-                            <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
-                            <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
-                        </div>
-                        <div v-for="(product, i) in this.productList" :key="'aa'+i">
-                            <source-box v-bind:source='product'  @onDel="onDel"></source-box>
+                        <div class="container">
+                            <div>
+                                <span class="upload-style" @click="goPage('/uploadFile')">
+                                    <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
+                                    <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
+                                </span>
+                                <span v-for="(product, i) in this.productList" :key="'aa'+i">
+                                    <source-box v-bind:source='product'  @onDel="onDel"></source-box>
+                                </span>
+                            </div>
+                            <div>
+                                <Button v-show="ifMoreSource" id="more" class="more" @click="addMore('source')">加载更多</Button>
+                            </div>
                         </div>
                     </TabPane>
                     <TabPane :label="tab2" name="name2">
@@ -67,8 +68,15 @@
                         <div v-if="this.favoriteList.length==0" class="like-btn-container">
                             <Button class="like-btn" @click="goPage('/')">去关注</Button>
                         </div>
-                        <div v-else v-for="(like, n) in favoriteList" :key="n" style="display:inline-block;">
-                            <like-box :source='like' @unFavorite="unFavorite"></like-box>
+                        <div v-else class="container">
+                            <div>
+                                <span v-for="(like, n) in favoriteList" :key="n" style="display:inline-block;">
+                                    <like-box :source='like' @unFavorite="unFavorite"></like-box>
+                                </span>
+                            </div>
+                            <div>
+                                <Button v-show="ifMoreFavorite" id="more" class="more" @click="addMore('favorite')">加载更多</Button>
+                            </div>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -126,10 +134,14 @@ export default {
             alert(res)
         })
         // 拿到用户上传的资源列表
-        axios.get(`/api/user/${o.id}/resource`).then((res)=>{
+        axios.get(`/api/user/${o.id}/resource`,{params:{page: this.sourcePage,
+        pageSize: this.sourcePageSize,}}).then((res)=>{
             if(res.data.code == 0){
                 this.productList = res.data.data.list
                 this.tab1 = `资源(${res.data.data.count})`
+                if(res.data.data.count > this.productList.length){
+                    this.ifMoreSource = true
+                }
             }
         }, (res)=>{
             alert(res)
@@ -140,6 +152,9 @@ export default {
             if(res1.data.code == 0){
                 this.favoriteList = res1.data.data.list
                 this.tab3 = `关注(${res1.data.data.count})`
+                if(res1.data.data.count > this.favoriteList.length){
+                    this.ifMoreFavorite = true
+                }
             }
         }, (res)=>{
             alert(res)
@@ -162,6 +177,12 @@ export default {
             department: '拯救地球部',
             signature: '就像阳光穿破黑夜~ 黎明悄悄划过天边~ O(∩_∩)O谢谢',
             uploadFolderStyle: "upload-folder-style",
+            sourcePage: 1,
+            sourcePageSize: 20,
+            favoritePage: 1,
+            favoritePageSize: 20,
+            ifMoreSource: false,
+            ifMoreFavorite: false,
             tab1: "资源(2)",
             tab2: "软件(3)",
             tab3: "关注(0)",
@@ -203,8 +224,8 @@ export default {
             const tags = this.user.labels.filter(tag => tag !== removedTag);
             console.log(tags);
             this.user.labels = tags;
-            axios.delete(`/api/user/label/${removedTag.id}`).then((res1)=>{
-                if(res1.data.code == 0){
+            axios.delete(`/api/user/label/${removedTag.id}`).then((res)=>{
+                if(res.data.code == 0){
                 }
             }, (res)=>{
                 alert(res)
@@ -216,7 +237,45 @@ export default {
         unBright(){
             this.uploadFolderStyle = "upload-folder-style";
         },
-    },
+        addMore(more){
+            switch(more){
+                case 'source':
+                    this.sourcePage += 1
+                    axios.get(`/api/user/${this.user.id}/resource`,{params:{page: this.sourcePage,
+                    pageSize: this.sourcePageSize,}}).then((res)=>{
+                        if(res.data.code == 0){
+                            this.productList = this.productList.concat(res.data.data.list)
+                            this.tab1 = `资源(${res.data.data.count})`
+                            if(res.data.data.count > this.productList.length){
+                                this.ifMoreSource = true
+                            }else{
+                                this.ifMoreSource = false
+                            }
+                        }
+                    }, (res)=>{
+                        alert(res)
+                    })
+                    break;
+                case 'favorite':
+                    this.favoritePage += 1
+                    axios.get('/api/user/star',{params:{page: this.favoritePage,
+                    pageSize: this.favoritePageSize,}}).then((res)=>{
+                        if(res.data.code == 0){
+                            this.favoriteList = this.favoriteList.concat(res.data.data.list)
+                            this.tab3 = `关注(${res.data.data.count})`
+                            if(res.data.data.count > this.favoriteList.length){
+                                this.ifMoreFavorite = true
+                            }else{
+                                this.ifMoreFavorite = false
+                            }
+                        }
+                    }, (res)=>{
+                        alert(res)
+                    })
+                
+            }
+        },
+    }
 }
 </script>
 <style>
@@ -361,7 +420,7 @@ export default {
     height: 196px; 
     width: 274px;
     margin-top: 30px;
-    margin-right: 50px;
+    margin-right: 30px;
     border: solid 2px #eaeaea;
 }
 .upload-style:hover{
@@ -411,6 +470,22 @@ export default {
     left: 460px;
     font-size: 16px;
     float: center;
+}
+.container{
+    display:flex;
+    align-items:center;
+    flex-direction: column;
+}
+.more{
+    text-align: center;
+    width: 193px;
+    height: 44px;
+    /* background-color: #e8f8f0; */
+    color: #1ebf73;
+    /* border: solid 1px #1ebf73; */
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 30px;
 }
 </style>
 

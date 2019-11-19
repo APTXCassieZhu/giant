@@ -149,8 +149,6 @@ export default {
             tab: `资源(0)`,
             signature: "",
             personalTagList: ['改需求狂人','纠结','evil','偶尔良心发现','冷酷无情','无理取闹','债主'],// 从后端拿
-            // TODO 这两个list还得修改。每一个都还有其他产品信息
-            productList: ['批判大会','忆往昔峥嵘岁月'],    
             sourceList: [],
             inputVisible: false,
             inputValue: '',

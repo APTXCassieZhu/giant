@@ -40,7 +40,7 @@ router.get('/star', jsonParser, function(req,res){
 	res.status(200).json({
 		'code': 0,
 		'data':{
-			"count": 5,
+			"count": 10,
 			"list" :[{
 				"id": 000,
 				"name": "我关注的尊老爱幼",
@@ -227,7 +227,7 @@ router.get('/:id/resource', jsonParser, function(req,res){
 	res.status(200).json({
 		'code': 0,
 		'data':{
-			'count': 3,
+			'count': 5,
 			"list": [{
 				"id": 0,
 				"name": "尊老爱幼",

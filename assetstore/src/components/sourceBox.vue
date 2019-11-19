@@ -32,7 +32,7 @@
                 <Divider type="vertical" class="foot-divider"/>
                 <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon"/>
             </Col>
-            <Col span="8" class="footer-col1" @click.native="deleteSource">
+            <Col span="8" class="footer-col" @click.native="deleteSource">
                 <Divider type="vertical" class="foot-divider"/>
                 <span class="foot-icon foot-icon-del">删除</span>
                 <!-- <Dropdown trigger="click" :visible="moreVisible" @on-clickoutside="closeDrop()">
@@ -166,7 +166,7 @@ export default {
 <style scoped>
 .source-box-wrapper{
     float: left;
-    height:250px;
+    height:226px;
     width: 274px;
     margin-right: 30px;
     cursor: pointer;
@@ -244,7 +244,7 @@ export default {
     cursor: pointer;
 }
 
-.foot-icon:hover, .foot-icon1:hover, .footer-col:hover, .footer-col1:hover{
+.foot-icon:hover, .foot-icon1:hover, .footer-col:hover, .footer-col1:hover, .foot-icon-del:hover{
     color: #1ebf73;
 }
 .foot-icon-hover{
@@ -255,7 +255,6 @@ export default {
     font-weight: 600;
     line-height: 1;
     letter-spacing: 1px;
-    color: #7f7f7f;
 }
 .foot-divider{
     position:relative;
