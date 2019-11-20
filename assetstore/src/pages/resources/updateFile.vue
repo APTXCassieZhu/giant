@@ -24,6 +24,7 @@
                     :beforeUpload="beforeUpload"
                     name="files"
                     action="/api/file/upload"
+                    
 										:headers="{authorization:this.$store.state.token}"
                     :multiple="false"
                   >
@@ -545,10 +546,7 @@ export default {
     },
     handleSave(){
       //console.log('tags:',this.tags,'fileList:',this.fileList, 'fileid:',this.fileid)
-
-      
     },
-
     handleChangex(info) {
       const status = info.file.status
 

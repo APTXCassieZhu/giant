@@ -2,7 +2,7 @@
   <div style="background:#eff2f5;padding-bottom:200px;">
     <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
     <section class="uploadfile">
-
+      <!-- TODO  try todo  -->
       <a-form id="components-form-demo-validate-other" :form="form" >
         <div class="form-wrap">
           <div class="uploadfile-l">
@@ -39,7 +39,6 @@
                   </a-upload-dragger>
                 </div>
               </a-form-item>
-
             </section>
 
             <section>
@@ -50,21 +49,20 @@
                   v-decorator="['resource-name', { rules: [{ required: true, message: '请输入资源名称' }] }]"
                 />
               </a-form-item>
-
+ 
               <a-form-item v-bind="formItemLayout" label="初始版本号："  :label-col="labelCol" :wrapper-col="wrapperCol "> 
                 <a-input
                   v-decorator="['resource-version', { rules: [
-                  { required: true, message: '请填写版本号' },{
-                    validator(rule,value,callback){
-                      let rg = /^[0-9\.]+$/.test(value)
-                      if(!rg) {
-                        callback('请填写正确的版本号')
-                        return 
+                    { required: true, message: '请填写版本号' },{
+                      validator(rule,value,callback){
+                        let rg = /^[0-9\.]+$/.test(value)
+                        if(!rg) {
+                          callback('请填写正确的版本号')
+                          return 
+                        }
+                        callback()
                       }
-                      callback()
                     }
-                  }
-
                   ] }]"
                 />
               </a-form-item>
@@ -228,18 +226,18 @@
           </div>
 
           <section class="uploadfile-r">
-            <div class="uploadfile-r-wrap" >
+            <div class="uploadfile-r-wrap" style="position: sticky; top: 160px;" >
               <header class="uploadfile-header">
                 其他设置
               </header>
               <!-- :label-col="labelCol" :wrapper-col="wrapperCol " -->
               <a-form-item v-bind="formItemLayout" label="是否公开" :label-col="{span:8}" :wrapperCol="{span:5,offset:11}">
-                <a-switch v-decorator="['public', { valuePropName: 'checked' }]" />
+                <!-- <a-switch v-decorator="['public', { valuePropName: 'checked' }]" /> -->
+                <a-switch :defaultChecked="public" @change="onChangeSwitch" />
               </a-form-item>
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
           </section>
-
 
         </div>
       </a-form>
@@ -358,7 +356,6 @@
     // flex:1;
   }
   &-r-wrap{
-
     border-left: 1px solid #e5e5e5;
     height: 301px;
     width: 363px;
@@ -399,8 +396,6 @@ export default {
       checkAll_unreal: false,
       plainOptions_unreal,
 
-
-
       replaceIdx:0,
       showArtStyle:false,
       art_v : '',
@@ -415,6 +410,7 @@ export default {
       wrapperCol:{ span: 17 ,offset:3},
       unity_checkall:false,
       unreal_checkall:false,
+      public:true,
       
       options:[ ],
 
@@ -470,7 +466,7 @@ export default {
     let editor = new E(this.$refs['editor-owo'],this.$refs['editor-owo-content'])
     editor.customConfig.zIndex = 2
     this.editor = editor
-    
+
      // 自定义菜单配置
     editor.customConfig.menus = [
       'head',
@@ -589,6 +585,8 @@ export default {
         return Promise.reject()
       } 
 
+
+
 			if(file.type != 'application/x-zip-compressed' && file.type!='application/zip'){
 				this.$message.warning('请上传一个zip')
 				return Promise.reject()
@@ -601,6 +599,9 @@ export default {
 			// }
 
       return true
+    },
+    onChangeSwitch(v){
+      this.public = v
     },
     handleUnityCheckBox(){
       this.unity_checkall ^= true
@@ -658,7 +659,9 @@ export default {
         // ]
         // console.log(this.checkedList,this.checkedList_unreal)
 
-        if(err){ return  }
+        if(err){
+           return $('html,body').animate({scrollTop: '440px'}, 300)
+         }
 
         if(!values.dragger) return this.$message.warning('请上传一个资源')
        
@@ -677,10 +680,10 @@ export default {
 
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
         ;[images[0],images[this.replaceIdx]] =[images[this.replaceIdx],images[0]]
-        
+
         axios.post(`/api/resource`,
           {
-            "state": values.public?'public':'private', // 是否公开
+            "state": this.public?'public':'private', // 是否公开
             "type": values['resource-type']=="art_classify"?'art':'dev', // 资源分类
             "name": values['resource-name'], //资源名称
             "tags":[ // 级联

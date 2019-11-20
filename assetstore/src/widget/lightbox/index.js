@@ -20,15 +20,13 @@ export default function LightBox($parent=document.body,{zIndex=100,topImgs=[],th
 				<div class="gdrc-lightbox-close">${$close}</div>
 				<div class="swiper-container gdrc-lightbox-top">
 					<div class="swiper-wrapper">
-						
 					</div>
-					
 				</div>
 				<div class="swiper-button-next swiper-button-white"></div>
 				<div class="swiper-button-prev swiper-button-white"></div>
-				<div class="swiper-container gdrc-lightbox-thumbs">
+				<div class="swiper-container gdrc-lightbox-thumbs" style="margin-bottom:20px;">
 					<div class="swiper-wrapper">
-						
+
 					</div> 
 				</div>
 			`
@@ -36,7 +34,6 @@ export default function LightBox($parent=document.body,{zIndex=100,topImgs=[],th
 			var $wrap_top = $el.querySelector('.gdrc-lightbox-top .swiper-wrapper')
 			var $wrap_thumbs = $el.querySelector('.gdrc-lightbox-thumbs .swiper-wrapper')
 
-			
 			topImgs.forEach(src=>{
 				var $d = document.createElement('div')
 				$d.classList.add('swiper-slide')
@@ -85,7 +82,6 @@ export default function LightBox($parent=document.body,{zIndex=100,topImgs=[],th
 			this.$el.querySelector('.gdrc-lightbox-close').onclick= ()=>{
 				this.hide()
 			}
-	
 		},
 		show(){
 			this.$el.style.transition = '.5s'

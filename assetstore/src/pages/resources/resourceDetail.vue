@@ -101,7 +101,9 @@
                 <font-awesome-icon v-if="resource.isStar" :icon="['fas','heart']" style="color:#1ebf73;width:15px;height:15px;"/>
                 <span>&nbsp;关注</span>
               </div>
-              <div class="resource-detail-deslist-down" @click="handleDown">下载资源（{{fileSize()}}）</div>
+              <div class="resource-detail-deslist-down" @click="handleDown">下载资源（{{
+                fileSize(resource.vers[0].file.size)+'MB'
+              }}）</div>
             </div>
           </div>
         </div>
@@ -273,9 +275,6 @@
   &-des{
     // border:1px solid blue;
     margin-top:30px;
-
-    
-
     >div:nth-child(1){
       font-size:21px;
       font-weight: bold;
@@ -600,6 +599,9 @@ import Footer from '@/components/footer.vue'
 import axios from 'axios'
 import breadCrumb from '@/widget/breadcrumb.vue'
 
+
+// window.open("tencent://message/?uin=346915968")
+
 // import Rate from 'ant-design-vue/lib/rate';
 // import 'ant-design-vue/lib/rate/style'; // 或者 ant-design-vue/lib/button/style/css 加载 css 文件
 
@@ -628,7 +630,7 @@ export default {
 			previewImage:'',
 
       showAlertComment:false,
-
+  
       comment_order:'time',
       comment_pagesize:20,
       describe:{
@@ -711,6 +713,9 @@ export default {
 
       this.resource.isRate = this.resource.myRate ? true:false
 
+
+      console.log('/////resource_userid:',this.resource.userId)
+
       console.log('node_env:',process.env.npm_lifecycle_event)
     //  console.log(this.resource.images)
      // if( process.env.NODE_ENV!='development'){
@@ -776,6 +781,9 @@ export default {
       var userid = res.data.id
       this.userid = userid
 
+
+      console.log('/////userid:',userid)
+
 			this.describe.dept = res.data.dept
 			this.describe.profilePic = res.data.profilePic
 
@@ -799,13 +807,17 @@ export default {
     // debugger
        //让他回复
       // debugger
+
+      // 一层回复replyUserID=null,pid=null
+      // 二层回复replyUserID=  ,pid=,
+      // 二层回复中的回复replyUserID=,pid=,
+
       axios.post('/api/comment',{resourceId:params.resourceId,replyUserId:null, content:prop.content,pid:null}).then(response=>{
       // axios.post('/api/comment',{resourceId:params.resourceId, replyUserId:this.userid, content:prop.content,pid:prop.id}).then(response=>{
         this.$Message.success('评论提交成功~')
         replyx.clearContent()
       })
       
-
     })
 
 
@@ -827,13 +839,13 @@ export default {
     handleLike(){
       // this.$message.success('已关注')
       if(!this.resource.isStar){
-        axios.post(`/api/resource/${this.$route.params.resourceId}/star`,{params:{star:true}}).then(response=>{
+        axios.post(`/api/resource/${this.$route.params.resourceId}/star`,{star:true}).then(response=>{
           this.resource.isStar = true
           this.$Message.success('已关注')
         })
 
       }else{
-        axios.post(`/api/resource/${this.$route.params.resourceId}/star`,{params:{star:false}}).then(response=>{
+        axios.post(`/api/resource/${this.$route.params.resourceId}/star`,{star:false}).then(response=>{
           this.resource.isStar = false
           this.$Message.success('已取消关注')
         })
@@ -886,7 +898,8 @@ export default {
       return '2019-01.23'
     },
     fileSize(b){
-      return 512
+      var mb = b/1024/1024
+      return mb.toFixed(2)
     },
 		handleVisit(){
 			this.$router.push(`/${this.userid}/visit/`)
@@ -899,22 +912,22 @@ export default {
         
         var res = response.data 
         let items = [] 
+        // 戴 -> 祝 -> 戴  
 
-
-        // 戴 -> 祝 -> 戴
         try{
           items = res.data.list.map(o=>{
             if(!o.user) return
-
+            
             var item = {
               items:[],
-              id:o.id,  //评论id
+              id:o.id,  // 评论id
+              id_rate:o.id,
               content:o.content,
               score:o.rate.value,
               like:o.hot,
               liked:o.stars.length>1,
               time: this.getYYMMDD(o.createdAt)  ,
-              replyUserId:o.replyUserId, // 回复的id
+              replyUserId:o.user.id, // 回复的id
               user:{
                 uid:o.user.id,
                 name:o.user.name,
@@ -923,7 +936,7 @@ export default {
               }
             }
 
-
+            //debugger
             item.items = o.items.map(o=>{  
               // content: "回去评论2~~~~！！！！！！"
               // createdAt: "2019-11-19T11:17:24.000Z"
@@ -938,15 +951,17 @@ export default {
               // userId: 7
 
               return{
-                id: o.id,//评论id
+                // id: o.id,//评论id
+                id: item.id,//评论id
+
+                id_rate:o.id,
                 content:o.content, //
                 like:o.hot, // 点赞数
                 liked:o.stars.length>1,  //是否点过赞
-
                 // replyUserId:o.replyUserId,
                 // replyUserId:item.user.uid,  // 回复谁的id
 
-                replyUserId:o.replyUser.id,  // 回复谁的id
+                replyUserId:o.user.id,  // 回复谁的id
 
                 usera:{
                   uid:o.user.id,
@@ -972,34 +987,35 @@ export default {
         }
 
 
-        console.log('items:',items)
-
+       // console.log('items:',items)
 
         try{
           let comments = Comments(this.$refs['resource-detail-comments'],{
             items : items.filter(o=>o?o:false),
             userdata:{
-              uid:this.userid
+              uid:this.userid,
+              resource_userid:this.resource.userId
             } 
           })
 
-
           comments.onLike(prop=>{
             console.log('comments like:', prop)
-  
+
             if(prop.liked){
-              axios.post(`/api/comment/${prop.id}/star`,{star:false}).then(response=>{
+              axios.post(`/api/comment/${prop.id_rate}/star`,{star:false}).then(response=>{
                 comments.dislikeByProp(prop)
               })
 
   
             }else{
-              axios.post(`/api/comment/${prop.id}/star`,{star:true}).then(response=>{
+              axios.post(`/api/comment/${prop.id_rate}/star`,{star:true}).then(response=>{
                 comments.likeByProp(prop)
               })
               
             }
           })
+
+
   
           comments.onReply(prop=>{
             // 	"pid": 0,
@@ -1007,6 +1023,7 @@ export default {
             // 	"replyUserId": 0
 
             // 触发了回复评论, 但从没有评分过
+
             if(!this.resource.isRate){
               return this.showAlertComment = true
             }
@@ -1017,10 +1034,15 @@ export default {
             // debugger
             //让他回复
             axios.post('/api/comment',{
+              // resourceId: params.resourceId,
+              // content: prop.content,
+              // pid: prop.userdata.id, //第一层id
+              // replyUserId: prop.userdata.replyUserId //回复的人的  user.id
               resourceId: params.resourceId,
               content: prop.content,
               pid: prop.userdata.id, //第一层id
               replyUserId: prop.userdata.replyUserId //回复的人的  user.id
+
 
             }).then(response=>{
               this.$Message.success('评论提交成功~')
@@ -1040,7 +1062,7 @@ export default {
               cancelText: '取消',
               onOk: () => {
                 
-                axios.delete(`/api/comment/${prop.id}`,{pid:prop.id}).then(response=>{
+                axios.delete(`/api/comment/${prop.id_rate}`,{}).then(response=>{
                   
                   comments.removeCommentByProp(prop)
 

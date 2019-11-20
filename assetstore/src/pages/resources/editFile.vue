@@ -20,9 +20,11 @@
                       }
                     ]"
                     :beforeUpload="beforeUpload"
+                    @change="handleChange"
                     name="files"
                     action="/api/file/upload"
 										:headers="{authorization:this.$store.state.token}"
+                    :data="{target:'resourceFile'}"
                     :multiple="false"
                   >
                     <p class="ant-upload-drag-icon">
@@ -181,6 +183,7 @@
                   :multiple="false"
                   :beforeUpload="beforeUpload2"
 									:headers="{authorization:this.$store.state.token}"
+                  :data="{target:'resourceImage'}"
                   @preview="handlePreview"
                   v-decorator="[
                     'thumbnail',
@@ -207,14 +210,14 @@
           </div>
 
           <section class="uploadfile-r">
-            <div class="uploadfile-r-wrap" >
+            <div class="uploadfile-r-wrap"  style="position: sticky; top: 160px;"  >
               <header class="uploadfile-header">
                 其他设置
               </header>
             
               <div class="file-public-switch">
 								<span>是否公开</span>
-								<a-switch :defaultChecked="this.isPublic" @change="onChangeSwitch" />
+								<a-switch :defaultChecked="isPublic" @change="onChangeSwitch" />
 							</div>
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
@@ -436,6 +439,7 @@ export default {
   },
   mounted(){
 
+
     document.querySelector('#components-form-demo-validate-other').addEventListener('keydown',e=>{
 
       if(e.keyCode===13 && e.target.classList.contains('ant-input-sm')){
@@ -474,8 +478,8 @@ export default {
       var data = res.data
       
       this.resource_name = data.name
-			this.resource_ver = data.ver[0].verNum
-			this.isPublic = data.state
+			this.resource_ver = data.vers[0].verNum
+			this.isPublic = data.state === 'public'?true:false
 
 			this.form.setFieldsValue({
 				'resource-name':this.resource_name,
@@ -512,6 +516,7 @@ export default {
         })
         
       })
+
 
     })
   },
@@ -579,18 +584,18 @@ export default {
       return true
     },
     beforeUpload(file){
-			console.log(file)
-			//
-			if(file.type != 'application/x-zip-compressed'){
+		
+      if(this.fileList&&this.fileList.length){
+        this.$message.warning('只能上传一个资源')
+        return Promise.reject()
+      } 
+
+
+			if(file.type != 'application/x-zip-compressed' && file.type!='application/zip'){
 				this.$message.warning('请上传一个zip')
 				return Promise.reject()
 			}
 
-			let isLt200 = file.size/1024/1024  < 200
-			if(isLt200 > 200){
-			  this.$message.warning('文件太大')
-				return Promise.reject()
-			}
 
       return true
     },
@@ -642,7 +647,11 @@ export default {
         
         // console.log('txt html:', this.editor.txt.html())
 
-        if(err){ return  }
+         if(err){
+           return $('html,body').animate({scrollTop: '440px'}, 300)
+         }
+
+          
 
         if(!values.dragger) return this.$message.warning('请上传一个资源')
        
@@ -706,6 +715,7 @@ export default {
       //debugger
     },
     handleChange(info) {
+
 
       var {fileList} = info
       this.fileList = fileList

@@ -174,8 +174,9 @@ app.use('/',express.static(__dirname+''))
 			"msg": "string",
 			"code": 0,
 			"data": {
-				"id": 0,
+				"id": 0, //资源id
 				"name": "资源名23333", // 资源名
+				"userId": 6,  // 发布这条资源的人userid
 				"images": [ // 轮询图
 					"//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg",
 					"//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572951722265&di=6ae8c5212af12bbcd4bd5c30aed0fe9a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F-fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fpic%2Fitem%2F472309f790529822ccae72b0d5ca7bcb0a46d420.jpg",
@@ -348,7 +349,7 @@ app.use('/',express.static(__dirname+''))
 						"content": "1", //评论内容
 						"hot":444, // 点赞数
 						"createdAt": "2019-11-07T07:46:14.000Z", //几天前
-						"userId": 1,
+						"userId": 1,  
 						"replyUserId": '1',
 						"pid": 'pid34', 
 						"rateId": null,
