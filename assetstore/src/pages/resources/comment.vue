@@ -22,8 +22,15 @@
 
 				<div class="resource-detail-rate-wrap" >
 
-          <a-rate size="large" v-model="rate2" :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
-          <a name="resource-rate"><span class="resource-detail-rate-text">{{rate2+'.0'}}</span></a>
+         	<template v-if="resource.isRate">
+            <a-rate v-model="resource.rateAvg" size="large" disabled   />
+            <span class="resource-detail-rate-text">{{resource.rateAvg+'.0'}}</span>
+          </template>
+         
+          <template v-if="!resource.isRate">
+            <a-rate size="large"  :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
+            <span class="resource-detail-rate-text">{{rate2+'.0'}}</span>
+          </template> 
         </div>
         <div class="resource-detail-reply" ref="resource-detail-reply">
 					
@@ -110,6 +117,7 @@ import E from '@/widget/emojiReply/'
 
 const {Reply,Comments} = E
 
+
 export default {
     components:{TopNavigation,Footer,bct},
     data() {
@@ -127,7 +135,6 @@ export default {
           dept:'' // 部门s
         },
         resource:{
-          
           "id": 0,
           "name": "资源名23333", // 资源名
           "images": [ // 轮询图
@@ -169,7 +176,6 @@ export default {
 
     },
     mounted(){
-
 			console.log('matched:', this.$route.matched)
 			
       const {params} = this.$route
@@ -177,12 +183,13 @@ export default {
       axios.get(`/api/resource/${params.resourceId}`).then(response=>{
         var res = response.data
 
-        this.resource = Object.assign(this.resource,res.data)
+				this.resource = Object.assign(this.resource,res.data)
+				
+				this.resource.isRate = this.resource.myRate ? true:false
+
       })
 
-
       axios.get('/api/user/describe').then(response_des=>{
-
         var res = response_des.data
         var userid = res.data.id
         this.userid = userid
@@ -191,17 +198,12 @@ export default {
 
 				this.createComment().then(()=>{
 					//console.log(this.$route.query.cID)
-
 					//location.hash = `cid-${this.$route.query.cID}`
-				
-						var $findedComment = document.querySelector(`#cid-${this.$route.query.cID}`)
-						if($findedComment){
-							document.documentElement.scrollTop = $findedComment.offsetTop
+					var $findedComment = document.querySelector(`#cid-${this.$route.query.cID}`)
+					if($findedComment){
+						document.documentElement.scrollTop = $findedComment.offsetTop
 
-						}
-					
-				
-	
+					}
 				})
       })
 
@@ -237,154 +239,190 @@ export default {
 				this.createComment().then(()=>{
 					
 				})
+
 			},
       createComment(){
 				const {params} = this.$route
 				
 				return new Promise(resolve=>{
-					axios.get(`/api/comment`,{params:{ resourceId:params.resourceId,page:this.comment_page,pageSize:this.comment_pagesize,order:this.sortBy}}).then(response=>{
+					axios.get(`/api/comment`,{params:{ resourceId:params.resourceId,page:this.comment_page, pageSize:this.comment_pagesize,order:this.sortBy}}).then(response=>{
+        
 						var res = response.data 
-	
 						let items = [] 
-	
-						items = res.data.list.map(o=>{
-	
-							var item = {
-								items:[],
-								id:o.id,
-								content:o.content,
-								score:o.rate.value,
-								like:o.hot,
-								liked:o.stars.length>1,
-								time: this.getYYMMDD(o.createdAt)  ,
-								replyUserId:o.replyUserId,
-								user:{
-									uid:o.user.id,
-									name:o.user.name,
-									nickname:o.user.nickName,
-									imgurl:o.user.profilePic
-								}
-							}
-							item.items = o.items.map(o=>{  
-								return{
-									id: o.id,
+						// 戴 -> 祝 -> 戴  
+
+						try{
+							items = res.data.list.map(o=>{
+								if(!o.user) return
+								
+								var item = {
+									items:[],
+									id:o.id,  // 评论id
+									id_rate:o.id,
 									content:o.content,
+									score:o.rate.value,
 									like:o.hot,
 									liked:o.stars.length>1,
-									replyUserId:o.replyUserId,
-									usera:{
-										uid:o.user.id,name:o.user.name,nickname:o.user.nickName,imgurl:o.user.profilePic
-									},
-									userb:{
-										uid:o.followUser.id,name:o.followUser.name,nickname:o.followUser.nickName,imgurl:o.followUser.profilePic
-									},
-									time: this.getYYMMDD(o.createdAt)
+									time: this.getYYMMDD(o.createdAt)  ,
+									replyUserId:o.user.id, // 回复的id
+									user:{
+										uid:o.user.id,
+										name:o.user.name,
+										nickname:o.user.nickName,
+										imgurl:o.user.profilePic
+									}
 								}
-								
-							})
-							return item
-						})
-					 
-							//console.log(response)
-						let comments = Comments(this.$refs['resource-detail-comments'],{
-							items,
-							userdata:{
-								uid:this.userid
-							}
-						})
-				 
-	
-						comments.onLike(prop=>{
-							console.log('comments like:', prop)
-	
-							if(prop.liked){
-								axios.post(`/api/comment/${prop.id}/star`,{star:false}).then(response=>{
-									comments.dislikeByProp(prop)
+
+								//debugger
+								item.items = o.items.map(o=>{  
+									// content: "回去评论2~~~~！！！！！！"
+									// createdAt: "2019-11-19T11:17:24.000Z"
+									// hot: 0
+									// id: 15
+									// pid: 14
+									// rateId: 1
+									// replyUser: {id: 7, name: "戴文奇", nickName: null, profilePic: null}
+									// replyUserId: 7
+									// stars: []
+									// user: {id: 7, name: "戴文奇", nickName: null, profilePic: null}
+									// userId: 7
+
+									return{
+										// id: o.id,//评论id
+										id: item.id,//评论id
+
+										id_rate:o.id,
+										content:o.content, //
+										like:o.hot, // 点赞数
+										liked:o.stars.length>1,  //是否点过赞
+										// replyUserId:o.replyUserId,
+										// replyUserId:item.user.uid,  // 回复谁的id
+
+										replyUserId:o.user.id,  // 回复谁的id
+
+										usera:{
+											uid:o.user.id,
+											name:o.user.name,
+											nickname:o.user.nickName,
+											imgurl:o.user.profilePic
+										},
+										userb:{
+											uid:o.replyUser.id,  
+											name:o.replyUser.name,   
+											nickname:o.replyUser.nickName,      
+											imgurl:o.replyUser.profilePic
+										},
+										time: this.getYYMMDD(o.createdAt)
+									}
 								})
-	
-							}else{
-								axios.post(`/api/comment/${prop.id}/star`,{star:true}).then(response=>{
-									comments.likeByProp(prop)
-								})
-								
-							}
-						})
-	
-	
-						comments.onReply(prop=>{
-							// 	"pid": 0,
-							// 	"content": "string",
-							// 	"replyUserId": 0
-	
-							// 触发了回复评论, 但从没有评分过
-							if(!this.resource.isRate){
-								return this.$Message.warning('请先进行评分哦~')
-							}
-							if(!prop.content.length){
-								return this.$Message.warning('请输入你的回复内容~')
-							}
-	
-							//让他回复
-							axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id,replyUserId:prop.replyUserId}).then(response=>{
-								this.$Message.success('评论提交成功~')
-								prop.reply.clearContent()
+
+								return item
 							})
-							//console.log('comments reply:', prop)
-						})
-	
-	
-						comments.onDel(prop=>{
-							console.log('comments del:', prop)
-							//comments.removeCommentByProp(prop)
-							this.$Modal.confirm({
-								title: '确认删除该条评论?',
-								okText: '确认',
-								okType: 'danger',
-								cancelText: '取消',
-								onOk: () => {
-									
-									axios.delete(`/api/comment/${prop.id}`,{pid:prop.id}).then(response=>{
-										
-										comments.removeCommentByProp(prop)
-	
-										setTimeout(()=>{
-											this.$Modal.success({
-												title: '评论已删除',
-												okText: '确认',
-											})
-										},300)
-	
+
+						}catch(e){
+							console.log(e)
+						}
+
+
+					// console.log('items:',items)
+
+						try{
+							let comments = Comments(this.$refs['resource-detail-comments'],{
+								items : items.filter(o=>o?o:false),
+								userdata:{
+									uid:this.userid,
+									resource_userid:this.resource.userId
+								} 
+							})
+
+							comments.onLike(prop=>{
+								console.log('comments like:', prop)
+
+								if(prop.liked){
+									axios.post(`/api/comment/${prop.id_rate}/star`,{star:false}).then(response=>{
+										comments.dislikeByProp(prop)
+									})
+
+			
+								}else{
+									axios.post(`/api/comment/${prop.id_rate}/star`,{star:true}).then(response=>{
+										comments.likeByProp(prop)
 									})
 									
 								}
 							})
-							
-						})
-	
-	
-						let replyx = Reply(this.$refs['resource-detail-reply'],{userdata:{}})
-						replyx.onSubmit(prop=>{
-							if(!this.resource.isRate){
-								return this.$Message.warning('请先进行评分哦~')
-							}
 
-							if(!prop.content.length){
-								return this.$Message.warning('请输入你的评论内容~')
-							}
-	
-							
-							//让他回复
-							axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id}).then(response=>{
-								this.$Message.success('评论提交成功~')
-								replyx.clearContent()
+
+			
+							comments.onReply(prop=>{
+								// 	"pid": 0,
+								// 	"content": "string",
+								// 	"replyUserId": 0
+
+								// 触发了回复评论, 但从没有评分过
+
+								if(!this.resource.isRate){
+									return this.showAlertComment = true
+								}
+								if(!prop.content.length){
+									return this.$Message.warning('请输入你的回复内容~')
+								}
+
+								// debugger
+								//让他回复
+								axios.post('/api/comment',{
+									// resourceId: params.resourceId,
+									// content: prop.content,
+									// pid: prop.userdata.id, //第一层id
+									// replyUserId: prop.userdata.replyUserId //回复的人的  user.id
+									resourceId: params.resourceId,
+									content: prop.content,
+									pid: prop.userdata.id, //第一层id
+									replyUserId: prop.userdata.replyUserId //回复的人的  user.id
+
+
+								}).then(response=>{
+									this.$Message.success('评论提交成功~')
+									prop.reply.clearContent()
+								})
+								//console.log('comments reply:', prop)
 							})
-							
-						})
 
-						resolve()
-	
+			
+							comments.onDel(prop=>{
+								console.log('comments del:', prop)
+								//comments.removeCommentByProp(prop)
+								this.$Modal.confirm({
+									title: '确认删除该条评论?',
+									okText: '确认',
+									okType: 'danger',
+									cancelText: '取消',
+									onOk: () => {
+										
+										axios.delete(`/api/comment/${prop.id_rate}`,{}).then(response=>{
+											
+											comments.removeCommentByProp(prop)
+
+											setTimeout(()=>{
+												this.$Modal.success({
+													title: '评论已删除',
+													okText: '确认',
+												})
+											},300)
+
+										})
+										
+									}
+								})
+								
+							})
+
+						}catch(e){
+							console.log(e)
+						}
+
 					}).catch(err=>{
-						resolve(err)
+						
 					})
 
 				})
