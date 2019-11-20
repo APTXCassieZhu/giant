@@ -11,10 +11,10 @@
             <Col span="12" class="footer-col">
                 <font-awesome-icon :icon="['fas','download']" class="foot-icon"/>
             </Col>
-            <Col span="12" class="footer-col">
+            <Col span="12" class="footer-col" @click.native="addFavorite()">
                 <Divider type="vertical" class="foot-divider"/>
-                <Icon size="22" type="md-heart" style="color: red" v-show="favoriteIcon" @click.native="cancelFavorite()"/>
-                <Icon size="22" type="md-heart" class="foot-icon1" v-show="!favoriteIcon" @click.native="addFavorite()"/>
+                <Icon size="22" type="md-heart" style="color: red" v-show="favoriteIcon"/>
+                <Icon size="22" type="md-heart" class="foot-icon1" v-show="!favoriteIcon"/>
             </Col>
         </Row>
     </div>
@@ -46,42 +46,47 @@ export default {
     },
     methods:{
         cancelFavorite(){
-            this.$Modal.confirm({
+            
+        },
+        addFavorite(){
+            if(this.favoriteIcon){
+                this.$Modal.confirm({
                 title: '确认取消关注此条资源？',
                 okText: '确认',
                 cancelText: '取消',
-                onOk: () => {
-                    axios.post(`/api/resource/${this.source.id}/star`,{"star": false},{emulateJSON:true}).then((res)=>{
-                        if(res.data.code === 0) {
-                            setTimeout(() => {
-                                this.$Modal.success({
-                                    title: '已取消关注',
-                                })
+                    onOk: () => {
+                        axios.post(`/api/resource/${this.source.id}/star`,{"star": false},{emulateJSON:true}).then((res)=>{
+                            if(res.data.code === 0) {
                                 this.favoriteIcon = !this.favoriteIcon
-                            }, 1000);
-                        }
-                    })
-                },
-            });
-        },
-        addFavorite(){
-            this.$Modal.confirm({
-                title: '确认关注此条资源？',
-                okText: '确认',
-                cancelText: '取消',
-                onOk: () => {
-                    axios.post(`/api/resource/${this.source.id}/star`,{"star": true},{emulateJSON:true}).then((res)=>{
-                        if(res.data.code === 0) {
-                            setTimeout(() => {
-                                this.$Modal.success({
-                                    title: '已关注',
-                                })
+                                setTimeout(() => {
+                                    this.$Modal.success({
+                                        title: '已取消关注',
+                                    })
+                                }, 500);
+                            }
+                        })
+                    },
+                });
+            }
+            else{
+                this.$Modal.confirm({
+                    title: '确认关注此条资源？',
+                    okText: '确认',
+                    cancelText: '取消',
+                    onOk: () => {
+                        axios.post(`/api/resource/${this.source.id}/star`,{"star": true},{emulateJSON:true}).then((res)=>{
+                            if(res.data.code === 0) {
                                 this.favoriteIcon = !this.favoriteIcon
-                            }, 1000);
-                        }
-                    })
-                },
-            });
+                                setTimeout(() => {
+                                    this.$Modal.success({
+                                        title: '已关注',
+                                    })
+                                }, 500);
+                            }
+                        })
+                    },
+                });
+            }
         },
 
     }

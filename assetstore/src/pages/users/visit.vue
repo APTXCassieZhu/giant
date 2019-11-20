@@ -28,7 +28,7 @@
                             ref="input"
                             type="text"
                             size="small"
-                            :style="{ width: '321px' }"
+                            :style="inputAnt"
                             placeholder="请输入2-8个字符"
                             @change="handleInputChange"
                             @blur="handleInputConfirm"
@@ -36,7 +36,7 @@
                             v-decorator="[
                                 'entertag',
                                 {rules: 
-                                    [{type:'string', min: 2, max: 8, message:'请输入2-8个字符', trigger:'keydown'}]
+                                    [{type:'string', min: 2, max: 8, message:'请输入2-8个字符', trigger:'blur'},]
                                 },
                             ]"
                         >
@@ -152,6 +152,7 @@ export default {
             sourceList: [],
             inputVisible: false,
             inputValue: '',
+            inputAnt: "{width: 315px; height: 31px;}"
         }
     },
     methods:{
@@ -159,10 +160,14 @@ export default {
             this.$router.push(url)
         },
         showInput() {
-            this.inputVisible = true;
-            this.$nextTick(function() {
-                this.$refs.input.focus();
-            });
+            if(this.user.labels.length == 10){
+                // TODO 提示超过十条
+            }else{
+                this.inputVisible = true;
+                this.$nextTick(function() {
+                    this.$refs.input.focus();
+                });
+            }
         },
         handleCloseTag(removedTag){
             const tags = this.user.labels.filter(tag => tag !== removedTag);

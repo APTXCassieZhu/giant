@@ -63,7 +63,7 @@
                         <div class="container">
                             <div>
                                 <span v-for="(software, n) in softwareList" :key="n" style="display:inline-block;">
-                                    <software-box :software='software'></software-box>
+                                    <software-box :software='software' @swDel="swDel"></software-box>
                                 </span>
                                 <span>
                                     <software-up-box v-bind:softwareName='this.softwareList1[1]'></software-up-box>
@@ -150,6 +150,7 @@ export default {
             if(res.data.code == 0){
                 this.productList = res.data.data.list
                 this.tab1 = `资源(${res.data.data.count})`
+                this.totalResource = res.data.data.count
                 if(res.data.data.count > this.productList.length){
                     this.ifMoreSource = true
                 }
@@ -164,6 +165,7 @@ export default {
             if(res.data.code == 0){
                 this.softwareList = res.data.data.list
                 this.tab2 = `软件(${res.data.data.count})`
+                this.totalSoftware = res.data.data.count
                 if(res.data.data.count > this.softwareList.length){
                     this.ifMoreSoftware = true
                 }
@@ -177,6 +179,7 @@ export default {
             if(res1.data.code == 0){
                 this.favoriteList = res1.data.data.list
                 this.tab3 = `关注(${res1.data.data.count})`
+                this.totalLike = res1.data.data.count
                 if(res1.data.data.count > this.favoriteList.length){
                     this.ifMoreFavorite = true
                 }
@@ -211,12 +214,14 @@ export default {
             ifMoreSource: false,
             ifMoreFavorite: false,
             ifMoreSoftware: false,
+            totalResource: 2,
+            totalSoftware: 3,
+            totalLike: 0,
             tab1: "资源(2)",
             tab2: "软件(3)",
             tab3: "关注(0)",
             personalActive: "name1",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','暴躁老妹'],// 从后端拿
-            // TODO 这两个list还得修改。每一个都还有其他产品信息
             productList: [],  
             softwareList: [],  
             softwareList1: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
@@ -238,7 +243,16 @@ export default {
                     break;
                 }
             }
-            this.tab1 = `资源(${this.productList.length})`
+            this.tab1 = `资源(${this.totalResource - 1})`
+        },
+        swDel(sid){
+            for (var i = 0; i < this.softwareList.length; i++) {
+                if (this.softwareList[i].id == sid) {
+                    this.softwareList.splice(i, 1);
+                    break;
+                }
+            }
+            this.tab2 = `软件(${this.totalSoftware - 1})`
         },
         unFavorite(lid){
             for (var i = 0; i < this.favoriteList.length; i++) {
@@ -247,7 +261,7 @@ export default {
                     break;
                 }
             }
-            this.tab3 = `关注(${this.favoriteList.length})`
+            this.tab3 = `关注(${this.totalLike - 1})`
         },
         handleCloseTag(removedTag){
             const tags = this.user.labels.filter(tag => tag !== removedTag);
@@ -275,6 +289,7 @@ export default {
                         if(res.data.code == 0){
                             this.productList = this.productList.concat(res.data.data.list)
                             this.tab1 = `资源(${res.data.data.count})`
+                            this.totalResource = res.data.data.count
                             if(res.data.data.count > this.productList.length){
                                 this.ifMoreSource = true
                             }else{
@@ -292,6 +307,7 @@ export default {
                         if(res.data.code == 0){
                             this.favoriteList = this.favoriteList.concat(res.data.data.list)
                             this.tab3 = `关注(${res.data.data.count})`
+                            this.totalLike = res.data.data.count
                             if(res.data.data.count > this.favoriteList.length){
                                 this.ifMoreFavorite = true
                             }else{
@@ -309,6 +325,7 @@ export default {
                         if(res.data.code == 0){
                             this.softwareList = this.softwareList.concat(res.data.data.list)
                             this.tab2 = `软件(${res.data.data.count})`
+                            this.totalSoftware = res.data.data.count
                             if(res.data.data.count > this.softwareList.length){
                                 this.ifMoreSoftware = true
                             }else{

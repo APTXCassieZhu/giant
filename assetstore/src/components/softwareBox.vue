@@ -72,7 +72,23 @@ export default {
   
         },
         deleteSW(){
-
+            this.$Modal.confirm({
+                title: `确认删除${this.software.name}？`,
+                okText: '确认',
+                cancelText: '取消',
+                onOk: () => {
+                    axios.delete(`/api/software/${this.software.id}`).then((res)=>{
+                        if(res.data.code == 0){
+                            setTimeout(() => {
+                                this.$Modal.success({
+                                    title: '软件已删除',
+                                })
+                                this.$emit('swDel', this.software.id)
+                            }, 1000);
+                        }
+                    })
+                },
+            });
         },
         // TODO
         download(){
