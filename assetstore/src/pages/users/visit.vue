@@ -1,86 +1,60 @@
 <template>
     <div style="background-color: #eff2f5">
-        <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
-        <div class="middle-card-wrapper">
-            <div class="self-card">
-                <div class="self">
-                    <div v-if="this.profilePic != null"><img class="avatar" :src="profilePic"></div>
-                    <div v-else class="font-avatar">{{this.resName.charAt(0)}}</div>
-                    <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/>
-                    <ul style="font-size: 21px;font-weight: bold;">{{this.resName}}</ul>
-                    <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
-                </div>
-                <br>
-                <ul style="font-size: 14px; color: #7f7f7f;">{{this.signature}}</ul>
-                <Divider />
-                <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
-                <div v-if="this.user.labels == null" class="empty-personal">
-                    <p>暂无好友印象哦～</p>
-                    <p>快邀请好友来为您添加第一条标签吧</p>
-                </div>
-                <div v-else>
-                    <span v-for="(item,index) in this.user.labels" :key="index">
-                        <Tag class="tag-style">&emsp;{{item}}&emsp;</Tag>
-                    </span>
-                    <a-input
-                        v-if="inputVisible"
-                        ref="input"
-                        type="text"
-                        size="small"
-                        :style="{ width: '78px' }"
-                        :value="inputValue"
-                        @change="handleInputChange"
-                        @blur="handleInputConfirm"
-                        @keyup.enter="handleInputConfirm"
-                    />
-                    <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
-                    <a-icon type="plus" /> New Tag
-                    </a-tag>
-                </div>
+       
+        <h2>visit.......</h2>
+         <a-form id="components-form-demo-validate-other" :form="form" >
+            <a-form-item>
+                <a-input
+                    ref="input"
+                    type="text"
+                    size="small"
+                    :style="{ width: '128px' }"    
+                    placeholder="请输入2-8个字符"
 
-                <Divider />
-                <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
-                <div v-if="this.user.fineResources == null" class="empty-personal">
-                    <p>暂无优秀作品哦～</p>
-                </div>
-                <div v-else v-for="(resource, i) in this.user.fineResources" :key="'a'+i">
-                    <div class="personal-fine">
-                        <div v-if="resource.images==null" class="font-image">{{resource.name.charAt(0)}}</div>
-                        <div v-else><img  class="font-image" :src="resource.images[0]"></div>
-                        <div class="font-name">{{resource.name}}</div>
-                    </div>
-                    <br><br>
-                </div>
-                <Button class="ask-btn">向TA提问</Button>
-            </div>
-        
-            <div class="asset-card" >
-                <Tabs value="name" :animated="false">
-                    <TabPane :label="tab" name="name">
-                        <div v-if="this.sourceList.length==0" class="like-btn-container">
-                        </div>
-                        <div v-else v-for="(item, n) in this.sourceList" :key="n" style="display:inline-block;">
-                            <like-box :softwareName="item" :whoShared="resName"></like-box>
-                        </div>
-                    </TabPane>
-                </Tabs>
-            </div>
-        </div>
-        <corner></corner>
-        <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
+                    v-decorator="[
+                    'entertag',
+                        {rules: [
+                        {type:'string', min: 2,max:8,  message:'请输入2-8个字符', trigger:'keydown'}
+                        ]
+                        },
+                    ]"
+                />
+            </a-form-item>
+
+         </a-form>
+       
+                
     </div>
 </template>
 
 <script>
-import TopNavigation from '../../components/TopNav.vue'
-import Footer from '../../components/footer.vue'
-import Corner from '../../components/corner.vue'
-import LikeBox from '../../components/likeBox.vue'
 
 export default {
     name:"Visit",
-    components:{TopNavigation, Footer, Corner, LikeBox},
+    components:{},
     computed:{
+    },
+    beforeCreate() {
+        var that = this
+        this.form = this.$form.createForm(this, {
+        name: 'validate_other' ,
+        onFieldsChange(props, fields){
+            var keys = Object.keys(fields)
+
+            //console.log(keys,fields)
+
+            if(keys.length === 1 && keys[0] === 'radio-group'){
+                let o = fields[keys[0]]
+                that.showCheckBoxGroup = o.value
+                that.checkedList = []
+                that.checkedList_unreal = []
+            }
+            
+            //  if(keys.length ===1 && keys[0] === 'checkbox-group-unreal' || keys[0] === 'checkbox-group-unity'){
+            
+            //  }    
+        }
+        })
     },
     mounted() {
         axios.get(`/api/user/${this.$route.userId}`).then((res)=>{

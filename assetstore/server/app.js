@@ -352,6 +352,7 @@ app.use('/',express.static(__dirname+''))
 						"replyUserId": '1',
 						"pid": 'pid34', 
 						"rateId": null,
+						
 						"items": [
 							{
 								"id": 2, //二层评论id
@@ -402,6 +403,7 @@ app.use('/',express.static(__dirname+''))
 								"stars": [1,1]
 							}
 						],
+
 						"user": {
 							"id": 123, // 一层用户id
 							"name": "胡浩", //用户名

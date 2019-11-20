@@ -41,8 +41,8 @@
             </div>
             <div class="resource-detail-deslist-part2">{{resource.name}}</div>
             <div class="resource-detail-deslist-part3">
-              <Select :placeholder="resource.ver[0].verNum" @on-change="handleSelectChange" style="width: 120px">
-                <Option v-for="(item,j) in resource.ver" :key="j" :value="item.verNum">{{item.verNum}}</Option>
+              <Select :placeholder="resource.vers[0].verNum" @on-change="handleSelectChange" style="width: 120px">
+                <Option v-for="(item,j) in resource.vers" :key="j" :value="item.verNum">{{item.verNum}}</Option>
                 <Option value="all">全部</Option>
               </Select>
               <!-- <Dropdown>
@@ -74,7 +74,7 @@
                 <font-awesome-icon :icon="['fas','folder']" style="color:#1ebf73;width:15px;height:15px;"/>
                 <span>资源包</span> 
               </div>
-              <div>{{resource.ver.length ? resource.ver[0].file.fileName:''}}</div>
+              <div>{{resource.vers.length ? resource.vers[0].file.fileName:''}}</div>
             </div>
             <div class="resource-detail-deslist-part6">
               <div>
@@ -91,7 +91,7 @@
                 <span>资源标签</span> 
               </div>
               <div>
-                <Tag v-for="(item,k) in resource.label" :key="k" size="medium">{{item}}</Tag>
+                <Tag v-for="(item,k) in resource.labels" :key="k" size="medium">{{item}}</Tag>
               </div>
             </div>
             <div class="resource-detail-deslist-part8">
@@ -144,17 +144,19 @@
         <!-- <Alert v-if="showAlertComment" show-icon closable>您需要先评分才能评论哦</Alert> -->
       
         <div class="resource-detail-rate-wrap" >
-          <!-- <template v-if="resource.isRate">
+          <template v-if="resource.isRate">
             <a-rate v-model="resource.rateAvg" size="large" disabled   />
             <span class="resource-detail-rate-text">{{resource.rateAvg+'.0'}}</span>
-          </template> -->
+          </template>
          
-          <!-- <template v-if="!resource.isRate">
+          <template v-if="!resource.isRate">
             <a-rate size="large"  :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
             <span class="resource-detail-rate-text">{{rate2+'.0'}}</span>
-          </template> -->
-          <a-rate size="large" v-model="rate2" :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
-          <a name="resource-rate"><span class="resource-detail-rate-text">{{rate2+'.0'}}</span></a>
+          </template> 
+
+          <!-- <a-rate size="large" v-model="rate2" :tooltips="['差', '较差', '还行', '推荐', '力荐']" @change="handleRate" />
+          <a name="resource-rate"><span class="resource-detail-rate-text">{{rate2+'.0'}}</span></a> -->
+
         </div>
         <div class="resource-detail-reply" ref="resource-detail-reply">
 
@@ -640,7 +642,7 @@ export default {
         "name": "资源名23333", // 资源名
         "images": [ // 轮询图
         ],
-        "label": [ // 自定义标签
+        "labels": [ // 自定义标签
           "最喜欢大哥哥了",'小姐姐','小哥哥','小姐姐','小哥哥','小姐姐','小哥哥','小姐姐','小哥哥'
         ],
         "createdAt": "2019-11-08T03:41:55.000Z", // 创建时间  
@@ -654,7 +656,7 @@ export default {
         "state": true,
         "isStar": true, //是否关注过
         "isRate":true,
-        "ver": [ // 版本 resource.ver[0].file.fileName
+        "vers": [ // 版本 resource.ver[0].file.fileName
       	{
 						"id": 0,
 						"verNum": "1.3.5",
@@ -690,7 +692,6 @@ export default {
 
     // /comment  GET  获取资源评论
 
-
     // /comment  POST 提交评论
 
     // /comment DEL 删除评论
@@ -703,15 +704,23 @@ export default {
 		const that = this
     // debugger
 
-
     axios.get(`/api/resource/${params.resourceId}`).then(response=>{
       var res = response.data
 
       this.resource = Object.assign(this.resource,res.data)
 
+      this.resource.isRate = this.resource.myRate ? true:false
+
+      console.log('node_env:',process.env.npm_lifecycle_event)
+    //  console.log(this.resource.images)
+     // if( process.env.NODE_ENV!='development'){
+    
       this.resource.images = this.resource.images.map(o=>{
-        return `//192.168.94.238:3000/file/download/${o.id}/token=${this.$store.state.token}`
+        return `//192.168.94.238:3000/file/download/${o.id}/?token=${this.$store.state.token}`
       })
+
+     // }
+
       //console.log(this.resource.images)
 
       this.$nextTick(()=>{
@@ -743,7 +752,6 @@ export default {
 							  lightbox.show()
 							}
 
-							
 						}
 					},
           navigation: {
@@ -756,7 +764,7 @@ export default {
 					autoplay:{
 						delay: 5000,  // 设置轮播的时间
 						disableOnInteraction: false,  // 这一行是为了避免手动滑动轮播图后，自动轮播失效，默认为true
-					},
+					}
         })
       })
       
@@ -785,14 +793,19 @@ export default {
       if(!prop.content.length){
         return this.$Message.warning('请输入你的评论内容~')
       }
-
+    
+    // this.userid
+    // console.log(this.userid)
+    // debugger
        //让他回复
-      axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id}).then(response=>{
+      // debugger
+      axios.post('/api/comment',{resourceId:params.resourceId,replyUserId:null, content:prop.content,pid:null}).then(response=>{
+      // axios.post('/api/comment',{resourceId:params.resourceId, replyUserId:this.userid, content:prop.content,pid:prop.id}).then(response=>{
         this.$Message.success('评论提交成功~')
         replyx.clearContent()
       })
-
       
+
     })
 
 
@@ -857,11 +870,17 @@ export default {
     },
     handleRate(v){
       const {params} = this.$route
-      axios.post(`/api/rate/${params.resourceId}`,{value:v}).then(response=>{
+      // /resource/id/rate  
+      axios.post(`/api/resource/${params.resourceId}/rate`,{val:v}).then(response=>{
+        if(response.data.code!=0){
+          return 
+        }
+
         this.resource.isRate = true
-        this.resource.ra
+        this.resource.rateAvg = v
         //console.log('isRate!!1')
       })
+
     },
     yymmdd(t){
       return '2019-01.23'
@@ -875,126 +894,174 @@ export default {
     createComment(){
 
       const {params} = this.$route
+      
       axios.get(`/api/comment`,{params:{ resourceId:params.resourceId,page:1,pageSize:this.comment_pagesize,order:this.sortBy}}).then(response=>{
         
         var res = response.data 
-
         let items = [] 
 
-        items = res.data.list.map(o=>{
-          var item = {
-            items:[],
-            id:o.id,
-            content:o.content,
-            score:o.rate.value,
-            like:o.hot,
-            liked:o.stars.length>1,
-            time: this.getYYMMDD(o.createdAt)  ,
-            replyUserId:o.replyUserId,
-            user:{
-              uid:o.user.id,
-              name:o.user.name,
-              nickname:o.user.nickName,
-              imgurl:o.user.profilePic
-            }
-          }
-          item.items = o.items.map(o=>{  
-            return{
-              id: o.id,
+
+        // 戴 -> 祝 -> 戴
+        try{
+          items = res.data.list.map(o=>{
+            if(!o.user) return
+
+            var item = {
+              items:[],
+              id:o.id,  //评论id
               content:o.content,
+              score:o.rate.value,
               like:o.hot,
               liked:o.stars.length>1,
-              replyUserId:o.replyUserId,
-              usera:{
-                uid:o.user.id,name:o.user.name,nickname:o.user.nickName,imgurl:o.user.profilePic
-              },
-              userb:{
-                uid:o.followUser.id,name:o.followUser.name,nickname:o.followUser.nickName,imgurl:o.followUser.profilePic
-              },
-              time: this.getYYMMDD(o.createdAt)
+              time: this.getYYMMDD(o.createdAt)  ,
+              replyUserId:o.replyUserId, // 回复的id
+              user:{
+                uid:o.user.id,
+                name:o.user.name,
+                nickname:o.user.nickName,
+                imgurl:o.user.profilePic
+              }
             }
-          })
-
-          return item
-        })
 
 
-       
-        //console.log(response)
-        let comments = Comments(this.$refs['resource-detail-comments'],{
-          items,
-          userdata:{
-            uid:this.userid
-          }
-        })
+            item.items = o.items.map(o=>{  
+              // content: "回去评论2~~~~！！！！！！"
+              // createdAt: "2019-11-19T11:17:24.000Z"
+              // hot: 0
+              // id: 15
+              // pid: 14
+              // rateId: 1
+              // replyUser: {id: 7, name: "戴文奇", nickName: null, profilePic: null}
+              // replyUserId: 7
+              // stars: []
+              // user: {id: 7, name: "戴文奇", nickName: null, profilePic: null}
+              // userId: 7
 
+              return{
+                id: o.id,//评论id
+                content:o.content, //
+                like:o.hot, // 点赞数
+                liked:o.stars.length>1,  //是否点过赞
 
-        comments.onLike(prop=>{
-          console.log('comments like:', prop)
+                // replyUserId:o.replyUserId,
+                // replyUserId:item.user.uid,  // 回复谁的id
 
-          if(prop.liked){
-            axios.post(`/api/comment/${prop.id}/star`,{star:false}).then(response=>{
-              comments.dislikeByProp(prop)
+                replyUserId:o.replyUser.id,  // 回复谁的id
+
+                usera:{
+                  uid:o.user.id,
+                  name:o.user.name,
+                  nickname:o.user.nickName,
+                  imgurl:o.user.profilePic
+                },
+                userb:{
+                  uid:o.replyUser.id,  
+                  name:o.replyUser.name,   
+                  nickname:o.replyUser.nickName,      
+                  imgurl:o.replyUser.profilePic
+                },
+                time: this.getYYMMDD(o.createdAt)
+              }
             })
 
-          }else{
-            axios.post(`/api/comment/${prop.id}/star`,{star:true}).then(response=>{
-              comments.likeByProp(prop)
-            })
-            
-          }
-        })
-
-
-        comments.onReply(prop=>{
-          // 	"pid": 0,
-          // 	"content": "string",
-          // 	"replyUserId": 0
-
-          // 触发了回复评论, 但从没有评分过
-          if(!this.resource.isRate){
-            return this.showAlertComment = true
-          }
-          if(!prop.content.length){
-            return this.$Message.warning('请输入你的回复内容~')
-          }
-
-          //让他回复
-          axios.post('/api/comment',{resourceId:params.resourceId,content:prop.content,pid:prop.id,replyUserId:prop.replyUserId}).then(response=>{
-            this.$Message.success('评论提交成功~')
-            prop.reply.clearContent()
+            return item
           })
-          //console.log('comments reply:', prop)
-        })
+
+        }catch(e){
+          console.log(e)
+        }
 
 
-        comments.onDel(prop=>{
-          console.log('comments del:', prop)
-          //comments.removeCommentByProp(prop)
-          this.$Modal.confirm({
-            title: '确认删除该条评论?',
-            okText: '确认',
-            okType: 'danger',
-            cancelText: '取消',
-            onOk: () => {
-              
-              axios.delete(`/api/comment/${prop.id}`,{pid:prop.id}).then(response=>{
-                
-                comments.removeCommentByProp(prop)
+        console.log('items:',items)
 
-                setTimeout(()=>{
-                  this.$Modal.success({
-                    title: '评论已删除',
-                    okText: '确认',
-                  })
-                },300)
 
+        try{
+          let comments = Comments(this.$refs['resource-detail-comments'],{
+            items : items.filter(o=>o?o:false),
+            userdata:{
+              uid:this.userid
+            } 
+          })
+
+
+          comments.onLike(prop=>{
+            console.log('comments like:', prop)
+  
+            if(prop.liked){
+              axios.post(`/api/comment/${prop.id}/star`,{star:false}).then(response=>{
+                comments.dislikeByProp(prop)
+              })
+
+  
+            }else{
+              axios.post(`/api/comment/${prop.id}/star`,{star:true}).then(response=>{
+                comments.likeByProp(prop)
               })
               
             }
           })
-          
-        })
+  
+          comments.onReply(prop=>{
+            // 	"pid": 0,
+            // 	"content": "string",
+            // 	"replyUserId": 0
+
+            // 触发了回复评论, 但从没有评分过
+            if(!this.resource.isRate){
+              return this.showAlertComment = true
+            }
+            if(!prop.content.length){
+              return this.$Message.warning('请输入你的回复内容~')
+            }
+
+            // debugger
+            //让他回复
+            axios.post('/api/comment',{
+              resourceId: params.resourceId,
+              content: prop.content,
+              pid: prop.userdata.id, //第一层id
+              replyUserId: prop.userdata.replyUserId //回复的人的  user.id
+
+            }).then(response=>{
+              this.$Message.success('评论提交成功~')
+              prop.reply.clearContent()
+            })
+            //console.log('comments reply:', prop)
+          })
+
+  
+          comments.onDel(prop=>{
+            console.log('comments del:', prop)
+            //comments.removeCommentByProp(prop)
+            this.$Modal.confirm({
+              title: '确认删除该条评论?',
+              okText: '确认',
+              okType: 'danger',
+              cancelText: '取消',
+              onOk: () => {
+                
+                axios.delete(`/api/comment/${prop.id}`,{pid:prop.id}).then(response=>{
+                  
+                  comments.removeCommentByProp(prop)
+
+                  setTimeout(()=>{
+                    this.$Modal.success({
+                      title: '评论已删除',
+                      okText: '确认',
+                    })
+                  },300)
+
+                })
+                
+              }
+            })
+            
+          })
+
+        }catch(e){
+          console.log(e)
+        }
+        //console.log(response)
 
       }).catch(err=>{
         
@@ -1008,7 +1075,8 @@ export default {
       this.createComment()
     },
     handleDown(){
-      
+      var fileid = this.resource.vers[0].file.id
+      location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`
     }
   }
 }

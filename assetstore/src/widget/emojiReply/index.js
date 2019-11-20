@@ -16,6 +16,7 @@ import './emojiReply.css'
 }
 
 {
+
   var Reply = ($el,param={})=>{
     var that = {
       $el:typeof $el === 'string'?document.querySelector($el):$el,
@@ -38,7 +39,6 @@ import './emojiReply.css'
         this.$content = this.$el.querySelector('.emoji-reply-owo-content')
         this.$pub = this.$el.querySelector('.emoji-reply-owo-pub')
 				
-
 				this.emojiEl = $(`#${id}`).emojioneArea({
 					// placeholder       : $('#demox'), // placeholder
 					// container         : $('#demox'), // by default, emojionearea container created directly under source,
@@ -120,12 +120,13 @@ import './emojiReply.css'
                 <div>
                   <div class="comments-owo-item-name">${user.name}</div>
                   <div class="comments-owo-item-star">
-                    
+
                   </div>
                 </div>
                 <div class="comments-owo-item-time">${time}</div>
               </div>
             </div> 
+
             <div class="comments-owo-item-b">
               <div class="comments-owo-item-content">${content}</div>
               <div class="comments-owo-item-list">
@@ -135,7 +136,7 @@ import './emojiReply.css'
                 </div>
                 <div class="comments-owo-item-reply comments-icon-wrap">
                   <svg t="1572854853296" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4929" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M810.666667 213.333333a64 64 0 0 1 64 64v426.666667a64 64 0 0 1-64 64H478.336l-146.645333 96.106667A21.333333 21.333333 0 0 1 298.666667 846.250667V768h-85.333334a64 64 0 0 1-64-64V277.333333a64 64 0 0 1 64-64h597.333334z m0 64H213.333333v426.666667h149.333334v63.296L459.242667 704H810.666667V277.333333zM539.306667 490.666667v64H362.666667v-64h176.64zM661.333333 362.666667v64H362.666667v-64h298.666666z" p-id="4930"></path></svg>
-                  <span>回复</span>
+                  <span data-id="${item.id}">回复</span>
                 </div>
                 <div class="comments-owo-item-del comments-icon-wrap" style="visibility:${this.userdata.uid===item.user.uid?'visible':'hidden'}">
                   <svg t="1572855009994" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5047" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M341.013333 394.666667l27.754667 393.450666h271.829333l27.733334-393.450666h64.106666L704.426667 792.618667a64 64 0 0 1-63.829334 59.498666H368.768a64 64 0 0 1-63.829333-59.52L276.885333 394.666667h64.128z m139.306667 19.818666v298.666667h-64v-298.666667h64z m117.013333 0v298.666667h-64v-298.666667h64zM181.333333 288h640v64h-640v-64z m453.482667-106.666667v64h-256v-64h256z" p-id="5048"></path></svg>
@@ -239,7 +240,7 @@ import './emojiReply.css'
                  </div>
                  <div class="comments-owo-item-reply comments-icon-wrap">
                    <svg t="1572854853296" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4929" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M810.666667 213.333333a64 64 0 0 1 64 64v426.666667a64 64 0 0 1-64 64H478.336l-146.645333 96.106667A21.333333 21.333333 0 0 1 298.666667 846.250667V768h-85.333334a64 64 0 0 1-64-64V277.333333a64 64 0 0 1 64-64h597.333334z m0 64H213.333333v426.666667h149.333334v63.296L459.242667 704H810.666667V277.333333zM539.306667 490.666667v64H362.666667v-64h176.64zM661.333333 362.666667v64H362.666667v-64h298.666666z" p-id="4930"></path></svg>
-                   <span>回复</span>
+                   <span data-id="${userb.id}">回复</span>
                  </div>
                  <div class="comments-owo-item-del comments-icon-wrap" style="visibility:${this.userdata.uid===usera.uid?'visible':'hidden'}">
                    <svg t="1572855009994" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5047" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M341.013333 394.666667l27.754667 393.450666h271.829333l27.733334-393.450666h64.106666L704.426667 792.618667a64 64 0 0 1-63.829334 59.498666H368.768a64 64 0 0 1-63.829333-59.52L276.885333 394.666667h64.128z m139.306667 19.818666v298.666667h-64v-298.666667h64z m117.013333 0v298.666667h-64v-298.666667h64zM181.333333 288h640v64h-640v-64z m453.482667-106.666667v64h-256v-64h256z" p-id="5048"></path></svg>
@@ -293,11 +294,7 @@ import './emojiReply.css'
                  })      
               )
             )
-
           })
-
-         
-          
         })
       },
       extendItem(o,o2={}){
@@ -319,6 +316,7 @@ import './emojiReply.css'
    
         o.reply.onSubmit(prop=>{
           //console.log(prop)
+          debugger
           prop.reply = o.reply
           this.handleReply(prop)
         })
@@ -341,6 +339,7 @@ import './emojiReply.css'
         this.handleLike = fn
       },
       onReply(fn){
+        // debugger
         this.handleReply = fn
       }
     }

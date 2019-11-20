@@ -14,7 +14,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        // target: "http://localhost:3000",
+        //target: "http://localhost:3000",
         target: "http://192.168.94.238:3000",
         changeOrigin: true,
         pathRewrite: {
@@ -25,14 +25,13 @@ module.exports = {
 
     // Various Dev Server settings
     //host:'192.168.94.204',
-    host: '192.168.94.135',
-    // host:'localhost',
+    //host: '192.168.94.135',
+     host:'localhost',
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false,  // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-
     // Use Eslint Loader?
     // If true, your code will be linted during bundling and
     // linting errors and warnings will be shown in the console.

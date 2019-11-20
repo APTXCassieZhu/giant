@@ -18,6 +18,8 @@
                         getValueFromEvent: normFile
                       }
                     ]"
+
+                    @change="handleChange"
                     :beforeUpload="beforeUpload"
 										:headers="{authorization:this.$store.state.token}"
                     :data="{target:'resourceFile'}"
@@ -51,7 +53,19 @@
 
               <a-form-item v-bind="formItemLayout" label="初始版本号："  :label-col="labelCol" :wrapper-col="wrapperCol "> 
                 <a-input
-                  v-decorator="['resource-version', { rules: [{ required: true, message: '请填写版本号' }] }]"
+                  v-decorator="['resource-version', { rules: [
+                  { required: true, message: '请填写版本号' },{
+                    validator(rule,value,callback){
+                      let rg = /^[0-9\.]+$/.test(value)
+                      if(!rg) {
+                        callback('请填写正确的版本号')
+                        return 
+                      }
+                      callback()
+                    }
+                  }
+
+                  ] }]"
                 />
               </a-form-item>
               <!-- <a-form-item v-bind="formItemLayout" label="文件描述："  :label-col="labelCol" :wrapper-col="wrapperCol ">
@@ -104,42 +118,45 @@
                 </a-form-item>
               </template>
 
-              <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
-              <a-radio-group v-decorator="['radio-group']">
-                <a-radio value="none">
-                  无
-                </a-radio>
-                <a-radio value="unity">
-                  Unity
-                </a-radio>
-                <a-radio value="unreal">
-                  Unreal
-                </a-radio>
-              </a-radio-group>
-            </a-form-item>
+              <section class="a" style="height:81px;">
+                <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
+                  <a-radio-group v-decorator="['radio-group']">
+                    <a-radio value="none">
+                      无
+                    </a-radio>
+                    <a-radio value="unity">
+                      Unity
+                    </a-radio>
+                    <a-radio value="unreal">
+                      Unreal
+                    </a-radio>
+                  </a-radio-group>
+                </a-form-item>
 
-              <template v-if="showCheckBoxGroup=='unity'">
-                <div class="checkboxgroup-wrap">
-                  <a-checkbox :indeterminate="indeterminate" @change="onCheckAllChange" :checked="checkAll">
-                    全选
-                  </a-checkbox>
-                  <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="checkboxChange" />
-                </div>
-                
-              </template>
-            
-              <template v-if="showCheckBoxGroup=='unreal'">
-                <div class="checkboxgroup-wrap">
-                  <a-checkbox :indeterminate="indeterminate_unreal" @change="onCheckAllChangeUnreal" :checked="checkAll_unreal">
-                    全选
-                  </a-checkbox>
-                  <a-checkbox-group :options="plainOptions_unreal" v-model="checkedList_unreal" @change="checkboxChangeUnreal" />
-                </div>
-              </template>
+                <template v-if="showCheckBoxGroup=='unity'">
+                  <div class="checkboxgroup-wrap">
+                    <a-checkbox :indeterminate="indeterminate" @change="onCheckAllChange" :checked="checkAll">
+                      全选
+                    </a-checkbox>
+                    <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="checkboxChange" />
+                  </div>
+                  
+                </template>
+              
+                <template v-if="showCheckBoxGroup=='unreal'">
+                  <div class="checkboxgroup-wrap">
+                    <a-checkbox :indeterminate="indeterminate_unreal" @change="onCheckAllChangeUnreal" :checked="checkAll_unreal">
+                      全选
+                    </a-checkbox>
+                    <a-checkbox-group :options="plainOptions_unreal" v-model="checkedList_unreal" @change="checkboxChangeUnreal" />
+                  </div>
+                </template>
+
+              </section>
+
             </section>
 
-
-            <section>
+            <section style="height:129px;">
               <a-form-item v-bind="formItemLayout" label="自定义标签" :label-col="labelCol" :wrapper-col="wrapperCol ">
                 <template v-for="(tag, index) in tags">
                   <a-tag :key="tag" closable  :afterClose="() => handleClose(tag)">
@@ -151,12 +168,18 @@
                   ref="input"
                   type="text"
                   size="small"
-                  :style="{ width: '128px' }"
-                  :value="inputValue"
+                  :style="{ width: '128px' }"    
                   placeholder="请输入2-8个字符"
                   @change="handleInputChange"
                   @blur="handleInputConfirm"
                   @keyup.enter="handleInputConfirm"
+                    v-decorator="[
+                    'entertag',
+                      {rules: [
+                        {type:'string', min: 2,max:8,  message:'请输入2-8个字符', trigger:'keydown'}
+                      ]
+                     },
+                  ]"
                 />
                 <a-tag v-else @click="showInput" ref="enterIpt" style="background: #fff; borderStyle: dashed;">
                   <a-icon type="plus" /> 增加标签
@@ -179,6 +202,7 @@
                   :beforeUpload="beforeUpload2"
 									:headers="{authorization:this.$store.state.token}"
                   :data="{target:'resourceImage'}"
+                  @change="handleChangex"
                   @preview="handlePreview"
                   v-decorator="[
                     'thumbnail',
@@ -223,21 +247,30 @@
    </div>
 </template>
 
-<style>
-.ant-form-item-label{
-  display: flex;
+<style lang="less">
+.uploadfile{
+  .a .ant-form-item{
+    min-height: auto;
+  }
+  .ant-form-item{
+    min-height:60px;
+  }
+  .ant-form-item-label{
+    display: flex;
+  }
+  .ant-form-item-label label{
+    font-size:16px;
+    color:#7f7f7f;
+    font-weight: bold;
+  }
+  .ant-row{
+    margin:30px 0;
+  }
+  .ant-upload.ant-upload-drag{
+    padding:15px 0;
+  }
 }
-.ant-form-item-label label{
-  font-size:16px;
-  color:#7f7f7f;
-  font-weight: bold;
-}
-.ant-row{
-  margin:30px 0;
-}
-.ant-upload.ant-upload-drag{
-  padding:15px 0;
-}
+
 </style>
 <style scoped lang="less">
 .checkboxgroup-wrap{
@@ -368,7 +401,7 @@ export default {
 
 
 
-
+      replaceIdx:0,
       showArtStyle:false,
       art_v : '',
       art_options:[{value:'q',label:'q版风格'},{value:'j',label:'日漫'}],
@@ -394,7 +427,9 @@ export default {
       tags: [],
       inputVisible: false,
       inputValue: '',
-      showCheckBoxGroup:''
+      showCheckBoxGroup:'',
+
+      checkNick:false
     }
   },
  
@@ -414,8 +449,6 @@ export default {
            that.checkedList_unreal = []
          }
         
-
-
         //  if(keys.length ===1 && keys[0] === 'checkbox-group-unreal' || keys[0] === 'checkbox-group-unity'){
           
         //  }    
@@ -549,12 +582,17 @@ export default {
       return true
     },
     beforeUpload(file){
-			//console.log(file)
-			//
-			// if(file.type != 'application/x-zip-compressed'){
-			// 	this.$message.warning('请上传一个zip')
-			// 	return Promise.reject()
-			// }
+
+      
+      if(this.fileList&&this.fileList.length){
+        this.$message.warning('只能上传一个资源')
+        return Promise.reject()
+      } 
+
+			if(file.type != 'application/x-zip-compressed' && file.type!='application/zip'){
+				this.$message.warning('请上传一个zip')
+				return Promise.reject()
+			}
 
 			// let isLt200 = file.size/1024/1024  < 200
 			// if(isLt200 > 200){
@@ -595,6 +633,7 @@ export default {
         this.showArtStyle = false
       }
 
+
       axios.get(`/api/tag/tree`,  { params:{type:this.art_v} } ).then(response=>{
         var res = response.data  
         var options = res.data 
@@ -607,7 +646,7 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
 
-      console.log(values)
+        console.log(values)
 
          //console.log(this.editor.txt.html(),this.editor.txt.html().length)
         
@@ -637,8 +676,8 @@ export default {
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
 
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
-
-
+        ;[images[0],images[this.replaceIdx]] =[images[this.replaceIdx],images[0]]
+        
         axios.post(`/api/resource`,
           {
             "state": values.public?'public':'private', // 是否公开
@@ -692,10 +731,14 @@ export default {
 
       const status = info.file.status
 
+    // ant-upload-list-item-done
+      //console.log(info)
       if(status =='done'){
-        console.log('handleChange.',this.fileList)
+        //console.log('handleChange.',this.fileList)
       }
-      //debugger
+
+      // ant-upload-list-item-done
+
     },
     handleClose(removedTag) {
       const tags = this.tags.filter(tag => tag !== removedTag)
@@ -711,18 +754,50 @@ export default {
         this.$refs.input.focus()
       })
     },
-
+    
     handleInputChange(e) {
       this.inputValue = e.target.value;
     },
 
 
     handleInputConfirm() {
-      const inputValue = this.inputValue.slice(0,8)
+
+      //debugger
+
+      //console.log('handleInputConfirm!')
+      //return
+      const inputValue = this.inputValue
+
+      // var ar  =[
+      //   {n:0,v:'a'},
+      //   {n:1,v:'b'},
+      //   {n:2,v:'c'},
+      //   {n:3,v:'d'},
+      // ]
+      // var def = 1/ar.length
+
+      // for(let i = 0,len=ar.length;i<len;i++){
+      //   let o = ar[i]
+      //   //o[n]+=def
+
+
+      //   // 0 -----  4
+      //   let j = Math.sin( o.n *Math.PI*.5)  *  ar.length
+
+      //   console.log(j)
+      //   console.log(j)
+      // }
+
       
-      let tags = this.tags;
+      let tags = this.tags
       if (inputValue && tags.indexOf(inputValue) === -1) {
-        tags = [...tags, inputValue];
+
+        // if(inputValue.length<2)  return this.$message.warning(`请输入2-8个字符`)
+        // if(inputValue.length>8)  return this.$message.warning(`请输入2-8个字符`)
+         if(inputValue.length<2)  return
+        if(inputValue.length>8)  return
+        
+        tags = [...tags, inputValue]
       }
 
       //console.log(tags);
@@ -730,30 +805,69 @@ export default {
         tags,
         inputVisible: false,
         inputValue: '',
-      });
+      })
+
     },
     handleSave(){
       //console.log('tags:',this.tags,'fileList:',this.fileList, 'fileid:',this.fileid)
     },
 
     handleChangex(info) {
+      console.log(info)
+
       const status = info.file.status
 
-      //console.log(status)
-      if(status=='done'){
-        //console.log(info.fileList[0],info.fileList[0].response)
-        let res = info.fileList[0].response
-        this.fileid = res.data.fileid
+    // ant-upload-list-item-done
+      //console.log(info)
+      if(status =='done'){
+        setTimeout(()=>{
+          Array.from(document.querySelectorAll('.uploadfile .ant-upload-list-item-done'),($node,i)=>{
+            //console.log($node)
 
-        this.resource_fileid.push(this.fileid)
+            if($node.$ipt){
+              $node.querySelector('.ant-upload-list-item-info').removeChild($node.$ipt)
+            }
+
+            var idx
+            var $ipt = document.createElement('input')
+            $node.$ipt = $ipt
+            $node.querySelector('.ant-upload-list-item-info').appendChild($ipt)
+            
+
+            Object.assign($ipt.style,{
+              position:'absolute',
+              left:'0',
+              top:'0',
+              'z-index':2
+            })
+            
+
+            $ipt.setAttribute('type','button')
+            $ipt.value = '设为封面'
+            $ipt.style.display = 'none'
+            
+
+            $ipt.onclick = ()=>{
+              this.replaceIdx = idx
+              //console.log('replaceIdx:',this.replaceIdx)
+            }
+            $node.onmouseover = ()=>{
+              //console.log($node)
+              idx = $($node).index()
+              $ipt.style.display = 'block'
+            }
+            
+            $node.onmouseout = ()=>{
+              $ipt.style.display = 'none'
+            }
+
+          })
+
+        },200)
       }
 
-
-      if (status === 'done') {
-        this.$message.success(`${info.file.name} file uploaded successfully.`)
-      } else if (status === 'error') {
-        this.$message.error(`${info.file.name} file upload failed.`)
-      }
+      
+     
 
     },
     onChange(value) {

@@ -419,7 +419,6 @@ export default {
     },
     handleKeyDown(e){
       // debugger
-
     },
     handleResChange(val){
       this.art_v = val 
@@ -445,7 +444,6 @@ export default {
 
       e.preventDefault()
       this.form.validateFields((err, values) => {
-
        //console.log(values)
 
          //console.log(this.editor.txt.html(),this.editor.txt.html().length)

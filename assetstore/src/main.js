@@ -51,7 +51,7 @@ Vue.use(Antd)
 
 // console.log(process.env.NODE_ENV)
 
-// axios.defaults.baseURL = process.env.NODE_ENV==='test' ?
+// axios.defaults.baseURL = process.env.npm_lifecycle_event==='test' ?
 // '//192.168.94.238:3000':
 // '/'
 axios.defaults.baseURL = '/'
@@ -59,6 +59,8 @@ axios.defaults.baseURL = '/'
 global.axios = axios
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios
+
+
 
 axios.interceptors.request.use(function (config) {
   //console.log('request interceptors config:',config)
@@ -95,7 +97,7 @@ axios.interceptors.response.use(
           });                    
           break
       }
-
+      
       return Promise.reject(error.response)
     }
 })
@@ -120,6 +122,8 @@ const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
 const READ_NOTICE = 'READ_NOTICE'
 const NOTICE_READED = 'NOTICE_READED'
 // const localstorage = require('./localstorage')
+
+
 // 注册状态管理全局参数
 var store = new Vuex.Store({
   state: {
@@ -221,9 +225,8 @@ var store = new Vuex.Store({
         //debugger
         state.curResourceId = resourceId
         // debugger
-        sessionStorage['gdrc-breadlist'] = JSON.stringify( state.breadListState )
-        sessionStorage['gdrc-curResourceId'] = state.curResourceId
-        
+        sessionStorage['gdrc-breadlist'] = JSON.stringify( state.breadListState ) 
+        sessionStorage['gdrc-curResourceId'] = state.curResourceId 
       },  
       breadListStateRemove(state,n){
   
