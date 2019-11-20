@@ -60,9 +60,20 @@
                         </div>
                     </TabPane>
                     <TabPane :label="tab2" name="name2">
-                        <software-box v-bind:softwareName='this.softwareList[0]'></software-box>
-                        <software-up-box v-bind:softwareName='this.softwareList[1]'></software-up-box>
-                        <software-pend-box v-bind:softwareName='this.softwareList[2]'></software-pend-box>
+                        <div class="container">
+                            <div>
+                                <span v-for="(software, n) in softwareList" :key="n" style="display:inline-block;">
+                                    <software-box :software='software'></software-box>
+                                </span>
+                                <span>
+                                    <software-up-box v-bind:softwareName='this.softwareList1[1]'></software-up-box>
+                                    <software-pend-box v-bind:softwareName='this.softwareList1[2]'></software-pend-box>
+                                </span>
+                            </div>
+                            <div>
+                                <Button v-show="ifMoreSoftware" id="more" class="more" @click="addMore('software')">加载更多</Button>
+                            </div>
+                        </div>
                     </TabPane>
                     <TabPane :label="tab3" name="name3">
                         <div v-if="this.favoriteList.length==0" class="like-btn-container">
@@ -147,6 +158,20 @@ export default {
             alert(res)
         })
 
+        // 拿到用户关注的软件列表
+        axios.get(`/api/user/${o.id}/software`,{params:{page: this.softwarePage,
+        pageSize: this.softwarePageSize,}}).then((res)=>{
+            if(res.data.code == 0){
+                this.softwareList = res.data.data.list
+                this.tab2 = `软件(${res.data.data.count})`
+                if(res.data.data.count > this.softwareList.length){
+                    this.ifMoreSoftware = true
+                }
+            }
+        }, (res)=>{
+            alert(res)
+        })
+
         // 拿到用户关注的资源列表
         axios.get('/api/user/star').then((res1)=>{
             if(res1.data.code == 0){
@@ -181,16 +206,20 @@ export default {
             sourcePageSize: 20,
             favoritePage: 1,
             favoritePageSize: 20,
+            softwarePage: 1,
+            softwarePageSize: 20,
             ifMoreSource: false,
             ifMoreFavorite: false,
+            ifMoreSoftware: false,
             tab1: "资源(2)",
             tab2: "软件(3)",
             tab3: "关注(0)",
             personalActive: "name1",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','暴躁老妹'],// 从后端拿
             // TODO 这两个list还得修改。每一个都还有其他产品信息
-            productList: [],    
-            softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
+            productList: [],  
+            softwareList: [],  
+            softwareList1: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
             favoriteList: [],
         }
     },
@@ -267,6 +296,23 @@ export default {
                                 this.ifMoreFavorite = true
                             }else{
                                 this.ifMoreFavorite = false
+                            }
+                        }
+                    }, (res)=>{
+                        alert(res)
+                    })
+                    break;
+                case 'software':
+                    this.softwarePage += 1
+                    axios.get(`/api/user/${this.user.id}/software`,{params:{page: this.softwarePage,
+                    pageSize: this.softwarePageSize,}}).then((res)=>{
+                        if(res.data.code == 0){
+                            this.softwareList = this.softwareList.concat(res.data.data.list)
+                            this.tab2 = `软件(${res.data.data.count})`
+                            if(res.data.data.count > this.softwareList.length){
+                                this.ifMoreSoftware = true
+                            }else{
+                                this.ifMoreSoftware = false
                             }
                         }
                     }, (res)=>{

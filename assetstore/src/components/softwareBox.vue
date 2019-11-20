@@ -1,18 +1,26 @@
 <template>
     <div class="source-box">
         <div class="upper">
-            <div class="font-image">{{softwareName.charAt(0)}}</div>
-            <div class="font-title">{{softwareName}}</div>
-            <div class="font-content">当前版本<span style="margin-left:10px;">{{currentVersion}}</span></div>
-            <div class="font-content">最后更新<span style="margin-left:10px;">{{lastestUpgrade}}</span></div>
+            <div v-if="software.image != null" class="font-image"><img class="font-image" :src="software.image"></div>
+            <div v-else class="font-image">{{software.name.charAt(0)}}</div>
+            <div class="font-title">{{software.name}}</div>
+            <div class="font-content">当前版本<span style="margin-left:10px;">{{software.downloadedVersion}}</span></div>
+            <div v-if="getShowDot && dot" class="font-content font-content-update" @click="download()">
+                有新版本
+                <span style="margin-left:5px;">
+                    {{software.version}}<Icon type="md-cloud-download" size="20" style="margin-left:7px;"/>
+                </span>
+            </div>
+            <div v-else class="font-content">最后更新<span style="margin-left:10px;">{{getYYMMDD(software.updatedAt)}}</span></div>
         </div>
         <Row class="font-footer">
-            <Col span="12" class="footer-col">
+            <Col span="12" class="footer-col" @click.native="download()">
+                <sup v-if="getShowDot && dot" class="footer-dot"></sup>
                 <font-awesome-icon :icon="['fas','download']" class="foot-icon"/>
             </Col>
-            <Col span="12" class="footer-col">
+            <Col span="12" class="footer-col" @click.native="deleteSW()">
                 <Divider type="vertical" class="foot-divider"/>
-                <font-awesome-icon :icon="['fas','trash-alt']" class="foot-icon"/>
+                <font-awesome-icon :icon="['far','trash-alt']" class="foot-icon"/>
             </Col>
         </Row>
     </div>
@@ -21,21 +29,19 @@
 export default {
     name: "SoftwareBox",
     props: {
-        sourceID: {
-            type: Number,
-            default: 0,
+        software: {
+            type: Object,
+            default: () => {},
         },
+    },
+    computed:{
+        getShowDot(){
+            return this.software.version != this.software.downloadedVersion;
+        }
     },
     data() {
         return {
-            // TODO data里面的数据均需从后端拿到
-            softwareName: '申请的软件名称',
-            rate: 3.5,
-            downloadCount: 233,
-            likeCount: 2019,
-            currentVersion: '9.0.1',
-            lastestUpgrade: '2019.05.04',
-            favoriteIcon: false,            // defalut favourite is false
+            dot: true,
         }
     },
     methods:{
@@ -52,7 +58,27 @@ export default {
                 this.$store.commit('REMOVE_FAVORITE', this.sourceID)
             }  
         },
+        getYYMMDD(t){
+            let time = new Date(t)
+            let [yy,mm,dd] = [
+                time.getFullYear(),
+                time.getMonth()+1,
+                time.getDate()
+            ]
+            if(mm<10){
+                mm = '0' + mm
+            }
+            return  yy+'-'+mm+'.'+dd
+  
+        },
+        deleteSW(){
 
+        },
+        // TODO
+        download(){
+            this.dot = false
+            console.log('aaaa')
+        }
     }
 }
 </script>
@@ -92,6 +118,26 @@ export default {
     font-size: 14px;
     margin-left: 60px;
     margin-top: 8px;
+}
+.footer-dot{
+    position: absolute;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    -webkit-transform-origin: 0 center;
+    transform-origin: 0 center;
+    top: 18px;
+    right: 48px;
+    height: 8px;
+    width: 8px;
+    border-radius: 100%;
+    background: #ed4014;
+    z-index: 10;
+    -webkit-box-shadow: 0 0 0 1px #fff;
+    box-shadow: 0 0 0 1px #fff;
+}
+.font-content-update{
+    color: #1ebf73;
+    cursor: pointer;
 }
 .font-num{
     position: relative;
