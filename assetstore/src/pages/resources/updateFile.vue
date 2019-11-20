@@ -13,7 +13,6 @@
               <a-form-item v-bind="formItemLayout" label="" style="">
                 <div class="dropbox" style="margin:10px 0;">
                   <a-upload-dragger
-
                     v-decorator="[
                       'dragger',
                       {
@@ -22,10 +21,11 @@
                       }
                     ]"
                     :beforeUpload="beforeUpload"
+                    @change="handleChange"
                     name="files"
                     action="/api/file/upload"
-                    
 										:headers="{authorization:this.$store.state.token}"
+                    :data="{target:'resourceFile'}"
                     :multiple="false"
                   >
                     <p class="ant-upload-drag-icon">
@@ -46,15 +46,25 @@
             <section>
               <header class="uploadfile-header">STEP.2 <br/>更新信息编辑</header>
 
-
               <section class="curVer">
                 <div>当前版本号</div>
                 <div>Ver {{resource_ver}}</div>
               </section>
 
               <a-form-item v-bind="formItemLayout" label="更新版本号"  :label-col="labelCol" :wrapper-col="wrapperCol "> 
-                <a-input
-                  v-decorator="['resource-version', { rules: [{ required: true, message: '请填写版本号' }] }]"
+                 <a-input
+                  v-decorator="['resource-version', { rules: [
+                    { required: true, message: '请填写版本号' },{
+                      validator(rule,value,callback){
+                        let rg = /^[0-9\.]+$/.test(value)
+                        if(!rg) {
+                          callback('请填写正确的版本号')
+                          return 
+                        } 
+                        callback()
+                      }
+                    }
+                  ] }]"
                 />
               </a-form-item>
 
@@ -76,7 +86,7 @@
           </div>
 
           <section class="uploadfile-r">
-            <div class="uploadfile-r-wrap" >
+            <div class="uploadfile-r-wrap" style="position: sticky; top: 160px;">
               <header class="uploadfile-header">
                 其他设置
               </header>
@@ -93,30 +103,53 @@
             </div>
             
           </section>
-
-
-         
         </div>
       </a-form>
     </section>
    </div>
 </template>
 
-<style>
-.ant-form-item-label{
-  display: flex;
+<style lang="less">
+
+.uploadfile{
+  .a .ant-form-item{
+    min-height: auto;
+  }
+  .ant-form-item{
+    min-height:60px;
+  }
+  .ant-form-item-label{
+    display: flex;
+  }
+  .ant-form-item-label label{
+    font-size:16px;
+    color:#7f7f7f;
+    font-weight: bold;
+  }
+  .ant-row{
+    margin:30px 0;
+  }
+  .ant-upload.ant-upload-drag{
+    padding:15px 0;
+  }
+
+  .ant-form-item-label{
+    display: flex;
+  }
+  .ant-form-item-label label{
+    font-size:16px;
+    color:#7f7f7f;
+    font-weight: bold;
+  }
+  .ant-row{
+    margin:30px 0;
+  }
+  .ant-upload.ant-upload-drag{
+    padding:15px 0;
+  }
+
 }
-.ant-form-item-label label{
-  font-size:16px;
-  color:#7f7f7f;
-  font-weight: bold;
-}
-.ant-row{
-  margin:30px 0;
-}
-.ant-upload.ant-upload-drag{
-  padding:15px 0;
-}
+
 </style>
 <style scoped lang="less">
 .file-public-switch{
@@ -310,12 +343,6 @@ export default {
            let o = fields[keys[0]]
            that.showCheckBoxGroup = o.value
          }
-        
-
-
-        //  if(keys.length ===1 && keys[0] === 'checkbox-group-unreal' || keys[0] === 'checkbox-group-unity'){
-          
-        //  }    
        }
     })
   },
@@ -358,8 +385,8 @@ export default {
       var data = res.data
       
       this.resource_name = data.name
-			this.resource_ver = data.ver[0].verNum
-			this.isPublic = data.state
+			this.resource_ver = data.vers[0].verNum
+			this.isPublic = data.state === 'public' ? true:false
 			
 			this.editor.txt.html(data.description)
     })
@@ -387,23 +414,23 @@ export default {
   methods:{
 		onChangeSwitch(e){
 			this.isPublic = e
-		},
+    },
+    
 
     beforeUpload(file){
 
-			//
-			if(file.type != 'application/x-zip-compressed'){
+      if(this.fileList&&this.fileList.length){
+        this.$message.warning('只能上传一个资源')
+        return Promise.reject()
+      } 
+
+			if(file.type != 'application/x-zip-compressed' && file.type!='application/zip'){
 				this.$message.warning('请上传一个zip')
-				return Promise.reject()
+        return Promise.reject()
+        
 			}
-
-			let isLt200 = file.size/1024/1024  < 200
-			if(isLt200 > 200){
-			  this.$message.warning('文件太大')
-				return Promise.reject()
-			}
-
       return true
+
     },
     handleUnityCheckBox(){
       this.unity_checkall ^= true

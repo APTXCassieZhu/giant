@@ -146,7 +146,7 @@ export default {
           "state": true,
           "isStar": true, //是否关注过
           "isRate":true,
-          "ver": [ // 版本 resource.ver[0].file.fileName
+          "vers": [ // 版本 resource.ver[0].file.fileName
           {
               "id": 0,
               "verNum": "1.3.5",

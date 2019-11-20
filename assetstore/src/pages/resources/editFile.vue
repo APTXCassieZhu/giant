@@ -11,7 +11,6 @@
               <a-form-item v-bind="formItemLayout" label="" style="">
                 <div class="dropbox" style="margin:10px 0;">
                   <a-upload-dragger
-
                     v-decorator="[
                       'dragger',
                       {
@@ -42,19 +41,30 @@
               </a-form-item>
 
             </section>
-
+            
             <section>
               <header class="uploadfile-header">STEP.2 <br/>资源信息编辑</header>
-   
+
                <a-form-item label="资源名称：" :label-col="labelCol" :wrapper-col="wrapperCol ">
                 <a-input
                   v-decorator="['resource-name', { rules: [{ required: true, message: '请输入资源名称' }] }]"
                 />
               </a-form-item>
 
-              <a-form-item v-bind="formItemLayout" label="初始版本号："  :label-col="labelCol" :wrapper-col="wrapperCol "> 
+             <a-form-item v-bind="formItemLayout" label="初始版本号："  :label-col="labelCol" :wrapper-col="wrapperCol "> 
                 <a-input
-                  v-decorator="['resource-version', { rules: [{ required: true, message: '请填写版本号' }] }]"
+                  v-decorator="['resource-version', { rules: [
+                    { required: true, message: '请填写版本号' },{
+                      validator(rule,value,callback){
+                        let rg = /^[0-9\.]+$/.test(value)
+                        if(!rg) {
+                          callback('请填写正确的版本号')
+                          return 
+                        }
+                        callback()
+                      }
+                    }
+                  ] }]"
                 />
               </a-form-item>
               <!-- <a-form-item v-bind="formItemLayout" label="文件描述："  :label-col="labelCol" :wrapper-col="wrapperCol ">
@@ -108,39 +118,43 @@
               </template>
 
 
-              <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
-              <a-radio-group v-decorator="['radio-group']">
-                <a-radio value="none">
-                  无
-                </a-radio>
-                <a-radio value="unity">
-                  Unity
-                </a-radio>
-                <a-radio value="unreal">
-                  Unreal
-                </a-radio>
-              </a-radio-group>
-            </a-form-item>
+              <section class="a" style="height:81px;">
+                <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
+                  <a-radio-group v-decorator="['radio-group']">
+                    <a-radio value="none">
+                      无
+                    </a-radio>
+                    <a-radio value="unity">
+                      Unity
+                    </a-radio>
+                    <a-radio value="unreal">
+                      Unreal
+                    </a-radio>
+                  </a-radio-group>
+                </a-form-item>
 
-              <template v-if="showCheckBoxGroup=='unity'">
-                <div class="checkboxgroup-wrap">
-                  <a-checkbox :indeterminate="indeterminate" @change="onCheckAllChange" :checked="checkAll">
-                    全选
-                  </a-checkbox>
-                  <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="checkboxChange" />
-                </div>
-                
-              </template>
-            
-              <template v-if="showCheckBoxGroup=='unreal'">
-                <div class="checkboxgroup-wrap">
-                  <a-checkbox :indeterminate="indeterminate_unreal" @change="onCheckAllChangeUnreal" :checked="checkAll_unreal">
-                    全选
-                  </a-checkbox>
-                  <a-checkbox-group :options="plainOptions_unreal" v-model="checkedList_unreal" @change="checkboxChangeUnreal" />
+                <template v-if="showCheckBoxGroup=='unity'">
+                  <div class="checkboxgroup-wrap">
+                    <a-checkbox :indeterminate="indeterminate" @change="onCheckAllChange" :checked="checkAll">
+                      全选
+                    </a-checkbox>
+                    <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="checkboxChange" />
+                  </div>
+                  
+                </template>
+              
+                <template v-if="showCheckBoxGroup=='unreal'">
+                  <div class="checkboxgroup-wrap">
+                    <a-checkbox :indeterminate="indeterminate_unreal" @change="onCheckAllChangeUnreal" :checked="checkAll_unreal">
+                      全选
+                    </a-checkbox>
+                    <a-checkbox-group :options="plainOptions_unreal" v-model="checkedList_unreal" @change="checkboxChangeUnreal" />
 
-                </div>
-              </template>
+                  </div>
+                </template>
+              </section>
+
+              
             </section>
 
 
@@ -157,11 +171,17 @@
                   type="text"
                   size="small"
                   :style="{ width: '128px' }"
-                  :value="inputValue"
                   placeholder="请输入2-8个字符"
                   @change="handleInputChange"
                   @blur="handleInputConfirm"
                   @keyup.enter="handleInputConfirm"
+                   v-decorator="[
+                    'entertag',
+                      {rules: [
+                        {type:'string', min: 2,max:8,  message:'请输入2-8个字符', trigger:'keydown'}
+                      ]
+                     },
+                  ]"
                 />
                 <a-tag v-else @click="showInput" ref="enterIpt" style="background: #fff; borderStyle: dashed;">
                   <a-icon type="plus" /> 增加标签
@@ -229,21 +249,47 @@
    </div>
 </template>
 
-<style>
-.ant-form-item-label{
-  display: flex;
+<style lang="less">
+.uploadfile{
+  .a .ant-form-item{
+    min-height: auto;
+  }
+  .ant-form-item{
+    min-height:60px;
+  }
+  .ant-form-item-label{
+    display: flex;
+  }
+  .ant-form-item-label label{
+    font-size:16px;
+    color:#7f7f7f;
+    font-weight: bold;
+  }
+  .ant-row{
+    margin:30px 0;
+  }
+  .ant-upload.ant-upload-drag{
+    padding:15px 0;
+  }
+  
+  .ant-form-item-label{
+    display: flex;
+  }
+  .ant-form-item-label label{
+    font-size:16px;
+    color:#7f7f7f;
+    font-weight: bold;
+  }
+  .ant-row{
+    margin:30px 0;
+  }
+  .ant-upload.ant-upload-drag{
+    padding:15px 0;
+  }
 }
-.ant-form-item-label label{
-  font-size:16px;
-  color:#7f7f7f;
-  font-weight: bold;
-}
-.ant-row{
-  margin:30px 0;
-}
-.ant-upload.ant-upload-drag{
-  padding:15px 0;
-}
+
+
+
 </style>
 <style scoped lang="less">
 .file-public-switch{
@@ -430,7 +476,6 @@ export default {
            that.checkedList = []
            that.checkedList_unreal = []
          }
-
         //  if(keys.length ===1 && keys[0] === 'checkbox-group-unreal' || keys[0] === 'checkbox-group-unity'){
           
         //  }    

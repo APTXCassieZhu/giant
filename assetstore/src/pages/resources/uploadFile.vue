@@ -171,7 +171,7 @@
                   @change="handleInputChange"
                   @blur="handleInputConfirm"
                   @keyup.enter="handleInputConfirm"
-                    v-decorator="[
+                  v-decorator="[
                     'entertag',
                       {rules: [
                         {type:'string', min: 2,max:8,  message:'请输入2-8个字符', trigger:'keydown'}
@@ -589,14 +589,9 @@ export default {
 
 			if(file.type != 'application/x-zip-compressed' && file.type!='application/zip'){
 				this.$message.warning('请上传一个zip')
-				return Promise.reject()
+        return Promise.reject()
+        
 			}
-
-			// let isLt200 = file.size/1024/1024  < 200
-			// if(isLt200 > 200){
-			//   this.$message.warning('文件太大')
-			// 	return Promise.reject()
-			// }
 
       return true
     },
