@@ -22,7 +22,7 @@
                     ]"
                     :beforeUpload="beforeUpload"
                     @change="handleChange"
-                    name="files"
+                    name="file"
                     action="/api/file/upload"
 										:headers="{authorization:this.$store.state.token}"
                     :data="{target:'resourceFile'}"
@@ -388,7 +388,8 @@ export default {
 			this.resource_ver = data.vers[0].verNum
 			this.isPublic = data.state === 'public' ? true:false
 			
-			this.editor.txt.html(data.description)
+      // this.editor.txt.html(data.description)
+      this.editor.txt.html(data.vers[0].description)
     })
 
     // console.log('matched:', this.$route.matched)
@@ -489,17 +490,16 @@ export default {
         // debugger
 
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
-
-
-        axios.put(`/api/resource/:${this.$route.params.resourceId}`,{
-          params:{
-            "state": this.isPublic?'public':'private', // 是否公开
-            "type": values['resource-type']=="art_classify"?'art':'dev', // 资源分类
-            "name": values['resource-name'], //资源名称
-           
-            "file": file,  // 资源上传fileid
-            "descriptipon": this.editor.txt.html() //资源描述
-          }
+        // debugger
+        // /resource/:id/ver
+        // axios.put(`/api/resource/${this.$route.params.resourceId}`,{
+        axios.post(`/api/resource/${this.$route.params.resourceId}/ver`,{
+        // axios.put(`/api/resource/${this.$route.params.resourceId}`,{
+          "id": this.$route.params.resourceId,
+          "state": this.isPublic?'public':'private', // 是否公开
+          "version": values['resource-version'],
+          "file": file,  // 资源上传fileid
+          "description": this.editor.txt.html() //资源描述
         }).then(response=>{
           
           this.$message.success('发布成功')

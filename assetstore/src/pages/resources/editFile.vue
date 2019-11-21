@@ -20,7 +20,6 @@
                     ]"
                     :beforeUpload="beforeUpload"
                     @change="handleChange"
-                    name="files"
                     action="/api/file/upload"
 										:headers="{authorization:this.$store.state.token}"
                     :data="{target:'resourceFile'}"
@@ -117,7 +116,6 @@
                 </a-form-item>
               </template>
 
-
               <section class="a" style="height:81px;">
                 <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
                   <a-radio-group v-decorator="['radio-group']">
@@ -153,8 +151,7 @@
                   </div>
                 </template>
               </section>
-
-              
+  
             </section>
 
 
@@ -204,6 +201,7 @@
                   :beforeUpload="beforeUpload2"
 									:headers="{authorization:this.$store.state.token}"
                   :data="{target:'resourceImage'}"
+                  @change="handleChangex"
                   @preview="handlePreview"
                   v-decorator="[
                     'thumbnail',
@@ -406,7 +404,6 @@ import marked from 'marked'
 import Vue from 'vue'
 
 
-
 var plainOptions = []
 var defaultCheckedList = []
 
@@ -429,7 +426,7 @@ export default {
       checkAll_unreal: false,
       plainOptions_unreal,
 
-
+      replaceIdx:0,
 			isPublic:true,
       showArtStyle:false,
       art_v : '',
@@ -466,7 +463,6 @@ export default {
        name: 'validate_other' ,
        onFieldsChange(props, fields){
          var keys = Object.keys(fields)
-
          //console.log(keys,fields)
 
          if(keys.length === 1 && keys[0] === 'radio-group'){
@@ -483,7 +479,6 @@ export default {
     })
   },
   mounted(){
-
 
     document.querySelector('#components-form-demo-validate-other').addEventListener('keydown',e=>{
 
@@ -531,10 +526,11 @@ export default {
 				'resource-version':this.resource_ver
 			})
 			
-			this.editor.txt.html(data.description)
-			
+      // this.editor.txt.html(data.description)
+      this.editor.txt.html(data.vers[0].description)
     })
-    
+
+
     // console.log('matched:', this.$route.matched)
     axios.get(`/api/tag/tree`,{ params:{type:'engine_ver'} }).then(response=>{
       var res = response.data 
@@ -589,8 +585,8 @@ export default {
       }else{
         this.checkedList_unreal = []
       }
-      console.log('checkedList_unreal:',this.checkedList_unreal)
 
+      console.log('checkedList_unreal:',this.checkedList_unreal)
     },
     checkboxChange(checkedList) {
       this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length
@@ -696,7 +692,6 @@ export default {
            return $('html,body').animate({scrollTop: '440px'}, 300)
          }
 
-          
 
         if(!values.dragger) return this.$message.warning('请上传一个资源')
        
@@ -713,27 +708,32 @@ export default {
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
 
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
+        //console.log(images)
+        ;[images[0],images[this.replaceIdx]] =[images[this.replaceIdx],images[0]]
+        //console.log(images)
+        //return
 
-        axios.post(`/api/resource`,{
-          params:{
-            "state": values.public?'public':'private', // 是否公开
-            "type": values['resource-type']=="art_classify"?'art':'dev', // 资源分类
-            "name": values['resource-name'], //资源名称
-            "tags":[
-              ...tag1,
-              ...tag2,
-              ...tag3
-            ], // dropdown下的所有选项 风格，引擎选项
-            "file": file,  // 资源上传fileid
-            "version": values['resource-version'], //资源版本号
-            "label": [ //自定义标签
-              ...this.tags
-            ],
-            "images": [ // 资源缩略图fileid
-              ...images
-            ],
-            "descriptipon": this.editor.txt.html() //资源描述
-          }
+        // console.log(images)
+        // return
+        // /resource/resourceId  put
+        axios.put(`/api/resource/${this.$route.params.resourceId}`,{
+          "state": this.isPublic?'public':'private', // 是否公开
+          "type": values['resource-type']=="art_classify"?'art':'dev', // 资源分类
+          "name": values['resource-name'], //资源名称
+          "tags":[
+            ...tag1,
+            ...tag2,
+            ...tag3
+          ], // dropdown下的所有选项 风格，引擎选项
+          "file": file,  // 资源上传fileid
+          "version": values['resource-version'], //资源版本号
+          "labels": [ //自定义标签
+            ...this.tags
+          ],
+          "images": [ // 资源缩略图fileid
+            ...images
+          ],
+          "description": this.editor.txt.html() //资源描述
         }).then(response=>{
           
           this.$message.success('发布成功')
@@ -812,33 +812,62 @@ export default {
     },
 
     handleChangex(info) {
+      //console.log(info)
+
       const status = info.file.status
 
-      //console.log(status)
-      if(status=='done'){
-        //console.log(info.fileList[0],info.fileList[0].response)
-        let res = info.fileList[0].response
-        this.fileid = res.data.fileid
+    // ant-upload-list-item-done
+      //console.log(info)
+      if(status =='done'){
 
-        this.resource_fileid.push(this.fileid)
+        setTimeout(()=>{
+          Array.from(document.querySelectorAll('.uploadfile .ant-upload-list-item-done'),($node,i)=>{
+            //console.log($node)
+
+            if($node.$ipt){
+              $node.querySelector('.ant-upload-list-item-info').removeChild($node.$ipt)
+            }
+
+            var idx
+            var $ipt = document.createElement('input')
+            $node.$ipt = $ipt
+            $node.querySelector('.ant-upload-list-item-info').appendChild($ipt)
+            
+
+            Object.assign($ipt.style,{
+              position:'absolute',
+              left:'0',
+              top:'0',
+              'z-index':2
+            })
+            
+
+            $ipt.setAttribute('type','button')
+            $ipt.value = '设为封面'
+            $ipt.style.display = 'none'
+            
+
+            $ipt.onclick = ()=>{
+              this.replaceIdx = idx
+              //console.log('replaceIdx:',this.replaceIdx)
+            }
+            $node.onmouseover = ()=>{
+              //console.log($node)
+              idx = $($node).index()
+              $ipt.style.display = 'block'
+            }
+            
+            $node.onmouseout = ()=>{
+              $ipt.style.display = 'none'
+            }
+
+          })
+
+        },200)
       }
-
-
-      if (status === 'done') {
-        this.$message.success(`${info.file.name} file uploaded successfully.`)
-      } else if (status === 'error') {
-        this.$message.error(`${info.file.name} file upload failed.`)
-      }
-
     },
     onChange(value) {
       console.log(value)
-    },
-    handleChangex2(value) {
-      console.log(`selected ${value}`)
-    },
-    onChangex(checked) {
-      console.log(`a-switch to ${checked}`)
     }
   }
   

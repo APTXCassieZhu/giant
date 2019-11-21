@@ -111,7 +111,7 @@
           <div>资源描述</div>
           <div>
             <input type="checkbox" id="resource-detail-des-more">
-            <div class="resource-detail-des-content" v-html="resource.description">
+            <div class="resource-detail-des-content" v-html="resource.vers[0].description">
               
             </div>
             <p>        

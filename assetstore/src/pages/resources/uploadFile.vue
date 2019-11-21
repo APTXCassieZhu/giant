@@ -675,6 +675,9 @@ export default {
 
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
         ;[images[0],images[this.replaceIdx]] =[images[this.replaceIdx],images[0]]
+        
+
+
 
         axios.post(`/api/resource`,
           {
@@ -756,7 +759,6 @@ export default {
     handleInputChange(e) {
       this.inputValue = e.target.value;
     },
-
 
     handleInputConfirm() {
 
@@ -863,10 +865,6 @@ export default {
 
         },200)
       }
-
-      
-     
-
     },
     onChange(value) {
       console.log(value)
