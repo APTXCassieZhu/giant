@@ -50,7 +50,7 @@
                 />
               </a-form-item>
 
-             <a-form-item v-bind="formItemLayout" label="初始版本号："  :label-col="labelCol" :wrapper-col="wrapperCol "> 
+             <!-- <a-form-item v-bind="formItemLayout" label="初始版本号："  :label-col="labelCol" :wrapper-col="wrapperCol "> 
                 <a-input
                   v-decorator="['resource-version', { rules: [
                     { required: true, message: '请填写版本号' },{
@@ -65,11 +65,8 @@
                     }
                   ] }]"
                 />
-              </a-form-item>
-              <!-- <a-form-item v-bind="formItemLayout" label="文件描述："  :label-col="labelCol" :wrapper-col="wrapperCol ">
-                <a-textarea v-decorator="['resource-description', { rules: [{ required: true, message: '请填写文件描述' }] }]"
-                placeholder="Basic usage" :rows="4" />
               </a-form-item> -->
+           
               <section class="editor-wrap">
                 <div class="editor-label"> <span>文件描述：</span> </div>
                 <div>
@@ -523,7 +520,7 @@ export default {
 
 			this.form.setFieldsValue({
 				'resource-name':this.resource_name,
-				'resource-version':this.resource_ver
+				//'resource-version':this.resource_ver
 			})
 			
       // this.editor.txt.html(data.description)
@@ -631,7 +628,6 @@ export default {
         return Promise.reject()
       } 
 
-
 			if(file.type != 'application/x-zip-compressed' && file.type!='application/zip'){
 				this.$message.warning('请上传一个zip')
 				return Promise.reject()
@@ -726,7 +722,7 @@ export default {
             ...tag3
           ], // dropdown下的所有选项 风格，引擎选项
           "file": file,  // 资源上传fileid
-          "version": values['resource-version'], //资源版本号
+          //"version": values['resource-version'], //资源版本号
           "labels": [ //自定义标签
             ...this.tags
           ],

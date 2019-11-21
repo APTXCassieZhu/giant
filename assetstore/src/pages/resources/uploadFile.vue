@@ -466,6 +466,7 @@ export default {
     let editor = new E(this.$refs['editor-owo'],this.$refs['editor-owo-content'])
     editor.customConfig.zIndex = 2
     this.editor = editor
+    
 
      // 自定义菜单配置
     editor.customConfig.menus = [
@@ -510,8 +511,8 @@ export default {
               label:o2.label,
               value:o2.value
             })
-          }
-          
+          }          
+
         })
       })
 
@@ -579,13 +580,10 @@ export default {
     },
     beforeUpload(file){
 
-      
       if(this.fileList&&this.fileList.length){
         this.$message.warning('只能上传一个资源')
         return Promise.reject()
       } 
-
-
 
 			if(file.type != 'application/x-zip-compressed' && file.type!='application/zip'){
 				this.$message.warning('请上传一个zip')
@@ -638,12 +636,19 @@ export default {
 
     },
     handleSubmit(e) {
+      
+        // this.editor
+    
+        // this.editor.txt.html()
+        // this.editor.txt
+        // debugger
+        
+
 
       e.preventDefault()
       this.form.validateFields((err, values) => {
 
         console.log(values)
-
          //console.log(this.editor.txt.html(),this.editor.txt.html().length)
         
         // console.log('txt html:', this.editor.txt.html())
@@ -654,6 +659,7 @@ export default {
         // ]
         // console.log(this.checkedList,this.checkedList_unreal)
 
+        
         if(err){
            return $('html,body').animate({scrollTop: '440px'}, 300)
          }
@@ -677,7 +683,7 @@ export default {
         ;[images[0],images[this.replaceIdx]] =[images[this.replaceIdx],images[0]]
         
 
-
+      
 
         axios.post(`/api/resource`,
           {
@@ -697,7 +703,8 @@ export default {
             "images": [ // 资源缩略图fileid
               ...images
             ],
-            "description": this.editor.txt.html() //资源描述
+            //"description_text": this.editor.txt.text().slice(0,30), 
+            "description": this.editor.txt.html()  //资源描述
           }
         ).then(response=>{
           
