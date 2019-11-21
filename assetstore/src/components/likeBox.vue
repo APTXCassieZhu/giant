@@ -5,7 +5,7 @@
             <div v-else class="font-image">{{source.name.charAt(0)}}</div>
             <div class="font-title">{{source.name}}</div>
             <div class="font-content">来源: <span style="margin-left:10px;">{{getWhoShared}}</span></div>
-            <Rate class="font-content" style="font-size: 18px;" icon="md-star" disabled v-model="source.rateAvg" />
+            <Rate class="font-content" style="font-size: 18px;" icon="md-star" disabled v-model="getRate" />
         </div>
         <Row class="font-footer">
             <Col span="12" class="footer-col">
@@ -31,6 +31,9 @@ export default {
     computed:{
         getWhoShared(){
             return this.source.user.nickName == null ? this.source.user.name : this.source.user.nickName
+        },
+        getRate(){
+            return source.rateAvg || 5
         }
     },
     data() {

@@ -13,10 +13,11 @@
     </div>
     <div class="card-wrapper">
         <!-- <source-card v-for="n in 5" :key="n" styname="美术类资源" :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card> -->
-        <source-card v-for="n in 5" :key="n" 
-        :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
-        :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
-
+        <span v-for="(item, n) in this.commonArtList" :key="n" >
+            <source-card :resource="item"
+            :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
+            :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
+        </span>
     </div>
     <div class="type-title" @click="goPage('/artFilter')">推荐分类</div>
     <div style="text-align:center;position:relative;">-各类高实用性的项目集合-
@@ -26,7 +27,10 @@
     </div>
     <div class="card-wrapper">
         <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-3d.png') + ')'}"></div>
+        <!-- <span v-for="(item, x) in recommendClass" :key="x">
+            <div class="advise-card" :style="{backgroundImage: 'url(' + require(`../assets/资源-${item.name}.png`) + ')'}"></div>
+        </span> -->
+        <div class="advise-card" :style="{backgroundImage: 'url(' + require(`../assets/资源-3d.png`) + ')'}"></div>
         <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-2d.png') + ')'}"></div>
         <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-贴图与材质.png') + ')'}"></div>
         <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-模板.png') + ')'}"></div>
@@ -91,6 +95,11 @@ export default {
     data() {
         return {
             speed: 5000,
+            commonArtList: [],
+            recommendClass: [],
+            fineArtList: [],
+            devList: [],
+
         }
     },
     mounted() {
@@ -102,8 +111,51 @@ export default {
         this.$refs.child7.special = "image-07";
         this.$refs.child8.special = "image-08";
         this.$refs.child9.special = "image-09";
-
-
+        // 拿到普通美术资源
+        axios.get('/api/resource',{
+            params:{
+                page: 1,
+                pageSize: 5,
+                type: 'art',
+                recommend: false,
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.commonArtList = res.data.data.list
+                }
+        })
+        // 拿到精选美术资源
+        axios.get('/api/resource',{
+            params:{
+                page: 1,
+                pageSize: 5,
+                type: 'art',
+                recommend: true,
+            }}).then((res)=>{
+            if(res.data.code == 0){
+                this.fineArtList = res.data.data.list
+            }
+        })
+        // 拿到推荐分类
+        axios.get('/api/tag/lastitems',{
+            params:{
+                type: 'art_classify',
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.recommendClass = res.data.data.list
+                }
+        })
+        // 拿到研发类资源
+        axios.get('/api/resource',{
+            params:{
+                page: 1,
+                pageSize: 5,
+                type: 'dev',
+                recommend: false,
+            }}).then((res)=>{
+            if(res.data.code == 0){
+                this.devList = res.data.data.list
+            }
+        })
         console.log('matched:', this.$route.matched)
     },
     methods:{
