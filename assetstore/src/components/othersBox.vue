@@ -8,7 +8,7 @@
             <Rate class="font-content" style="font-size: 18px;" icon="md-star" disabled v-model="getRateAvg" />
         </div>
         <Row class="font-footer">
-            <Col span="12" class="footer-col">
+            <Col span="12" class="footer-col" @click.native="download()">
                 <font-awesome-icon :icon="['fas','download']" class="foot-icon"/>
             </Col>
             <Col span="12" class="footer-col" @click.native="addFavorite()">
@@ -90,7 +90,10 @@ export default {
                 });
             }
         },
-
+        download(){
+            var fileid = this.resource.vers[0].file.id;
+            location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`
+        }
     }
 }
 </script>

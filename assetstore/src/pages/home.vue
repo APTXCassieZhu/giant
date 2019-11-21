@@ -14,7 +14,7 @@
     <div class="card-wrapper">
         <!-- <source-card v-for="n in 5" :key="n" styname="美术类资源" :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card> -->
         <span v-for="(item, n) in this.commonArtList" :key="n" >
-            <source-card :resource="item"
+            <source-card :resource="item" :isLike="item.isStar"
             :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
             :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
         </span>
@@ -40,22 +40,22 @@
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
     <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop class="carousel-style">
         <CarouselItem>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="1111"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="2222"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="3333" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="4444"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
         </CarouselItem>
         <CarouselItem>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="5555"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="6666"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="7777"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="8888"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
         </CarouselItem>
         <CarouselItem>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="1234" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="5678" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="4234" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :sourceID="5666" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
         </CarouselItem>
     </Carousel>
     <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
@@ -162,6 +162,22 @@ export default {
         goPage(url){
             this.$router.push(url)
         },
+        // unFavorite(lid){
+        //     for (var i = 0; i < this.commonArtList.length; i++) {
+        //         if (this.commonArtList[i].id == lid) {
+        //             this.commonArtList[i].isStar = false;
+        //             break;
+        //         }
+        //     }
+        // },
+        // favorite(lid){
+        //     for (var i = 0; i < this.commonArtList.length; i++) {
+        //         if (this.commonArtList[i].id == lid) {
+        //             this.commonArtList[i].isStar = true;
+        //             break;
+        //         }
+        //     }
+        // },
     }
 }
 

@@ -54,6 +54,7 @@ export default {
         backToTop() {
             let distanceY = window.pageYOffset
             let i = 0
+            clearInterval(this.interval)
             this.interval = setInterval(() => {
                 let next = Math.floor(this.easeInOutQuad( 10*i, distanceY, -distanceY, 500))
                 if(next <= this.backPosition) {

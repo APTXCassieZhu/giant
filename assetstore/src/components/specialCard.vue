@@ -1,22 +1,23 @@
 <template>
-    <div class="source-card" @click="goPage(`/resourceDetail/${sourceID}`)">
+    <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
         <div id="special" :class="special" style="height: 184px;width: 306px;background-size: 306px 184px;background-repeat: no-repeat;">
+            <img :src="concatImgUrl" class="resource-image"/>
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
                 <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
             </strong>
         </div>
         <div class="source-des">
-            <p class="source-des-name">{{sourceTitle}}</p>
+            <p class="source-des-name">{{resource.name}}</p>
             <p>{{sourceDescription}}</p>
         </div>
         <div class="source-content">
             <Rate disabled icon="md-star" v-model="rate" style="position:relative; left: 2px;"></Rate>
             <span class="source-content-icon">
                 <font-awesome-icon icon="eye"/>
-                <span> {{viewCount}}&emsp;&emsp;</span>
+                <span> {{resource.viewCount||0}}&emsp;&emsp;</span>
                 <font-awesome-icon icon="comment"/>
-                <span> {{chatCount}}</span>
+                <span> {{resource.commentCount||0}}</span>
             </span>
         </div>
     </div>
@@ -54,11 +55,10 @@ export default {
         },
         concatImgUrl(){
             return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
-        }
+        },
     },
     data() {
         return {
-            // TODO data里面的数据均需从后端拿到
             rate: 3.5,
             viewCount: 2019,
             chatCount: 12,
@@ -134,6 +134,10 @@ export default {
     top: 10px;
     right: 20px;
     cursor: pointer;
+}
+.resource-image{
+    width: 304px;
+    height: 184px;
 }
 .source-card{
     width: 306px; 
