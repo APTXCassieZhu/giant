@@ -6,7 +6,6 @@
                 <div class="self">
                     <div v-if="this.profilePic != null"><img class="avatar" :src="profilePic"></div>
                     <div v-else class="font-avatar">{{this.resName.charAt(0)}}</div>
-                    <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/>
                     <ul style="font-size: 21px;font-weight: bold;">{{this.resName}}</ul>
                     <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
                 </div>
@@ -17,13 +16,14 @@
     
                 <span v-for="(item,index) in this.user.labels" :key="index">
                     <a-tag class="tag-style">
-                        &emsp;{{item}}&emsp;
-                        <font-awesome-icon :icon="['fas', 'times']" class="tag-style-close" @click="handleCloseTag(item)"/>
+                        &emsp;{{item.val}}&emsp;
+                        <font-awesome-icon :icon="['fas', 'times']" v-if="isMe(item.sourceUserId)" class="tag-style-close" @click="handleCloseTag(item)"/>
                     </a-tag>
                 </span>
                 
-                <a-form v-if="inputVisible" :form="form">
+                <a-form v-if="inputVisible" id="components-form-demo-validate-other" :form="form">
                     <a-form-item class="form-ant-style">
+                        <!-- TODO validator 2-8为key enter时validate-->
                         <a-input
                             ref="input"
                             type="text"
@@ -33,12 +33,11 @@
                             @change="handleInputChange"
                             @blur="handleInputConfirm"
                             @keyup.enter="handleInputConfirm"
-                            v-decorator="[
-                                'entertag',
-                                {rules: 
-                                    [{type:'string', min: 2, max: 8, message:'请输入2-8个字符', trigger:'blur'},]
-                                },
-                            ]"
+                            v-decorator="['resource-version', { rules: [
+                                {type:'string', min: 2, max: 8, message:'请输入2-8个字符', trigger:'blur'},
+                                {validator:this.handleValidator.bind(this)}
+                                ] 
+                            }]"
                         >
                             <Icon slot="suffix" type="md-return-left" />
                         </a-input>
@@ -69,10 +68,15 @@
             <div class="asset-card" >
                 <Tabs value="name" :animated="false">
                     <TabPane :label="tab" name="name">
-                        <div v-if="this.sourceList.length==0" class="like-btn-container">
-                        </div>
-                        <div v-else v-for="(item, n) in this.sourceList" :key="n" style="display:inline-block;">
-                            <others-box :source="item" :whoShared="resName"></others-box>
+                        <div class="container">
+                            <div>
+                                <span v-for="(item, n) in this.sourceList" :key="n" style="display:inline-block;">
+                                    <others-box :source="item" :whoShared="resName"></others-box>
+                                </span>
+                            </div>
+                            <div>
+                                <Button v-show="ifMoreSource" id="more" class="more" @click="addMore()">加载更多</Button>
+                            </div>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -95,11 +99,17 @@ export default {
     computed:{
     },
     beforeCreate() {
+        // var that = this
+        // this.form = this.$form.createForm(this, {name: 'validate_other'})
+
         var that = this
-        this.form = this.$form.createForm(this, {name: 'validate_other'})
+        this.form = this.$form.createForm(this, {
+            name: 'validate_other' 
+        })
     },
     mounted() {
-        axios.get(`/api/user/${this.$route.params.userId}`).then((res)=>{
+        axios.get(`/api/user/${this.$route.params.userId}`,{params:{page: this.sourcePage,
+        pageSize: this.sourcePageSize,}}).then((res)=>{
             if(res.data.code == 0){
                 this.user = res.data.data
                 this.profilePic = res.data.data.profilePic
@@ -130,11 +140,17 @@ export default {
             if(res.data.code == 0){
                 this.sourceList = res.data.data.list
                 this.tab = `资源(${res.data.data.count})`
+                if(res.data.data.count > this.sourceList.length){
+                    this.ifMoreSource = true
+                }
             }
         }, (res)=>{
             // 登录失败
             alert(res)
         })
+    },
+    computed:{
+        
     },
     data () {
         return {
@@ -152,26 +168,32 @@ export default {
             sourceList: [],
             inputVisible: false,
             inputValue: '',
-            inputAnt: "{width: 315px; height: 31px;}"
+            inputAnt: "{width: 315px; height: 31px;}",
+            ifMoreSource: false,
+            page: 1,
+            pageSize: 20,
         }
     },
     methods:{
         goPage(url){
             this.$router.push(url)
         },
-        showInput() {
-            if(this.user.labels.length == 10){
-                // TODO 提示超过十条
+        handleValidator(rule,value,callback){
+            if(this.user.labels.length >= 10){
+                callback('不要超过10个噢~')
+                return 
             }else{
-                this.inputVisible = true;
-                this.$nextTick(function() {
-                    this.$refs.input.focus();
-                });
+                callback()
             }
+        },
+        showInput() {
+            this.inputVisible = true;
+            this.$nextTick(function() {
+                this.$refs.input.focus();
+            });
         },
         handleCloseTag(removedTag){
             const tags = this.user.labels.filter(tag => tag !== removedTag);
-            console.log(tags);
             this.user.labels = tags;
         },
         handleInputChange(e) {
@@ -182,15 +204,54 @@ export default {
             const inputValue = this.inputValue;
             console.log(inputValue.length)
             let personalTagList = this.user.labels;
+            let o = JSON.parse(this.$store.state.user)
             if (inputValue && personalTagList.indexOf(inputValue) === -1 && inputValue.length <= 8 
             && inputValue.length >= 2) {
-                personalTagList = [...personalTagList, inputValue];
+                personalTagList = [...personalTagList, {'val': inputValue, 'sourceUserId': o.id, 'userId': this.$route.params.userId}];
                 this.user.labels = personalTagList
+                console.log(this.user.labels)
                 Object.assign(this, {
                     inputVisible: false,
                     inputValue: '',
                 });
+                axios.post(`/api/user/${this.$route.params.userId}/label`,{'label': inputValue},{emulateJSON:true}).then((res)=>{
+                    if(res.data.code == 0){
+                    }
+                    else if(res.data.code == 40101){
+                        this.$Modal.error({
+                            title: '未找到用户',
+                        })
+                    }
+                    }, (res)=>{
+                    alert(res)
+                })
             }
+        },
+        // 判断是不是用户打的标签，只有自己给别人打的标签，才有资格删除
+        isMe(sid){
+            let o = JSON.parse(this.$store.state.user)
+            return sid == o.id
+        },
+        addMore(){
+            this.page += 1
+            axios.get(`/api/${this.$route.params.userId}/resource`, {
+                params: {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                }
+            }).then((res)=>{
+                if(res.data.code == 0){
+                    this.sourceList = this.sourceList.concat(res.data.data.list)
+                    if(res.data.data.count > this.sourceList.length){
+                        this.ifMoreSource = true
+                    }else{
+                        this.ifMoreSource = false
+                    }
+                }
+            }, (res)=>{
+                // 登录失败
+                alert(res)
+            })
         },
     },
 }
@@ -352,18 +413,22 @@ export default {
 .tabpane:hover{
     color: #1ebf73;
 }
-.like-btn-container{
-    width: 1120px;
-    height: 560px;
+
+.container{
+    display:flex;
+    align-items:center;
+    flex-direction: column;
 }
-.like-btn{
-    position: relative;
-    width: 250px;
-    height: 50px;
-    top: 230px;
-    left: 460px;
-    font-size: 16px;
-    float: center;
+.more{
+    text-align: center;
+    width: 193px;
+    height: 44px;
+    /* background-color: #e8f8f0; */
+    color: #1ebf73;
+    /* border: solid 1px #1ebf73; */
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 30px;
 }
 </style>
 

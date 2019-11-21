@@ -13,8 +13,10 @@
             </Col>
             <Col span="12" class="footer-col" @click.native="addFavorite()">
                 <Divider type="vertical" class="foot-divider"/>
-                <Icon size="22" type="md-heart" style="color: red" v-show="favoriteIcon"/>
-                <Icon size="22" type="md-heart" class="foot-icon1" v-show="!favoriteIcon"/>
+                <!-- <Icon size="22" type="md-heart" style="color: red" v-show="favoriteIcon"/>
+                <Icon size="22" type="md-heart" class="foot-icon1" v-show="!favoriteIcon"/> -->
+                <Icon size="22" type="md-heart" style="color: red" v-show="source.isStar"/>
+                <Icon size="22" type="md-heart" class="foot-icon1" v-show="!source.isStar"/>
             </Col>
         </Row>
     </div>
@@ -57,7 +59,7 @@ export default {
                     onOk: () => {
                         axios.post(`/api/resource/${this.source.id}/star`,{"star": false},{emulateJSON:true}).then((res)=>{
                             if(res.data.code === 0) {
-                                this.favoriteIcon = !this.favoriteIcon
+                                this.source.isStar = !this.source.isStar
                                 setTimeout(() => {
                                     this.$Modal.success({
                                         title: '已取消关注',
@@ -76,7 +78,7 @@ export default {
                     onOk: () => {
                         axios.post(`/api/resource/${this.source.id}/star`,{"star": true},{emulateJSON:true}).then((res)=>{
                             if(res.data.code === 0) {
-                                this.favoriteIcon = !this.favoriteIcon
+                                this.source.isStar = !this.source.isStar
                                 setTimeout(() => {
                                     this.$Modal.success({
                                         title: '已关注',

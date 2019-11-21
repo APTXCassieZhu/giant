@@ -20,7 +20,7 @@
                 </div>
                 <span v-else v-for="(item,index) in this.user.labels" :key="index">
                     <a-tag class="tag-style">
-                        &emsp;{{item}}&emsp;
+                        &emsp;{{item.val}}&emsp;
                         <font-awesome-icon :icon="['fas', 'times']" class="tag-style-close" @click="handleCloseTag(item)"/>
                     </a-tag>
                 </span>

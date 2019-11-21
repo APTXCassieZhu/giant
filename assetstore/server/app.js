@@ -32,7 +32,7 @@ app.get('/:id/resource',(req, res) => {
 	res.status(200).json({
 		'code': 0,
 		'data':{
-			'count': 3,
+			'count': 15,
 			"list": [{
 				"id": 0,
 				"name": "尊老爱幼",
@@ -41,21 +41,32 @@ app.get('/:id/resource',(req, res) => {
 				],
 				"label": "string",
 				"downloadCount": 8250,
-				"stars": 1024
+				"stars": 1024,
+				"isStar": true
 			},{
 				"id": 294,
 				"name": "神迹是我和你共同降下的",
 				"images": null,
 				"label": "string",
 				"downloadCount": 270,
-				"stars": 570
+				"stars": 570,
+				"isStar": false
 			},{
 				"id": 9647,
 				"name": "攘外并先安内！",
 				"images": null,
 				"label": "string",
 				"downloadCount": 332,
-				"stars": 56
+				"stars": 56,
+				"isStar": true
+			},{
+				"id": 7777,
+				"name": "为中华崛起而读书",
+				"images": null,
+				"label": "string",
+				"downloadCount": 31032,
+				"stars": 73895,
+				"isStar": true
 			}]
 		}
 	});

@@ -26,7 +26,7 @@ router.post('/login', jsonParser, function(req,res){
 				'account':'xiamu@ztgame.com',
 
 				"id": 123, 
-				"profilePic": "//avatars1.githubusercontent.com/u/38572741?s=460&v=4",
+				"profilePic": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGMAAABjCAMAAAC45U6nAAABO1BMVEX/////6UcAAAD/7Uj/70n/60jYGUj/8Uny8vL5+fnj4+P/80rWAEjJycn35EXOzs7r6+vU1NTfGkqvr6/Twztra2vy30TCwsLl1UFeXl6fn58mJiaAgIGZmZm6urrfzT/MvDmKio7Esze4qDMeGwh3d3iHfCU/OABORxUPCABqORxNRABKUVCOkI8PAABrABx+ACNHAAiiEDVDDRU8QUEaAADIF0MoAAaxFDs0AA8jDgxLABUVHRyTCy4kBAxfBh4eHxcwNzMAFhMzNDecjytbVBAPEBVuZR8qJQVJSlAwMj2rnC8bHCT67sD+62RBPzP/8I2Ui1N8dEQIDR82LwBWVEU/OxXvpkbeR0frlkfoiEfke0f4yEfhX0fytkfdOEflxUVqXwD/7Xn/++CEZyV3UiBZNRg3IRAuDQDSjgVnAAAGeElEQVRoge1ZWWPaRhBGs7tIAlsGC4SEOSUQxoYkTcjRxmlSAwZbaXqE4BxO0qSt2///CzorEMgJhJVd3vgebISk/XbumSUW22CDDTbY4HpI5VutentnnRQFuHX7zncArdS6GFKdW3d3EfF7cLS9Lor7D3bjPp7cAn0tHAUIKOK7Dx5Ceg0UCtwJKJDkEdTXwKGjGLu7j76HHx5xozw+WoPdrftP79x98vDYgh+fPr795N46lLX37Cc4PoZWrAPHe4C4oWttW/nEVxyFmBqLFaF7BKmYksjDDSMxh9s8/YIma03oW1aO/y8u0JWa1kviJAWuDLDCW925umi3q155I7GtFzr4zlfyL0fXJ4HT3PwrKxu6X7wShOni9PlIHp323+j1oTvbvbJXUIK7VmgxNX8CMGr6LxQiUMRieXxjkJQzfSgE4isFsNrb+WqhC9mZU6n6CQx7ZtLlFFETjAVQJhKhlRFUUfWJfOH0bKoQ6FSL+oR5G23gaDLjHJ0ItpggDf2khCDEgW6qDtAYeJmKbTueOxj0DwHQPApuxNUok2imBlZUBkQdTMJJJNlsPPccQ0rKhENGUElz3J9j6cYgIzNJohW4FkVMhT71OSRiVChlTAqDEcJefMa//H65CVl19YoLoIMjBwtKi+HzMrYP2dXLLUadW301yAD2ricFh/WLxFZSyG6k6P4SqvrrajFkgNzqpZYj/9tqOUjmRtVqBxqrOST6+w3qrtoBW8DoxIb8tTl0cOXVFBLTxqCsXm0xTsEIqWq51lCQ62orBYO5GBjWVyMRr+ns8/6JuN3VVEqZhVMxZA1iDhr7mRAJ8RoNJ7imjnhaVzBTvzyzCiVfvSc1jc13Ctvt0ZyDVEBvQ0DCDOxXBKHD0Om5DawQ2XRsO2RxZgJvSOacGNyWNX8AL0XbrSr0kjIlmj0AqBZhrhumDXldDMlR5rXKofNL0TLbggpfhhHZKL94NfUqRrFeoD36HuHXhJKJLw19VeFNwlNvA8QoVJhpgxFWG/uaYOz89cc3SIslhK/t8KUZdzSsHYx+ePvugvjKEsuLCRjPtVOeaJsZ8a14fOsNDahNN0OYMX1Ier+FOKcS9QQTYy5kZXQc33OT77f4MLDl642ZPZloWtJoTjyKvvVvxi8Y9zMhjvzMGSW+sQnH6xAHBrTdh5rrTh9k05sfCIpdFOKwQnVP7k3cinzgquLqmETecN/rjWu9SXWn73yOj2g0UzCddMAMB8DkInn+Mf76ItAh9zHel0yeIxecgxsLOcRKejeUA2ccEiWGvCzD03OU8S31g1RMji84ysHFN+oUlQyNSlE4wgnKEapPaIlJoJqCgd4Jc2TmmUKEyhT03U5zrit8SagIzrckxoH2CDwG/Wm4n1yinAX2QVcHSyCbqDgM9R2D+qlPkishTw7BME1tgRyViic06qqJ/CmnMZFFNnv2Qq38gVjwNQaNORTMi0oJZ4pPBFMJZBb6FVvoyyxjy7ItmE84Tbr02YGBEcGtJIYpTDaitScdPuAI9IgBqA1uMhrHn80xHzqEJcGIdQnm9yj94osGlGkGvIXeu0iMXo1R7F0idNc5zYWeLHu4OWE5yuURRDjJyIGHfUiZJD3wxEiY1oeXVgQKbBArGIFjkybHfVFBzCh6QmSxPUES2B+Hiu8KjkzEYcofmrGT82xNkIKn0CiawunJxXEf23QqU2EOI9phiboHDdcxZZYs20LD8zU4sJkrVc9goP11eb9pCjpWRF350MH7++DgEgQdC20+PQiq5yYOll49vlmAFAcH/whWXNk9mbxXh05XyWXV2GrdoU3+vby8PDgAoAKpkbHhtGVovcrBTikbUzhH6ttHHIpexaEG2m3UlsB5hhPMODiJtZSEjv15oZ1orw4adaekovDuSm1RE04nrySA/wJTBaUE0Mnt1I7EDmuslSahZiOosinfvVp76DOtIwX2BCsjthLlJdpiOOdg6behOyvk/r539Jj+TNGVNkBT7HQgzTvGUMvDPzJKKSFGxulpaItFLaK/djoleADRxrora4aGiRInNty4phmm7XluvwZQMzToXvskI4AOtqz1Rs3h6PATx+HhaOSfwL606l2wk+7NfzdSsOKSwzM9n88Xq9V2FVGo5kspRVXRi3rJDHRuSsGzsOEuKUAJyJRrNznoC1AHeL7sEAEdp/u//J6T+EawJtb0Q+EGG2ywwVf4DxWJnd2onDsSAAAAAElFTkSuQmCC",
 				"dept": "前沿技术部",
 				"title": "string",
 			}
@@ -106,7 +106,7 @@ router.get('/describe', function(req, res){
 					'account':'xiamu@ztgame.com',
 
 					"id": 123, 
-					"profilePic": "//avatars2.githubusercontent.com/u/18524392?s=460&v=4",
+					"profilePic": "data:image/png;base64,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",
 					"name": "string",
 					"dept": "未来技术研究部",
 					"title": "string",
@@ -136,10 +136,51 @@ router.get('/:id', jsonParser, function(req,res){
 			'signature': '给你变个魔术~ 哇~ 我变得超喜欢你了！', 
 
 			"id": 123, 
-			"profilePic": "//avatars1.githubusercontent.com/u/38572741?s=460&v=4",
+			"profilePic": "data:image/png;base64,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",
 			"dept": "前沿技术部",
 			"title": "string",
-			"labels": ['小天使','小棉袄','小甜饼','柯南骨灰粉','正义使者','你老爸','暴躁老妹'],
+			"labels": [{
+					"id": 0,
+					'val': '小天使',
+					'userId': 6,
+					'sourceUserId': 11,
+				},
+				{
+					"id": 0,
+					'val': '小棉袄',
+					'userId': 6,
+					'sourceUserId': 11,
+				},
+				{
+					"id": 0,
+					'val': '小甜饼',
+					'userId': 6,
+					'sourceUserId': 123,
+				},
+				{
+					"id": 0,
+					'val': '柯南骨灰粉',
+					'userId': 6,
+					'sourceUserId': 10,
+				},
+				{
+					"id": 0,
+					'val': '正义使者',
+					'userId': 6,
+					'sourceUserId': 8,
+				},
+				{
+					"id": 0,
+					'val': '你老爸',
+					'userId': 6,
+					'sourceUserId': 7,
+				},
+				{
+					"id": 0,
+					'val': '暴躁老妹',
+					'userId': 6,
+					'sourceUserId': 123,
+				}],
 			// "labels": null,
 			"fineResources": [
 				{
@@ -236,21 +277,32 @@ router.get('/:id/resource', jsonParser, function(req,res){
 				],
 				"label": "string",
 				"downloadCount": 8250,
-				"stars": 1024
+				"stars": 1024,
+				"isStar": true
 			},{
 				"id": 294,
 				"name": "神迹是我和你共同降下的",
 				"images": null,
 				"label": "string",
 				"downloadCount": 270,
-				"stars": 570
+				"stars": 570,
+				"isStar": false
 			},{
 				"id": 9647,
 				"name": "攘外并先安内！",
 				"images": null,
 				"label": "string",
 				"downloadCount": 332,
-				"stars": 56
+				"stars": 56,
+				"isStar": true
+			},{
+				"id": 7777,
+				"name": "为中华崛起而读书",
+				"images": null,
+				"label": "string",
+				"downloadCount": 31032,
+				"stars": 73895,
+				"isStar": true
 			}]
 		}
 	})
@@ -317,6 +369,9 @@ router.get('/:id/software', jsonParser, function(req,res){
 			]
 		}
 	})
+});
+router.post('/:id/label', jsonParser, function(req,res){
+	res.status(200).json({'code':0})
 });
 router.delete('/label/:id', jsonParser, function(req,res){
 	res.status(200).json({'code':0})

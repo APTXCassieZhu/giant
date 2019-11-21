@@ -6,7 +6,7 @@
                 <MenuItem name="1" @click.native="showInfo">
                     <div class="menu_left_part">
                         <font-awesome-icon :icon="['fas','bell']" style="margin-right:23px;"/> 
-                         提醒
+                        提醒
                     </div>
                     <div v-if="infoNotRead!=0" class="not-read">{{infoNotRead}}</div>
                 </MenuItem>
