@@ -13,18 +13,21 @@
                 <br>
                 <ul style="font-size: 14px; color: #7f7f7f;text-align:center;">{{this.signature}}</ul>
                 <Divider />
-                <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
-                <div v-if="this.user.labels == null" class="empty-personal">
+                <ul style="font-size: 16px; font-weight: bold">印象</ul><br>
+                <div v-if="this.user.labels == null || this.user.labels.length == 0" class="empty-personal">
                     <p>暂无好友印象哦～</p>
                     <p>快邀请好友来为您添加第一条标签吧</p>
                 </div>
                 <span v-else v-for="(item,index) in this.user.labels" :key="index">
-                    <a-tag class="tag-style">&emsp;{{item}}&emsp;</a-tag>
+                    <a-tag class="tag-style">
+                        &emsp;{{item.val}}&emsp;
+                        <font-awesome-icon :icon="['fas', 'times']" class="tag-style-close" @click="handleCloseTag(item)"/>
+                    </a-tag>
                 </span>
 
                 <Divider />
                 <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
-                <div v-if="this.user.fineResources == null" class="empty-personal">
+                <div v-if="this.user.fineResources.length == 0" class="empty-personal">
                     <p>暂无优秀作品哦～</p>
                     <p>GDRC期待您的分享</p>
                 </div>
@@ -41,25 +44,50 @@
             <div class="asset-card" >
                 <Tabs :value="personalActive" :animated="false">
                     <TabPane :label="tab1" name="name1">
-                        <div class="upload-style" @click="goPage('/uploadFile')">
-                            <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
-                            <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
-                        </div>
-                        <div v-for="(product, i) in this.productList" :key="'aa'+i">
-                            <source-box v-bind:source='product'  @onDel="onDel"></source-box>
+                        <div class="container">
+                            <div>
+                                <span class="upload-style" @click="goPage('/uploadFile')">
+                                    <Icon id="folder" size="80" type="md-folder" :class="uploadFolderStyle"/>  
+                                    <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
+                                </span>
+                                <span v-for="(product, i) in this.productList" :key="'aa'+i">
+                                    <source-box v-bind:source='product'  @onDel="onDel"></source-box>
+                                </span>
+                            </div>
+                            <div>
+                                <Button v-show="ifMoreSource" id="more" class="more" @click="addMore('source')">加载更多</Button>
+                            </div>
                         </div>
                     </TabPane>
                     <TabPane :label="tab2" name="name2">
-                        <software-box v-bind:softwareName='this.softwareList[0]'></software-box>
-                        <software-up-box v-bind:softwareName='this.softwareList[1]'></software-up-box>
-                        <software-pend-box v-bind:softwareName='this.softwareList[2]'></software-pend-box>
+                        <div class="container">
+                            <div>
+                                <span v-for="(software, n) in softwareList" :key="n" style="display:inline-block;">
+                                    <software-box :software='software' @swDel="swDel"></software-box>
+                                </span>
+                                <span>
+                                    <software-up-box v-bind:softwareName='this.softwareList1[1]'></software-up-box>
+                                    <software-pend-box v-bind:softwareName='this.softwareList1[2]'></software-pend-box>
+                                </span>
+                            </div>
+                            <div>
+                                <Button v-show="ifMoreSoftware" id="more" class="more" @click="addMore('software')">加载更多</Button>
+                            </div>
+                        </div>
                     </TabPane>
                     <TabPane :label="tab3" name="name3">
                         <div v-if="this.favoriteList.length==0" class="like-btn-container">
                             <Button class="like-btn" @click="goPage('/')">去关注</Button>
                         </div>
-                        <div v-else v-for="(like, n) in favoriteList" :key="n" style="display:inline-block;">
-                            <like-box :source='like' @unFavorite="unFavorite"></like-box>
+                        <div v-else class="container">
+                            <div>
+                                <span v-for="(like, n) in favoriteList" :key="n" style="display:inline-block;">
+                                    <like-box :source='like' @unFavorite="unFavorite"></like-box>
+                                </span>
+                            </div>
+                            <div>
+                                <Button v-show="ifMoreFavorite" id="more" class="more" @click="addMore('favorite')">加载更多</Button>
+                            </div>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -117,19 +145,44 @@ export default {
             alert(res)
         })
         // 拿到用户上传的资源列表
-        axios.get(`/api/user/${o.id}/resource`).then((res)=>{
+        axios.get(`/api/user/${o.id}/resource`,{params:{page: this.sourcePage,
+        pageSize: this.sourcePageSize,}}).then((res)=>{
             if(res.data.code == 0){
                 this.productList = res.data.data.list
                 this.tab1 = `资源(${res.data.data.count})`
+                this.totalResource = res.data.data.count
+                if(res.data.data.count > this.productList.length){
+                    this.ifMoreSource = true
+                }
             }
         }, (res)=>{
             alert(res)
         })
-        // 拿到用户关注的资源列表
-        axios.get(`/api/user/star`).then((res)=>{
+
+        // 拿到用户关注的软件列表
+        axios.get(`/api/user/${o.id}/software`,{params:{page: this.softwarePage,
+        pageSize: this.softwarePageSize,}}).then((res)=>{
             if(res.data.code == 0){
-                this.favoriteList = res.data.data.list
-                this.tab3 = `关注(${res.data.data.count})`
+                this.softwareList = res.data.data.list
+                this.tab2 = `软件(${res.data.data.count})`
+                this.totalSoftware = res.data.data.count
+                if(res.data.data.count > this.softwareList.length){
+                    this.ifMoreSoftware = true
+                }
+            }
+        }, (res)=>{
+            alert(res)
+        })
+
+        // 拿到用户关注的资源列表
+        axios.get('/api/user/star').then((res1)=>{
+            if(res1.data.code == 0){
+                this.favoriteList = res1.data.data.list
+                this.tab3 = `关注(${res1.data.data.count})`
+                this.totalLike = res1.data.data.count
+                if(res1.data.data.count > this.favoriteList.length){
+                    this.ifMoreFavorite = true
+                }
             }
         }, (res)=>{
             alert(res)
@@ -145,19 +198,33 @@ export default {
     data () {
         return {
             profilePic: null,
-            user: {},
+            user: {
+                fineResources:[]
+            },
             username: '迪丽热巴的老婆--睿酱',
             department: '拯救地球部',
             signature: '就像阳光穿破黑夜~ 黎明悄悄划过天边~ O(∩_∩)O谢谢',
             uploadFolderStyle: "upload-folder-style",
+            sourcePage: 1,
+            sourcePageSize: 20,
+            favoritePage: 1,
+            favoritePageSize: 20,
+            softwarePage: 1,
+            softwarePageSize: 20,
+            ifMoreSource: false,
+            ifMoreFavorite: false,
+            ifMoreSoftware: false,
+            totalResource: 2,
+            totalSoftware: 3,
+            totalLike: 0,
             tab1: "资源(2)",
             tab2: "软件(3)",
             tab3: "关注(0)",
             personalActive: "name1",
             personalTagList: ['小天使','小棉袄','小甜饼','柯南骨灰粉','暴躁老妹'],// 从后端拿
-            // TODO 这两个list还得修改。每一个都还有其他产品信息
-            productList: [],    
-            softwareList: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
+            productList: [],  
+            softwareList: [],  
+            softwareList1: ['ADOBE CS SUITE', 'WINDOWS 10预装版','申请的软件名称'],
             favoriteList: [],
         }
     },
@@ -176,7 +243,16 @@ export default {
                     break;
                 }
             }
-            this.tab1 = `资源${this.productList.length}`
+            this.tab1 = `资源(${this.totalResource - 1})`
+        },
+        swDel(sid){
+            for (var i = 0; i < this.softwareList.length; i++) {
+                if (this.softwareList[i].id == sid) {
+                    this.softwareList.splice(i, 1);
+                    break;
+                }
+            }
+            this.tab2 = `软件(${this.totalSoftware - 1})`
         },
         unFavorite(lid){
             for (var i = 0; i < this.favoriteList.length; i++) {
@@ -185,7 +261,18 @@ export default {
                     break;
                 }
             }
-            this.tab3 = `关注${this.favoriteList.length}`
+            this.tab3 = `关注(${this.totalLike - 1})`
+        },
+        handleCloseTag(removedTag){
+            const tags = this.user.labels.filter(tag => tag !== removedTag);
+            console.log(tags);
+            this.user.labels = tags;
+            axios.delete(`/api/user/label/${removedTag.id}`).then((res)=>{
+                if(res.data.code == 0){
+                }
+            }, (res)=>{
+                alert(res)
+            })
         },
         bright(){
             this.uploadFolderStyle = "upload-folder-style-hover"
@@ -193,7 +280,65 @@ export default {
         unBright(){
             this.uploadFolderStyle = "upload-folder-style";
         },
-    },
+        addMore(more){
+            switch(more){
+                case 'source':
+                    this.sourcePage += 1
+                    axios.get(`/api/user/${this.user.id}/resource`,{params:{page: this.sourcePage,
+                    pageSize: this.sourcePageSize,}}).then((res)=>{
+                        if(res.data.code == 0){
+                            this.productList = this.productList.concat(res.data.data.list)
+                            this.tab1 = `资源(${res.data.data.count})`
+                            this.totalResource = res.data.data.count
+                            if(res.data.data.count > this.productList.length){
+                                this.ifMoreSource = true
+                            }else{
+                                this.ifMoreSource = false
+                            }
+                        }
+                    }, (res)=>{
+                        alert(res)
+                    })
+                    break;
+                case 'favorite':
+                    this.favoritePage += 1
+                    axios.get('/api/user/star',{params:{page: this.favoritePage,
+                    pageSize: this.favoritePageSize,}}).then((res)=>{
+                        if(res.data.code == 0){
+                            this.favoriteList = this.favoriteList.concat(res.data.data.list)
+                            this.tab3 = `关注(${res.data.data.count})`
+                            this.totalLike = res.data.data.count
+                            if(res.data.data.count > this.favoriteList.length){
+                                this.ifMoreFavorite = true
+                            }else{
+                                this.ifMoreFavorite = false
+                            }
+                        }
+                    }, (res)=>{
+                        alert(res)
+                    })
+                    break;
+                case 'software':
+                    this.softwarePage += 1
+                    axios.get(`/api/user/${this.user.id}/software`,{params:{page: this.softwarePage,
+                    pageSize: this.softwarePageSize,}}).then((res)=>{
+                        if(res.data.code == 0){
+                            this.softwareList = this.softwareList.concat(res.data.data.list)
+                            this.tab2 = `软件(${res.data.data.count})`
+                            this.totalSoftware = res.data.data.count
+                            if(res.data.data.count > this.softwareList.length){
+                                this.ifMoreSoftware = true
+                            }else{
+                                this.ifMoreSoftware = false
+                            }
+                        }
+                    }, (res)=>{
+                        alert(res)
+                    })
+                
+            }
+        },
+    }
 }
 </script>
 <style>
@@ -275,6 +420,18 @@ export default {
     margin-right:15px;
     margin-bottom: 10px;
 }
+.tag-style-close{
+    width: 10px;
+    height: 10px;
+    color: #7f7f7f;
+    line-height: 21px;
+    text-align: center;
+    top: -2px;
+    position: relative;
+}
+.tag-style-close:hover{
+    color: red;
+}
 .empty-personal{
     font-size: 14px;
     color: #777777;
@@ -326,7 +483,7 @@ export default {
     height: 196px; 
     width: 274px;
     margin-top: 30px;
-    margin-right: 50px;
+    margin-right: 30px;
     border: solid 2px #eaeaea;
 }
 .upload-style:hover{
@@ -376,6 +533,22 @@ export default {
     left: 460px;
     font-size: 16px;
     float: center;
+}
+.container{
+    display:flex;
+    align-items:center;
+    flex-direction: column;
+}
+.more{
+    text-align: center;
+    width: 193px;
+    height: 44px;
+    /* background-color: #e8f8f0; */
+    color: #1ebf73;
+    /* border: solid 1px #1ebf73; */
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 30px;
 }
 </style>
 

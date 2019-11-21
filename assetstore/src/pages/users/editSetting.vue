@@ -367,7 +367,8 @@ export default {
         },
         submitSetting(){
             axios.put('/api/user/remind/setting',{"starResourceUpgrade":this.switch1,"starSoftwareUpgrade": this.switch2,
-            "replyComment": this.switch3, "resourceCommented": this.switch4, "starResourceCommented": this.switch5 },{emulateJSON:true}).then((res)=>{
+            "replyComment": this.switch3, "resourceCommented": this.switch4, "starResourceCommented": this.switch5 },
+            {emulateJSON:true}).then((res)=>{
                 if(res.data.code == 0){
                     this.$Message.warning({
                         background: true,

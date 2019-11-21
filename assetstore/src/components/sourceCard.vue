@@ -58,11 +58,17 @@ export default {
             this.favoriteIcon = !this.favoriteIcon
             /* 提示用户已关注 */
             if(this.favoriteIcon){
-                this.$Message.success('已关注')
-                this.$store.commit('ADD_FAVORITE', this.sourceID);
+                axios.post(`/api/${this.source.id}/star`, {'star':true},{emulateJSON:true}).then((res)=>{
+                    if(res.data.code === 0){
+                        this.$Message.success('已关注')
+                    }
+                })
             }else{
-                this.$Message.success('已取消关注')
-                this.$store.commit('REMOVE_FAVORITE', this.sourceID);
+                axios.post(`/api/${this.source.id}/star`, {'star':true},{emulateJSON:false}).then((res)=>{
+                    if(res.data.code === 0){
+                        this.$Message.success('已取消关注')
+                    }
+                })
             }
         },
         goPage(url){
