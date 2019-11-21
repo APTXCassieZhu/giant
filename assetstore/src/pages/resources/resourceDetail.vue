@@ -377,7 +377,6 @@
     margin-top: 5px;
   }
 
-
   &-load-wrap{
     @h:160px;
     height:@h;
@@ -844,19 +843,24 @@ export default {
     axios.get(`/api/resource/${params.resourceId}`).then(response => {
       var res = response.data;
 
-      this.resource = Object.assign(this.resource, res.data);
+      if(res.code!=0)  return this.$message.warning(res.msg)
 
-      this.resource.isRate = this.resource.myRate ? true : false;
+      this.resource = Object.assign(this.resource, res.data)
 
-      console.log("/////resource_userid:", this.resource.userId);
+      this.resource.isRate = this.resource.myRate ? true : false
 
-      console.log("node_env:", process.env.npm_lifecycle_event);
+      console.log("/////resource_userid:", this.resource.userId)
+
+      console.log("node_env:", process.env.npm_lifecycle_event)
+
       //  console.log(this.resource.images)
       // if( process.env.NODE_ENV!='development'){
 
       this.resource.images = this.resource.images.map(o => {
-        return `//192.168.94.238:3000/file/download/${o.id}/?token=${this.$store.state.token}`;
-      });
+        return `//192.168.94.238:3000/file/download/${o.id}/?token=${this.$store.state.token}`
+      })
+
+
 
       // }
 
@@ -908,7 +912,10 @@ export default {
     });
 
     axios.get("/api/user/describe").then(response_des => {
-      var res = response_des.data;
+      var res = response_des.data
+
+      if(res.code!=0)  return this.$message.warning(res.msg)
+
       var userid = res.data.id;
       this.userid = userid;
 
@@ -931,15 +938,6 @@ export default {
         return this.$Message.warning("请输入你的评论内容~");
       }
 
-      // this.userid
-      // console.log(this.userid)
-      // debugger
-      //让他回复
-      // debugger
-
-      // 一层回复replyUserID=null,pid=null
-      // 二层回复replyUserID=  ,pid=,
-      // 二层回复中的回复replyUserID=,pid=,
 
       axios
         .post("/api/comment", {
@@ -949,11 +947,15 @@ export default {
           pid: null
         })
         .then(response => {
+          var res = response_des.data
+
+          if(res.code!=0)  return this.$message.warning(res.msg)
+
           // axios.post('/api/comment',{resourceId:params.resourceId, replyUserId:this.userid, content:prop.content,pid:prop.id}).then(response=>{
           this.$Message.success("评论提交成功~");
           replyx.clearContent();
-        });
-    });
+        })
+    })
   },
   methods: {
     handleLike() {
@@ -964,6 +966,8 @@ export default {
             star: true
           })
           .then(response => {
+            var res = response_des.data
+             if(res.code!=0)  return this.$message.warning(res.msg)
             this.resource.isStar = true;
             this.$Message.success("已关注");
           });
@@ -973,6 +977,9 @@ export default {
             star: false
           })
           .then(response => {
+            var res = response_des.data
+             if(res.code!=0)  return this.$message.warning(res.msg)
+
             this.resource.isStar = false;
             this.$Message.success("已取消关注");
           });
@@ -1008,7 +1015,8 @@ export default {
     handleSelectChange() {
       this.$router.push(
         `/resourceDetail/${this.$route.params.resourceId}/versionHistory`
-      );
+      )
+
     },
     handleRate(v) {
       const { params } = this.$route;
@@ -1016,8 +1024,9 @@ export default {
       axios
         .post(`/api/resource/${params.resourceId}/rate`, { val: v })
         .then(response => {
+
           if (response.data.code != 0) {
-            return;
+            return this.$message.warning(response.data.msg)
           }
 
           this.resource.isRate = true;
@@ -1026,7 +1035,8 @@ export default {
         });
     },
     yymmdd(t) {
-      return "2019-01.23";
+      return "2019-01.23"
+
     },
     fileSize(b) {
       var mb = b / 1024 / 1024;
@@ -1039,6 +1049,7 @@ export default {
       const { params } = this.$route;
       
       this.requestCommentPadding = true
+
       axios
         .get(`/api/comment`, {
           params: {
@@ -1049,7 +1060,13 @@ export default {
           }
         })
         .then(response => {
-          var res = response.data;
+          var res = response.data
+          if (response.data.code != 0) {
+            return this.$message.warning(res.msg)
+          }
+
+
+
           let items = [];
           // 戴 -> 祝 -> 戴
 
@@ -1142,12 +1159,22 @@ export default {
                 axios
                   .post(`/api/comment/${prop.id_rate}/star`, { star: false })
                   .then(response => {
+                    var res = response.data
+                    if (response.data.code != 0) {
+                      return this.$message.warning(res.msg)
+                    }
+
                     comments.dislikeByProp(prop);
                   });
               } else {
                 axios
                   .post(`/api/comment/${prop.id_rate}/star`, { star: true })
                   .then(response => {
+                    var res = response.data
+                    if (response.data.code != 0) {
+                      return this.$message.warning(res.msg)
+                    }
+
                     comments.likeByProp(prop);
                   });
               }
@@ -1183,11 +1210,16 @@ export default {
                   replyUserId: prop.userdata.replyUserId //回复的人的  user.id
                 })
                 .then(response => {
+                  var res = response.data
+                  if (response.data.code != 0) {
+                    return this.$message.warning(res.msg)
+                  }
+
                   this.$Message.success("评论提交成功~");
                   prop.reply.clearContent();
                 });
               //console.log('comments reply:', prop)
-            });
+            })
 
             comments.onDel(prop => {
               console.log("comments del:", prop);
@@ -1198,21 +1230,31 @@ export default {
                 okType: "danger",
                 cancelText: "取消",
                 onOk: () => {
-                  axios
-                    .delete(`/api/comment/${prop.id_rate}`, {})
-                    .then(response => {
-                      comments.removeCommentByProp(prop);
 
-                      setTimeout(() => {
-                        this.$Modal.success({
-                          title: "评论已删除",
-                          okText: "确认"
-                        });
-                      }, 300);
-                    });
+                  let headers = {
+                    'Content-Type': 'application/json; charset=utf-8'
+                  }
+
+                  var data = {}
+                  axios
+                  .delete(`/api/comment/${prop.id_rate}`,{headers,data})
+                  .then(response => {
+                     var res = response.data
+                    if (response.data.code != 0) {
+                      return this.$message.warning(res.msg)
+                    }
+
+                    comments.removeCommentByProp(prop)
+                    setTimeout(() => {
+                      this.$Modal.success({
+                        title:  "评论已删除",
+                        okText: "确认"
+                      })
+                    }, 300)
+                  })
                 }
               });
-            });
+            })
           } catch (e) {
             console.log(e);
           }
@@ -1222,13 +1264,13 @@ export default {
     dpClick(e, v) {
       //console.log(e.target,v)
 
-      this.sortBy = e.target.textContent === "按时间排序" ? "time" : "hot";
+      this.sortBy = e.target.textContent === "按时间排序" ? "time" : "hot"
 
-      this.createComment();
+      this.createComment()
     },
     handleDown() {
       var fileid = this.resource.vers[0].file.id;
-      location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`;
+      location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`
     }
   }
 };

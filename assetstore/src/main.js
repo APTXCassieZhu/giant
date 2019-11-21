@@ -61,15 +61,18 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.prototype.$axios = axios
 
 
-
 axios.interceptors.request.use(function (config) {
   //console.log('request interceptors config:',config)
+  // config.headers.common['Content-Type'] = 'application/json'
+  // config.headers.common['aaaaaaaaaaa'] = 'aaaaaaaaaaaaaaa'
   config.headers.common['authorization'] = store.state.token
   return config
 }, function (error) {
   // 对请求错误做些什么
   return Promise.reject(error)
 })
+
+
 
 axios.interceptors.response.use(
   response => {

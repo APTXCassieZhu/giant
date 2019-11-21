@@ -707,8 +707,16 @@ export default {
             "description": this.editor.txt.html()  //资源描述
           }
         ).then(response=>{
+          var res = response.data
+          if(res.code!=0)  return this.$message.warning(res.msg)
           
           this.$message.success('发布成功')
+
+          setTimeout(()=>{
+            this.$router.push(
+              `/personal`
+            )
+          },1000)
         })
 
 
