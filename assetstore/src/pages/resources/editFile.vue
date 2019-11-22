@@ -840,8 +840,15 @@ export default {
             Object.assign($ipt.style,{
               position:'absolute',
               left:'0',
-              top:'0',
-              'z-index':2
+              bottom:'10px',
+              'z-index':2,
+              border:'none',
+              color:'white',
+              width:'100%',
+              'text-align':'center',
+              background:'none',
+              cursor:'pointer',
+              outline:'none'
             })
             
 
@@ -852,6 +859,7 @@ export default {
 
             $ipt.onclick = ()=>{
               this.replaceIdx = idx
+              this.$message.success('已设为封面')
               //console.log('replaceIdx:',this.replaceIdx)
             }
             $node.onmouseover = ()=>{

@@ -134,7 +134,7 @@ import './emojiReply.css'
             <div class="comments-owo-item-b">
               <div class="comments-owo-item-content">${content}</div>
               <div class="comments-owo-item-list">
-                <div class="comments-owo-item-zan comments-icon-wrap">
+                <div class="comments-owo-item-zan comments-icon-wrap" style="min-width:30px;">
                   <div>${liked?goodfill:good}</div>
                   <span>${like}</span>
                 </div>
@@ -178,7 +178,6 @@ import './emojiReply.css'
           ]
 
           var reply = Reply($item.querySelector('.comments-owo-twolevel-reply'), {userdata:item})
-          
 
           $like.addEventListener('click',
             this.handleLikeClick.bind(this, 
@@ -189,13 +188,19 @@ import './emojiReply.css'
                   $like.querySelector('span').innerHTML = ++n
      
                   $like.querySelector('div').innerHTML = goodfill
+
+                  //heartBeat animated
+                  $like.querySelector('div').className = 'heartBeat animated'
+
                   this.liked = true
                 },
                 dislike(){
                   let n = $like.querySelector('span').innerHTML*1
                   $like.querySelector('span').innerHTML = --n
-
                   $like.querySelector('div').innerHTML = good
+
+                  $like.querySelector('div').className = ''
+
                   this.liked = false
                 }
                })
@@ -245,7 +250,7 @@ import './emojiReply.css'
                  ${content}
                </div>
                <div class="comments-owo-twolevel-child-list">
-                 <div class="comments-owo-item-zan  comments-icon-wrap">
+                 <div class="comments-owo-item-zan  comments-icon-wrap" style="min-width:30px;">
                    <div>${liked?goodfill:good}</div>
                    <span>${like}</span>
                  </div>
@@ -288,6 +293,8 @@ import './emojiReply.css'
                     $like.querySelector('span').innerHTML = ++n
       
                     $like.querySelector('div').innerHTML = goodfill
+
+                    $like.querySelector('div').className = 'heartBeat animated'
                     this.liked = true
                   },
                   dislike(){
@@ -295,6 +302,8 @@ import './emojiReply.css'
                     $like.querySelector('span').innerHTML = --n
 
                     $like.querySelector('div').innerHTML = good
+
+                    $like.querySelector('div').className = ''
                     this.liked = false
                   }
                 })

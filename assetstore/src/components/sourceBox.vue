@@ -12,7 +12,7 @@
                         </template>
                         <div class="font-title">{{getResource}}</div>
                     </a-tooltip>
-                
+
                     <div class="font-switch">
                         <i-switch v-model="publicOrNot" size="large" @on-change="changeState()">
                             <span slot="open">公开</span>

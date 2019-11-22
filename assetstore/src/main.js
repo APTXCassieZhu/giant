@@ -210,9 +210,8 @@ var store = new Vuex.Store({
         // debugger
         sessionStorage['gdrc-breadlist'] = JSON.stringify( state.breadListState ) 
         sessionStorage['gdrc-curResourceId'] = state.curResourceId 
-      },  
+      }, 
       breadListStateRemove(state,n){
-  
         while(n--){
           state.breadListState.shift()
         }

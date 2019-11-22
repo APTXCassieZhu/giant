@@ -18,16 +18,19 @@
         </div>
 
 				<div class="resource-detail-wrap">
+					
+					<div style="position:relative;min-height:186px;">
 
-
-					<div style="position:relative;">
-						<div class="resource-detail-comments" 
-								:style="{display:requestCommentPadding?'none':'block',position:'relative'}" 
-								ref="resource-detail-comments"
-						>
-						</div>
-							<!-- <div :style="{visibility:'visible'}"  class="resource-detail-load-wrap">  -->
-						<div :style="{visibility:requestCommentPadding?'visible':'hidden'}"  class="resource-detail-load-wrap">
+						<transition name="fade">
+							<div class="resource-detail-comments" 
+									v-show="!requestCommentPadding"
+									:style="commentWrapStyle"
+									ref="resource-detail-comments"
+							>
+							</div>
+						</transition>
+	
+						<div :style="{display:requestCommentPadding?'block':'none'}"  class="resource-detail-load-wrap">
 							<div style="fill: #0000004a;width: 50px;height: 50px;">
 
 								<svg
@@ -46,6 +49,7 @@
 								</svg>
 							</div>
 						</div>
+		
 
 					</div>
 
@@ -72,9 +76,9 @@
 
 				</div>
 
-		
-
-
+				<!-- <transition name="fade">
+					<p v-if="show">hello</p>
+				</transition> -->
       </section>
       
       <Footer style="position:relative;margin-top: 200px;"></Footer>
@@ -90,6 +94,19 @@
 
 </style>
 <style scoped lang="less">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.comments-skeleton{
+	position: absolute;
+	left:0;
+	top:0;
+}
+
 .resource-detail-page-wrap{
   
 }
@@ -101,16 +118,19 @@
   margin-top: 50px;
   position: relative;
 	overflow: hidden;
-
+	.resource-detail-comments{
+		position: relative;
+	}
 	&-load-wrap{
     @h:160px;
     height:@h;
     background:white;
-    // position: absolute;
-    // left:0;
-    // top:0;
+    position: absolute;
+    left:0;
+    top:0;
     width:100%;
-    visibility: hidden;
+		// visibility: hidden;
+		display: none;
     
   @keyframes rotz{
     0%{
@@ -191,9 +211,12 @@ export default {
       return {
         sortBy:'time',
         userid:'',
+				show: false,
 
 				showAlertComment:false,
 				requestCommentPadding:true,
+
+				commentWrapStyle:{},
 
         comment_order:'time',
 				comment_pagesize: 10,
@@ -258,8 +281,6 @@ export default {
 				this.resource = Object.assign(this.resource,res.data)
 				
 				this.resource.isRate = this.resource.myRate ? true:false
-
-				
       })
 
       axios.get('/api/user/describe').then(response_des=>{
@@ -352,16 +373,33 @@ export default {
 			},
 			handlePageChange(v){
 				this.comment_page = v
+				
+				$('html,body').animate({scrollTop: '0px'}, 100)
 
-				this.createComment().then(()=>{
+				clearTimeout(this.itv)
+				this.itv = setTimeout(()=>{
+					this.createComment().then(()=>{
 					
-				})
+					})
+
+				},100)
+		
+				
 
 			},
       createComment(){
 				const { params } = this.$route
       
 				this.requestCommentPadding = true
+
+				this.commentWrapStyle = {height:'186px'}
+
+				//this.$nextTick(()=>{
+					// setTimeout(()=>{
+					// 	$('html,body').animate({scrollTop: '0px'}, 300)
+
+					// },300)
+			//	})
 
 				return new Promise(resolove=>{
 					axios
@@ -482,6 +520,7 @@ export default {
 							});
 	
 							this.requestCommentPadding = false
+							this.commentWrapStyle = {}
 
 							$('html,body').animate({scrollTop: '0px'}, 300)
 	
