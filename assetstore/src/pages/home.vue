@@ -42,22 +42,22 @@
     <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop class="carousel-style">
         <CarouselItem>
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
-            <!-- <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card> -->
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>
         </CarouselItem>
-        <!-- <CarouselItem>
+        <CarouselItem>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>        
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
         </CarouselItem>
         <CarouselItem>
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
-        </CarouselItem> -->
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>        
+        </CarouselItem>
     </Carousel>
     <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>

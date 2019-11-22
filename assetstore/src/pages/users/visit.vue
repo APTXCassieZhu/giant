@@ -131,7 +131,7 @@ export default {
             // 登录失败
             alert(res)
         })
-        axios.get(`/api/${this.$route.params.userId}/resource`, {
+        axios.get(`/api/user/${this.$route.params.userId}/resource`, {
             params: {
                 page: this.page,
                 pageSize: this.pageSize,
