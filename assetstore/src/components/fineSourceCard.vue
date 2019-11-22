@@ -1,23 +1,25 @@
 <template>
-    <div class="source-card" @click="goPage(`/resourceDetail/${sourceID}`)">
-        <div id="special" :class="special" style="height: 184px;width: 306px;background-size: 306px 184px;background-repeat: no-repeat;">
-            <!-- <img :src="concatImgUrl" class="resource-image"/> -->
+    <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
+        <div id="special" class="image" :style="backgroundStyle">
+            <img :src="concatImgUrl" class="resource-image"/>
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
                 <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
             </strong>
         </div>
         <div class="source-des">
-            <p class="source-des-name">{{sourceTitle}}</p>
+            <p class="source-des-name">{{resource.name}}</p>
             <p>{{sourceDescription}}</p>
         </div>
         <div class="source-content">
-            <Rate disabled icon="md-star" v-model="rate" style="position:relative; left: 2px;"></Rate>
-            <span class="source-content-icon">
-                <font-awesome-icon icon="eye"/>
-                <span> {{viewCount}}&emsp;&emsp;</span>
-                <font-awesome-icon icon="comment"/>
-                <span> {{chatCount}}</span>
+            <Rate disabled icon="md-star" v-model="getRateAvg" style="position:relative; left: 2px;"></Rate>
+            <span class="source-card-footer-icon" style="position:relative; right: 8px;">
+                <font-awesome-icon :icon="['fas','eye']"/>
+                <span> {{resource.viewCount||0}}</span>
+            </span>
+            <span class="source-card-footer-icon" style="position:relative; right: 8px;">
+                <font-awesome-icon :icon="['fas','comment']"/>
+                <span> {{resource.commendCount||0}}</span>
             </span>
         </div>
     </div>
@@ -27,7 +29,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faComment, faEye } from '@fortawesome/free-solid-svg-icons'
 library.add(faComment, faEye)
 export default {
-    name: "SpecialCard",
+    name: "FineSourceCard",
     props: {
         resource: {
             type: Object,
@@ -36,9 +38,6 @@ export default {
         breadlist:{
             type:Array,
             default: []
-        },
-        sourceID:{
-
         }
     },
     computed:{
@@ -62,19 +61,24 @@ export default {
     },
     data() {
         return {
-            rate: 3.5,
-            viewCount: 2019,
-            chatCount: 12,
             sourceTitle: '资源名称范例文字^_^',
             sourceDescription: '这是一段帮助用户理解资源内容的描述',
             favoriteIcon: false,            // defalut favourite is false
-            special: 'image',
             jumpOrNot: true,
+            backgroundStyle:{}
         }
+    },
+    mounted(){
+        let $img = document.createElement('img')
+        $img.onload = ()=>{
+            this.backgroundStyle = {
+                backgroundImage:`url(${this.concatImgUrl})`
+            }
+        }
+        $img.src = this.concatImgUrl
     },
     methods:{
         addFavorite(){
-            // TODO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
             this.jumpOrNot = false
             this.favoriteIcon = !this.favoriteIcon
@@ -105,31 +109,11 @@ export default {
 </script>
 <style scoped>
 .image {
-    background-image: url("../assets/绿.jpg");  
-}
-.image-02 {
-    background-image: url("../assets/tool-02.png");
-}
-.image-03 {
-    background-image: url("../assets/tool-03.png");
-}
-.image-04 {
-    background-image: url("../assets/tool-04.png");
-}
-.image-05 {
-    background-image: url("../assets/tool-05.png");
-}
-.image-06 {
-    background-image: url("../assets/tool-06.png");
-}
-.image-07 {
-    background-image: url("../assets/tool-07.png");
-}
-.image-08 {
-    background-image: url("../assets/tool-08.png");
-}
-.image-09 {
-    background-image: url("../assets/tool-09.png");
+    height: 184px;
+    width: 306px;
+    background-size: 306px 184px;
+    background-repeat: no-repeat;
+    background-image: url('../assets/绿.jpg');
 }
 .heart{
     position: relative; 

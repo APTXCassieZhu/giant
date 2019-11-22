@@ -3,7 +3,7 @@
     <div class="source-box">
         <div class="upper" @click="goPage(`/resourceDetail/${source.id}`)">
             <div class="upper-head">
-                <div v-if="source.images != null" ><img class="font-image" :src="source.images[0]"></div>
+                <div v-if="source.images != null" ><img class="font-image" :src="concatImgUrl"></div>
                 <div v-else class="font-image">{{source.name.charAt(0)}}</div>
                 <div class="font-wrapper">
                     <a-tooltip placement="top">
@@ -22,7 +22,10 @@
                 </div>
             </div>
             <div class="font-content">下载次数&emsp;&emsp;&emsp;关注人数</div>
-            <div class="font-num">{{getDownloadCount}}<span style="margin-left: 63px;">{{getStars}}</span></div>
+            <div class="font-num">
+                <span style="min-width: 25px;">{{source.downloadCount||0}}</span>
+                <span style="margin-left: 63px;">{{source.starCount||0}}</span>
+            </div>
         </div>
         <Row class="font-footer">
             <Col span="8" class="footer-col" @click.native="goPage(`/updateFile/${source.id}`)">
@@ -64,15 +67,24 @@ export default {
         },
         // 给人数x,xxx （每三位数分个逗号）
         getStars(){
-            return this.source.stars > 1000 ? (this.source.stars).toString().slice(0,1)+','+ (this.source.stars).toString().slice(1): this.source.stars;
+            return this.source.starCount > 1000 ? (this.source.starCount).toString().slice(0,1)+','+ (this.source.starCount).toString().slice(1): this.source.starCount;
         },
         getDownloadCount(){
-            return this.source.stars > 1000 ? (this.source.downloadCount).toString().slice(0,1)+','+ (this.source.downloadCount).toString().slice(1): this.source.downloadCount;
-        }
+            return this.source.downloadCount > 1000 ? (this.source.downloadCount).toString().slice(0,1)+','+ (this.source.downloadCount).toString().slice(1): this.source.downloadCount;
+        },
+        publicOrNot(){
+            if(this.source.state == 'public'){
+                return false;
+            }else{
+                return true;
+            }
+        },
+        concatImgUrl(){
+            return `//192.168.94.238:3000/file/download/${source.images[0].id}?token=${this.$store.state.token}`
+        },
     },
     data() {
         return {
-            publicOrNot: false,             // 默认隐藏
             // default
             moreVisible: false,
             jumpOrNot: true,
