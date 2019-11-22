@@ -84,7 +84,6 @@ export default {
         $img.src = this.concatImgUrl
     },
     methods:{
-        
         addFavorite(){
             console.log('favorite')
             this.jumpOrNot = false

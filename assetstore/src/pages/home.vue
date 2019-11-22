@@ -38,24 +38,25 @@
     </div>
     <div class="type-title" @click="goPage('/artShow')">精选美术资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
+
     <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop class="carousel-style">
         <CarouselItem>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
         </CarouselItem>
         <CarouselItem>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[4]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
         </CarouselItem>
         <CarouselItem>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
         </CarouselItem>
     </Carousel>
     <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
@@ -81,6 +82,7 @@
 import HomeTopNavigation from '../components/HomeTopNav.vue'
 import HomeSearch from '../components/homeSearch.vue'
 import SourceCard from '../components/sourceCard.vue'
+import FineSourceCard from '../components/fineSourceCard.vue'
 import SpecialCard from '../components/specialCard.vue'
 import Footer from '../components/footer.vue'
 import Corner from '../components/corner.vue'
@@ -91,7 +93,7 @@ addEventListener(searchContent, "focus", function() {
 
 export default {
     name:"Home",
-    components: {HomeTopNavigation,HomeSearch,SourceCard,SpecialCard,Footer,Corner},
+    components: {HomeTopNavigation,HomeSearch,SourceCard,FineSourceCard,SpecialCard,Footer,Corner},
     data() {
         return {
             speed: 5000,
@@ -133,6 +135,7 @@ export default {
             }}).then((res)=>{
             if(res.data.code == 0){
                 this.fineArtList = res.data.data.list
+                console.log(this.fineArtList[0])
             }
         })
         // 拿到推荐分类
