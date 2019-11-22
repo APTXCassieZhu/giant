@@ -9,7 +9,7 @@
         </div>
         <div class="source-content">
             <p style="font-weight: 600;color: black;">{{resource.name}}</p>
-            <p style="min-height:45px">{{getElText}}</p>
+            <p style="min-height:45px">{{sourceDescription}}</p>
         </div>
         <Divider style="margin: 15px 0px 5px 0px;"/>
         <div class="source-card-footer">

@@ -582,7 +582,7 @@ export default {
     /* left: 130px; */
     top: 28px;
     width: 1280px;
-    min-height: 660px;
+    min-height: 460px;
     border-radius: 3px;
     padding: 0px 0px 30px 30px;
     background-color: white;
@@ -613,5 +613,12 @@ export default {
     color: white;
     background-color: #1ebf73;
 } */
+@media only screen and (max-width: 1366px) {
+    .software-page {
+        width: 800px;
+        height: 500px;
+        min-height: 500px;
+    }
+}
 </style>
 

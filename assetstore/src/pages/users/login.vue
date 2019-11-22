@@ -57,6 +57,17 @@ export default {
        } else if(this.loginForm.password === '') {
            this.$refs.password.focus()
        }
+
+        var $el = document.querySelector('.my-container-login')
+        var [x,y] = [
+            innerWidth*.5,
+            innerHeight*.5
+        ]
+        var [w,h] = [400,460]
+        var [half_w,half_h] = [w*.5,h*.5]
+        
+        $el.style.backgroundPosition = `${x-half_w- w*.2  }px ${y-half_h-h*.1}px`
+
     },
     methods:{
         fillIn(){
@@ -111,7 +122,7 @@ export default {
 <style scoped>
 .my-container-login{
     width:100%;
-    min-height:959px;
+    height:100%;
     /* display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-ms-flexbox;display:flex;flex-wrap:wrap; */
     display: flex;
     justify-content:center;
@@ -119,9 +130,12 @@ export default {
     flex-direction: column;
     padding:15px;
     background: #eff2f5 url('../../assets/transparentLogo.png') no-repeat;
-    background-position: 550px 200px;
+    /* background-position: 550px 200px; */
+    /* background-position: calc(50%-10px) calc(50%); */
     background-size: 400px 460px;
+  
 }
+
 .login-title{
     font-size: 21px;
     font-weight: 900;
