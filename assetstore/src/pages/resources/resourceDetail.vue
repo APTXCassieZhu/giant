@@ -382,8 +382,12 @@
 .resource-detail {
   // width:95%;
   width: 100%;
-  max-width: 1380px;
+  max-width: 1368px;
+  box-sizing: border-box;
+  padding: 0 30px;
   margin: 0 auto;
+  
+
   // margin-top:50px;
   // margin-top:15px;
   position: relative;

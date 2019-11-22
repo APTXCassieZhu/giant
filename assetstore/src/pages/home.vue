@@ -41,24 +41,6 @@
 
     <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop class="carousel-style">
         <CarouselItem>
-<<<<<<< HEAD
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        </CarouselItem>
-        <CarouselItem>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]"  style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-        </CarouselItem>
-        <CarouselItem>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-            <special-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>        
-=======
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
@@ -75,7 +57,6 @@
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[2]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
             <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[3]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
->>>>>>> 42b262e8a58c189488a6e965d5d9c0c7a2dfd4eb
         </CarouselItem>
     </Carousel>
     <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
