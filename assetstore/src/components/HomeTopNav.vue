@@ -387,5 +387,10 @@ export default {
     }
 }
 
+@media only screen and (max-width: 1366px) {
+    .topnav-box-link{
+        width: 76%;
+    }
+}
 </style>
 

@@ -59,6 +59,15 @@ export default {
             return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
         },
     },
+    mounted(){
+        let $img = document.createElement('img')
+        $img.onload = ()=>{
+            this.backgroundStyle = {
+                backgroundImage:`url(${this.concatImgUrl})`
+            }
+        }
+        $img.src = this.concatImgUrl
+    },
     data() {
         return {
             sourceTitle: '资源名称范例文字^_^',

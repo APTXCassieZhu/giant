@@ -195,11 +195,11 @@
                 </Dropdown>
             </div>
 
-            <div to='/login' class="topnav-box-user-login">
+            <!-- <div to='/login' class="topnav-box-user-login">
                 <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
                     <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                 </Tooltip>
-            </div>
+            </div> -->
         </div>
     </div>
     <Divider class="divide"/>
@@ -546,6 +546,7 @@ export default {
     position: relative;
     cursor: pointer;
     width: 5%;
+    min-width: 20px;
     left: 4%;
     top: 10px;
     float:left;
@@ -813,6 +814,20 @@ export default {
     left: 18px;
     font-size: 14px;
     font-family: MicrosoftYaHei;
+}
+@media only screen and (max-width: 1366px) {
+    .software-page {
+        width: 800px;
+        height: 500px;
+        min-height: 500px;
+    }
+    .topnav-box-user{
+        width:23%;
+        min-width: 270px;
+    }
+    .nav-menu{
+        width: 99%;
+    }
 }
 </style>
 
