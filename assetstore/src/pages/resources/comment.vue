@@ -112,8 +112,12 @@
 }
 
 .resource-detail{
-  width: 100%;
-  max-width: 1380px;
+
+	width: 100%;
+  max-width: 1368px;
+  box-sizing: border-box;
+	padding: 0 30px;
+	
   margin: 0 auto;
   margin-top: 50px;
   position: relative;

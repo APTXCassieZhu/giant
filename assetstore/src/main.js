@@ -18,6 +18,8 @@ import '../my-theme/ant.less';
 import lottie from 'vue-lottie';
 Vue.component('lottie', lottie)
 
+
+
 // fontawesome icon
 import fontawesome from '@fortawesome/fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'

@@ -135,17 +135,9 @@ export default {
                 type: 'art',
                 recommend: true,
             }}).then((res)=>{
-<<<<<<< HEAD
-            if(res.data.code == 0){
-                this.fineArtList = res.data.data.list
-
-                console.log(this.fineArtList[0])
-            }
-=======
                 if(res.data.code == 0){
                     this.fineArtList = res.data.data.list
                 }
->>>>>>> 653ad8068cdc64afa03f9f1bf50a14b5c4b0f9b4
         })
         // 拿到推荐分类
         axios.get('/api/tag/lastitems',{

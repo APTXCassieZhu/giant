@@ -277,7 +277,7 @@
     border-left: 1px solid #e5e5e5;
     height: 301px;
     width: 363px;
-    margin-left: 84px;
+    margin-left: 72px;
     box-sizing: border-box;
     padding-left: 86px;
 

@@ -18,6 +18,16 @@
                   :attrx="src"
                   :style="{backgroundImage: `url(${src})`}"
                 ></div>
+
+                <!-- <div v-for="(src,i) in resource.images"  :key="i" :data-background="src" class="swiper-lazy">
+                  <div class="swiper-lazy-preloader"></div>
+                </div>
+
+                <!-- <div class="swiper-slide" v-for="(src,i) in resource.images" :key="i">
+                  <img :data-src="src" class="swiper-lazy"/>
+                  <div class="swiper-lazy-preloader"></div>
+                </div> -->
+
               </div>
               <!-- <div class="swiper-button-next swiper-button-white"></div>
               <div class="swiper-button-prev swiper-button-white"></div>-->
@@ -916,11 +926,12 @@ export default {
 
         this.swiper = new Swiper(".gallery-top", {
           spaceBetween: 10,
+          lazy:true,
           on: {
             click() {
               if (typeof this.clickedIndex != undefined) {
-                lightbox.setCurIdx(this.clickedIndex);
-                lightbox.show();
+                lightbox.setCurIdx(this.clickedIndex)
+                lightbox.show()
               }
             }
           },
