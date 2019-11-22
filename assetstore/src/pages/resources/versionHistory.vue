@@ -12,7 +12,7 @@
                     <span v-else class="version-update-time"> 创建于 {{getYYMMDD(item.updatedAt)}} </span>
                     <Button class="download-btn" type="success" @click="download(item.file)">下载此版本</Button>
                     <Divider />
-                    <div class="version-des"  v-html="item.descriptipon"></div>
+                    <div class="version-des" v-html="item.description"></div>
                 </div>
             </div>
         </div>
