@@ -3,11 +3,6 @@
     <TopNavigation style="position:relative; height: 140px;"></TopNavigation>
 
     <section class="resource-detail">
-      <!-- <Breadcrumb style="margin:30px 0;font-size:14px;">
-        <BreadcrumbItem to="/">首页</BreadcrumbItem>
-        <BreadcrumbItem to="/searchresult">搜索</BreadcrumbItem>
-        <BreadcrumbItem>资源详情</BreadcrumbItem>
-      </Breadcrumb>-->
       <div style="margin:30px 0;font-size:14px;">
         <bread-crumb></bread-crumb>
       </div>
@@ -43,30 +38,33 @@
             <div
               v-if="requestResourcePadding"
               class="resource-detail-skeleton-1"
-              style="border-bottom: 1px solid #eaeaea;padding-bottom:20px;"
+              style="border-bottom: 1px solid #eaeaea;padding-bottom:40px;"
             >
               <a-skeleton avatar :paragraph="{rows: 4}" />
             </div>
 
-            <template v-if="!requestResourcePadding">
-              <div class="resource-detail-deslist-part1">
+            
+              
+            <template v-if="!requestResourcePadding"> 
+              <div class="resource-detail-deslist-part1" >
                 <div @click="handleVisit" style="cursor:pointer;">
                   <font-awesome-icon
-                    v-if="!describe.profilePic"
+                    v-if="!resource.user.profilePic"
                     :icon="['fas','user-circle']"
                     style="color:#37d89d;width:23px;height:23px;"
                   />
                   <img
-                    v-if="describe.profilePic"
+                    v-if="resource.user.profilePic"
                     style="width:23px;border-radius:23px;"
-                    :src="describe.profilePic"
+                    :src="resource.user.profilePic"
                     alt
                   />
                 </div>
                 <span>{{describe.dept}}</span>
               </div>
-              <div class="resource-detail-deslist-part2">{{resource.name}}</div>
-              <div class="resource-detail-deslist-part3">
+
+              <div class="resource-detail-deslist-part2" >{{resource.user.nickName||resource.user.name}}</div>
+              <div class="resource-detail-deslist-part3" >
                 <Select
                   :placeholder="resource.vers[0].verNum"
                   @on-change="handleSelectChange"
@@ -84,7 +82,7 @@
                   class="resource-detail-deslist-updatetime"
                 >- Last Update: {{getYYMMDD(resource.createdAt)}}</span>
               </div>
-              <div class="resource-detail-deslist-part4">
+              <div class="resource-detail-deslist-part4" >
                 <div class="resource-detail-deslist-score-wrap">
                   <!-- <Rate v-model="rate1" disabled/><span class="resource-detail-deslist-score">{{rate1+'.0'}}</span> -->
                   <a-rate disabled v-model="resource.rateAvg" />
@@ -99,17 +97,22 @@
                   >{{resource.commentCount}}条评论</a>
                 </div>
               </div>
+
+             
             </template>
+
+           
 
             <div
               v-if="requestResourcePadding"
               class="resource-detail-skeleton-2"
-              style="margin-left: 56px;margin-top: 68px;"
+              style="margin-left: 56px;margin-top: 28px;"
             >
               <a-skeleton :paragraph="{rows: 6}" />
             </div>
 
             <template v-if="!requestResourcePadding">
+            
               <div class="resource-detail-deslist-part5">
                 <div>
                   <!-- <a-icon type="folder" theme="twoTone" twoToneColor="#1ebf73"/>  -->
@@ -145,7 +148,9 @@
                   <Tag v-for="(item,k) in resource.labels" :key="k" size="medium">{{item}}</Tag>
                 </div>
               </div>
+
             </template>
+         
 
             <div class="resource-detail-deslist-part8">
               <div class="resource-detail-deslist-like" @click="handleLike">
@@ -184,27 +189,32 @@
             <div>资源描述</div>
             <div>
               <input type="checkbox" id="resource-detail-des-more" />
-              <div class="resource-detail-des-content" v-html="resource.description"></div>
-              <p>
-                <span
-                  class="resource-detail-des-caret-down"
-                  style="cursor:pointer;text-align:center;z-index:2;"
-                >
-                  <label for="resource-detail-des-more">展开</label>
-                  <span style="color:#1ebf73">
-                    <font-awesome-icon :icon="['fas','caret-down']" />
+              
+              
+              <div class="resource-detail-des-content" ref="resource-detail-des-content" v-html="resource.description"></div>
+              <template v-if="canCaretdown">
+                <p>
+                  <span
+                    class="resource-detail-des-caret-down"
+                    style="cursor:pointer;text-align:center;z-index:2;"
+                  >
+                    <label for="resource-detail-des-more">展开</label>
+                    <span style="color:#1ebf73">
+                      <font-awesome-icon :icon="['fas','caret-down']" />
+                    </span>
                   </span>
-                </span>
-                <span
-                  class="resource-detail-des-caret-up"
-                  style="cursor:pointer;text-align:center;z-index:2;"
-                >
-                  <label for="resource-detail-des-more">收起</label>
-                  <span style="color:#1ebf73">
-                    <font-awesome-icon :icon="['fas','caret-up']" />
+                  <span
+                    class="resource-detail-des-caret-up"
+                    style="cursor:pointer;text-align:center;z-index:2;"
+                  >
+                    <label for="resource-detail-des-more">收起</label>
+                    <span style="color:#1ebf73">
+                      <font-awesome-icon :icon="['fas','caret-up']" />
+                    </span>
                   </span>
-                </span>
-              </p>
+                </p>
+
+              </template>
             </div>
           </div>
         </template>
@@ -316,7 +326,15 @@
   // }
 }
 </style>
-<style lang="less">
+<style scoped lang="less">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+
 .resource-detail {
   .ivu-select-single .ivu-select-selection .ivu-select-placeholder {
     color: #7f7f7f;
@@ -765,6 +783,7 @@ export default {
 
       previewVisible: false,
       previewImage: "",
+      canCaretdown:true,
 
       showAlertComment: false,
 
@@ -797,6 +816,7 @@ export default {
         state: true,
         isStar: true, //是否关注过
         isRate: true,
+        user:{},
         vers: [
           // 版本 resource.ver[0].file.fileName
           {
@@ -861,7 +881,6 @@ export default {
       })
 
 
-
       // }
 
       //console.log(this.resource.images)
@@ -878,6 +897,11 @@ export default {
         // lightbox.setCurIdx(0)
         // lightbox.hide()
 
+        // setTimeout(()=>{
+        //    console.log(document.querySelector('.resource-detail-des-content'))
+
+        // },1234)
+       
         var galleryThumbs = new Swiper(".gallery-thumbs", {
           spaceBetween: 10,
           slidesPerView: 4,
@@ -947,7 +971,7 @@ export default {
           pid: null
         })
         .then(response => {
-          var res = response_des.data
+          var res = response.data
 
           if(res.code!=0)  return this.$message.warning(res.msg)
 
@@ -966,10 +990,10 @@ export default {
             star: true
           })
           .then(response => {
-            var res = response_des.data
+            var res = response.data
              if(res.code!=0)  return this.$message.warning(res.msg)
             this.resource.isStar = true;
-            this.$Message.success("已关注");
+            this.$Message.success("已关注")
           });
       } else {
         axios
@@ -977,11 +1001,11 @@ export default {
             star: false
           })
           .then(response => {
-            var res = response_des.data
+            var res = response.data
              if(res.code!=0)  return this.$message.warning(res.msg)
 
-            this.resource.isStar = false;
-            this.$Message.success("已取消关注");
+            this.resource.isStar = false
+            this.$Message.success("已取消关注")
           });
       }
     },
@@ -1043,7 +1067,7 @@ export default {
       return mb.toFixed(2);
     },
     handleVisit() {
-      this.$router.push(`/${this.userid}/visit/`);
+      this.$router.push(`/${this.resource.userId}/visit/`)
     },
     createComment() {
       const { params } = this.$route;

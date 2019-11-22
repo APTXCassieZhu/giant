@@ -1,10 +1,10 @@
 <template>
     <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
-        <div class="upper">
-            <img :src="concatImgUrl" class="image"/>
+        <div class="upper" :style="backgroundStyle">
+            <!-- <img :src="concatImgUrl" class="image"/> -->
             <strong class="heart" id="heart" @click="addFavorite()">
-                <Icon v-show="resource.isStar" size="30" type="md-heart" style="color: #ec5b6e;" />
-                <Icon v-show="!resource.isStar" size="30" type="md-heart-outline" style="color: #ec5b6e;" />
+                <Icon v-show="this.isStar == undefined || !this.isStar" size="30" type="md-heart-outline" style="color: #ec5b6e;" />
+                <Icon v-show="this.isStar" size="30" type="md-heart" style="color: #ec5b6e;z-index:11" />
             </strong>
         </div>
         <div class="source-content">
@@ -36,6 +36,10 @@ export default {
         breadlist:{
             type:Array,
             default: []
+        },
+        isLike:{
+            type: Boolean,
+            default: false,
         }
     },
     computed:{
@@ -51,11 +55,11 @@ export default {
             text = $d.textContent
             document.body.removeChild($d)
             return text.length>=45? text.slice(0,45)+'...' : text
-            
         },
+  
         concatImgUrl(){
             return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
-        }
+        },
     },
     data() {
         return {
@@ -66,20 +70,30 @@ export default {
             sourceDescription: '描述文字帮助用户对资源快速预览以及理解文字',
 
             jumpOrNot: true,
+            isStar: this.isLike,
+            backgroundStyle:{}
         }
     },
+    mounted(){
+        let $img = document.createElement('img')
+        $img.onload = ()=>{
+            this.backgroundStyle = {
+                backgroundImage:`url(${this.concatImgUrl})`
+            }
+        }
+        $img.src = this.concatImgUrl
+    },
     methods:{
+        
         addFavorite(){
             console.log('favorite')
             this.jumpOrNot = false
             /* 提示用户已关注 */
-            if(!this.resource.isStar){
+            if(!this.isStar || this.isStar == undefined){
                 axios.post(`/api/resource/${this.resource.id}/star`, {'star':true},{emulateJSON:true}).then((res)=>{
                     if(res.data.code === 0){
                         this.$Message.success('已关注')
-                        console.log(this.resource.isStar)
-                        this.resource.isStar = !this.resource.isStar
-                        console.log(this.resource.isStar)
+                        this.isStar = true
                     }else{
                         alert(res)
                     }
@@ -88,9 +102,7 @@ export default {
                 axios.post(`/api/resource/${this.resource.id}/star`, {'star':false},{emulateJSON:true}).then((res)=>{
                     if(res.data.code === 0){
                         this.$Message.success('已取消关注')
-                        console.log(this.resource.isStar)
-                        this.resource.isStar = !this.resource.isStar
-                        console.log(this.resource.isStar)
+                        this.isStar = false
                     }else{
                         alert(res)
                     }
@@ -130,11 +142,12 @@ export default {
     height: 140px; 
     width: 240px;
     background-image: url("../assets/白绿.jpg");
-    background-size: 240px 150px;
+    /* background-size: 237px 150px; */
+    background-size: cover;
     background-repeat: no-repeat;
 }
 .image{
-    width: 240px;
+    width: 237px;
     height: 140px;
 }
 .heart{
@@ -149,7 +162,7 @@ export default {
     width: 240px; 
     height: 275px;
     font-family: MicrosoftYaHei;
-    border: 1px solid #ffffff;
+    border: 1px solid  #ffffff;
     box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
     background-color: #ffffff;
     cursor: pointer;
