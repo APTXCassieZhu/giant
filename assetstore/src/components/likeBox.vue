@@ -1,7 +1,7 @@
 <template>
     <div class="source-box">
         <div class="upper" @click="goPage(`/resourceDetail/${source.id}`)">
-            <img v-if="source.images != null" class="font-image" :src="source.images[0]">
+            <img v-if="source.images != null" class="font-image" :src="concatImgUrl">
             <div v-else class="font-image">{{source.name.charAt(0)}}</div>
             <div class="font-title">{{source.name}}</div>
             <div class="font-content">来源: <span style="margin-left:10px;">{{getWhoShared}}</span></div>
@@ -33,8 +33,11 @@ export default {
             return this.source.user.nickName == null ? this.source.user.name : this.source.user.nickName
         },
         getRate(){
-            return source.rateAvg || 5
-        }
+            return this.source.rateAvg || 5
+        },
+        concatImgUrl(){
+            return `//192.168.94.238:3000/file/download/${this.source.images[0].id}?token=${this.$store.state.token}`
+        },
     },
     data() {
         return {
@@ -124,7 +127,7 @@ export default {
     height: 56px;
     line-height: 56px;
     text-align: center;
-    margin-top: 25px;
+    margin-top: 25.5px;
 }
 .footer-col {
     /*border-right:2px solid #7d7d7d;*/
