@@ -51,15 +51,15 @@
                                     <font-awesome-icon :icon="['fas','plus']" @mouseover="bright" @mouseout="unBright" class="upload-add-style"/>
                                 </span>
                                 <span v-for="(product, i) in this.productList" :key="'aa'+i">
-                                    <source-box :source='product'  @onDel="onDel"></source-box>
+                                    <source-box :source="product" @onDel="onDel"></source-box>
                                 </span>
                             </div>
                             <div>
                                 <Button v-show="ifMoreSource" id="more" class="more" @click="addMore('source')">加载更多</Button>
                             </div>
                         </div>
-                    </TabPane></Tabs></div>
-                    <!-- <TabPane :label="tab2" name="name2">
+                    </TabPane>
+                    <TabPane :label="tab2" name="name2">
                         <div class="container">
                             <div>
                                 <span v-for="(software, n) in softwareList" :key="n" style="display:inline-block;">
@@ -91,7 +91,7 @@
                         </div>
                     </TabPane>
                 </Tabs>
-            </div>-->
+            </div>
         </div> 
         <corner></corner>
         <Footer style="position:relative; bottom: 0px; margin-top:200px"></Footer>
@@ -148,8 +148,8 @@ export default {
         axios.get(`/api/user/${o.id}/resource`,{params:{page: this.sourcePage,
         pageSize: this.sourcePageSize,}}).then((res)=>{
             if(res.data.code == 0){
-                debugger
                 this.productList = res.data.data.list
+                console.log(this.productList)
                 this.tab1 = `资源(${res.data.data.count})`
                 this.totalResource = res.data.data.count
                 if(res.data.data.count > this.productList.length){

@@ -23,8 +23,8 @@
             </div>
             <div class="font-content">下载次数&emsp;&emsp;&emsp;关注人数</div>
             <div class="font-num">
-                <span style="min-width: 25px;">{{source.downloadCount||0}}</span>
-                <span style="margin-left: 63px;">{{source.starCount||0}}</span>
+                <div style="min-width: 30px; display: inline-block;">{{source.downloadCount||0}}</div>
+                <div style="margin-left: 63px; display: inline-block;">{{source.starCount||0}}</div>
             </div>
         </div>
         <Row class="font-footer">
@@ -80,7 +80,7 @@ export default {
             }
         },
         concatImgUrl(){
-            return `//192.168.94.238:3000/file/download/${source.images[0].id}?token=${this.$store.state.token}`
+            return `//192.168.94.238:3000/file/download/${this.source.images[0].id}?token=${this.$store.state.token}`
         },
     },
     data() {
@@ -151,7 +151,9 @@ export default {
                 okText: '确认',
                 cancelText: '取消',
                 onOk: () => {
-                    axios.delete(`/api/resource/${this.source.id}`).then((res)=>{
+                    let headers = {"Content-Type": "application/json; charset=utf-8"}
+                    let data = {"id": this.source.id}
+                    axios.delete(`/api/resource/${this.source.id}`,{headers, data}).then((res)=>{
                         if(res.data.code == 0){
                             setTimeout(() => {
                                 this.$Modal.success({

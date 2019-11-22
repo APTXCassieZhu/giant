@@ -10,10 +10,9 @@
                     <span class="version-num">Ver. {{item.verNum}}<span v-if="n==0">（当前版本）</span></span>
                     <span v-if="n != (versionList.length-1)" class="version-update-time"> 更新于 {{getYYMMDD(item.updatedAt)}} </span>
                     <span v-else class="version-update-time"> 创建于 {{getYYMMDD(item.updatedAt)}} </span>
-                    <!-- TODO 点击如何下载还没写-->
-                    <Button class="download-btn" type="success">下载此版本</Button>
+                    <Button class="download-btn" type="success" @click="download(item.file)">下载此版本</Button>
                     <Divider />
-                    <div class="version-des"  v-html="item.descriptipon"></div>
+                    <div class="version-des" v-html="item.description"></div>
                 </div>
             </div>
         </div>
@@ -58,6 +57,9 @@ export default {
             }
             return  yy+'-'+mm+'.'+dd
   
+        },
+        download(file){
+            location.href = `//192.168.94.238:3000/file/download/${file.id}/?token=${this.$store.state.token}`
         }
     }
 }
