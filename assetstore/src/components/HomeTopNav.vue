@@ -389,7 +389,13 @@ export default {
 
 @media only screen and (max-width: 1366px) {
     .topnav-box-link{
-        width: 76%;
+        width: 50%;
+    }
+    .topnav-box-link-a{
+        width: 150px;
+    }
+    .topnav-box-user{
+        width: 12%;
     }
 }
 </style>

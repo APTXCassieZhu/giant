@@ -816,11 +816,6 @@ export default {
     font-family: MicrosoftYaHei;
 }
 @media only screen and (max-width: 1366px) {
-    .software-page {
-        width: 800px;
-        height: 500px;
-        min-height: 500px;
-    }
     .topnav-box-user{
         width:23%;
         min-width: 270px;

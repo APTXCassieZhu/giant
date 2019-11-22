@@ -1,6 +1,6 @@
 <template>
-    <div style="background-color: #eff2f5" >
-        <TopNavigation style="position:relative; height: 140px;"></TopNavigation>  
+    <div class="outest" style="background-color: #eff2f5;" >
+        <TopNavigation class="outest" style="position:relative; height: 140px;"></TopNavigation>  
         <div class="bread-container"> 
             <br>     
             <Breadcrumb>
@@ -618,6 +618,9 @@ export default {
         width: 800px;
         height: 500px;
         min-height: 500px;
+    }
+    .outest{
+        max-width: 1366px;
     }
 }
 </style>

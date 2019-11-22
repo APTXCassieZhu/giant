@@ -57,7 +57,7 @@
                 <div v-else v-for="(resource, i) in this.user.fineResources" :key="'a'+i">
                     <div class="personal-fine">
                         <div v-if="resource.images==null" class="font-image">{{resource.name.charAt(0)}}</div>
-                        <div v-else><img class="font-image" :src="resource.images[0]"></div>
+                        <div v-else><img class="font-image" :src="concatImgUrl(resource.images[0].id)"></div>
                         <div class="font-name">{{resource.name}}</div>
                     </div>
                     <br><br>
@@ -253,6 +253,9 @@ export default {
                 alert(res)
             })
         },
+        concatImgUrl(url){
+            return `//192.168.94.238:3000/file/download/${url}?token=${this.$store.state.token}`         
+        },
     },
 }
 </script>
@@ -292,7 +295,7 @@ export default {
     display:inline-block;
     font-family: MicrosoftYaHei;
     width: 360px;
-    min-height: 730px;
+    /* min-height: 730px; */
     left: 50px;
     top: 50px;
     padding: 30px 20px 40px 25px;

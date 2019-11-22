@@ -16,7 +16,7 @@
         <span v-for="(item, n) in this.commonArtList" :key="n" >
             <source-card :resource="item" :isLike="item.isStar"
             :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
-            :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card>
+            :sourceID="n+''" class="fine-resource-card"></source-card>
         </span>
     </div>
     <div class="type-title" @click="goPage('/artFilter')">推荐分类</div>
@@ -41,37 +41,37 @@
 
     <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop class="carousel-style">
         <CarouselItem>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
+            <!-- <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card> -->
+        </CarouselItem>
+        <!-- <CarouselItem>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
         </CarouselItem>
         <CarouselItem>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
-        </CarouselItem>
-        <CarouselItem>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></fine-source-card>        
-        </CarouselItem>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
+            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
+        </CarouselItem> -->
     </Carousel>
     <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
     <div class="card-wrapper" style="margin-bottom: 0px;">
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="111"  ref="child" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="222" ref="child3" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="333"  ref="child4" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="444"  ref="child5" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="111"  ref="child" class="fine-resource-card"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="222" ref="child3" class="fine-resource-card"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="333"  ref="child4" class="fine-resource-card"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="444"  ref="child5" class="fine-resource-card"></special-card>
     </div>
     <div class="card-wrapper" style="margin-top: 0px; margin-bottom: 200px;">    
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="555" ref="child6" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="666" ref="child7" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="777" ref="child8" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="999" ref="child9" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="555" ref="child6" class="fine-resource-card"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="666" ref="child7" class="fine-resource-card"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="777" ref="child8" class="fine-resource-card"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="999" ref="child9" class="fine-resource-card"></special-card>
     </div>
     <corner></corner>
     <Footer style="position: relative;"></Footer>
@@ -207,7 +207,7 @@ export default {
 .more{
     position: absolute;
     top: 1.5px;
-    right: 300px;
+    right: 380px;
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;
@@ -222,10 +222,17 @@ export default {
     margin-top: 20px;
     margin-bottom: 50px;
 }
+.fine-resource-card{
+    display: inline-block;
+    margin-bottom: 40px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
 .advise-card{
     display: inline-block; 
     cursor: pointer;
-    margin-right: 30px; 
+    margin-left: 15px; 
+    margin-right: 15px; 
     margin-bottom: 40px;
     width: 240px;
     height: 275px;
@@ -241,5 +248,10 @@ export default {
     top: 230px;
     left: 10px;
     font-size: 28px;
+}
+@media only screen and (max-width: 1366px) {
+    .more{
+        right: 10px;
+    }
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
     <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
         <div id="special" class="image" :style="backgroundStyle">
-            <img :src="concatImgUrl" class="resource-image"/>
+            <!-- <img :src="concatImgUrl" class="resource-image"/> -->
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
                 <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
             </strong>
         </div>
         <div class="source-des">
-            <p class="source-des-name">{{resource.name}}</p>
+            <p class="source-des-name">{{sourceTitle}}</p>
             <p>{{sourceDescription}}</p>
         </div>
         <div class="source-content">
@@ -56,10 +56,13 @@ export default {
             
         },
         concatImgUrl(){
-            return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
+            // return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
+            return `//192.168.94.238:3000/file/download/123?token=${this.$store.state.token}`
         },
     },
     mounted(){
+        this.resource
+        debugger
         let $img = document.createElement('img')
         $img.onload = ()=>{
             this.backgroundStyle = {
@@ -116,6 +119,12 @@ export default {
     }
 }
 </script>
+<style>
+.carousel-style > .ivu-carousel-arrow > *{
+    vertical-align: center;
+}
+</style>
+</style>
 <style scoped>
 .image {
     height: 184px;
