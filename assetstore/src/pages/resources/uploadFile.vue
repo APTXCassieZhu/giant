@@ -18,7 +18,6 @@
                         getValueFromEvent: normFile
                       }
                     ]"
-
                     @change="handleChange"
                     :beforeUpload="beforeUpload"
 										:headers="{authorization:this.$store.state.token}"
@@ -43,7 +42,6 @@
 
             <section>
               <header class="uploadfile-header">STEP.2 <br/>资源信息编辑</header>
-   
                <a-form-item label="资源名称：" :label-col="labelCol" :wrapper-col="wrapperCol ">
                 <a-input
                   v-decorator="['resource-name', { rules: [{ required: true, message: '请输入资源名称' }] }]"
@@ -659,7 +657,7 @@ export default {
         // ]
         // console.log(this.checkedList,this.checkedList_unreal)
 
-        
+
         if(err){
            return $('html,body').animate({scrollTop: '440px'}, 300)
          }
@@ -676,14 +674,11 @@ export default {
         ]
           
         // debugger
-
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
 
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
+         
         ;[images[0],images[this.replaceIdx]] =[images[this.replaceIdx],images[0]]
-        
-
-      
 
         axios.post(`/api/resource`,
           {
