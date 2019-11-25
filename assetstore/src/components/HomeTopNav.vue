@@ -277,7 +277,7 @@ export default {
             profile: null,
             userName: '神之子阿目',
             activenum: 0,
-            totalUnreadNum: 100,
+             totalUnreadNum: 100,
             infoDropdownCount: 0,
             noticeDropdownCount: 0,
             totalUnreadInfo: [],
