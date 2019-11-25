@@ -308,7 +308,9 @@ export default {
         },
         /* 用于通知提醒icon dropdown跳转前通知后端已读 */
         goPage1(url, item){
-            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/remind/${item.id}/view`, {headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -329,7 +331,9 @@ export default {
             this.$router.push('/personal')
         },
         goLike1(item){
-            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/remind/${item.id}/view`, {headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -361,7 +365,9 @@ export default {
                     this.totalUnreadInfo.splice(i, 1);
                     this.totalUnreadNum --
                     this.infoDropdownCount --
-                    axios.put(`/api/remind/${item.id}/ignore`).then(res=>{
+                    let headers = {"Content-Type": "application/json; charset=utf-8"}
+                    let data = {"id": item.id}
+                    axios.put(`/api/remind/${item.id}/ignore`, {headers, data}).then(res=>{
                         if(res.data.code === 0){
                             
                         }else if(res.data.code === 400){
@@ -392,7 +398,9 @@ export default {
                     this.totalUnreadNotice.splice(i, 1);
                     this.totalUnreadNum --
                     this.noticeDropdownCount --
-                    axios.put(`/api/bulletin/${item.id}/ignore`).then(res=>{
+                    let headers = {"Content-Type": "application/json; charset=utf-8"}
+                    let data = {"id": item.id}
+                    axios.put(`/api/bulletin/${item.id}/ignore`, {headers, data}).then(res=>{
                         if(res.data.code === 0){
                             
                         }else if(res.data.code === 400){
@@ -420,8 +428,9 @@ export default {
         },
         ignoreAllInfo(){
             this.totalUnreadNum -= this.infoDropdownCount
-            /*TODO 忽略全部 */
-            axios.put(`/api/remind/ignore`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {}
+            axios.put(`/api/remind/ignore`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                     
                 }else if(res.data.code === 400){
@@ -433,7 +442,9 @@ export default {
         },
         ignoreAllNotice(){
             this.totalUnreadNum -= this.noticeDropdownCount
-            axios.put(`/api/bulletin/ignore`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {}
+            axios.put(`/api/bulletin/ignore`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')

@@ -558,7 +558,7 @@ export default {
 
 @media only screen and (max-width: 1366px) {
     .asset-card {
-        width: 950px;
+        width: 900px;
         height: 500px;
         min-height: 500px;
     }

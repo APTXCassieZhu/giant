@@ -1,9 +1,9 @@
 <template>
     <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
         <div id="special" class="image" :style="backgroundStyle">
-            <img :src="concatImgUrl" class="resource-image"/>
+            <!-- <img :src="concatImgUrl" class="resource-image"/> -->
             <strong class="heart" id="heart" @click="addFavorite()">
-                <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
+                <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="favoriteIcon == undefined || !favoriteIcon  "/>
                 <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
             </strong>
         </div>
@@ -13,11 +13,11 @@
         </div>
         <div class="source-content">
             <Rate disabled icon="md-star" v-model="getRateAvg" style="position:relative; left: 2px;"></Rate>
-            <span class="source-card-footer-icon" style="position:relative; right: 8px;">
+            <span class="source-card-footer-icon">
                 <font-awesome-icon :icon="['fas','eye']"/>
                 <span> {{resource.viewCount||0}}</span>
             </span>
-            <span class="source-card-footer-icon" style="position:relative; right: 8px;">
+            <span class="source-card-footer-icon">
                 <font-awesome-icon :icon="['fas','comment']"/>
                 <span> {{resource.commendCount||0}}</span>
             </span>
@@ -38,6 +38,10 @@ export default {
         breadlist:{
             type:Array,
             default: []
+        },
+        isLike:{
+            type: Boolean,
+            default: false,
         }
     },
     computed:{
@@ -74,7 +78,7 @@ export default {
         return {
             sourceTitle: '资源名称范例文字^_^',
             sourceDescription: '这是一段帮助用户理解资源内容的描述',
-            favoriteIcon: false,            // defalut favourite is false
+            favoriteIcon: this.isLike,           
             jumpOrNot: true,
             backgroundStyle:{}
         }
@@ -128,9 +132,13 @@ export default {
 .image {
     height: 184px;
     width: 306px;
-    background-size: 306px 184px;
+    background-size: cover;
     background-repeat: no-repeat;
     background-image: url('../assets/绿.jpg');
+}
+.resource-image{
+    width: 304px;
+    height: 184px;
 }
 .heart{
     position: relative; 
@@ -139,10 +147,7 @@ export default {
     right: 20px;
     cursor: pointer;
 }
-.resource-image{
-    width: 304px;
-    height: 184px;
-}
+
 .source-card{
     width: 306px; 
     height: 265px;
@@ -171,8 +176,9 @@ export default {
     margin-top: 7px;
     font-size: 12px;
     color: #7f7f7f;
-    text-align: left;
-    font-family: MicrosoftYaHei;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .source-content-icon{
     position:relative;
@@ -181,5 +187,10 @@ export default {
 }
 .ivu-rate-star{
     margin-right: 0px;
+}
+.source-card-footer-icon{
+    position:relative; 
+    right: 8px;
+    margin-top: 10px;
 }
 </style>

@@ -419,7 +419,9 @@ export default {
             this.showNoticeDetail = true
             this.curNoticeItem = item
             /* 告知后端通知已读 */
-            axios.put(`/api/bulletin/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/bulletin/${item.id}/view`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')

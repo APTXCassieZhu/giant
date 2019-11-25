@@ -620,7 +620,7 @@ export default {
         min-height: 500px;
     }
     .outest{
-        max-width: 1366px;
+        width: 1366px;
     }
 }
 </style>
