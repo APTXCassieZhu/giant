@@ -446,7 +446,7 @@ export default {
     font-family: MicrosoftYaHei;
     font-size: 16px;
     width: 1200px;
-    height: 660px;
+    min-height: 700px;
     margin-left: 50px;
     margin-top: 53px;
     padding: 20px 28px 30px 28px;
@@ -555,12 +555,16 @@ export default {
     font-weight: 600;
     margin-top: 30px;
 }
-
+@media only screen and (max-width: 1600px) {
+    .asset-card {
+        width: 800px;
+        min-height: 620px;
+    }
+}
 @media only screen and (max-width: 1366px) {
     .asset-card {
-        width: 950px;
-        height: 500px;
-        min-height: 500px;
+        width: 900px;
+        min-height: 620px;
     }
 }
 </style>

@@ -308,7 +308,9 @@ export default {
         },
         /* 用于通知提醒icon dropdown跳转前通知后端已读 */
         goPage1(url, item){
-            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/remind/${item.id}/view`, {headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -329,7 +331,9 @@ export default {
             this.$router.push('/personal')
         },
         goLike1(item){
-            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/remind/${item.id}/view`, {headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -340,6 +344,14 @@ export default {
         },
         /* 由通知的dropdown点击跳转消息中心看详情 */
         goNotice(item){
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/bulletin/${item.id}/view`, {headers, data}).then(res=>{
+                if(res.data.code === 0){
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })  
             this.$store.commit('READ_NOTICE', item)
             if(this.$route.path==='/notice'){
                 location.reload()
@@ -361,7 +373,9 @@ export default {
                     this.totalUnreadInfo.splice(i, 1);
                     this.totalUnreadNum --
                     this.infoDropdownCount --
-                    axios.put(`/api/remind/${item.id}/ignore`).then(res=>{
+                    let headers = {"Content-Type": "application/json; charset=utf-8"}
+                    let data = {"id": item.id}
+                    axios.put(`/api/remind/${item.id}/ignore`, {headers, data}).then(res=>{
                         if(res.data.code === 0){
                             
                         }else if(res.data.code === 400){
@@ -392,7 +406,9 @@ export default {
                     this.totalUnreadNotice.splice(i, 1);
                     this.totalUnreadNum --
                     this.noticeDropdownCount --
-                    axios.put(`/api/bulletin/${item.id}/ignore`).then(res=>{
+                    let headers = {"Content-Type": "application/json; charset=utf-8"}
+                    let data = {"id": item.id}
+                    axios.put(`/api/bulletin/${item.id}/ignore`, {headers, data}).then(res=>{
                         if(res.data.code === 0){
                             
                         }else if(res.data.code === 400){
@@ -420,8 +436,9 @@ export default {
         },
         ignoreAllInfo(){
             this.totalUnreadNum -= this.infoDropdownCount
-            /*TODO 忽略全部 */
-            axios.put(`/api/remind/ignore`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {}
+            axios.put(`/api/remind/ignore`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                     
                 }else if(res.data.code === 400){
@@ -433,7 +450,9 @@ export default {
         },
         ignoreAllNotice(){
             this.totalUnreadNum -= this.noticeDropdownCount
-            axios.put(`/api/bulletin/ignore`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {}
+            axios.put(`/api/bulletin/ignore`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -603,7 +622,7 @@ export default {
 .topnav-box-user{
     position: relative;
     width:15%;
-    min-width: 240px;
+    min-width: 270px;
     top: 10px;
     float:right;
     align-content: center;
@@ -626,7 +645,6 @@ export default {
 .topnav-user-image:hover{
     color: #1ebf73;
 }
-
 .topnav-user{
     color:black;
     z-index:inherit;
@@ -731,7 +749,7 @@ export default {
     z-index: 100;
 }
 .topnav-dropdown-notice{
-    min-height: 284px;
+    /* min-height: 284px; */
     max-height: 900px;
 }
 .mark-green{

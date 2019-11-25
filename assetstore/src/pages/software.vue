@@ -65,7 +65,7 @@
                             <software-download :sw="item"></software-download>
                         </span>
                     </div>
-                    <div>
+                    <div style="text-align: center">
                         <Button v-show="ifMoreGeneral" id="more" class="more" @click="addMore('general')">加载更多</Button>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                         <special-download :btn='btnList[1]'></special-download>
                         <special-download :btn='btnList[2]'></special-download>
                     </div>
-                    <div>
+                    <div style="text-align: center">
                         <Button v-show="ifMoreSpecial" id="more" class="more" @click="addMore('special')">加载更多</Button>
                     </div>
                 </div>
@@ -94,8 +94,8 @@
                             <software-download :sw="item"></software-download>
                         </span>
                     </div>
-                    <div>
-                        <Button v-show="ifMoreFree" id="more" class="more" @click="addMore('free')">加载更多</Button>
+                    <div style="text-align: center">
+                        <Button v-show="true" id="more" class="more" @click="addMore('free')">加载更多</Button>
                     </div>
                 </div>
             </div>
@@ -108,7 +108,7 @@
                             <software-download :sw="item"></software-download>
                         </span>
                     </div>
-                    <div>
+                    <div style="text-align: center">
                         <Button v-show="ifMoreSchedule" id="more" class="more" @click="addMore('schedule')">加载更多</Button>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                             <software-download :sw="item"></software-download>
                         </span>
                     </div>
-                    <div>
+                    <div style="text-align: center">
                         <Button v-show="ifMoreDrive" id="more" class="more" @click="addMore('drive')">加载更多</Button>
                     </div>
                 </div>
@@ -581,7 +581,8 @@ export default {
     position: relative;
     /* left: 130px; */
     top: 28px;
-    width: 1280px;
+    /* width: 1200px; */
+    width: 70%;
     min-height: 460px;
     border-radius: 3px;
     padding: 0px 0px 30px 30px;
@@ -590,7 +591,7 @@ export default {
 }
 .software-container{
     display:flex;
-    align-items:center;
+    /* align-items:center; */
     flex-direction: column;
 }
 .card-title{
@@ -603,11 +604,10 @@ export default {
     text-align: center;
     width: 193px;
     height: 44px;
-    /* background-color: #e8f8f0; */
     color: #1ebf73;
-    /* border: solid 1px #1ebf73; */
     font-size: 18px;
     font-weight: 600;
+    margin: auto;
 }
 /* .more:hover{
     color: white;
@@ -616,11 +616,10 @@ export default {
 @media only screen and (max-width: 1366px) {
     .software-page {
         width: 800px;
-        height: 500px;
         min-height: 500px;
     }
     .outest{
-        max-width: 1366px;
+        width: 1366px;
     }
 }
 </style>
