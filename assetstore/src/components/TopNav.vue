@@ -130,7 +130,6 @@
                                                         </span>
                                                         评论了你的<span class="mark-green"> {{item.resource.name}} </span> 
                                                         <div class="time-slot">{{getTime(item.updatedAt)}}</div>
-                                                        <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                     </div>
                                                 </div>
                                                 <div v-else class="jump"  @click="goPage1(`/resourceDetail/${item.resource.id}`,item)">
@@ -257,7 +256,8 @@ export default {
         axios.get('/api/remind', {
             params: {
                 page: 1,
-                pageSize: 5
+                pageSize: 5,
+                dropdown: true,
             }
         }).then(res=>{
             if(res.data.code === 0){
@@ -271,7 +271,8 @@ export default {
         axios.get('/api/bulletin', {
             params: {
                 page: 1,
-                pageSize: 5
+                pageSize: 5,
+                dropdown: true
             }
         }).then(res=>{
             if(res.data.code === 0){
@@ -693,10 +694,11 @@ export default {
 }
 .ignore-all-btn-disabled{
     border: solid 1px #e5e5e5;
+    border-radius: 0px;
     font-size: 16px;
     letter-spacing: 1px;
     color: #d8d8d8;
-    width: 204px;
+    width: 204.5px;
     height: 62px;
 }
 .close-icon-btn{

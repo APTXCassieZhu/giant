@@ -128,7 +128,7 @@
                         </div>
                         <Divider/>
                     </div>
-                    <Button style="color:#1ebf73;width:150px;" @click="addMoreInfo()" size="large">加载更多</Button>
+                    <Button v-show="ifMoreInfo" style="color:#1ebf73;width:150px;" @click="addMoreInfo()" size="large">加载更多</Button>
                 </div>
             </div>
             <!-- 通知 -->
@@ -151,7 +151,7 @@
                         </div>
                         <Divider/>
                     </div>
-                    <Button style="color:#1ebf73;width:150px;" @click="addMoreNotice()" size="large">加载更多</Button>
+                    <Button v-show="ifMoreNotice" style="color:#1ebf73;width:150px;" @click="addMoreNotice()" size="large">加载更多</Button>
                 </div>
             </div>
             <!-- 系统通知的具体内容 -->
@@ -193,6 +193,9 @@ export default {
             if(res.data.code === 0){
                 this.infoNotRead = res.data.data.webCount
                 this.totalInfo = res.data.data.list
+                if(this.totalInfo.length < res.data.data.count){
+                    this.ifMoreInfo = true
+                }
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -206,6 +209,9 @@ export default {
             if(res.data.code === 0){
                 this.noticeNotRead = res.data.data.webCount
                 this.totalNotice = res.data.data.list
+                if(this.totalNotice.length < res.data.data.count){
+                    this.ifMoreNotice = true
+                }
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -239,12 +245,16 @@ export default {
             markRead1: 'mark-read',         // 通知的全部已读button
             showNoticeDetail: false,        // 是否展示具体的通知内容
             curNoticeItem: {},              // 展示的通知
+            ifMoreNotice: false,
+            ifMoreInfo: false,
         }
     },
     methods:{
         goPage(url,item){
             /* 跳转之前告知后端已读 */
-            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/remind/${item.id}/view`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -278,7 +288,9 @@ export default {
                             this.totalInfo[i].view = true
                         }
                         /* 设置全部已读 */
-                        axios.put('/api/remind/view').then(res=>{
+                        let headers = {"Content-Type": "application/json; charset=utf-8"}
+                        let data = {}
+                        axios.put('/api/remind/view',{headers, data}).then(res=>{
                             if(res.data.code === 0){
                             }else if(res.data.code === 400){
                                 alert('参数格式不正确')
@@ -292,7 +304,9 @@ export default {
                             this.totalNotice[i].view = true
                         }
                         /* 设置全部已读 */
-                        axios.put('/api/bulletin/view').then(res=>{
+                        let headers = {"Content-Type": "application/json; charset=utf-8"}
+                        let data = {}
+                        axios.put('/api/bulletin/view',{headers,data}).then(res=>{
                             if(res.data.code === 0){
                             }else if(res.data.code === 400){
                                 alert('参数格式不正确')
@@ -369,6 +383,11 @@ export default {
                 if(res.data.code === 0){
                     this.infoNotRead = res.data.data.webCount
                     this.totalInfo = this.totalInfo.concat(res.data.data.list)
+                    if(this.totalInfo.length < res.data.data.count){
+                        this.ifMoreInfo = true
+                    }else{
+                        this.ifMoreInfo = false
+                    }
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
                 }
@@ -385,6 +404,11 @@ export default {
                 if(res.data.code === 0){
                     this.noticeNotRead = res.data.data.webCount
                     this.totalNotice = this.totalNotice.concat(res.data.data.list)
+                    if(this.totalNotice.length < res.data.data.count){
+                        this.ifMoreNotice = true
+                    }else{
+                        this.ifMoreNotice = false
+                    }
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
                 }
@@ -534,7 +558,7 @@ export default {
     width:900px;
 }
 .time-slot{
-    float: right;
+    /* float: right; */
     font-size: 18px;
     font-weight: 600;
     letter-spacing: 1.13px;
@@ -543,6 +567,7 @@ export default {
     cursor: pointer;
     font-size: 18px;
     font-weight: 600;
+    width: 1104.01px;
     color: black;
 }
 .info-content-readed{
@@ -550,6 +575,7 @@ export default {
     color: #7f7f7f;
     font-size: 18px;
     font-weight: 600;
+    width: 1104.01px;
 }
 .empty{
     display: flex;
@@ -594,5 +620,22 @@ export default {
 .notice-detail-content{
     text-align:left;
     padding: 80px 141px 140px 260px;
+}
+@media only screen and (max-width: 1366px) {
+    .notice-card {
+        width: 950px;
+        height: 500px;
+        min-height: 500px;
+    }
+
+    .info-content, .info-content-readed{
+        width: 900px;
+    }
+    .font-content{
+        width: 700px;
+    }
+    .mark-read, .mark-readed{
+        margin-left: 790px;
+    }
 }
 </style>
