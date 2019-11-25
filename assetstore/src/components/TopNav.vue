@@ -622,7 +622,7 @@ export default {
 .topnav-box-user{
     position: relative;
     width:15%;
-    min-width: 240px;
+    min-width: 270px;
     top: 10px;
     float:right;
     align-content: center;

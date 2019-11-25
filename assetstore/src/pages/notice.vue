@@ -623,10 +623,25 @@ export default {
     text-align:left;
     padding: 80px 141px 140px 260px;
 }
+@media only screen and (max-width: 1600px) {
+    .notice-card {
+        width: 850px;
+        min-height: 500px;
+    }
+
+    .info-content, .info-content-readed{
+        width: 800px;
+    }
+    .font-content{
+        width: 600px;
+    }
+    .mark-read, .mark-readed{
+        margin-left: 690px;
+    }
+}
 @media only screen and (max-width: 1366px) {
     .notice-card {
         width: 950px;
-        height: 500px;
         min-height: 500px;
     }
 

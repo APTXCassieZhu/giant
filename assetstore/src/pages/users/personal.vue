@@ -555,7 +555,12 @@ export default {
     font-weight: 600;
     margin-top: 30px;
 }
-
+@media only screen and (max-width: 1600px) {
+    .asset-card {
+        width: 800px;
+        min-height: 620px;
+    }
+}
 @media only screen and (max-width: 1366px) {
     .asset-card {
         width: 900px;
