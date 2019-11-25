@@ -30,11 +30,11 @@
         <!-- <span v-for="(item, x) in recommendClass" :key="x">
             <div class="advise-card" :style="{backgroundImage: 'url(' + require(`../assets/资源-${item.name}.png`) + ')'}"></div>
         </span> -->
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require(`../assets/资源-3d.png`) + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-2d.png') + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-贴图与材质.png') + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-模板.png') + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-角色.png') + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/3d')" :style="{backgroundImage: 'url(' + require(`../assets/资源-3d.png`) + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/2d')" :style="{backgroundImage: 'url(' + require('../assets/资源-2d.png') + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/texture')" :style="{backgroundImage: 'url(' + require('../assets/资源-贴图与材质.png') + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/template')" :style="{backgroundImage: 'url(' + require('../assets/资源-模板.png') + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/role')" :style="{backgroundImage: 'url(' + require('../assets/资源-角色.png') + ')'}"></div>
     </div>
     <div class="type-title" @click="goPage('/artShow')">精选美术资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>

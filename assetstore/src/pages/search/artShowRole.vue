@@ -117,8 +117,12 @@ export default {
             this.route = "美术类资源 / 日韩"
         }else if(this.$route.params.pathMatch == "occident"){
             this.route = "美术类资源 / 欧美"
-        }else{
+        }else if(this.$route.params.pathMatch == "china"){
             this.route = "美术类资源 / 国风"
+        }else if(this.$route.params.pathMatch == "texture"){
+            this.route = "美术类资源 / 贴图与材质"
+        }else if(this.$route.params.pathMatch == "template"){
+            this.route = "美术类资源 / 模板"
         }
     },
     methods:{
