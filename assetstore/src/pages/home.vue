@@ -39,26 +39,23 @@
     <div class="type-title" @click="goPage('/artShow')">精选美术资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
 
-    <!-- <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop class="carousel-style"> -->
-        <!-- <CarouselItem> -->
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card" :isLike="this.fineArtList[0].isStar"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card" :isLike="this.fineArtList[1].isStar"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card" :isLike="this.fineArtList[0].isStar"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card" :isLike="this.fineArtList[1].isStar"></fine-source-card>
-        <!-- </CarouselItem> -->
-        <!-- <CarouselItem>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card" :isLike="this.fineArtList[1].isStar"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card" :isLike="this.fineArtList[0].isStar"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card" :isLike="this.fineArtList[1].isStar"></fine-source-card>        
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card" :isLike="this.fineArtList[0].isStar"></fine-source-card>        
+    <Carousel autoplay arrow="always" trigger="hover" :autoplay-speed="speed" class="carousel-style">
+        <CarouselItem>
+            <span v-for="item in this.fineArtList.slice(0,3)">
+                <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
+            </span>
         </CarouselItem>
         <CarouselItem>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card" :isLike="this.fineArtList[0].isStar"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card" :isLike="this.fineArtList[1].isStar"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card" :isLike="this.fineArtList[0].isStar"></fine-source-card>        
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card" :isLike="this.fineArtList[1].isStar"></fine-source-card>        
-        </CarouselItem> -->
-    <!-- </Carousel> -->
+            <span v-for="item in this.fineArtList.slice(0,3)">
+                <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
+            </span>
+        </CarouselItem>
+        <CarouselItem>
+            <span v-for="item in this.fineArtList.slice(0,3)">
+                <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
+            </span>
+        </CarouselItem>
+    </Carousel>
     <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
     <div class="card-wrapper" style="margin-bottom: 0px;">
@@ -101,7 +98,7 @@ export default {
             recommendClass: [],
             fineArtList: [],
             devList: [],
-
+            curCarousel: 0,
         }
     },
     mounted() {
