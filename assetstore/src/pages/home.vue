@@ -30,44 +30,39 @@
         <!-- <span v-for="(item, x) in recommendClass" :key="x">
             <div class="advise-card" :style="{backgroundImage: 'url(' + require(`../assets/资源-${item.name}.png`) + ')'}"></div>
         </span> -->
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require(`../assets/资源-3d.png`) + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-2d.png') + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-贴图与材质.png') + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-模板.png') + ')'}"></div>
-        <div class="advise-card" :style="{backgroundImage: 'url(' + require('../assets/资源-角色.png') + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/3d')" :style="{backgroundImage: 'url(' + require(`../assets/资源-3d.png`) + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/2d')" :style="{backgroundImage: 'url(' + require('../assets/资源-2d.png') + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/texture')" :style="{backgroundImage: 'url(' + require('../assets/资源-贴图与材质.png') + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/template')" :style="{backgroundImage: 'url(' + require('../assets/资源-模板.png') + ')'}"></div>
+        <div class="advise-card" @click="goPage('/artshow/role')" :style="{backgroundImage: 'url(' + require('../assets/资源-角色.png') + ')'}"></div>
     </div>
     <div class="type-title" @click="goPage('/artShow')">精选美术资源</div>
     <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
 
-    <h1>finArtList: {{this.fineArtList.length}}</h1>
-   
-    <Carousel autoplay arrow="always" trigger="click" dots="none" :autoplay-speed="speed" loop class="carousel-style">
+    <Carousel autoplay arrow="always" trigger="hover" :autoplay-speed="speed" class="carousel-style">
         <CarouselItem>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>
+            <span v-for="item in this.fineArtList.slice(0,3)">
+                <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
+            </span>
         </CarouselItem>
         <CarouselItem>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>        
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
+            <span v-for="item in this.fineArtList.slice(0,3)">
+                <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
+            </span>
         </CarouselItem>
         <CarouselItem>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[0]" class="fine-resource-card"></fine-source-card>        
-            <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="this.fineArtList[1]" class="fine-resource-card"></fine-source-card>        
+            <span v-for="item in this.fineArtList.slice(0,3)">
+                <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
+            </span>
         </CarouselItem>
     </Carousel>
     <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
     <div class="card-wrapper" style="margin-bottom: 0px;">
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="111"  ref="child" class="fine-resource-card"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="111" ref="child2" class="fine-resource-card"></special-card>
         <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="222" ref="child3" class="fine-resource-card"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="333"  ref="child4" class="fine-resource-card"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="444"  ref="child5" class="fine-resource-card"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="333" ref="child4" class="fine-resource-card"></special-card>
+        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="444" ref="child5" class="fine-resource-card"></special-card>
     </div>
     <div class="card-wrapper" style="margin-top: 0px; margin-bottom: 200px;">    
         <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="555" ref="child6" class="fine-resource-card"></special-card>
@@ -103,11 +98,11 @@ export default {
             recommendClass: [],
             fineArtList: [],
             devList: [],
-
+            curCarousel: 0,
         }
     },
     mounted() {
-        this.$refs.child.special = "image-02";
+        this.$refs.child2.special = "image-02";
         this.$refs.child3.special = "image-03";
         this.$refs.child4.special = "image-04";
         this.$refs.child5.special = "image-05";
@@ -209,7 +204,7 @@ export default {
 .more{
     position: absolute;
     top: 1.5px;
-    right: 380px;
+    right: 200px;
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;
