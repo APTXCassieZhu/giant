@@ -12,7 +12,6 @@
 					</div>
 					<div class="feedback-pick-smiles">
 						<div @click="handleGreat">
-							
 							<svg t="1574002065349" class="icon" viewBox="0 0 1024 1024" version="1.1"  p-id="5069" width="200" height="200"><path d="M512 149.333333c200.298667 0 362.666667 162.368 362.666667 362.666667s-162.368 362.666667-362.666667 362.666667S149.333333 712.298667 149.333333 512 311.701333 149.333333 512 149.333333z m161.877333 394.517334c-60.416 168.192-279.445333 168.192-322.922666 2.688l-61.909334 16.256c59.989333 228.266667 364.032 228.266667 445.077334 2.688l-60.245334-21.632zM426.666667 362.666667a42.666667 42.666667 0 0 0-42.666667 42.666666v64a42.666667 42.666667 0 1 0 85.333333 0v-64a42.666667 42.666667 0 0 0-42.666666-42.666666z m170.666666 0a42.666667 42.666667 0 0 0-42.666666 42.666666v64a42.666667 42.666667 0 1 0 85.333333 0v-64a42.666667 42.666667 0 0 0-42.666667-42.666666z" p-id="5070" fill="#1ebf73"></path></svg>
 							<span>满意</span>
 						</div>
@@ -23,6 +22,7 @@
 					</div>
 
 				</div>
+
 			</div>
 			<div v-if="status=='great'" class="feedback-great">
 				<div class="feedback-close" @click="handleClosePick">
@@ -61,8 +61,8 @@
 						<textarea ref="feedback-textarea" name="" id="" cols="30" rows="10"></textarea>
 						<div>
 								<a-upload
-								action="/api/file/upload"
-								:headers="{token:this.$store.state.token}"
+									action="/api/file/upload"
+									:headers="{authorization:this.$store.state.token}"
 									listType="picture-card"
 									:fileList="fileList"
 									:data="{target:'feedbackImage'}"

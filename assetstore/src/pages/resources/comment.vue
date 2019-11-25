@@ -157,7 +157,7 @@
 
 	&-wrap{
 		box-sizing: border-box;
-		width:1300px;
+		width:100%;
 		margin:0 auto;
 	}
 	&-rate-wrap{

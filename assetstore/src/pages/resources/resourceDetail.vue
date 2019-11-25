@@ -43,7 +43,6 @@
             </div>
 
             
-              
             <template v-if="!requestResourcePadding"> 
               <div class="resource-detail-deslist-part1" >
                 <div @click="handleVisit" style="cursor:pointer;">
@@ -62,7 +61,7 @@
                 <span>{{describe.dept}}</span>
               </div>
 
-              <div class="resource-detail-deslist-part2" >{{resource.user.nickName||resource.user.name}}</div>
+              <div class="resource-detail-deslist-part2" >{{resource.name}}</div>
               <div class="resource-detail-deslist-part3" >
                 <Select
                   :placeholder="resource.vers[0].verNum"
