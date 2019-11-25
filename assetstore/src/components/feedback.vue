@@ -52,20 +52,20 @@
 				</div>
 				<div>
 					<a-radio-group @change="onChange" v-model="value">
-						<a-radio :style="radioStyle" :value="1">没有找到想要的内容？内容质量不高？</a-radio>
-						<a-radio :style="radioStyle" :value="2">功能不好用？</a-radio>
-						<a-radio :style="radioStyle" :value="3">卡Bug、页面不流畅</a-radio>
-						<a-radio :style="radioStyle" :value="4">其他</a-radio>
+						<a-radio :style="radioStyle" :value="0">没有找到想要的内容？内容质量不高？</a-radio>
+						<a-radio :style="radioStyle" :value="1">功能不好用？</a-radio>
+						<a-radio :style="radioStyle" :value="2">卡Bug、页面不流畅</a-radio>
+						<a-radio :style="radioStyle" :value="3">其他</a-radio>
 					</a-radio-group>
 					<div class="feedback-form-area-wrap" style="">
-						<textarea name="" id="" cols="30" rows="10"></textarea>
+						<textarea ref="feedback-textarea" name="" id="" cols="30" rows="10"></textarea>
 						<div>
 								<a-upload
 								action="/api/file/upload"
 								:headers="{token:this.$store.state.token}"
 									listType="picture-card"
 									:fileList="fileList"
-									:data="{target:'resourceFile'}"
+									:data="{target:'feedbackImage'}"
 									@preview="handlePreview"
 									@change="handleChange"
 								>
@@ -199,6 +199,9 @@
 	position: absolute;
 	right:0;
 	bottom:0;
+	margin-bottom: -82px;
+	margin-right: -27px;
+		
 	>div{
 		position: relative;
 	}
@@ -239,7 +242,7 @@
 		width:116px;
 		height:135px;
 		border-radius: 25px;
-		background-color: #f2f2f2;
+		
 
 		display: flex;
     flex-direction: column;
@@ -247,6 +250,9 @@
 		align-items: center;
 		cursor: pointer;
 		
+	}
+	.feedback-pick-smiles>div:hover{
+		background-color: #f2f2f2;
 	}
 	.feedback-pick-smiles span{
 		text-align: center;
@@ -316,6 +322,8 @@
 </style>
 <script>
 
+import axios from "axios"
+
 import * as animationData from "../assets/misoon.json"
 import * as animationDataFace from "../assets/smiling-face.json"
 
@@ -326,7 +334,7 @@ export default {
 		return{
 			status:'pick',
 			c_svg:`<svg t="1574001512032" class="icon" viewBox="0 0 1024 1024" version="1.1"  p-id="951" width="200" height="200"><path d="M664.377948 511.42322l326.997958 326.997959a108.146166 108.146166 0 0 1-152.954727 152.954727l-326.997959-326.997958-326.997958 326.997958a108.146166 108.146166 0 0 1-152.954728-152.954727l326.997959-326.997959L31.470534 184.425262A108.146166 108.146166 0 0 1 184.425262 31.470534l326.997958 326.997959L838.421179 31.470534a108.146166 108.146166 0 0 1 152.954727 152.954728z" p-id="952" fill="#787878"></path></svg>`,
-			value: 1,
+			value: 0,
 			radioStyle: {
 				display: 'block',
 				height: '30px',
@@ -334,7 +342,7 @@ export default {
 			},
 			previewVisible: false,
 			previewImage: '',
-			radioValue:{},
+			radioValue:0,
 			fileList: [
 
 			],
@@ -351,12 +359,36 @@ export default {
 		handleSumbit(){
 
 
-			this.status = 'submitted'
-			//console.log(this.fileList,this.radioValue)
+			// this.status = 'submitted'
+		
+			var titles = [
+				'没有找到想要的内容？内容质量不高？',
+				'功能不好用？',
+				'卡Bug、页面不流畅',
+				'其他'
+			]
+
+			// console.log(titles[this.radioValue])
+			// return
+
+			var images = this.fileList.map(o=>o.response.data.fileId)
+
+			axios.post(`/api/feedback`,{
+				type:'system',
+				title:titles[this.radioValue],
+				content:this.$refs['feedback-textarea'].value,
+				images
+			}	).then(response=>{
+				var res = response.data
+				if(res.code!=0)  return this.$message.warning(res.msg)
+				
+				//this.$message.success('发布成功')
+				this.status = 'submitted'
+			})
 		},
 		onChange(e){
-			this.radioValue.val = e.target.value
-			console.log('radio:',e.target.value)
+			this.radioValue = e.target.value
+			console.log('radio:', this.radioValue)
 		},
 		handleCancel() {
 			this.previewVisible = false;

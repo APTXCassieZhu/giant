@@ -537,7 +537,7 @@ export default {
 								// 触发了回复评论, 但从没有评分过
 	
 								if (!this.resource.isRate) {
-									return (this.showAlertComment = true);
+									return this.$Message.warning("请先进行评分哦~")
 								}
 								if (!prop.content.length) {
 									return this.$Message.warning("请输入你的回复内容~");

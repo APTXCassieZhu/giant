@@ -15,10 +15,19 @@ import '../my-theme/index.less';     // change theme color
 import 'ant-design-vue/dist/antd.css';
 import '../my-theme/ant.less';
 // import 动画特效
-import lottie from 'vue-lottie';
+import lottie from 'vue-lottie'
 Vue.component('lottie', lottie)
 
+import VueLazyload from 'vue-lazyload'
 
+Vue.use(VueLazyload,{
+  preLoad:1.3,
+  error: require('./assets/img-loading.jpg'),
+  loading: require('./assets/img-loading.jpg'),
+  attempt:1
+})
+
+// console.log('img-loading xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:',   require('./assets/img-loading.jpg'))
 
 // fontawesome icon
 import fontawesome from '@fortawesome/fontawesome'
