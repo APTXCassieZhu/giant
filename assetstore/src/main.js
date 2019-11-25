@@ -40,7 +40,7 @@ fontawesome.library.add(brands)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-Vue.use(ViewUI);
+Vue.use(ViewUI)
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
