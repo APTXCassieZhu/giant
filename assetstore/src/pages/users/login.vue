@@ -66,7 +66,7 @@ export default {
         var [w,h] = [400,460]
         var [half_w,half_h] = [w*.5,h*.5]
         
-        $el.style.backgroundPosition = `${x-half_w- w*.2  }px ${y-half_h-h*.1}px`
+        $el.style.backgroundPosition = `${x-half_w- w*.2}px ${y-half_h-h*.1}px`
 
     },
     methods:{

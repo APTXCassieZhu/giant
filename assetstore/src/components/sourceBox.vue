@@ -72,13 +72,6 @@ export default {
         getDownloadCount(){
             return this.source.downloadCount > 1000 ? (this.source.downloadCount).toString().slice(0,1)+','+ (this.source.downloadCount).toString().slice(1): this.source.downloadCount;
         },
-        publicOrNot(){
-            if(this.source.state == 'public'){
-                return false;
-            }else{
-                return true;
-            }
-        },
         concatImgUrl(){
             return `//192.168.94.238:3000/file/download/${this.source.images[0].id}?token=${this.$store.state.token}`
         },
@@ -88,6 +81,14 @@ export default {
             // default
             moreVisible: false,
             jumpOrNot: true,
+            publicOrNot: false,
+        }
+    },
+    mounted(){
+        if(this.source.state == 'public'){
+            this.publicOrNot = false;
+        }else{
+            this.publicOrNot = true;
         }
     },
     methods:{

@@ -76,7 +76,8 @@ export default {
 .advise-card{
     display: inline-block; 
     cursor: pointer;
-    margin-right: 30px; 
+    margin-right: 15px; 
+    margin-left: 15px; 
     margin-bottom: 40px;
     width: 240px;
     height: 275px;

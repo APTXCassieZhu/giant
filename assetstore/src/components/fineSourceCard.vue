@@ -61,6 +61,8 @@ export default {
         },
     },
     mounted(){
+        this.resource
+        debugger
         let $img = document.createElement('img')
         $img.onload = ()=>{
             this.backgroundStyle = {
@@ -117,6 +119,12 @@ export default {
     }
 }
 </script>
+<style>
+.carousel-style > .ivu-carousel-arrow > *{
+    vertical-align: center;
+}
+</style>
+</style>
 <style scoped>
 .image {
     height: 184px;
