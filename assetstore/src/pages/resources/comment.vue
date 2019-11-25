@@ -112,8 +112,12 @@
 }
 
 .resource-detail{
-  width: 100%;
-  max-width: 1380px;
+
+	width: 100%;
+  max-width: 1368px;
+  box-sizing: border-box;
+	padding: 0 30px;
+	
   margin: 0 auto;
   margin-top: 50px;
   position: relative;
@@ -153,7 +157,7 @@
 
 	&-wrap{
 		box-sizing: border-box;
-		width:1300px;
+		width:100%;
 		margin:0 auto;
 	}
 	&-rate-wrap{
@@ -533,7 +537,7 @@ export default {
 								// 触发了回复评论, 但从没有评分过
 	
 								if (!this.resource.isRate) {
-									return (this.showAlertComment = true);
+									return this.$Message.warning("请先进行评分哦~")
 								}
 								if (!prop.content.length) {
 									return this.$Message.warning("请输入你的回复内容~");

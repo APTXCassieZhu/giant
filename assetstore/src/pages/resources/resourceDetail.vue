@@ -15,9 +15,9 @@
                   class="swiper-slide"
                   v-for="(src,i) in resource.images"
                   :key="i"
-                  :attrx="src"
-                  :style="{backgroundImage: `url(${src})`}"
+                  v-lazy:background-image="src"
                 ></div>
+
               </div>
               <!-- <div class="swiper-button-next swiper-button-white"></div>
               <div class="swiper-button-prev swiper-button-white"></div>-->
@@ -28,8 +28,7 @@
                   class="swiper-slide"
                   v-for="(src,i) in resource.images"
                   :key="i"
-                  :attrx="src"
-                  :style="{backgroundImage: `url(${src})`}"
+                    v-lazy:background-image="src"
                 ></div>
               </div>
             </div>
@@ -44,7 +43,6 @@
             </div>
 
             
-              
             <template v-if="!requestResourcePadding"> 
               <div class="resource-detail-deslist-part1" >
                 <div @click="handleVisit" style="cursor:pointer;">
@@ -63,7 +61,7 @@
                 <span>{{describe.dept}}</span>
               </div>
 
-              <div class="resource-detail-deslist-part2" >{{resource.user.nickName||resource.user.name}}</div>
+              <div class="resource-detail-deslist-part2" >{{resource.name}}</div>
               <div class="resource-detail-deslist-part3" >
                 <Select
                   :placeholder="resource.vers[0].verNum"
@@ -382,8 +380,12 @@
 .resource-detail {
   // width:95%;
   width: 100%;
-  max-width: 1380px;
+  max-width: 1368px;
+  box-sizing: border-box;
+  padding: 0 30px;
   margin: 0 auto;
+  
+
   // margin-top:50px;
   // margin-top:15px;
   position: relative;
@@ -854,7 +856,8 @@ export default {
 
     // ​/comment​/{id}​/star  POST 点赞评论
 
-    console.log("matched:", this.$route.matched);
+    console.log("matched:", this.$route.matched)
+
 
     const { params } = this.$route;
     const that = this;
@@ -874,14 +877,23 @@ export default {
       console.log("node_env:", process.env.npm_lifecycle_event)
 
       //  console.log(this.resource.images)
-      // if( process.env.NODE_ENV!='development'){
+      // if( process.env.NODE_ENV=='development'){
 
-      this.resource.images = this.resource.images.map(o => {
-        return `//192.168.94.238:3000/file/download/${o.id}/?token=${this.$store.state.token}`
-      })
-
-
-      // }
+      //   this.resource.images = [
+      //     'http://img4.imgtn.bdimg.com/it/u=3420410816,510741944&fm=26&gp=0.jpg',
+      //     'http://img4.imgtn.bdimg.com/it/u=3420410816,510741944&fm=26&gp=0.jpg',
+      //     'http://img4.imgtn.bdimg.com/it/u=3420410816,510741944&fm=26&gp=0.jpg',
+      //     'http://img4.imgtn.bdimg.com/it/u=3420410816,510741944&fm=26&gp=0.jpg',
+      //     'http://img4.imgtn.bdimg.com/it/u=3420410816,510741944&fm=26&gp=0.jpg'
+      //   ]
+        
+        
+      // }else{
+          
+          this.resource.images = this.resource.images.map(o => {
+            return `//192.168.94.238:3000/file/download/${o.id}/?token=${this.$store.state.token}`
+          })
+      //}
 
       //console.log(this.resource.images)
 
@@ -912,11 +924,12 @@ export default {
 
         this.swiper = new Swiper(".gallery-top", {
           spaceBetween: 10,
+          lazy:true,
           on: {
             click() {
               if (typeof this.clickedIndex != undefined) {
-                lightbox.setCurIdx(this.clickedIndex);
-                lightbox.show();
+                lightbox.setCurIdx(this.clickedIndex)
+                lightbox.show()
               }
             }
           },
@@ -976,8 +989,8 @@ export default {
           if(res.code!=0)  return this.$message.warning(res.msg)
 
           // axios.post('/api/comment',{resourceId:params.resourceId, replyUserId:this.userid, content:prop.content,pid:prop.id}).then(response=>{
-          this.$Message.success("评论提交成功~");
-          replyx.clearContent();
+          this.$Message.success("评论提交成功~")
+          replyx.clearContent()
         })
     })
   },
@@ -1053,10 +1066,10 @@ export default {
             return this.$message.warning(response.data.msg)
           }
 
-          this.resource.isRate = true;
+          this.resource.isRate = true
           this.resource.rateAvg = v;
           //console.log('isRate!!1')
-        });
+        })
     },
     yymmdd(t) {
       return "2019-01.23"
@@ -1070,11 +1083,13 @@ export default {
       this.$router.push(`/${this.resource.userId}/visit/`)
     },
     createComment() {
+
+      const that = this
       const { params } = this.$route;
       
       this.requestCommentPadding = true
 
-      axios
+        axios
         .get(`/api/comment`, {
           params: {
             resourceId: params.resourceId,
@@ -1213,11 +1228,12 @@ export default {
 
               // 触发了回复评论, 但从没有评分过
 
-              if (!this.resource.isRate) {
-                return (this.showAlertComment = true);
+          
+              if (!that.resource.isRate) {
+                return that.$Message.warning("请先进行评分哦~")
               }
               if (!prop.content.length) {
-                return this.$Message.warning("请输入你的回复内容~");
+                return that.$Message.warning("请输入你的回复内容~")
               }
 
               // debugger
@@ -1239,7 +1255,7 @@ export default {
                     return this.$message.warning(res.msg)
                   }
 
-                  this.$Message.success("评论提交成功~");
+                  that.$Message.success("评论提交成功~");
                   prop.reply.clearContent();
                 });
               //console.log('comments reply:', prop)
