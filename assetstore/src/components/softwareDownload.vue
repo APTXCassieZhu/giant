@@ -8,7 +8,7 @@
             <p style="position:relative;top:8px;font-size:14px;font-weight:600;color:#7f7f7f;">当前版本 {{sw.version}}</p>
             <p style="position:relative; top: 25px;font-size:14px;color:#7f7f7f;">最后更新 {{getYYMMDD(sw.updatedAt)}}</p>
         </div>
-        <Button class="btn" type="success"><Icon type="md-download" />下载软件</Button>
+        <Button class="btn" type="success" @click="download()"><font-awesome-icon :icon="['fas','download']"/>下载软件</Button>
     </div>
 </template>
 <script>
@@ -42,6 +42,10 @@ export default {
             }
             return  yy+'-'+mm+'.'+dd
   
+        },
+        download(){
+            var fileid = this.sw.file.id;
+            location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`
         }
     }
 }

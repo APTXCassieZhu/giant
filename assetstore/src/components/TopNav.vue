@@ -637,7 +637,6 @@ export default {
 .topnav-user-image:hover{
     color: #1ebf73;
 }
-
 .topnav-user{
     color:black;
     z-index:inherit;
@@ -742,7 +741,7 @@ export default {
     z-index: 100;
 }
 .topnav-dropdown-notice{
-    min-height: 284px;
+    /* min-height: 284px; */
     max-height: 900px;
 }
 .mark-green{
