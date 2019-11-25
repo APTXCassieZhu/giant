@@ -214,7 +214,7 @@ export default new Router({
 
 
     {
-      path:'/artShow/role',
+      path:'/artShow/*',
       name:'artShowRole',
       component:artShowRole,
       meta: {

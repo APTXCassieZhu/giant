@@ -277,7 +277,7 @@ export default {
             profile: null,
             userName: '神之子阿目',
             activenum: 0,
-             totalUnreadNum: 100,
+            totalUnreadNum: 100,
             infoDropdownCount: 0,
             noticeDropdownCount: 0,
             totalUnreadInfo: [],
@@ -393,6 +393,14 @@ export default {
         },
         /* 由通知的dropdown点击跳转消息中心看详情 */
         goNotice(item){
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/bulletin/${item.id}/view`, {headers, data}).then(res=>{
+                if(res.data.code === 0){
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })  
             this.$store.commit('READ_NOTICE', item)
             if(this.$route.path==='/notice'){
                 location.reload()

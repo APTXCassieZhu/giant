@@ -105,7 +105,7 @@ export default {
                 storage.set(1, this.searchForm.content)
                 this.searchHistory.push(storage.get(1))
                 this.searchHistory.push(storage.get(2))
-                this.searchHistory.push(storage.get(3));
+                this.searchHistory.push(storage.get(3))
             }else{
                 if(!storage.has(1)) {
                     // empty history

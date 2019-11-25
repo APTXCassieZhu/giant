@@ -8,21 +8,21 @@
         </div>
         <div class="card-wrapper">
             <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
-            <ul><div class="advise-card" @click="handleClick" :style="{backgroundImage: 'url(' + require('../../assets/资源-角色.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-环境.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-道具.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-载具.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-特效.png') + ')'}"></div></ul>
-            <ul><div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-动画.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-3d.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-2d.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-原画.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-UI.png') + ')'}"></div></ul>
-            <ul><div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-q版.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-二次元.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-日韩.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-欧美.png') + ')'}"></div>
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require('../../assets/资源-国风.png') + ')'}"></div></ul>
+            <ul><div class="advise-card" @click="goPage('/artShow/role')" :style="{backgroundImage: 'url(' + require('../../assets/资源-角色.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/environment')" :style="{backgroundImage: 'url(' + require('../../assets/资源-环境.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/tool')" :style="{backgroundImage: 'url(' + require('../../assets/资源-道具.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/vehicle')" :style="{backgroundImage: 'url(' + require('../../assets/资源-载具.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/effect')" :style="{backgroundImage: 'url(' + require('../../assets/资源-特效.png') + ')'}"></div></ul>
+            <ul><div class="advise-card" @click="goPage('/artShow/animation')" :style="{backgroundImage: 'url(' + require('../../assets/资源-动画.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/3d')" :style="{backgroundImage: 'url(' + require('../../assets/资源-3d.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/2d')" :style="{backgroundImage: 'url(' + require('../../assets/资源-2d.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/paint')" :style="{backgroundImage: 'url(' + require('../../assets/资源-原画.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/UI')" :style="{backgroundImage: 'url(' + require('../../assets/资源-UI.png') + ')'}"></div></ul>
+            <ul><div class="advise-card" @click="goPage('/artShow/cute')" :style="{backgroundImage: 'url(' + require('../../assets/资源-q版.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/second')" :style="{backgroundImage: 'url(' + require('../../assets/资源-二次元.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/korea')" :style="{backgroundImage: 'url(' + require('../../assets/资源-日韩.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/occident')" :style="{backgroundImage: 'url(' + require('../../assets/资源-欧美.png') + ')'}"></div>
+            <div class="advise-card" @click="goPage('/artShow/china')" :style="{backgroundImage: 'url(' + require('../../assets/资源-国风.png') + ')'}"></div></ul>
         </div>
         <corner></corner>
         <Footer style="position:relative;margin-top: 200px;"></Footer>
@@ -48,8 +48,8 @@ export default {
         
     },
     methods:{
-        handleClick(){
-            this.$router.push('/artShow/role')
+        goPage(url){
+            this.$router.push(url)
         }
     },
 }

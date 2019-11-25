@@ -204,7 +204,7 @@ export default {
 .more{
     position: absolute;
     top: 1.5px;
-    right: 380px;
+    right: 200px;
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;

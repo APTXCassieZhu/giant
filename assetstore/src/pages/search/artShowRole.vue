@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="title-wrapper">
-                <strong>美术类资源/角色</strong>
+                <strong>{{route}}</strong>
             </div>
             <div class="button-wrapper">
               <choice></choice>
@@ -36,13 +36,13 @@
                     </div>
                 </ul>
                 <br>
-                <source-card v-for="n in 15" :key="n" 
+                <!-- <source-card v-for="n in 15" :key="n" 
                     :sourceID="n*1000"  
                     :breadlist="[
                       {fullPath:`/artShow/role#tags=['111','222','333']`,name:'美术类资源'},
                       {fullPath:`/artShow/role#tags=['111','222','333']`,name:'角色'}
                     ]"  
-                class="card-style"></source-card>  
+                class="card-style"></source-card>   -->
                 <Page class="page-style" :total="100" show-elevator />
                 <corner></corner>
             </div>
@@ -71,6 +71,13 @@ export default {
         Corner,
         Choice,
     },
+    watch: {
+        // 对路由变化作出响应...
+        '$route' (to, from) {
+            console.log('to '+to)
+            console.log('from '+from)
+        }
+    },
     data() {
         return {
             minHeight: 0,
@@ -78,6 +85,40 @@ export default {
             searchHistory: [],              //存放历史搜索
             searchForm: {content:""},
             currentOrder: "按推荐排序",        //筛选结果按这个currentOrder排序
+            route: "",
+        }
+    },
+    mounted(){
+        if(this.$route.params.pathMatch == "role"){
+            this.route = "美术类资源 / 角色"
+        }else if(this.$route.params.pathMatch == "environment"){
+            this.route = "美术类资源 / 环境"
+        }else if(this.$route.params.pathMatch == "tool"){
+            this.route = "美术类资源 / 道具"
+        }else if(this.$route.params.pathMatch == "vehicle"){
+            this.route = "美术类资源 / 载具"
+        }else if(this.$route.params.pathMatch == "effect"){
+            this.route = "美术类资源 / 特效"
+        }else if(this.$route.params.pathMatch == "animation"){
+            this.route = "美术类资源 / 动画"
+        }else if(this.$route.params.pathMatch == "3d"){
+            this.route = "美术类资源 / 3d"
+        }else if(this.$route.params.pathMatch == "2d"){
+            this.route = "美术类资源 / 2d"
+        }else if(this.$route.params.pathMatch == "paint"){
+            this.route = "美术类资源 / 原画"
+        }else if(this.$route.params.pathMatch == "UI"){
+            this.route = "美术类资源 / UI"
+        }else if(this.$route.params.pathMatch == "cute"){
+            this.route = "美术类资源 / Q版"
+        }else if(this.$route.params.pathMatch == "second"){
+            this.route = "美术类资源 / 二次元"
+        }else if(this.$route.params.pathMatch == "korea"){
+            this.route = "美术类资源 / 日韩"
+        }else if(this.$route.params.pathMatch == "occident"){
+            this.route = "美术类资源 / 欧美"
+        }else{
+            this.route = "美术类资源 / 国风"
         }
     },
     methods:{
