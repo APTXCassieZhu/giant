@@ -414,7 +414,7 @@ export default {
             }
         },
         softwareFeedback(){
-            axios.post('/api/feedback',{title:this.softwareFBForm.softwareWant, details:this.softwareFBForm.softwareDetail},
+            axios.post('/api/feedback',{title:this.softwareFBForm.softwareWant, content:this.softwareFBForm.softwareDetail, type: 'software'},
             {emulateJSON:true}).then((res)=>{
                 if(res.data.code == 0){
                     this.$store.commit('ADD_COUNT', res.headers.Authorization);
@@ -527,9 +527,9 @@ export default {
 }
 .fb-title{
     width: 222px;
-    height: 49px;
+    /* height: 49px; */
     border-radius: 3px;
-    border: solid 1px #eaeaea;
+    /* border: solid 1px #eaeaea; */
     text-align: left;
     margin-top: 20px;
 }
@@ -537,7 +537,7 @@ export default {
     width: 222px;
     height: 208px;
     border-radius: 3px;
-    border: solid 1px #eaeaea;
+    /* border: solid 1px #eaeaea; */
     /* margin-top: 20px; */
 }
 .fb-btn-disable, .fb-btn-disable:hover{

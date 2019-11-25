@@ -130,7 +130,11 @@ export default {
     }
 }
 </script>
-
+<style>
+.advise-container > .tag-style:hover > .ivu-tag-text{
+    color: #1ebf73;
+}
+</style>
 <style scoped>
 .body-style{
     position: absolute;
