@@ -38,7 +38,7 @@
                         <Form ref="softwareFBForm" :model="softwareFBForm" :rules="softwareFBRule">
                             <FormItem prop="softwareWant">
                                 <Input class="fb-title" type="textarea" maxlength="30" v-model="softwareFBForm.softwareWant" @on-change="needMoreSoftware()"
-                                show-word-limit placeholder="如 ADOBE CS SUITE 9.0.123" />
+                                placeholder="如 ADOBE CS SUITE 9.0.123" />
                             </FormItem>
                             <FormItem prop="softwareDetail">
                                 <Input class="fb-des" type="textarea" v-model="softwareFBForm.softwareDetail" maxlength="150" show-word-limit placeholder="提供下载网址可以帮助我们更快的收集您的需求"/>

@@ -16,11 +16,11 @@
                         <Tag class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                     </span>
                     <div id="history-search">
-                        <Divider style="margin: 8px;"/>
+                        <Divider style="margin: 8px 3px;"/>
                         <ul>
                             <!--<span class="history-search-title">历史搜索</span>-->
                             <div class="clear-history" @mousedown="clearHistory()">
-                                <Icon size="30" type="ios-close"></Icon>清空
+                                <Icon size="30" type="ios-close"/><span class="clear-history-text">清空</span>
                             </div>
                         </ul>
                         <ul v-for="(item,index) in searchHistory" :key="index">
@@ -272,7 +272,10 @@ export default {
 .clear-history:hover {
     color: orangered;
 }
-
+.clear-history-text{
+    position: relative;
+    top: -4px;
+}
 .tag-style{
     cursor:pointer;
     color:grey;

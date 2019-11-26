@@ -71,10 +71,10 @@
                         <div class="container">
                             <div>
                                 <span v-for="(item, n) in this.sourceList" :key="n" style="display:inline-block;">
-                                    <others-box :source="item" :whoShared="resName"></others-box>
+                                    <others-box :source="item" :whoShared="resName" :isStar="item.isStar"></others-box>
                                 </span>
                             </div>
-                            <div>
+                            <div style="text-align: center">
                                 <Button v-show="ifMoreSource" id="more" class="more" @click="addMore()">加载更多</Button>
                             </div>
                         </div>
@@ -108,6 +108,7 @@ export default {
         })
     },
     mounted() {
+        // 拿到访问对象的基础信息
         axios.get(`/api/user/${this.$route.params.userId}`,{params:{page: this.sourcePage,
         pageSize: this.sourcePageSize,}}).then((res)=>{
             if(res.data.code == 0){
@@ -128,9 +129,9 @@ export default {
                 }
             }
         }, (res)=>{
-            // 登录失败
             alert(res)
         })
+        // 拿到访问的用户上传的公开资源列表
         axios.get(`/api/user/${this.$route.params.userId}/resource`, {
             params: {
                 page: this.page,
@@ -145,7 +146,6 @@ export default {
                 }
             }
         }, (res)=>{
-            // 登录失败
             alert(res)
         })
     },
@@ -419,7 +419,7 @@ export default {
 
 .container{
     display:flex;
-    align-items:center;
+    /* align-items:center; */
     flex-direction: column;
 }
 .more{
@@ -432,6 +432,19 @@ export default {
     font-size: 18px;
     font-weight: 600;
     margin-top: 30px;
+}
+
+@media only screen and (max-width: 1600px) {
+    .asset-card {
+        width: 800px;
+        min-height: 620px;
+    }
+}
+@media only screen and (max-width: 1366px) {
+    .asset-card {
+        width: 900px;
+        min-height: 620px;
+    }
 }
 </style>
 

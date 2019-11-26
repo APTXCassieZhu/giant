@@ -23,7 +23,7 @@
                                 <Divider/>
                                 <ul>
                                     <div class="home-clear-history" @mousedown="clearHistory()">
-                                        <Icon size="30" type="ios-close"></Icon>清空
+                                        <Icon size="30" type="ios-close"/><span class="home-clear-history-text">清空</span>
                                     </div>
                                 </ul>
                                 <ul v-for="(item,index) in searchHistory" :key="index">
@@ -266,7 +266,6 @@ export default {
     left: 15%;
     top: 100px;
     width: 60%;
-    height: 400px;
     z-index: 0;
 }
 .home-search-title{
@@ -316,14 +315,18 @@ export default {
     font-size: 19px; 
     height:28px;     
 }
+.tag-style{
+    cursor: pointer;
+}
 
 .home-clear-history {
     cursor:pointer; 
     color:grey;
     float: right;
 }
-.tag-style{
-    cursor: pointer;
+.home-clear-history-text {
+    position: relative;
+    top: -4px;
 }
 
 .home-clear-history:hover {
