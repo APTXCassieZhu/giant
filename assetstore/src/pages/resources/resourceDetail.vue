@@ -15,6 +15,7 @@
                   class="swiper-slide"
                   v-for="(src,i) in resource.images"
                   :key="i"
+                  :style="{backgroundColor:'#f2f2f2'}"
                   v-lazy:background-image="src"
                 ></div>
               </div>
@@ -40,7 +41,6 @@
             >
               <a-skeleton avatar :paragraph="{rows: 4}" />
             </div>
-
             
             <template v-if="!requestResourcePadding"> 
               <div class="resource-detail-deslist-part1" >
@@ -57,7 +57,7 @@
                     alt
                   />
                 </div>
-                <span>{{describe.dept}}</span>
+                <span  @click="handleVisit" style="cursor:pointer;">{{describe.dept}}</span>
               </div>
 
               <div class="resource-detail-deslist-part2" >{{resource.name}}</div>
@@ -75,7 +75,7 @@
                   <Option value="all">全部</Option>
                 </Select>
 
-                <span
+                <span 
                   class="resource-detail-deslist-updatetime"
                 >- Last Update: {{getYYMMDD(resource.createdAt)}}</span>
               </div>
@@ -383,7 +383,6 @@
   box-sizing: border-box;
   padding: 0 30px;
   margin: 0 auto;
-  
 
   // margin-top:50px;
   // margin-top:15px;
@@ -1080,7 +1079,14 @@ export default {
       return mb.toFixed(2);
     },
     handleVisit() {
-      this.$router.push(`/${this.resource.userId}/visit/`)
+      
+      if(this.userid==this.resource.userId){
+        this.$router.push(`/personal`)
+      }else{
+        this.$router.push(`/${this.resource.userId}/visit/`)
+      }
+
+
     },
     createComment() {
 
