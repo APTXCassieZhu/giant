@@ -112,6 +112,10 @@ export default {
     /*border: 1px solid #fff;
     background-color: gray;*/
     color: #1ebf73;
-
+}
+@media only screen and (max-width: 1366px) {
+    .corner {
+        right: 15px;
+    }
 }
 </style>

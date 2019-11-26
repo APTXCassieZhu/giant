@@ -52,8 +52,10 @@ export default {
         }
     },
     methods:{
+        goPage(url){
+            this.$router.push(url)
+        },
         addFavorite(){
-            debugger
             if(this.favoriteIcon){
                 this.$Modal.confirm({
                 title: '确认取消关注此条资源？',

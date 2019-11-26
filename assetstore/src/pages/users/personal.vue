@@ -459,7 +459,7 @@ export default {
     font-size: 16px;
     width: 1200px;
     min-height: 700px;
-    margin-left: 50px;
+    margin-left: 30px;
     margin-top: 30px;
     padding: 20px 28px 30px 28px;
     border-radius: 3px;
@@ -575,7 +575,7 @@ export default {
 }
 @media only screen and (max-width: 1366px) {
     .asset-card {
-        width: 900px;
+        width: 830px;
         min-height: 620px;
     }
 }

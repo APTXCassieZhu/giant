@@ -656,18 +656,18 @@ export default {
 }
 @media only screen and (max-width: 1366px) {
     .notice-card {
-        width: 950px;
+        width: 830px;
         min-height: 500px;
     }
 
     .info-content, .info-content-readed{
-        width: 900px;
+        width: 770px;
     }
     .font-content{
-        width: 700px;
+        width: 520px;
     }
     .mark-read, .mark-readed{
-        margin-left: 790px;
+        margin-left: 650px;
     }
 }
 </style>

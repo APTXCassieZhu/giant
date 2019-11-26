@@ -47,10 +47,10 @@
                     </div>
                 </ul>
                 <br>
-                <source-card v-for="n in 15" :key="n" :sourceID="n*100" 
+                <!-- <source-card v-for="n in 15" :key="n" :sourceID="n*100" 
                     :breadlist="[{fullPath:`/searchresult#tags=['aaa','bbbb','ccc']`,name:'资源搜索'}]" 
-                 class="card-style"></source-card>
-                <Page class="page-style" :total="100" show-elevator />
+                 class="card-style"></source-card> -->
+                <a-pagination v-model="curPage" :total="50" style="text-align: center;"/>
             </div>
             <corner></corner>
             <Footer style="position:relative;margin-top:200px;"></Footer>
@@ -78,10 +78,11 @@ export default {
         return {
             // TODO resultcount 需后端互动得到
             resultCount: 7021,
-            currentFilter: "所有",              // 由用户选择需要什么类别的搜索结果
-            searchHistory: [],              //存放历史搜索
+            currentFilter: "所有",            // 由用户选择需要什么类别的搜索结果
+            searchHistory: [],                // 存放历史搜索
             searchForm: {content:""},
-            currentOrder: "按推荐排序",        //筛选结果按这个currentOrder排序
+            currentOrder: "按推荐排序",        // 筛选结果按这个currentOrder排序
+            curPage: 1,                       // 分页
         }
     },
     methods:{
@@ -150,7 +151,17 @@ export default {
         }
     },
     mounted(){
+        axios.get('/api/search', {params: {
+            val: this.$route.query.val
+        }}).then((res)=>{
+            if(res.data.code == 0){
+                debugger
+            }
+        }, (res)=>{
+            alert(res)
+        })
         /* 如果搜索到的匹配的内容为空 */
+
     },
 }
 </script>
@@ -162,7 +173,7 @@ export default {
 <style scoped>
 .body-style{
     position: absolute;
-    width: 100%;
+    width: 100vw;
     z-index: 0;
     top: 140px;
 }
@@ -174,19 +185,20 @@ export default {
 }
 .advise-wrapper{
     position: relative;
-    width: 100%;
+    width: 100vw;
     height: 50px;
     background-color:rgba(0, 0, 0, 0.05);
 }
 .advise-container {
     position: relative;
+    width: 90vw;
     left:3.3%;
     top:10px;
     height: 20px;
 }
 .advise-close{
-    position: relative;
-    left: 1250px;
+    position: absolute;
+    right: 0vw;
     top: 5px;
     color: rgba(0, 0, 0, 0.25);
 }
@@ -241,5 +253,6 @@ export default {
     margin-left: 35%; 
     margin-top: 90px;
 }
+
 </style>
 

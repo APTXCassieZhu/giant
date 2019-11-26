@@ -43,7 +43,7 @@
                       {fullPath:`/artShow/role#tags=['111','222','333']`,name:'角色'}
                     ]"  
                 class="card-style"></source-card>   -->
-                <Page class="page-style" :total="100" show-elevator />
+                <a-pagination v-model="curPage" :total="50" style="text-align: center;"/>
                 <corner></corner>
             </div>
             <Footer style="position:relative;margin-top:200px;"></Footer>
@@ -86,6 +86,7 @@ export default {
             searchForm: {content:""},
             currentOrder: "按推荐排序",        //筛选结果按这个currentOrder排序
             route: "",
+            curPage: 1,
         }
     },
     mounted(){
