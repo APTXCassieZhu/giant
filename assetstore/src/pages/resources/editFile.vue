@@ -773,6 +773,10 @@ export default {
       if(status =='done'){
         console.log('handleChange.',this.fileList)
       }
+
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
+      }
       //debugger
     },
     handleClose(removedTag) {
@@ -821,6 +825,11 @@ export default {
 
     // ant-upload-list-item-done
       //console.log(info)
+
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
+      }
+
       if(status =='done'){
 
         setTimeout(()=>{

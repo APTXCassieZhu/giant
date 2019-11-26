@@ -2,6 +2,9 @@
     <div>
         <TopNavigation style="z-index: 100"></TopNavigation>
         <div class="body-style">
+            <!-- <div style="margin:30px 0;font-size:14px;">
+                <bread-crumb></bread-crumb>
+            </div> -->
             <div id='advise' class="advise-wrapper">
                 <div class="advise-container">
                   <span>&emsp;推荐搜索&emsp;</span>
@@ -61,6 +64,8 @@ import Choice from '../../components/choice.vue'
 import Corner from '../../components/corner.vue'
 import searchResult from '../search/searchResult.vue'
 
+import breadCrumb from "@/widget/breadcrumb.vue";
+
 export default {
     name:"ArtShow",
     inject: ['reload'],
@@ -70,6 +75,7 @@ export default {
         Footer,
         Corner,
         Choice,
+        breadCrumb
     },
     watch: {
         // 对路由变化作出响应...
@@ -89,6 +95,8 @@ export default {
         }
     },
     mounted(){
+
+        debugger
         if(this.$route.params.pathMatch == "role"){
             this.route = "美术类资源 / 角色"
         }else if(this.$route.params.pathMatch == "environment"){
@@ -126,6 +134,26 @@ export default {
         }
     },
     methods:{
+
+        xgoPage(url){
+          
+            //debugger
+            this.$store.commit('SAVE_BREADLIST', {
+                // breadlist:[
+                //     {fullPath:'/home',name: this.styname}  
+                // ],
+                breadlist:[
+                    {fullPath:this.route.fullPath,name:'xxxxx'}
+                ],
+                resourceId:this.sourceID
+                
+            })
+
+            
+            this.$router.push(`/resourceDetail/${132}`)
+     
+        
+        },
         changeOrder(name){
             // TODO 根据用户选择的筛选，重新加载searchresult page显示资源
             if(name === "按推荐排序"){

@@ -542,6 +542,11 @@ export default {
       if(status =='done'){
         console.log('handleChange.',this.fileList)
       }
+
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
+      }
+
       //debugger
     },
     handleClose(removedTag) {

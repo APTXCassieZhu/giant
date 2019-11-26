@@ -8,12 +8,12 @@
         </div>
         <div class="card-wrapper">
             <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
-            <ul><div class="advise-card" @click="goPage('/artShow/role')" :style="{backgroundImage: 'url(' + require('../../assets/资源-角色.png') + ')'}"></div>
-            <div class="advise-card" @click="goPage('/artShow/environment')" :style="{backgroundImage: 'url(' + require('../../assets/资源-环境.png') + ')'}"></div>
-            <div class="advise-card" @click="goPage('/artShow/tool')" :style="{backgroundImage: 'url(' + require('../../assets/资源-道具.png') + ')'}"></div>
-            <div class="advise-card" @click="goPage('/artShow/vehicle')" :style="{backgroundImage: 'url(' + require('../../assets/资源-载具.png') + ')'}"></div>
-            <div class="advise-card" @click="goPage('/artShow/effect')" :style="{backgroundImage: 'url(' + require('../../assets/资源-特效.png') + ')'}"></div></ul>
-            <ul><div class="advise-card" @click="goPage('/artShow/animation')" :style="{backgroundImage: 'url(' + require('../../assets/资源-动画.png') + ')'}"></div>
+            <ul><div class="advise-card" :breadlist="[{fullPath:'/artShow/role',name:'角色'}]"  @click="goPage('/artShow/role')" :style="{backgroundImage: 'url(' + require('../../assets/资源-角色.png') + ')'}"></div>
+            <div class="advise-card" :breadlist="[{fullPath:'/artShow/environment',name:'环境'}]" @click="goPage('/artShow/environment')" :style="{backgroundImage: 'url(' + require('../../assets/资源-环境.png') + ')'}"></div>
+            <div class="advise-card" :breadlist="[{fullPath:'/artShow/tool',name:'道具'}]" @click="goPage('/artShow/tool')" :style="{backgroundImage: 'url(' + require('../../assets/资源-道具.png') + ')'}"></div>
+            <div class="advise-card" :breadlist="[{fullPath:'/artShow/vehicle',name:'载具'}]" @click="goPage('/artShow/vehicle')" :style="{backgroundImage: 'url(' + require('../../assets/资源-载具.png') + ')'}"></div>
+            <div class="advise-card" :breadlist="[{fullPath:'/artShow/effect',name:'特效'}]" @click="goPage('/artShow/effect')" :style="{backgroundImage: 'url(' + require('../../assets/资源-特效.png') + ')'}"></div></ul>
+            <ul><div class="advise-card" :breadlist="[{fullPath:'/artShow/animation',name:'动画'}]" @click="goPage('/artShow/animation')" :style="{backgroundImage: 'url(' + require('../../assets/资源-动画.png') + ')'}"></div>
             <div class="advise-card" @click="goPage('/artShow/3d')" :style="{backgroundImage: 'url(' + require('../../assets/资源-3d.png') + ')'}"></div>
             <div class="advise-card" @click="goPage('/artShow/2d')" :style="{backgroundImage: 'url(' + require('../../assets/资源-2d.png') + ')'}"></div>
             <div class="advise-card" @click="goPage('/artShow/paint')" :style="{backgroundImage: 'url(' + require('../../assets/资源-原画.png') + ')'}"></div>

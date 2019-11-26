@@ -672,7 +672,7 @@ export default {
           ...this.checkedList,
           ...this.checkedList_unreal
         ]
-          
+        
         // debugger
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
 
@@ -746,6 +746,10 @@ export default {
       //console.log(info)
       if(status =='done'){
         //console.log('handleChange.',this.fileList)
+      }
+
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
       }
 
       // ant-upload-list-item-done
@@ -827,9 +831,15 @@ export default {
 
       const status = info.file.status
 
+      //console.log(status)
+
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
+      }
+
     // ant-upload-list-item-done
       //console.log(info)
-      // if(status =='done'){
+      if(status =='done'){
         setTimeout(()=>{
           Array.from(document.querySelectorAll('.uploadfile .ant-upload-list-item-done'),($node,i)=>{
             //console.log($node)
@@ -881,7 +891,7 @@ export default {
           })
 
         },200)
-      // }
+      }
     },
     onChange(value) {
       console.log(value)
