@@ -181,6 +181,7 @@ export default {
     position: relative;
     left: 4%;
     top: 15px;
+    width: 50%;
     font-size: 24px;
 }
 .advise-wrapper{
@@ -211,6 +212,7 @@ export default {
     position: relative;
     left: 4%;
     top: 30px;
+    width: 95%;
 }
 .card-wrapper {
     position: relative;

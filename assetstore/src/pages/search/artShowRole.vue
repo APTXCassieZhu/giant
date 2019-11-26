@@ -201,12 +201,13 @@ export default {
 .advise-container {
     position: relative;
     left:3.3%;
+    width: 90vw;
     top:10px;
     height: 20px;
 }
 .advise-close{
-    position: relative;
-    left: 1250px;
+    position: absolute;
+    right: 0vw;
     top: 5px;
     color: rgba(0, 0, 0, 0.25);
 }
@@ -219,6 +220,7 @@ export default {
 .title-wrapper{
     position: relative;
     left: 4%;
+    width: 50%;
     top: 20px;
     font-size: 24px;
     color:#262626;
@@ -228,6 +230,7 @@ export default {
 .button-wrapper{
     position: relative;
     left: 4%;
+    width: 95%;
 }
 
 .card-wrapper {

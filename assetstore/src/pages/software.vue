@@ -5,7 +5,7 @@
             <br>     
             <Breadcrumb>
                 <BreadcrumbItem to="/home">首页</BreadcrumbItem>
-                <BreadcrumbItem to="/home/software">软件</BreadcrumbItem>
+                <!-- <BreadcrumbItem to="/home/software">软件</BreadcrumbItem> -->
                 <BreadcrumbItem>当前内容</BreadcrumbItem>
             </Breadcrumb>
         </div>
@@ -486,6 +486,7 @@ export default {
 .bread-container {
     position: relative;
     left: 4%;
+    width: 200px;
 }
 .alert{
     position: relative;
