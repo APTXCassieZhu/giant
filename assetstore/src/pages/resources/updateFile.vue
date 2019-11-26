@@ -147,7 +147,6 @@
   .ant-upload.ant-upload-drag{
     padding:15px 0;
   }
-
 }
 
 </style>

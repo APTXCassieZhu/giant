@@ -17,7 +17,6 @@
                   :key="i"
                   v-lazy:background-image="src"
                 ></div>
-
               </div>
               <!-- <div class="swiper-button-next swiper-button-white"></div>
               <div class="swiper-button-prev swiper-button-white"></div>-->
@@ -865,7 +864,7 @@ export default {
 
     axios.get(`/api/resource/${params.resourceId}`).then(response => {
       var res = response.data;
-
+      
       if(res.code!=0)  return this.$message.warning(res.msg)
 
       this.resource = Object.assign(this.resource, res.data)
@@ -886,8 +885,8 @@ export default {
       //     'http://img4.imgtn.bdimg.com/it/u=3420410816,510741944&fm=26&gp=0.jpg',
       //     'http://img4.imgtn.bdimg.com/it/u=3420410816,510741944&fm=26&gp=0.jpg'
       //   ]
-        
-        
+
+
       // }else{
           
           this.resource.images = this.resource.images.map(o => {
@@ -904,8 +903,9 @@ export default {
           zIndex: 100,
           topImgs: this.resource.images,
           thumbImgs: this.resource.images
-        });
+        })
 
+        
         // lightbox.setCurIdx(0)
         // lightbox.hide()
 
@@ -1309,9 +1309,10 @@ export default {
       this.createComment()
     },
     handleDown() {
-      var fileid = this.resource.vers[0].file.id;
+      var fileid = this.resource.vers[0].file.id
       location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`
     }
+
   }
 };
 </script>

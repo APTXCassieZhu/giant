@@ -640,8 +640,6 @@ export default {
         // this.editor.txt.html()
         // this.editor.txt
         // debugger
-        
-
 
       e.preventDefault()
       this.form.validateFields((err, values) => {
