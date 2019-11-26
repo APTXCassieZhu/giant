@@ -8,12 +8,12 @@
             <Rate class="font-content" style="font-size: 18px;" icon="md-star" disabled v-model="getRate" />
         </div>
         <Row class="font-footer">
-            <Col span="12" class="footer-col">
+            <Col span="12" class="footer-col" @click.native="download()">
                 <font-awesome-icon :icon="['fas','download']" class="foot-icon"/>
             </Col>
             <Col span="12" class="footer-col"  @click.native="cancelFavorite()">
                 <Divider type="vertical" class="foot-divider"/>
-                <Icon size="22" type="md-heart" class="foot-icon"/>
+                <Icon size="22" type="md-heart" class="heart-icon"/>
             </Col>
         </Row>
     </div>
@@ -67,7 +67,10 @@ export default {
                 },
             });
         },
-
+        download(){
+            var fileid = this.source.vers[0].file.id;
+            location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`
+        }
     }
 }
 </script>
@@ -133,7 +136,10 @@ export default {
     /*border-right:2px solid #7d7d7d;*/
     cursor: pointer;
 }
-
+.heart-icon{
+    color: red;
+    cursor: pointer;
+}
 .foot-icon:hover, .footer-col:hover{
     color: #1ebf73;
 }

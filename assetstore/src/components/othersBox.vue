@@ -1,7 +1,7 @@
 <template>
     <div class="source-box">
         <div class="upper" @click="goPage(`/resourceDetail/${source.id}`)">
-            <img v-if="source.images != null" class="font-image" :src="source.images[0]">
+            <img v-if="source.images != null" class="font-image" :src="concatImgUrl">
             <div v-else class="font-image">{{source.name.charAt(0)}}</div>
             <div class="font-title">{{source.name}}</div>
             <div class="font-content">来源: <span style="margin-left:10px;">{{this.whoShared}}</span></div>
@@ -13,10 +13,8 @@
             </Col>
             <Col span="12" class="footer-col" @click.native="addFavorite()">
                 <Divider type="vertical" class="foot-divider"/>
-                <!-- <Icon size="22" type="md-heart" style="color: red" v-show="favoriteIcon"/>
-                <Icon size="22" type="md-heart" class="foot-icon1" v-show="!favoriteIcon"/> -->
-                <Icon size="22" type="md-heart" style="color: red" v-show="source.isStar"/>
-                <Icon size="22" type="md-heart" class="foot-icon1" v-show="!source.isStar"/>
+                <Icon size="22" type="md-heart" style="color: red" v-show="favoriteIcon"/>
+                <Icon size="22" type="md-heart" class="foot-icon1" v-show="!favoriteIcon"/>
             </Col>
         </Row>
     </div>
@@ -33,24 +31,29 @@ export default {
         whoShared :{
             type: String,
             default: '张佳'
+        },
+        isStar:{
+            type: Boolean,
+            default: false,
         }
     },
     computed:{
         getRateAvg(){
             return this.source.rateAvg||5
-        }
+        },
+        concatImgUrl(){
+            return `//192.168.94.238:3000/file/download/${this.source.images[0].id}?token=${this.$store.state.token}`
+        },
     },
     data() {
         return {
             // default
-            favoriteIcon: false,
+            favoriteIcon: this.isStar,
         }
     },
     methods:{
-        cancelFavorite(){
-            
-        },
         addFavorite(){
+            debugger
             if(this.favoriteIcon){
                 this.$Modal.confirm({
                 title: '确认取消关注此条资源？',
@@ -59,7 +62,7 @@ export default {
                     onOk: () => {
                         axios.post(`/api/resource/${this.source.id}/star`,{"star": false},{emulateJSON:true}).then((res)=>{
                             if(res.data.code === 0) {
-                                this.source.isStar = !this.source.isStar
+                                this.favoriteIcon = !this.favoriteIcon
                                 setTimeout(() => {
                                     this.$Modal.success({
                                         title: '已取消关注',
@@ -78,7 +81,7 @@ export default {
                     onOk: () => {
                         axios.post(`/api/resource/${this.source.id}/star`,{"star": true},{emulateJSON:true}).then((res)=>{
                             if(res.data.code === 0) {
-                                this.source.isStar = !this.source.isStar
+                                this.favoriteIcon = !this.favoriteIcon
                                 setTimeout(() => {
                                     this.$Modal.success({
                                         title: '已关注',
@@ -91,7 +94,7 @@ export default {
             }
         },
         download(){
-            var fileid = this.resource.vers[0].file.id;
+            var fileid = this.source.vers[0].file.id;
             location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`
         }
     }

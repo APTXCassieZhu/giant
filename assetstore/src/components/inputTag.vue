@@ -125,7 +125,6 @@ export default {
     padding: 4px 7px;
     font-size: 12px;
     border-bottom: 2px solid #dcdee2;
-    border-radius: 4px;
     background-color: #fff;
     cursor: text;
     transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;

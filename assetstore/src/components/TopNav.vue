@@ -186,10 +186,10 @@
                         <div v-else class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" >
-                        <DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem>
-                        <DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem>
-                        <DropdownItem><router-link class="user-box-link-a" to="/editSetting">修改资料</router-link></DropdownItem>
-                        <DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="goLike('personal')">个人中心</DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="goLike('like')">我的关注</DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="goPage('/editSetting')">修改资料</DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="logout()">退出登录</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>
@@ -621,7 +621,7 @@ export default {
 
 .topnav-box-user{
     position: relative;
-    width:15%;
+    width:18%;
     min-width: 270px;
     top: 10px;
     float:right;
@@ -646,7 +646,7 @@ export default {
     color: #1ebf73;
 }
 .topnav-user{
-    color:black;
+    color:#7d7d7d;
     z-index:inherit;
     margin-left: 30px;
 }
@@ -654,8 +654,6 @@ export default {
     color:black;
     z-index:inherit;
     text-align: center;
-    margin-left:5px;
-    /* margin-right: 30px; */
 }
 .topnav-user:hover, .user-box-link-a:hover{
     color: #1ebf73;

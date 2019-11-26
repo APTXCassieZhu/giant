@@ -181,7 +181,12 @@ export default {
 }
 
 </script>
-
+<style>
+.carousel-style > .ivu-carousel-arrow > .ivu-icon{
+    vertical-align: middle;
+    text-align: center;
+}
+</style>
 <style scoped>
 .card-wrapper{
     position: relative;
@@ -198,13 +203,13 @@ export default {
     font-family: MicrosoftYaHei;
     font-size: 22px;
     font-weight: 600;
-    z-index: 10;
+    /* z-index: 10; */
     cursor:pointer;
 }
 .more{
     position: absolute;
     top: 1.5px;
-    right: 200px;
+    right: 280px;
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;
