@@ -379,7 +379,7 @@
 .resource-detail {
   // width:95%;
   width: 100%;
-  max-width: 1368px;
+  max-width: 1366px;
   box-sizing: border-box;
   padding: 0 30px;
   margin: 0 auto;
@@ -1079,13 +1079,12 @@ export default {
       return mb.toFixed(2);
     },
     handleVisit() {
-      
+
       if(this.userid==this.resource.userId){
         this.$router.push(`/personal`)
       }else{
         this.$router.push(`/${this.resource.userId}/visit/`)
       }
-
 
     },
     createComment() {
