@@ -13,7 +13,7 @@
             </Col>
             <Col span="12" class="footer-col"  @click.native="cancelFavorite()">
                 <Divider type="vertical" class="foot-divider"/>
-                <Icon size="22" type="md-heart" class="foot-icon"/>
+                <Icon size="22" type="md-heart" class="heart-icon"/>
             </Col>
         </Row>
     </div>
@@ -136,7 +136,10 @@ export default {
     /*border-right:2px solid #7d7d7d;*/
     cursor: pointer;
 }
-
+.heart-icon{
+    color: red;
+    cursor: pointer;
+}
 .foot-icon:hover, .footer-col:hover{
     color: #1ebf73;
 }

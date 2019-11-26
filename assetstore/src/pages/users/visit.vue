@@ -23,18 +23,18 @@
                 
                 <a-form v-if="inputVisible" id="components-form-demo-validate-other" :form="form">
                     <a-form-item class="form-ant-style">
-                        <!-- TODO validator 2-8为key enter时validate-->
+                        <!-- TODO validator 2-20为key enter时validate-->
                         <a-input
                             ref="input"
                             type="text"
                             size="small"
                             :style="inputAnt"
-                            placeholder="请输入2-8个字符"
+                            placeholder="请输入2-20个字符"
                             @change="handleInputChange"
                             @blur="handleInputConfirm"
                             @keyup.enter="handleInputConfirm"
                             v-decorator="['resource-version', { rules: [
-                                {type:'string', min: 2, max: 8, message:'请输入2-8个字符', trigger:'blur'},
+                                {type:'string', min: 2, max: 20, message:'请输入2-20个字符', trigger:'blur'},
                                 {validator:this.handleValidator.bind(this)}
                                 ] 
                             }]"
@@ -75,7 +75,8 @@
                                 </span>
                             </div>
                             <div style="text-align: center">
-                                <Button v-show="ifMoreSource" id="more" class="more" @click="addMore()">加载更多</Button>
+                                <cartoon v-if="loadingSource"></cartoon>
+                                <Button v-show="ifMoreSource && !loadingSource" id="more" class="more" @click="addMore()">加载更多</Button>
                             </div>
                         </div>
                     </TabPane>
@@ -92,10 +93,10 @@ import TopNavigation from '../../components/TopNav.vue'
 import Footer from '../../components/footer.vue'
 import Corner from '../../components/corner.vue'
 import OthersBox from '../../components/othersBox.vue'
-
+import cartoon from '../../components/cartoon.vue'
 export default {
     name:"Visit",
-    components:{TopNavigation, Footer, Corner, OthersBox},
+    components:{TopNavigation, Footer, Corner, OthersBox, cartoon},
     computed:{
     },
     beforeCreate() {
@@ -170,6 +171,7 @@ export default {
             inputValue: '',
             inputAnt: "{width: 315px; height: 31px;}",
             ifMoreSource: false,
+            loadingSource: false,
             page: 1,
             pageSize: 20,
         }
@@ -179,8 +181,8 @@ export default {
             this.$router.push(url)
         },
         handleValidator(rule,value,callback){
-            if(this.user.labels.length >= 10){
-                callback('不要超过10个噢~')
+            if(this.user.labels.length >= 20){
+                callback('不要超过20个噢~')
                 return 
             }else{
                 callback()
@@ -234,6 +236,7 @@ export default {
         },
         addMore(){
             this.page += 1
+            this.loadingSource = true
             axios.get(`/api/${this.$route.params.userId}/resource`, {
                 params: {
                     page: this.page,
@@ -241,6 +244,7 @@ export default {
                 }
             }).then((res)=>{
                 if(res.data.code == 0){
+                    this.loadingSource = false
                     this.sourceList = this.sourceList.concat(res.data.data.list)
                     if(res.data.data.count > this.sourceList.length){
                         this.ifMoreSource = true
@@ -296,8 +300,7 @@ export default {
     font-family: MicrosoftYaHei;
     width: 360px;
     /* min-height: 730px; */
-    left: 50px;
-    top: 50px;
+    margin-top: 30px;
     padding: 30px 20px 40px 25px;
     border-radius: 3px;
     background-color: #ffffff;
@@ -359,8 +362,8 @@ export default {
     font-size: 16px;
     width: 1200px;
     height: 660px;
-    left: 100px;
-    top: 53px;
+    left: 50px;
+    margin-top: 30px;
     padding: 20px 28px 30px 28px;
     border-radius: 3px;
     background-color: #ffffff;

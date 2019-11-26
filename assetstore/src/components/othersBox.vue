@@ -94,7 +94,7 @@ export default {
             }
         },
         download(){
-            var fileid = this.source.file.id;
+            var fileid = this.source.vers[0].file.id;
             location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`
         }
     }

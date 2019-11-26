@@ -646,7 +646,7 @@ export default {
     color: #1ebf73;
 }
 .topnav-user{
-    color:black;
+    color:#7d7d7d;
     z-index:inherit;
     margin-left: 30px;
 }

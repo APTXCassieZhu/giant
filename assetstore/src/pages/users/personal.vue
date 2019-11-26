@@ -41,7 +41,7 @@
                 </div>
             </div>
             
-            <div class="asset-card" >
+            <div class="asset-card">
                 <Tabs :value="personalActive" :animated="false">
                     <TabPane :label="tab1" name="name1">
                         <div class="container">
@@ -54,8 +54,9 @@
                                     <source-box :source="product" @onDel="onDel"></source-box>
                                 </span>
                             </div>
-                            <div>
-                                <Button v-show="ifMoreSource" id="more" class="more" @click="addMore('source')">加载更多</Button>
+                            <div style="text-align:center;">
+                                <cartoon v-if="loadingSource"></cartoon>
+                                <Button v-show="ifMoreSource && !loadingSource" id="more" class="more" @click="addMore('source')">加载更多</Button>
                             </div>
                         </div>
                     </TabPane>
@@ -70,8 +71,9 @@
                                     <software-pend-box v-bind:softwareName='this.softwareList1[2]'></software-pend-box>
                                 </span>
                             </div>
-                            <div>
-                                <Button v-show="ifMoreSoftware" id="more" class="more" @click="addMore('software')">加载更多</Button>
+                            <div style="text-align: center;">
+                                <cartoon v-if="loadingSoftware"></cartoon>
+                                <Button v-show="ifMoreSoftware && !loadingSoftware" id="more" class="more" @click="addMore('software')">加载更多</Button>
                             </div>
                         </div>
                     </TabPane>
@@ -85,8 +87,9 @@
                                     <like-box :source='like' @unFavorite="unFavorite"></like-box>
                                 </span>
                             </div>
-                            <div>
-                                <Button v-show="ifMoreFavorite" id="more" class="more" @click="addMore('favorite')">加载更多</Button>
+                            <div style="text-align: center;">
+                                <cartoon v-if="loadingFavorite"></cartoon>
+                                <Button v-show="ifMoreFavorite && !loadingFavorite" id="more" class="more" @click="addMore('favorite')">加载更多</Button>
                             </div>
                         </div>
                     </TabPane>
@@ -215,6 +218,9 @@ export default {
             ifMoreSource: false,
             ifMoreFavorite: false,
             ifMoreSoftware: false,
+            loadingSource: false,
+            loadingFavorite: false,
+            loadingSoftware: false,
             totalResource: 2,
             totalSoftware: 3,
             totalLike: 0,
@@ -287,9 +293,11 @@ export default {
             switch(more){
                 case 'source':
                     this.sourcePage += 1
+                    this.loadingSource = true
                     axios.get(`/api/user/${this.user.id}/resource`,{params:{page: this.sourcePage,
                     pageSize: this.sourcePageSize,}}).then((res)=>{
                         if(res.data.code == 0){
+                            this.loadingSource = false
                             this.productList = this.productList.concat(res.data.data.list)
                             this.tab1 = `资源(${res.data.data.count})`
                             this.totalResource = res.data.data.count
@@ -305,9 +313,11 @@ export default {
                     break;
                 case 'favorite':
                     this.favoritePage += 1
+                    this.loadingFavorite = true
                     axios.get('/api/user/star',{params:{page: this.favoritePage,
                     pageSize: this.favoritePageSize,}}).then((res)=>{
                         if(res.data.code == 0){
+                            this.loadingFavorite = false
                             this.favoriteList = this.favoriteList.concat(res.data.data.list)
                             this.tab3 = `关注(${res.data.data.count})`
                             this.totalLike = res.data.data.count
@@ -323,9 +333,11 @@ export default {
                     break;
                 case 'software':
                     this.softwarePage += 1
+                    this.loadingSoftware = true
                     axios.get(`/api/user/${this.user.id}/software`,{params:{page: this.softwarePage,
                     pageSize: this.softwarePageSize,}}).then((res)=>{
                         if(res.data.code == 0){
+                            this.loadingSoftware = false
                             this.softwareList = this.softwareList.concat(res.data.data.list)
                             this.tab2 = `软件(${res.data.data.count})`
                             this.totalSoftware = res.data.data.count
@@ -381,7 +393,7 @@ export default {
     font-family: MicrosoftYaHei;
     width: 360px;
     min-height: 660px;
-    margin-top: 53px;
+    margin-top: 30px;
     /* top: 10px; */
     padding: 30px 20px 30px 25px;
     border-radius: 3px;
@@ -448,7 +460,7 @@ export default {
     width: 1200px;
     min-height: 700px;
     margin-left: 50px;
-    margin-top: 53px;
+    margin-top: 30px;
     padding: 20px 28px 30px 28px;
     border-radius: 3px;
     background-color: #ffffff;

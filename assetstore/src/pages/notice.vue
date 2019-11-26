@@ -128,7 +128,8 @@
                         </div>
                         <Divider/>
                     </div>
-                    <Button v-show="ifMoreInfo" style="color:#1ebf73;width:150px;" @click="addMoreInfo()" size="large">加载更多</Button>
+                    <cartoon v-if="loadingInfo"></cartoon>
+                    <Button v-show="ifMoreInfo && !loadinginfo" style="color:#1ebf73;width:150px;" @click="addMoreInfo()" size="large">加载更多</Button>
                 </div>
             </div>
             <!-- 通知 -->
@@ -151,7 +152,8 @@
                         </div>
                         <Divider/>
                     </div>
-                    <Button v-show="ifMoreNotice" style="color:#1ebf73;width:150px;" @click="addMoreNotice()" size="large">加载更多</Button>
+                    <cartoon v-if="loadingNotice"></cartoon>
+                    <Button v-show="ifMoreNotice && !loadingNotice" style="color:#1ebf73;width:150px;" @click="addMoreNotice()" size="large">加载更多</Button>
                 </div>
             </div>
             <!-- 系统通知的具体内容 -->
@@ -175,9 +177,10 @@
 import TopNavigation from '../components/TopNav.vue'
 import Footer from '../components/footer.vue'
 import Corner from '../components/corner.vue'
+import cartoon from '../components/cartoon.vue'
 export default {
     name:"Notice",
-    components:{TopNavigation, Footer, Corner, },
+    components:{TopNavigation, Footer, Corner, cartoon},
     computed:{
         getUser(){
             return this.$store.state.token;
@@ -196,6 +199,9 @@ export default {
                 if(this.totalInfo.length < res.data.data.count){
                     this.ifMoreInfo = true
                 }
+                if(this.infoNotRead == 0){
+                    this.markRead = 'mark-readed'
+                }
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -211,6 +217,9 @@ export default {
                 this.totalNotice = res.data.data.list
                 if(this.totalNotice.length < res.data.data.count){
                     this.ifMoreNotice = true
+                }
+                if(this.noticeNotRead == 0){
+                    this.markRead1 = 'mark-readed'
                 }
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
@@ -247,6 +256,8 @@ export default {
             curNoticeItem: {},              // 展示的通知
             ifMoreNotice: false,
             ifMoreInfo: false,
+            loadingInfo: false,
+            loadingNotice: false,
         }
     },
     methods:{
@@ -373,7 +384,8 @@ export default {
             }
         },
         addMoreInfo(){
-            this.infoPage = this.infoPage+1
+            this.infoPage += 1
+            this.loadingInfo = true
             axios.get('/api/remind', {
                 params: {
                     page: this.infoPage,
@@ -381,6 +393,7 @@ export default {
                 }
             }).then(res=>{
                 if(res.data.code === 0){
+                    this.loadingInfo = false
                     this.infoNotRead = res.data.data.webCount
                     this.totalInfo = this.totalInfo.concat(res.data.data.list)
                     if(this.totalInfo.length < res.data.data.count){
@@ -394,7 +407,8 @@ export default {
             })   
         },
         addMoreNotice(){
-            this.noticePage = this.noticePage+1
+            this.noticePage += 1
+            this.loadingNotice = true
             axios.get('/api/bulletin', {
                 params: {
                     page: this.noticePage,
@@ -402,6 +416,7 @@ export default {
                 }
             }).then(res=>{
                 if(res.data.code === 0){
+                    this.loadingNotice = false
                     this.noticeNotRead = res.data.data.webCount
                     this.totalNotice = this.totalNotice.concat(res.data.data.list)
                     if(this.totalNotice.length < res.data.data.count){
@@ -561,7 +576,7 @@ export default {
 }
 .time-slot{
     /* float: right; */
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: 1.13px;
 }
