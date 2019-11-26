@@ -21,14 +21,7 @@
                         </a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
                             <!--TODO 超链接导向的网页还没建-->
-                            <ul><DropdownItem><router-link to="/资源/2D">2D</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/资源/3D">3D</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/资源/贴图与材质">贴图与材质</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/资源/模板">模板</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/资源/3D动画">3D动画</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/资源/GUI界面">GUI界面</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/资源/特效">特效</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/资源/音效">音效</router-link></DropdownItem></ul>
+                            <ul v-for="(type, t) in this.artClassify" :key="t"><DropdownItem>{{type.name}}</DropdownItem></ul>                            
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -39,12 +32,7 @@
                         </a>
                         <DropdownMenu slot="list" class="topnav-dropdown">
                             <!--TODO 超链接导向的网页还没建-->
-                            <ul><DropdownItem><router-link to="/工具/可视化脚本">可视化脚本</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/工具/地形">地形</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/工具/动画编辑器">动画编辑器</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/工具/粒子和效果">粒子和效果</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/工具/其他工具">其他工具</router-link></DropdownItem></ul>
-                            <ul><DropdownItem><router-link to="/工具/AI">AI</router-link></DropdownItem></ul>
+                            <ul v-for="(dev, c) in this.devClassify" :key="c"><DropdownItem>{{dev.name}}</DropdownItem></ul>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -258,10 +246,10 @@
                         <div v-else class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" >
-                        <DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem>
-                        <DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem>
-                        <DropdownItem><router-link class="user-box-link-a" to="/editSetting">修改资料</router-link></DropdownItem>
-                        <DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="goLike('personal')">个人中心</DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="goLike('like')">我的关注</DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="goPage('/editSetting')">修改资料</DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="logout()">退出登录</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>
@@ -282,6 +270,8 @@ export default {
             noticeDropdownCount: 0,
             totalUnreadInfo: [],
             totalUnreadNotice: [],
+            artClassify: [],
+            devClassify: [],
         }
     },
     computed:{
@@ -302,6 +292,7 @@ export default {
         }
     },
     mounted(){
+        // 拿到提醒列表
         axios.get('/api/remind', {
             params: {
                 page: 1,
@@ -317,6 +308,7 @@ export default {
                 alert('参数格式不正确')
             }
         })
+        // 拿到通知列表
         axios.get('/api/bulletin', {
             params: {
                 page: 1,
@@ -332,12 +324,28 @@ export default {
                 alert('参数格式不正确')
             }
         })
+        // 获取一级目录
+        axios.get('/api/tag/lastitems', {params: {type: 'art_classify'}}).then(res =>{
+            if(res.data.code === 0){
+                this.artClassify = res.data.data
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
+        axios.get('/api/tag/lastitems', {params: {type: 'dev_classify'}}).then(res =>{
+            if(res.data.code === 0){
+                this.devClassify = res.data.data
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
     },
     methods:{
         logout(){
             this.$store.commit('REMOVE_COUNT', this.$store.state.token);
             this.$router.push('/login')
         },
+        // 正常跳转
         goPage(url){
             if(url === '/artFilter'){
                 this.activenum = 1
@@ -371,6 +379,7 @@ export default {
                 this.$router.push(url)
             }
         },
+        // 点击头像dropdown跳转个人中心
         goLike(type){
             if(type === 'personal'){
                 this.$store.commit('PERSONAL_ACTIVE', "name1")
@@ -379,6 +388,7 @@ export default {
             }
             this.$router.push('/personal')
         },
+        // 由通知提醒跳转个人中心
         goLike1(item){
             let headers = {"Content-Type": "application/json; charset=utf-8"}
             let data = {"id": item.id}
@@ -408,13 +418,7 @@ export default {
                 this.$router.push('/notice')
             }
         },
-        mircophone(){
-            // let $parent = document.querySelectorAll('#top-nav .ivu-tabs-tab')[1]
-
-            // let $span = document.createElement('span')
-            // $span.className = 'iconX-bullhorn-solid'
-            // $parent.appendChild($parent)
-        },
+        // 删除消息并通知后端
         deleteUnread(item){
             for(var i = 0; i < this.totalUnreadInfo.length; i++) {
                 if(this.totalUnreadInfo[i] == item) {
@@ -483,6 +487,7 @@ export default {
                 }
             }
         },
+        // 忽略所有消息并通知后端
         ignoreAllInfo(){
             this.totalUnreadNum -= this.infoDropdownCount
             let headers = {"Content-Type": "application/json; charset=utf-8"}
@@ -497,6 +502,7 @@ export default {
             this.infoDropdownCount = 0
             this.totalUnreadInfo = [];
         },
+        // 忽略所有通知并通知后端
         ignoreAllNotice(){
             this.totalUnreadNum -= this.noticeDropdownCount
             let headers = {"Content-Type": "application/json; charset=utf-8"}
@@ -510,6 +516,7 @@ export default {
             this.noticeDropdownCount = 0
             this.totalUnreadNotice = [];
         },
+        // 计算时间
         getTime(t){
             var begin = new Date(t)
             var end = new Date()
