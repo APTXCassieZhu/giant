@@ -118,10 +118,16 @@
                                     评论了你的<span :class="markGreen(item.view)"> {{item.resource.name}} </span> 
                                 </div>
                             </div>
-                            <div v-else  @click="goPage(`/resourceDetail/${item.resource.id}`,item)" class="font-container">
+                            <div v-else-if="item.targetType === 'starResourceCommented'"  @click="goPage(`/resourceDetail/${item.resource.id}`,item)" class="font-container">
                                 <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                 <div class="font-content">
                                     你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>被评论
+                                </div>
+                            </div>
+                            <div v-else @click="goPage(`/personal`,item)" class="font-container">
+                                <font-awesome-icon :icon="['fas', 'tag']" class="font-icon"/>
+                                <div class="font-content">
+                                    你收到一条新的<span :class="markGreen(item.view)"> 好友印象</span> 
                                 </div>
                             </div>
                             <div class="time-slot">{{getTime(item.updatedAt)}}</div>

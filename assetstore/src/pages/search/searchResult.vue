@@ -169,6 +169,10 @@ export default {
 .advise-container > .tag-style:hover > .ivu-tag-text{
     color: #1ebf73;
 }
+.card-wrapper > ul > div > .ivu-dropdown > .ivu-select-dropdown{
+    margin: 0px;
+    padding: 0px;
+}
 </style>
 <style scoped>
 .body-style{
