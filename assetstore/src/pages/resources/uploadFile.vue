@@ -18,7 +18,6 @@
                         getValueFromEvent: normFile
                       }
                     ]"
-
                     @change="handleChange"
                     :beforeUpload="beforeUpload"
 										:headers="{authorization:this.$store.state.token}"
@@ -43,7 +42,6 @@
 
             <section>
               <header class="uploadfile-header">STEP.2 <br/>资源信息编辑</header>
-   
                <a-form-item label="资源名称：" :label-col="labelCol" :wrapper-col="wrapperCol ">
                 <a-input
                   v-decorator="['resource-name', { rules: [{ required: true, message: '请输入资源名称' }] }]"
@@ -642,8 +640,6 @@ export default {
         // this.editor.txt.html()
         // this.editor.txt
         // debugger
-        
-
 
       e.preventDefault()
       this.form.validateFields((err, values) => {
@@ -659,7 +655,7 @@ export default {
         // ]
         // console.log(this.checkedList,this.checkedList_unreal)
 
-        
+
         if(err){
            return $('html,body').animate({scrollTop: '440px'}, 300)
          }
@@ -674,16 +670,13 @@ export default {
           ...this.checkedList,
           ...this.checkedList_unreal
         ]
-          
+        
         // debugger
-
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
 
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
+         
         ;[images[0],images[this.replaceIdx]] =[images[this.replaceIdx],images[0]]
-        
-
-      
 
         axios.post(`/api/resource`,
           {
@@ -751,6 +744,10 @@ export default {
       //console.log(info)
       if(status =='done'){
         //console.log('handleChange.',this.fileList)
+      }
+
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
       }
 
       // ant-upload-list-item-done
@@ -832,9 +829,15 @@ export default {
 
       const status = info.file.status
 
+      //console.log(status)
+
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
+      }
+
     // ant-upload-list-item-done
       //console.log(info)
-      // if(status =='done'){
+      if(status =='done'){
         setTimeout(()=>{
           Array.from(document.querySelectorAll('.uploadfile .ant-upload-list-item-done'),($node,i)=>{
             //console.log($node)
@@ -886,7 +889,7 @@ export default {
           })
 
         },200)
-      // }
+      }
     },
     onChange(value) {
       console.log(value)

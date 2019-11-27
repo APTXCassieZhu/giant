@@ -15,9 +15,9 @@
                   class="swiper-slide"
                   v-for="(src,i) in resource.images"
                   :key="i"
+                  :style="{backgroundColor:'#f2f2f2'}"
                   v-lazy:background-image="src"
                 ></div>
-
               </div>
               <!-- <div class="swiper-button-next swiper-button-white"></div>
               <div class="swiper-button-prev swiper-button-white"></div>-->
@@ -41,7 +41,6 @@
             >
               <a-skeleton avatar :paragraph="{rows: 4}" />
             </div>
-
             
             <template v-if="!requestResourcePadding"> 
               <div class="resource-detail-deslist-part1" >
@@ -58,7 +57,7 @@
                     alt
                   />
                 </div>
-                <span>{{describe.dept}}</span>
+                <span  @click="handleVisit" style="cursor:pointer;">{{describe.dept}}</span>
               </div>
 
               <div class="resource-detail-deslist-part2" >{{resource.name}}</div>
@@ -76,7 +75,7 @@
                   <Option value="all">全部</Option>
                 </Select>
 
-                <span
+                <span 
                   class="resource-detail-deslist-updatetime"
                 >- Last Update: {{getYYMMDD(resource.createdAt)}}</span>
               </div>
@@ -380,11 +379,10 @@
 .resource-detail {
   // width:95%;
   width: 100%;
-  max-width: 1368px;
+  max-width: 1366px;
   box-sizing: border-box;
   padding: 0 30px;
   margin: 0 auto;
-  
 
   // margin-top:50px;
   // margin-top:15px;
@@ -865,7 +863,7 @@ export default {
 
     axios.get(`/api/resource/${params.resourceId}`).then(response => {
       var res = response.data;
-
+      
       if(res.code!=0)  return this.$message.warning(res.msg)
 
       this.resource = Object.assign(this.resource, res.data)
@@ -886,8 +884,8 @@ export default {
       //     'http://img4.imgtn.bdimg.com/it/u=3420410816,510741944&fm=26&gp=0.jpg',
       //     'http://img4.imgtn.bdimg.com/it/u=3420410816,510741944&fm=26&gp=0.jpg'
       //   ]
-        
-        
+
+
       // }else{
           
           this.resource.images = this.resource.images.map(o => {
@@ -904,8 +902,9 @@ export default {
           zIndex: 100,
           topImgs: this.resource.images,
           thumbImgs: this.resource.images
-        });
+        })
 
+        
         // lightbox.setCurIdx(0)
         // lightbox.hide()
 
@@ -1080,7 +1079,13 @@ export default {
       return mb.toFixed(2);
     },
     handleVisit() {
-      this.$router.push(`/${this.resource.userId}/visit/`)
+
+      if(this.userid==this.resource.userId){
+        this.$router.push(`/personal`)
+      }else{
+        this.$router.push(`/${this.resource.userId}/visit/`)
+      }
+
     },
     createComment() {
 
@@ -1309,9 +1314,10 @@ export default {
       this.createComment()
     },
     handleDown() {
-      var fileid = this.resource.vers[0].file.id;
+      var fileid = this.resource.vers[0].file.id
       location.href = `//192.168.94.238:3000/file/download/${fileid}/?token=${this.$store.state.token}`
     }
+
   }
 };
 </script>

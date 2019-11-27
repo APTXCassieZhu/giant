@@ -37,7 +37,9 @@
 					</div>
 					<div>
 						<p style="color: #7f7f7f;font-size:14px;text-align:center;">有更多想法？ 欢迎和我们站长进行商业互吹</p>
-						<p style="color:#1ebf73;font-size:12px;text-align:center;">fujia@ztgame.com</p>
+						<a href="mailto:xxx@xxx.com?subject=问题反馈&cc=fujia@ztgame.com&body=你要反馈的问题是">
+							<p style="color:#1ebf73;font-size:12px;text-align:center;">fujia@ztgame.com</p>
+						</a>
 					</div>
 
 				</div>

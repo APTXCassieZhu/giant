@@ -11,12 +11,27 @@ import ViewUI from 'view-design'
 import VueCropper from 'vue-cropper'
 // import style
 import 'view-design/dist/styles/iview.css';
-import '../my-theme/index.less';     // change theme color
-import 'ant-design-vue/dist/antd.css';
-import '../my-theme/ant.less';
+import '../my-theme/index.less'     // change theme color
+import 'ant-design-vue/dist/antd.css'
+import '../my-theme/ant.less'
+
 // import 动画特效
 import lottie from 'vue-lottie'
 Vue.component('lottie', lottie)
+
+import './lib/emojione.area.js'
+import './lib/emojionearea.min.css'
+import './lib/animate.css'
+import './lib/jquery.textcomplete.js'
+
+import Swiper from 'swiper'
+import '../node_modules/swiper/css/swiper.min.css'
+
+window.Swiper = Swiper
+// console.log(Swiper)
+// debugger
+import E  from 'wangeditor'
+window.wangEditor = E
 
 import VueLazyload from 'vue-lazyload'
 
@@ -40,7 +55,7 @@ fontawesome.library.add(brands)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-Vue.use(ViewUI);
+Vue.use(ViewUI)
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
