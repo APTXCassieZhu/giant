@@ -1079,7 +1079,6 @@ export default {
       return mb.toFixed(2);
     },
     handleVisit() {
-
       if(this.userid==this.resource.userId){
         this.$router.push(`/personal`)
       }else{

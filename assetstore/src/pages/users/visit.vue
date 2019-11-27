@@ -196,7 +196,16 @@ export default {
         },
         handleCloseTag(removedTag){
             const tags = this.user.labels.filter(tag => tag !== removedTag);
+            console.log(tags);
             this.user.labels = tags;
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": removedTag.id}
+            axios.delete(`/api/user/label/${removedTag.id}`, {headers, data}).then((res)=>{
+                if(res.data.code == 0){
+                }
+            }, (res)=>{
+                alert(res)
+            })
         },
         handleInputChange(e) {
             this.inputValue = e.target.value;
@@ -295,13 +304,12 @@ export default {
     /* align-items:center; */
 }
 .self-card{
-    position: relative;
-    display:inline-block;
     font-family: MicrosoftYaHei;
     width: 360px;
-    /* min-height: 730px; */
+    min-height: 660px;
     margin-top: 30px;
-    padding: 30px 20px 40px 25px;
+    /* top: 10px; */
+    padding: 30px 20px 30px 25px;
     border-radius: 3px;
     background-color: #ffffff;
 }
@@ -356,13 +364,11 @@ export default {
     margin-top: 20px;
 }
 .asset-card{
-    position: relative;
-    display:inline-block;
     font-family: MicrosoftYaHei;
     font-size: 16px;
     width: 1200px;
-    height: 660px;
-    left: 50px;
+    min-height: 700px;
+    margin-left: 30px;
     margin-top: 30px;
     padding: 20px 28px 30px 28px;
     border-radius: 3px;
@@ -445,7 +451,7 @@ export default {
 }
 @media only screen and (max-width: 1366px) {
     .asset-card {
-        width: 900px;
+        width: 830px;
         min-height: 620px;
     }
 }

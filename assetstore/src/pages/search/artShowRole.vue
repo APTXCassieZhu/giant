@@ -46,7 +46,7 @@
                       {fullPath:`/artShow/role#tags=['111','222','333']`,name:'角色'}
                     ]"  
                 class="card-style"></source-card>   -->
-                <Page class="page-style" :total="100" show-elevator />
+                <a-pagination v-model="curPage" :total="50" style="text-align: center;"/>
                 <corner></corner>
             </div>
             <Footer style="position:relative;margin-top:200px;"></Footer>
@@ -92,6 +92,7 @@ export default {
             searchForm: {content:""},
             currentOrder: "按推荐排序",        //筛选结果按这个currentOrder排序
             route: "",
+            curPage: 1,
         }
     },
     mounted(){
@@ -210,6 +211,10 @@ export default {
 .advise-container > .tag-style:hover > .ivu-tag-text{
     color: #1ebf73;
 }
+.card-wrapper > ul > div > .ivu-dropdown > .ivu-select-dropdown{
+    margin: 0px;
+    padding: 0px;
+}
 </style>
 <style scoped>
 .body-style{
@@ -228,12 +233,13 @@ export default {
 .advise-container {
     position: relative;
     left:3.3%;
+    width: 90vw;
     top:10px;
     height: 20px;
 }
 .advise-close{
-    position: relative;
-    left: 1250px;
+    position: absolute;
+    right: 0vw;
     top: 5px;
     color: rgba(0, 0, 0, 0.25);
 }
@@ -246,6 +252,7 @@ export default {
 .title-wrapper{
     position: relative;
     left: 4%;
+    width: 50%;
     top: 20px;
     font-size: 24px;
     color:#262626;
@@ -255,6 +262,7 @@ export default {
 .button-wrapper{
     position: relative;
     left: 4%;
+    width: 95%;
 }
 
 .card-wrapper {
