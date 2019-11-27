@@ -96,7 +96,7 @@ export default {
     },
     mounted(){
 
-        debugger
+        // debugger
         if(this.$route.params.pathMatch == "role"){
             this.route = "美术类资源 / 角色"
         }else if(this.$route.params.pathMatch == "environment"){

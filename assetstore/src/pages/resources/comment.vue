@@ -54,7 +54,6 @@
 					</div>
 
 					<div class="resource-detail-rate-wrap" >
-
 						<template v-if="resource.isRate">
 							<a-rate v-model="resource.rateAvg" size="large" disabled   />
 							<span class="resource-detail-rate-text">{{resource.rateAvg+'.0'}}</span>

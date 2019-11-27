@@ -351,7 +351,7 @@
   // display: flex;
   // box-sizing: border-box;
   position: relative;
-  margin-top:75px;
+  margin-top:10px;
   &-header{
     color:#7f7f7f;
     font-size:23px;
