@@ -127,7 +127,7 @@
                             <div v-else @click="goPage(`/personal`,item)" class="font-container">
                                 <font-awesome-icon :icon="['fas', 'tag']" class="font-icon"/>
                                 <div class="font-content">
-                                    你收到一条新的<span :class="markGreen(item.view)"> 好友印象</span> 
+                                    你收到{{item.friendImpressionCount}}条新的<span :class="markGreen(item.view)"> 好友印象</span> 
                                 </div>
                             </div>
                             <div class="time-slot">{{getTime(item.updatedAt)}}</div>

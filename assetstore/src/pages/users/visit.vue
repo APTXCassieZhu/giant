@@ -196,7 +196,16 @@ export default {
         },
         handleCloseTag(removedTag){
             const tags = this.user.labels.filter(tag => tag !== removedTag);
+            console.log(tags);
             this.user.labels = tags;
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": removedTag.id}
+            axios.delete(`/api/user/label/${removedTag.id}`, {headers, data}).then((res)=>{
+                if(res.data.code == 0){
+                }
+            }, (res)=>{
+                alert(res)
+            })
         },
         handleInputChange(e) {
             this.inputValue = e.target.value;

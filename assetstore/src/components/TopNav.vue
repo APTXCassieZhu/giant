@@ -132,10 +132,17 @@
                                                         <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                     </div>
                                                 </div>
-                                                <div v-else class="jump"  @click="goPage1(`/resourceDetail/${item.resource.id}`,item)">
+                                                <div v-else-if="item.targetType === 'starResourceCommented'" class="jump"  @click="goPage1(`/resourceDetail/${item.resource.id}`,item)">
                                                     <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                                     <div class="font-content">
                                                         你关注的资源<span class="mark-green"> {{item.resource.name}} </span>被评论
+                                                        <div class="time-slot">{{getTime(item.updatedAt)}}</div>
+                                                    </div>
+                                                </div>
+                                                <div v-else @click="goPage1(`/personal`,item)" class="font-container">
+                                                    <font-awesome-icon :icon="['fas', 'tag']" class="font-icon"/>
+                                                    <div class="font-content">
+                                                        你收到{{item.friendImpressionCount}}条新的<span> 好友印象</span> 
                                                         <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                     </div>
                                                 </div>
