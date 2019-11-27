@@ -322,8 +322,8 @@ export default {
         },
         // 实时预览函数
         realTime(data) {
-            console.dir(data)
-            this.imageUrl = data.url
+            // console.dir(data)
+            // this.imageUrl = data.url
         },
         cropFinish(){
             this.$refs.cropper.getCropData((data) => {

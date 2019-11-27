@@ -25,6 +25,7 @@
     "cookie-parser": "^1.4.4",
     "good-storage": "^1.1.0",
     "iview-input-tag": "^1.0.4",
+    "jquery": "^3.4.1",
     "lottie-web": "^5.5.9",
     "marked": "^0.7.0",
     "moment": "^2.24.0",
