@@ -676,4 +676,7 @@ export default {
         margin-left: 650px;
     }
 }
+@media only screen and (max-width: 1200px) {
+
+}
 </style>

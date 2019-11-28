@@ -62,7 +62,7 @@ export function defineReactive(obj, key, val) {
   color: #2c3e50;
   background-color: #ffffff;
   width:auto;
-  min-width:1366px;
+  /* min-width:1366px; */
   max-width:100%;
   height:100%;
 }

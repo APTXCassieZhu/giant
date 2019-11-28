@@ -159,6 +159,7 @@ export default {
                 labels:[],
                 fineResources:[]
             },
+            labelLength: 0,
             page: 1,
             pageSize: 10,
             resName: "受访者张佳",
@@ -181,7 +182,7 @@ export default {
             this.$router.push(url)
         },
         handleValidator(rule,value,callback){
-            if(this.user.labels.length >= 20){
+            if(this.user.labels.length >= 20 || this.labelLength >= 20){
                 callback('不要超过20个噢~')
                 return 
             }else{
@@ -232,8 +233,11 @@ export default {
                         this.$Modal.error({
                             title: '未找到用户',
                         })
+                    }else if(res.data.code == 42202){
+                        // 超过20条
+                        this.labelLength = 20
                     }
-                    }, (res)=>{
+                }, (res)=>{
                     alert(res)
                 })
             }
