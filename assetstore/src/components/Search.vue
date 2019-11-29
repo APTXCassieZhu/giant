@@ -16,11 +16,11 @@
                         <Tag class="tag-style" @click.native="searchTag(item)">{{item}}</Tag>
                     </span>
                     <div id="history-search">
-                        <Divider style="margin: 8px;"/>
+                        <Divider style="margin: 8px 3px;"/>
                         <ul>
                             <!--<span class="history-search-title">历史搜索</span>-->
                             <div class="clear-history" @mousedown="clearHistory()">
-                                <Icon size="30" type="ios-close"></Icon>清空
+                                <Icon size="30" type="ios-close"/><span class="clear-history-text">清空</span>
                             </div>
                         </ul>
                         <ul v-for="(item,index) in searchHistory" :key="index">
@@ -119,15 +119,20 @@ export default {
                         this.searchHistory.push(storage.get(2))
                     }
                 }
-                axios.post('/api/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
-                    //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                    this.$store.commit('SEARCH_COUNT', this.searchForm.content)
+                if(this.$route.path == `/searchResult`){
                     this.reload()
-                    if(this.$route.path != '/searchResult'){
-                        this.$router.push('/searchResult')
-                    }
-                }, (response)=>{
-                })
+                }else{
+                    this.$router.push(`/searchResult?val=${this.searchForm.content}`)
+                }
+                // axios.post('/api/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
+                //     //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
+                //     this.$store.commit('SEARCH_COUNT', this.searchForm.content)
+                //     this.reload()
+                //     if(this.$route.path != '/searchResult'){
+                //         this.$router.push('/searchResult')
+                //     }
+                // }, (response)=>{
+                // })
             }
         },
         handleInput(e) {
@@ -272,7 +277,10 @@ export default {
 .clear-history:hover {
     color: orangered;
 }
-
+.clear-history-text{
+    position: relative;
+    top: -4px;
+}
 .tag-style{
     cursor:pointer;
     color:grey;

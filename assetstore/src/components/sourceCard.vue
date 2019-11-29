@@ -1,23 +1,26 @@
 <template>
-    <div class="source-card" @click="goPage(`/resourceDetail/${sourceID}`)">
-        <div class="image">
+    <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
+        <div class="upper" :style="backgroundStyle">
+            <!-- <img :src="concatImgUrl" class="image"/> -->
             <strong class="heart" id="heart" @click="addFavorite()">
-                <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
-                <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
+                <Icon v-show="this.isStar == undefined || !this.isStar" size="30" type="md-heart-outline" style="color: #ec5b6e;" />
+                <Icon v-show="this.isStar" size="30" type="md-heart" style="color: #ec5b6e;z-index:11" />
             </strong>
         </div>
         <div class="source-content">
-            <h3>{{sourceTitle}}</h3>
-            <span>{{sourceDescription}}</span>
+            <p style="font-weight: 600;color: black;">{{resource.name}}</p>
+            <p style="min-height:45px">{{sourceDescription}}</p>
         </div>
         <Divider style="margin: 15px 0px 5px 0px;"/>
         <div class="source-card-footer">
-            <Rate disabled icon="md-star" v-model="rate" style="position:relative; left: 8px; bottom: 8px;"></Rate>
-            <span class="source-card-footer-icon">
+            <Rate disabled icon="md-star" v-model="getRateAvg" style="position:relative; left: 8px; bottom: 8px;"></Rate>
+            <span class="source-card-footer-icon"> 
                 <font-awesome-icon :icon="['fas','eye']"/>
-                <span> {{viewCount}}&emsp;</span>
+                <span> {{resource.viewCount||0}}</span>
+            </span>
+            <span class="source-card-footer-icon" style="position:relative; right: 8px;">
                 <font-awesome-icon :icon="['fas','comment']"/>
-                <span> {{chatCount}}</span>
+                <span> {{resource.commentCount||0}}</span>
             </span>
         </div>
     </div>
@@ -25,44 +28,85 @@
 <script>
 export default {
     name: "SourceCard",
-    // props: {
-    //     sourceID: {
-    //         type: String,
-    //         default: 233,
-    //     },
-    //     styname:{
-    //         type:String,
-    //         default:'默认分类是？'
-    //     }
-    // },
-    props:['sourceID','breadlist'],
-
-
+    props: {
+        resource: {
+            type: Object,
+            default: () => {},
+        },
+        breadlist:{
+            type:Array,
+            default: []
+        },
+        isLike:{
+            type: Boolean,
+            default: false,
+        }
+    },
+    computed:{
+        getRateAvg(){
+            return this.resource.rateAvg || 5;
+        },
+        getElText(){
+            var text = ''
+            var $d = document.createElement('div')
+            document.body.appendChild($d)
+            $d.innerHTML = this.resource.description
+            
+            text = $d.textContent
+            document.body.removeChild($d)
+            return text.length>=45? text.slice(0,45)+'...' : text
+        },
+  
+        concatImgUrl(){
+            return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
+        },
+    },
     data() {
         return {
-            // TODO data里面的数据均需从后端拿到
             rate: 3.5,
             viewCount: 2019,
             chatCount: 12,
             sourceTitle: '资源名称',
             sourceDescription: '描述文字帮助用户对资源快速预览以及理解文字',
-            favoriteIcon: false,            // defalut favourite is false
+
             jumpOrNot: true,
+            isStar: this.isLike,
+            backgroundStyle:{}
         }
     },
+    mounted(){
+        let $img = document.createElement('img')
+        $img.onload = ()=>{
+            this.backgroundStyle = {
+                backgroundImage:`url(${this.concatImgUrl})`
+            }
+        }
+        $img.src = this.concatImgUrl
+    },
     methods:{
+        
         addFavorite(){
-            //TODO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
             this.jumpOrNot = false
-            this.favoriteIcon = !this.favoriteIcon
             /* 提示用户已关注 */
-            if(this.favoriteIcon){
-                this.$Message.success('已关注')
-                this.$store.commit('ADD_FAVORITE', this.sourceID);
+            if(!this.isStar || this.isStar == undefined){
+                axios.post(`/api/resource/${this.resource.id}/star`, {'star':true},{emulateJSON:true}).then((res)=>{
+                    if(res.data.code === 0){
+                        this.$Message.success('已关注')
+                        this.isStar = true
+                    }else{
+                        alert(res)
+                    }
+                })
             }else{
-                this.$Message.success('已取消关注')
-                this.$store.commit('REMOVE_FAVORITE', this.sourceID);
+                axios.post(`/api/resource/${this.resource.id}/star`, {'star':false},{emulateJSON:true}).then((res)=>{
+                    if(res.data.code === 0){
+                        this.$Message.success('已取消关注')
+                        this.isStar = false
+                    }else{
+                        alert(res)
+                    }
+                })
             }
         },
         goPage(url){
@@ -94,25 +138,31 @@ export default {
 }
 </style>
 <style scoped>
-.image {
+.upper {
     height: 140px; 
-    width: 250px;
+    width: 240px;
     background-image: url("../assets/白绿.jpg");
-    background-size: 240px 150px;
+    /* background-size: 237px 150px; */
+    background-size: cover;
     background-repeat: no-repeat;
 }
+.image{
+    width: 237px;
+    height: 140px;
+}
 .heart{
-    position: relative; 
+    position: absolute; 
     float: right; 
-    top: 10px;
-    right: 20px;
+    top: 9px;
+    right: 9px;
     cursor: pointer;
 }
 .source-card{
+    position: relative;
     width: 240px; 
     height: 275px;
     font-family: MicrosoftYaHei;
-    border: 1px solid #ffffff;
+    border: 1px solid  #ffffff;
     box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
     background-color: #ffffff;
     cursor: pointer;
@@ -125,16 +175,20 @@ export default {
     margin-right: 5px;
     margin-bottom: 27px;
     font-family: MicrosoftYaHei;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 14px;
 }
 .source-card-footer{
     width:240px;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.5);
-    text-align: left;
+    /* text-align: left; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .source-card-footer-icon{
     position:relative;
-    bottom:3px;
-    left:35px;
+    /* bottom:2px; */
 }
 </style>

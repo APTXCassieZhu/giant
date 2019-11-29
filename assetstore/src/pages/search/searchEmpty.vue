@@ -71,6 +71,7 @@ export default {
 .title-wrapper{
     position: relative;
     left: 4%;
+    width: 50%;
     top: 15px;
     font-size: 24px;
     font-weight: bold;
@@ -91,6 +92,7 @@ export default {
     position: relative;
     left: 4%;
     top: 15px;
+    width: 80%;
     font-size: 22px;
     font-weight: 600;
     color: #1ebf73;

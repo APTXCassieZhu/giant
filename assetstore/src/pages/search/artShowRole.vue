@@ -2,6 +2,9 @@
     <div>
         <TopNavigation style="z-index: 100"></TopNavigation>
         <div class="body-style">
+            <!-- <div style="margin:30px 0;font-size:14px;">
+                <bread-crumb></bread-crumb>
+            </div> -->
             <div id='advise' class="advise-wrapper">
                 <div class="advise-container">
                   <span>&emsp;推荐搜索&emsp;</span>
@@ -14,7 +17,7 @@
                 </div>
             </div>
             <div class="title-wrapper">
-                <strong>美术类资源/角色</strong>
+                <strong>{{route}}</strong>
             </div>
             <div class="button-wrapper">
               <choice></choice>
@@ -36,14 +39,14 @@
                     </div>
                 </ul>
                 <br>
-                <source-card v-for="n in 15" :key="n" 
+                <!-- <source-card v-for="n in 15" :key="n" 
                     :sourceID="n*1000"  
                     :breadlist="[
                       {fullPath:`/artShow/role#tags=['111','222','333']`,name:'美术类资源'},
                       {fullPath:`/artShow/role#tags=['111','222','333']`,name:'角色'}
                     ]"  
-                class="card-style"></source-card>  
-                <Page class="page-style" :total="100" show-elevator />
+                class="card-style"></source-card>   -->
+                <a-pagination v-model="curPage" :total="50" style="text-align: center;"/>
                 <corner></corner>
             </div>
             <Footer style="position:relative;margin-top:200px;"></Footer>
@@ -61,6 +64,8 @@ import Choice from '../../components/choice.vue'
 import Corner from '../../components/corner.vue'
 import searchResult from '../search/searchResult.vue'
 
+import breadCrumb from "@/widget/breadcrumb.vue";
+
 export default {
     name:"ArtShow",
     inject: ['reload'],
@@ -70,6 +75,14 @@ export default {
         Footer,
         Corner,
         Choice,
+        breadCrumb
+    },
+    watch: {
+        // 对路由变化作出响应...
+        '$route' (to, from) {
+            console.log('to '+to)
+            console.log('from '+from)
+        }
     },
     data() {
         return {
@@ -78,9 +91,70 @@ export default {
             searchHistory: [],              //存放历史搜索
             searchForm: {content:""},
             currentOrder: "按推荐排序",        //筛选结果按这个currentOrder排序
+            route: "",
+            curPage: 1,
+        }
+    },
+    mounted(){
+
+        // debugger
+        if(this.$route.params.pathMatch == "role"){
+            this.route = "美术类资源 / 角色"
+        }else if(this.$route.params.pathMatch == "environment"){
+            this.route = "美术类资源 / 环境"
+        }else if(this.$route.params.pathMatch == "tool"){
+            this.route = "美术类资源 / 道具"
+        }else if(this.$route.params.pathMatch == "vehicle"){
+            this.route = "美术类资源 / 载具"
+        }else if(this.$route.params.pathMatch == "effect"){
+            this.route = "美术类资源 / 特效"
+        }else if(this.$route.params.pathMatch == "animation"){
+            this.route = "美术类资源 / 动画"
+        }else if(this.$route.params.pathMatch == "3d"){
+            this.route = "美术类资源 / 3d"
+        }else if(this.$route.params.pathMatch == "2d"){
+            this.route = "美术类资源 / 2d"
+        }else if(this.$route.params.pathMatch == "paint"){
+            this.route = "美术类资源 / 原画"
+        }else if(this.$route.params.pathMatch == "UI"){
+            this.route = "美术类资源 / UI"
+        }else if(this.$route.params.pathMatch == "cute"){
+            this.route = "美术类资源 / Q版"
+        }else if(this.$route.params.pathMatch == "second"){
+            this.route = "美术类资源 / 二次元"
+        }else if(this.$route.params.pathMatch == "korea"){
+            this.route = "美术类资源 / 日韩"
+        }else if(this.$route.params.pathMatch == "occident"){
+            this.route = "美术类资源 / 欧美"
+        }else if(this.$route.params.pathMatch == "china"){
+            this.route = "美术类资源 / 国风"
+        }else if(this.$route.params.pathMatch == "texture"){
+            this.route = "美术类资源 / 贴图与材质"
+        }else if(this.$route.params.pathMatch == "template"){
+            this.route = "美术类资源 / 模板"
         }
     },
     methods:{
+
+        xgoPage(url){
+          
+            //debugger
+            this.$store.commit('SAVE_BREADLIST', {
+                // breadlist:[
+                //     {fullPath:'/home',name: this.styname}  
+                // ],
+                breadlist:[
+                    {fullPath:this.route.fullPath,name:'xxxxx'}
+                ],
+                resourceId:this.sourceID
+                
+            })
+
+            
+            this.$router.push(`/resourceDetail/${132}`)
+     
+        
+        },
         changeOrder(name){
             // TODO 根据用户选择的筛选，重新加载searchresult page显示资源
             if(name === "按推荐排序"){
@@ -133,7 +207,15 @@ export default {
     }
 }
 </script>
-
+<style>
+.advise-container > .tag-style:hover > .ivu-tag-text{
+    color: #1ebf73;
+}
+.card-wrapper > ul > div > .ivu-dropdown > .ivu-select-dropdown{
+    margin: 0px;
+    padding: 0px;
+}
+</style>
 <style scoped>
 .body-style{
     position: absolute;
@@ -151,12 +233,13 @@ export default {
 .advise-container {
     position: relative;
     left:3.3%;
+    width: 90vw;
     top:10px;
     height: 20px;
 }
 .advise-close{
-    position: relative;
-    left: 1250px;
+    position: absolute;
+    right: 0vw;
     top: 5px;
     color: rgba(0, 0, 0, 0.25);
 }
@@ -169,6 +252,7 @@ export default {
 .title-wrapper{
     position: relative;
     left: 4%;
+    width: 50%;
     top: 20px;
     font-size: 24px;
     color:#262626;
@@ -178,6 +262,7 @@ export default {
 .button-wrapper{
     position: relative;
     left: 4%;
+    width: 95%;
 }
 
 .card-wrapper {

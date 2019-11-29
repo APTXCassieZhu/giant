@@ -11,7 +11,6 @@
               <a-form-item v-bind="formItemLayout" label="" style="">
                 <div class="dropbox" style="margin:10px 0;">
                   <a-upload-dragger
-
                     v-decorator="[
                       'dragger',
                       {
@@ -20,8 +19,10 @@
                       }
                     ]"
                     :beforeUpload="beforeUpload"
-                    name="files"
+                    @change="handleChange"
                     action="/api/file/upload"
+										:headers="{authorization:this.$store.state.token}"
+                    :data="{target:'resourceFile'}"
                     :multiple="false"
                   >
                     <p class="ant-upload-drag-icon">
@@ -39,25 +40,33 @@
               </a-form-item>
 
             </section>
-
+            
             <section>
               <header class="uploadfile-header">STEP.2 <br/>资源信息编辑</header>
-   
+
                <a-form-item label="资源名称：" :label-col="labelCol" :wrapper-col="wrapperCol ">
                 <a-input
-                  v-decorator="['note', { rules: [{ required: true, message: '请输入资源名称' }] }]"
+                  v-decorator="['resource-name', { rules: [{ required: true, message: '请输入资源名称' }] }]"
                 />
               </a-form-item>
 
-              <a-form-item v-bind="formItemLayout" label="初始版本号："  :label-col="labelCol" :wrapper-col="wrapperCol "> 
+             <!-- <a-form-item v-bind="formItemLayout" label="初始版本号："  :label-col="labelCol" :wrapper-col="wrapperCol "> 
                 <a-input
-                  v-decorator="['resource-version', { rules: [{ required: true, message: '请填写版本号' }] }]"
+                  v-decorator="['resource-version', { rules: [
+                    { required: true, message: '请填写版本号' },{
+                      validator(rule,value,callback){
+                        let rg = /^[0-9\.]+$/.test(value)
+                        if(!rg) {
+                          callback('请填写正确的版本号')
+                          return 
+                        }
+                        callback()
+                      }
+                    }
+                  ] }]"
                 />
-              </a-form-item>
-              <!-- <a-form-item v-bind="formItemLayout" label="文件描述："  :label-col="labelCol" :wrapper-col="wrapperCol ">
-                <a-textarea v-decorator="['resource-description', { rules: [{ required: true, message: '请填写文件描述' }] }]"
-                placeholder="Basic usage" :rows="4" />
               </a-form-item> -->
+           
               <section class="editor-wrap">
                 <div class="editor-label"> <span>文件描述：</span> </div>
                 <div>
@@ -104,40 +113,42 @@
                 </a-form-item>
               </template>
 
+              <section class="a" style="height:81px;">
+                <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
+                  <a-radio-group v-decorator="['radio-group']">
+                    <a-radio value="none">
+                      无
+                    </a-radio>
+                    <a-radio value="unity">
+                      Unity
+                    </a-radio>
+                    <a-radio value="unreal">
+                      Unreal
+                    </a-radio>
+                  </a-radio-group>
+                </a-form-item>
 
-              <a-form-item v-bind="formItemLayout" label="引擎选项（可选）" :label-col="labelCol" :wrapper-col="wrapperCol ">
-              <a-radio-group v-decorator="['radio-group']">
-                <a-radio value="none">
-                  无
-                </a-radio>
-                <a-radio value="unity">
-                  Unity
-                </a-radio>
-                <a-radio value="unreal">
-                  Unreal
-                </a-radio>
-              </a-radio-group>
-            </a-form-item>
+                <template v-if="showCheckBoxGroup=='unity'">
+                  <div class="checkboxgroup-wrap">
+                    <a-checkbox :indeterminate="indeterminate" @change="onCheckAllChange" :checked="checkAll">
+                      全选
+                    </a-checkbox>
+                    <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="checkboxChange" />
+                  </div>
+                  
+                </template>
+              
+                <template v-if="showCheckBoxGroup=='unreal'">
+                  <div class="checkboxgroup-wrap">
+                    <a-checkbox :indeterminate="indeterminate_unreal" @change="onCheckAllChangeUnreal" :checked="checkAll_unreal">
+                      全选
+                    </a-checkbox>
+                    <a-checkbox-group :options="plainOptions_unreal" v-model="checkedList_unreal" @change="checkboxChangeUnreal" />
 
-              <template v-if="showCheckBoxGroup=='unity'">
-                <div class="checkboxgroup-wrap">
-                  <a-checkbox :indeterminate="indeterminate" @change="onCheckAllChange" :checked="checkAll">
-                    全选
-                  </a-checkbox>
-                  <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="checkboxChange" />
-                </div>
-                
-              </template>
-            
-              <template v-if="showCheckBoxGroup=='unreal'">
-                <div class="checkboxgroup-wrap">
-                  <a-checkbox :indeterminate="indeterminate_unreal" @change="onCheckAllChangeUnreal" :checked="checkAll_unreal">
-                    全选
-                  </a-checkbox>
-                  <a-checkbox-group :options="plainOptions_unreal" v-model="checkedList_unreal" @change="checkboxChangeUnreal" />
-
-                </div>
-              </template>
+                  </div>
+                </template>
+              </section>
+  
             </section>
 
 
@@ -154,11 +165,17 @@
                   type="text"
                   size="small"
                   :style="{ width: '128px' }"
-                  :value="inputValue"
                   placeholder="请输入2-8个字符"
                   @change="handleInputChange"
                   @blur="handleInputConfirm"
                   @keyup.enter="handleInputConfirm"
+                   v-decorator="[
+                    'entertag',
+                      {rules: [
+                        {type:'string', min: 2,max:8,  message:'请输入2-8个字符', trigger:'keydown'}
+                      ]
+                     },
+                  ]"
                 />
                 <a-tag v-else @click="showInput" ref="enterIpt" style="background: #fff; borderStyle: dashed;">
                   <a-icon type="plus" /> 增加标签
@@ -179,6 +196,9 @@
                   listType="picture-card"
                   :multiple="false"
                   :beforeUpload="beforeUpload2"
+									:headers="{authorization:this.$store.state.token}"
+                  :data="{target:'resourceImage'}"
+                  @change="handleChangex"
                   @preview="handlePreview"
                   v-decorator="[
                     'thumbnail',
@@ -205,14 +225,15 @@
           </div>
 
           <section class="uploadfile-r">
-            <div class="uploadfile-r-wrap" >
+            <div class="uploadfile-r-wrap"  style="position: sticky; top: 160px;"  >
               <header class="uploadfile-header">
                 其他设置
               </header>
             
-              <a-form-item v-bind="formItemLayout" label="是否公开" :label-col="{span:8}" :wrapperCol="{span:5,offset:11}">
-                <a-switch v-decorator="['public', { valuePropName: 'checked' }]" />
-              </a-form-item>
+              <div class="file-public-switch">
+								<span>是否公开</span>
+								<a-switch :defaultChecked="isPublic" @change="onChangeSwitch" />
+							</div>
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
             
@@ -223,23 +244,57 @@
    </div>
 </template>
 
-<style>
-.ant-form-item-label{
-  display: flex;
+<style lang="less">
+.uploadfile{
+  .a .ant-form-item{
+    min-height: auto;
+  }
+  .ant-form-item{
+    min-height:60px;
+  }
+  .ant-form-item-label{
+    display: flex;
+  }
+  .ant-form-item-label label{
+    font-size:16px;
+    color:#7f7f7f;
+    font-weight: bold;
+  }
+  .ant-row{
+    margin:30px 0;
+  }
+  .ant-upload.ant-upload-drag{
+    padding:15px 0;
+  }
+  
+  .ant-form-item-label{
+    display: flex;
+  }
+  .ant-form-item-label label{
+    font-size:16px;
+    color:#7f7f7f;
+    font-weight: bold;
+  }
+  .ant-row{
+    margin:30px 0;
+  }
+  .ant-upload.ant-upload-drag{
+    padding:15px 0;
+  }
 }
-.ant-form-item-label label{
-  font-size:16px;
-  color:#7f7f7f;
-  font-weight: bold;
-}
-.ant-row{
-  margin:30px 0;
-}
-.ant-upload.ant-upload-drag{
-  padding:15px 0;
-}
+
+
+
 </style>
 <style scoped lang="less">
+.file-public-switch{
+	margin: 30px 0;
+	display: flex;
+	font-size: 16px;
+	color: #7f7f7f;
+	font-weight: bold;
+	justify-content: space-between;
+}
 .checkboxgroup-wrap{
   margin-left: 289px;
   margin-top: -18px;
@@ -296,7 +351,7 @@
   // display: flex;
   // box-sizing: border-box;
   position: relative;
-  margin-top:75px;
+  margin-top:10px;
   &-header{
     color:#7f7f7f;
     font-size:23px;
@@ -328,8 +383,8 @@
 
     border-left: 1px solid #e5e5e5;
     height: 301px;
-    width: 363px;
-    margin-left: 84px;
+     width:335px;
+    margin-left: 72px;
     box-sizing: border-box;
     padding-left: 86px;
 
@@ -346,14 +401,11 @@ import marked from 'marked'
 import Vue from 'vue'
 
 
-
 var plainOptions = []
 var defaultCheckedList = []
 
 var plainOptions_unreal = []
 var defaultCheckedList_unreal = []
-
-
 
 
 export default {
@@ -371,8 +423,8 @@ export default {
       checkAll_unreal: false,
       plainOptions_unreal,
 
-
-
+      replaceIdx:0,
+			isPublic:true,
       showArtStyle:false,
       art_v : '',
       art_options:[{value:'q',label:'q版风格'},{value:'j',label:'日漫'}],
@@ -408,7 +460,6 @@ export default {
        name: 'validate_other' ,
        onFieldsChange(props, fields){
          var keys = Object.keys(fields)
-
          //console.log(keys,fields)
 
          if(keys.length === 1 && keys[0] === 'radio-group'){
@@ -418,9 +469,6 @@ export default {
            that.checkedList = []
            that.checkedList_unreal = []
          }
-        
-
-
         //  if(keys.length ===1 && keys[0] === 'checkbox-group-unreal' || keys[0] === 'checkbox-group-unity'){
           
         //  }    
@@ -442,7 +490,8 @@ export default {
     let editor = new E(this.$refs['editor-owo'],this.$refs['editor-owo-content'])
     editor.customConfig.zIndex = 2
     this.editor = editor
-    
+		
+		
      // 自定义菜单配置
     editor.customConfig.menus = [
       'head',
@@ -457,14 +506,28 @@ export default {
       'emoticon',  // 表情
     ]
 
+
     editor.create()
     
-    
-    addEventListener('keydown',e=>{
-      //console.log(editor)
-      //editor.txt.html()
+  
+		axios.get(`/api/resource/${this.$route.params.resourceId}`).then(response=>{
+      var res = response.data
+      var data = res.data
+      
+      this.resource_name = data.name
+			this.resource_ver = data.vers[0].verNum
+			this.isPublic = data.state === 'public'?true:false
+
+			this.form.setFieldsValue({
+				'resource-name':this.resource_name,
+				//'resource-version':this.resource_ver
+			})
+			
+      // this.editor.txt.html(data.description)
+      this.editor.txt.html(data.vers[0].description)
     })
-    
+
+
     // console.log('matched:', this.$route.matched)
     axios.get(`/api/tag/tree`,{ params:{type:'engine_ver'} }).then(response=>{
       var res = response.data 
@@ -492,6 +555,7 @@ export default {
         
       })
 
+
     })
   },
   created(){
@@ -518,8 +582,8 @@ export default {
       }else{
         this.checkedList_unreal = []
       }
-      console.log('checkedList_unreal:',this.checkedList_unreal)
 
+      console.log('checkedList_unreal:',this.checkedList_unreal)
     },
     checkboxChange(checkedList) {
       this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length
@@ -544,42 +608,31 @@ export default {
       console.log('checkedList:',this.checkedList)
     },
 
+
+		onChangeSwitch(e){
+			this.isPublic = e
+		},
+
     beforeUpload2(file){
-      // const isJPG = /jpg|jpeg|png/.test(file.type)
-
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-      // // return false
-      // const isLt5M = file.size / 1024 / 1024 < 5
-
-      // if (!isLt5M) {
-      //   this.$message.error('资源必须小于5MB')
-      // }
-
-      // return isJPG && isLt5M
+			if(!/jpg|jpeg|png|gif/.test(file.type)){
+				this.$message.warning('请上传图片')
+				return Promise.reject()
+			}
 
       return true
     },
     beforeUpload(file){
+		
+      if(this.fileList&&this.fileList.length){
+        this.$message.warning('只能上传一个资源')
+        return Promise.reject()
+      } 
 
+			if(file.type != 'application/x-zip-compressed' && file.type!='application/zip'){
+				this.$message.warning('请上传一个zip')
+				return Promise.reject()
+			}
 
-      // console.log('type:',file.type)
-      // const isJPG = /zip/.test(file.type)
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-
-      // // return false
-      // const isLt200M = file.size / 1024 / 1024 < 200
-
-      // if (!isLt200M) {
-      //   this.$message.error('资源必须小于200MB')
-      // }
-
-      // return isJPG && isLt200M
 
       return true
     },
@@ -631,7 +684,10 @@ export default {
         
         // console.log('txt html:', this.editor.txt.html())
 
-        if(err){ return  }
+         if(err){
+           return $('html,body').animate({scrollTop: '440px'}, 300)
+         }
+
 
         if(!values.dragger) return this.$message.warning('请上传一个资源')
        
@@ -648,30 +704,42 @@ export default {
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
 
         var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
+        //console.log(images)
+        ;[images[0],images[this.replaceIdx]] =[images[this.replaceIdx],images[0]]
+        //console.log(images)
+        //return
 
-        axios.post(`/api/resource`,{
-          params:{
-            "state": values.public?'public':'private', // 是否公开
-            "type": values['resource-type']=="art_classify"?'art':'dev', // 资源分类
-            "name": values['resource-name'], //资源名称
-            "tags":[
-              ...tag1,
-              ...tag2,
-              ...tag3
-            ], // dropdown下的所有选项 风格，引擎选项
-            "file": file,  // 资源上传fileid
-            "version": values['resource-version'], //资源版本号
-            "label": [ //自定义标签
-              ...this.tags
-            ],
-            "images": [ // 资源缩略图fileid
-              ...images
-            ],
-            "descriptipon": this.editor.txt.html() //资源描述
-          }
+        // console.log(images)
+        // return
+        // /resource/resourceId  put
+        axios.put(`/api/resource/${this.$route.params.resourceId}`,{
+          "state": this.isPublic?'public':'private', // 是否公开
+          "type": values['resource-type']=="art_classify"?'art':'dev', // 资源分类
+          "name": values['resource-name'], //资源名称
+          "tags":[
+            ...tag1,
+            ...tag2,
+            ...tag3
+          ], // dropdown下的所有选项 风格，引擎选项
+          "file": file,  // 资源上传fileid
+          //"version": values['resource-version'], //资源版本号
+          "labels": [ //自定义标签
+            ...this.tags
+          ],
+          "images": [ // 资源缩略图fileid
+            ...images
+          ],
+          "description": this.editor.txt.html() //资源描述
         }).then(response=>{
-          
+         var res = response.data
+          if(res.code!=0)  return this.$message.warning(res.msg)
           this.$message.success('发布成功')
+
+          setTimeout(()=>{
+            this.$router.push(
+              `/resourceDetail/${this.$route.params.resourceId}`
+            )
+          },1000)
         })
 
       })
@@ -696,6 +764,7 @@ export default {
     },
     handleChange(info) {
 
+
       var {fileList} = info
       this.fileList = fileList
 
@@ -703,6 +772,10 @@ export default {
 
       if(status =='done'){
         console.log('handleChange.',this.fileList)
+      }
+
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
       }
       //debugger
     },
@@ -746,33 +819,75 @@ export default {
     },
 
     handleChangex(info) {
+      //console.log(info)
+
       const status = info.file.status
 
-      //console.log(status)
-      if(status=='done'){
-        //console.log(info.fileList[0],info.fileList[0].response)
-        let res = info.fileList[0].response
-        this.fileid = res.data.fileid
+    // ant-upload-list-item-done
+      //console.log(info)
 
-        this.resource_fileid.push(this.fileid)
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
       }
 
+      if(status =='done'){
 
-      if (status === 'done') {
-        this.$message.success(`${info.file.name} file uploaded successfully.`)
-      } else if (status === 'error') {
-        this.$message.error(`${info.file.name} file upload failed.`)
+        setTimeout(()=>{
+          Array.from(document.querySelectorAll('.uploadfile .ant-upload-list-item-done'),($node,i)=>{
+            //console.log($node)
+
+            if($node.$ipt){
+              $node.querySelector('.ant-upload-list-item-info').removeChild($node.$ipt)
+            }
+
+            var idx
+            var $ipt = document.createElement('input')
+            $node.$ipt = $ipt
+            $node.querySelector('.ant-upload-list-item-info').appendChild($ipt)
+            
+
+            Object.assign($ipt.style,{
+              position:'absolute',
+              left:'0',
+              bottom:'10px',
+              'z-index':2,
+              border:'none',
+              color:'white',
+              width:'100%',
+              'text-align':'center',
+              background:'none',
+              cursor:'pointer',
+              outline:'none'
+            })
+            
+
+            $ipt.setAttribute('type','button')
+            $ipt.value = '设为封面'
+            $ipt.style.display = 'none'
+            
+
+            $ipt.onclick = ()=>{
+              this.replaceIdx = idx
+              this.$message.success('已设为封面')
+              //console.log('replaceIdx:',this.replaceIdx)
+            }
+            $node.onmouseover = ()=>{
+              //console.log($node)
+              idx = $($node).index()
+              $ipt.style.display = 'block'
+            }
+            
+            $node.onmouseout = ()=>{
+              $ipt.style.display = 'none'
+            }
+
+          })
+
+        },200)
       }
-
     },
     onChange(value) {
       console.log(value)
-    },
-    handleChangex2(value) {
-      console.log(`selected ${value}`)
-    },
-    onChangex(checked) {
-      console.log(`a-switch to ${checked}`)
     }
   }
   

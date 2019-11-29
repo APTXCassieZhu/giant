@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "vue-lazyload": "^1.3.3"
+  }
+}

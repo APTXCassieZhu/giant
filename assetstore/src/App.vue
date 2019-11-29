@@ -26,6 +26,31 @@ export default {
     }
   }
 }
+export function defineReactive(obj, key, val) {
+    var dep = new Dep()
+    Object.defineProperty(obj, key, {
+        enumerable: true,
+        configurable: true,
+        get: function reactiveGetter() {
+            // console.log('geter be called once!')
+            var value = val
+            if (Dep.target) {
+                dep.depend()
+            }
+            return value
+        },
+        set: function reactiveSetter(newVal) {
+            // console.log('seter be called once!')
+            var value = val
+            if (newVal === value || (newVal !== newVal && value !== value)) {
+                return
+            }
+            val = newVal
+            dep.notify()
+        }
+    })
+}
+
 </script>
 
 <style>
@@ -37,7 +62,7 @@ export default {
   color: #2c3e50;
   background-color: #ffffff;
   width:auto;
-  min-width:1120px;
+  /* min-width:1366px; */
   max-width:100%;
   height:100%;
 }

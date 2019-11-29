@@ -13,8 +13,8 @@ var remind = require('./routers/remind')
 var bulletin = require('./routers/bulletin')
 
 app.use(cookieParser())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded( {extended: false}))
+app.use(bodyParser.urlencoded({ limit:'200mb',extended:true}))
+app.use(bodyParser.json({limit:'200mb'}))
 app.use('/user', user)
 app.use('/search', search)
 app.use('/feedback', feedback)
@@ -23,10 +23,54 @@ app.use('/file', file)
 app.use('/resource', resource)
 app.use('/remind', remind)
 app.use('/bulletin', bulletin)
-app.use('/script', express.static(__dirname +'/script'))
-app.use('/fonts', express.static(__dirname +'/fonts'))
 
+// app.use('/script', express.static(__dirname +'/script'))
+// app.use('/fonts', express.static(__dirname +'/fonts'))
+app.use('/',express.static(__dirname+''))
 
+app.get('/:id/resource',(req, res) => {
+	res.status(200).json({
+		'code': 0,
+		'data':{
+			'count': 15,
+			"list": [{
+				"id": 0,
+				"name": "尊老爱幼",
+				"images": [
+					"https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=ef9c6b2c38fa828bd1239ae5c5242609/54fbb2fb43166d221ce8fabd4d2309f79052d278.jpg",
+				],
+				"label": "string",
+				"downloadCount": 8250,
+				"stars": 1024,
+				"isStar": true
+			},{
+				"id": 294,
+				"name": "神迹是我和你共同降下的",
+				"images": null,
+				"label": "string",
+				"downloadCount": 270,
+				"stars": 570,
+				"isStar": false
+			},{
+				"id": 9647,
+				"name": "攘外并先安内！",
+				"images": null,
+				"label": "string",
+				"downloadCount": 332,
+				"stars": 56,
+				"isStar": true
+			},{
+				"id": 7777,
+				"name": "为中华崛起而读书",
+				"images": null,
+				"label": "string",
+				"downloadCount": 31032,
+				"stars": 73895,
+				"isStar": true
+			}]
+		}
+	});
+})
 // -------------- o(=•ェ•=)m   start tag ------------------
 
 {
@@ -173,8 +217,9 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 			"msg": "string",
 			"code": 0,
 			"data": {
-				"id": 0,
+				"id": 0, //资源id
 				"name": "资源名23333", // 资源名
+				"userId": 6,  // 发布这条资源的人userid
 				"images": [ // 轮询图
 					"//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572500092263&di=fb3951d60188836031fc753b9fc0b1e1&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F16b0b51f76966da6e2ea9d5239a5098594f4e99a.jpg",
 					"//timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572951722265&di=6ae8c5212af12bbcd4bd5c30aed0fe9a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F-fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fpic%2Fitem%2F472309f790529822ccae72b0d5ca7bcb0a46d420.jpg",
@@ -347,10 +392,11 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 						"content": "1", //评论内容
 						"hot":444, // 点赞数
 						"createdAt": "2019-11-07T07:46:14.000Z", //几天前
-						"userId": 1,
+						"userId": 1,  
 						"replyUserId": '1',
 						"pid": 'pid34', 
 						"rateId": null,
+						
 						"items": [
 							{
 								"id": 2, //二层评论id
@@ -401,6 +447,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 								"stars": [1,1]
 							}
 						],
+
 						"user": {
 							"id": 123, // 一层用户id
 							"name": "胡浩", //用户名

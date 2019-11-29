@@ -16,19 +16,21 @@ import './emojiReply.css'
 }
 
 {
+
   var Reply = ($el,param={})=>{
     var that = {
       $el:typeof $el === 'string'?document.querySelector($el):$el,
       init(){
+				var id = `emoji-reply-${Date.now()}`
         this.$el.innerHTML = html`
           <div class="emoji-reply-owo">
             <div style="position:relative;">
-              <textarea class="emoji-reply-owo-content" data-emojiable="true"></textarea>
+              <textarea id="${id}" class="emoji-reply-owo-content" data-emojiable="true"></textarea>
             </div>
             <div class="emoji-reply-owo-bar">
               <div class="emoji-reply-owo-btn" >   
-                <svg  style="width:15px;height:15px;color:black;" aria-hidden="true" focusable="false" data-prefix="far" data-icon="smile" class="svg-inline--fa fa-smile fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>
-                <span>表情</span>   
+                <!-- <svg  style="width:15px;height:15px;color:black;" aria-hidden="true" focusable="false" data-prefix="far" data-icon="smile" class="svg-inline--fa fa-smile fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>
+                <span>表情</span>    -->
               </div>
               <div class="emoji-reply-owo-pub"><span>发表</span> </div>
             </div>
@@ -36,17 +38,32 @@ import './emojiReply.css'
         `
         this.$content = this.$el.querySelector('.emoji-reply-owo-content')
         this.$pub = this.$el.querySelector('.emoji-reply-owo-pub')
-        
+				
+				this.emojiEl = $(`#${id}`).emojioneArea({
+					// placeholder       : $('#demox'), // placeholder
+					// container         : $('#demox'), // by default, emojionearea container created directly under source,
+					// n this option you can specify custom {jQuery|selector} container
+				})
+			
+
         this.$pub.addEventListener('click',e=>{
           this.handle_submit&&this.handle_submit({
-            content:  this.$content.value,
+						//content:  this.$content.value,
+						content:this.emojiEl[0].emojioneArea.getText(),
             userdata: param.userdata
           })
         })
   
-      },
+			},
+			getText(){
+				return this.emojiEl[0].emojioneArea.getText()
+			},
+			setText(str){
+				this.emojiEl[0].emojioneArea.setText(str)
+			},
       clearContent(){
-        this.$content.value = ''
+				//this.$content.value = ''
+				this.emojiEl[0].emojioneArea.setText('')
       },
       onSubmit(fn){
         this.handle_submit = fn
@@ -78,11 +95,15 @@ import './emojiReply.css'
     <svg t="1572855865686"  class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5165" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M581.674667 170.666667c6.72 0 18.538667 1.429333 27.584 4.352 44.544 14.442667 70.186667 61.76 59.797333 109.12l-1.066667 4.437333-39.701333 148.906667h157.269333c19.093333 0 37.973333 7.082667 50.773334 21.248 14.293333 15.829333 19.861333 36.778667 15.616 57.109333l-1.066667 4.352-82.922667 295.253333a51.882667 51.882667 0 0 1-46.08 37.76l-3.84 0.128H298.666667V452.501333c84.949333-18.389333 209.194667-244.373333 209.194666-244.373333C525.525333 184.170667 546.944 170.666667 581.674667 170.666667zM234.666667 448v405.333333H170.666667V448h64z" p-id="5166"></path></svg>
   `
   var Comments = ($el,param={userdata,items})=>{
+
+    
     var that = {
       $el:typeof $el === 'string'?document.querySelector($el):$el,
       init(){
         this.items = param.items
         this.userdata = param.userdata
+
+        //console.log(this.userdata)
       
         this.$el.innerHTML = html`
           <div class="comments-owo"></div>
@@ -91,7 +112,8 @@ import './emojiReply.css'
 
         this.items.forEach(item=>{
           var $item = document.createElement('div')
-          $item.className = 'comments-owo-item'
+					$item.className = 'comments-owo-item'
+					$item.id = `cid-${item.id}`
           this.$comments.appendChild($item)
           
           var {user,score,like,liked,time,content} = item
@@ -102,24 +124,32 @@ import './emojiReply.css'
                 <div>
                   <div class="comments-owo-item-name">${user.name}</div>
                   <div class="comments-owo-item-star">
-                    
+
                   </div>
                 </div>
                 <div class="comments-owo-item-time">${time}</div>
               </div>
             </div> 
+
             <div class="comments-owo-item-b">
               <div class="comments-owo-item-content">${content}</div>
               <div class="comments-owo-item-list">
-                <div class="comments-owo-item-zan comments-icon-wrap">
+                <div class="comments-owo-item-zan comments-icon-wrap" style="min-width:30px;">
                   <div>${liked?goodfill:good}</div>
                   <span>${like}</span>
                 </div>
                 <div class="comments-owo-item-reply comments-icon-wrap">
                   <svg t="1572854853296" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4929" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M810.666667 213.333333a64 64 0 0 1 64 64v426.666667a64 64 0 0 1-64 64H478.336l-146.645333 96.106667A21.333333 21.333333 0 0 1 298.666667 846.250667V768h-85.333334a64 64 0 0 1-64-64V277.333333a64 64 0 0 1 64-64h597.333334z m0 64H213.333333v426.666667h149.333334v63.296L459.242667 704H810.666667V277.333333zM539.306667 490.666667v64H362.666667v-64h176.64zM661.333333 362.666667v64H362.666667v-64h298.666666z" p-id="4930"></path></svg>
-                  <span>回复</span>
+                  <span data-id="${item.id}">回复</span>
                 </div>
-                <div class="comments-owo-item-del comments-icon-wrap" style="visibility:${this.userdata.uid===item.user.uid?'visible':'hidden'}">
+                <!-- <div class="comments-owo-item-del comments-icon-wrap" style="visibility:${ 
+                  (this.userdata.uid===item.user.uid||this.userdata.resource_userid===item.user.uid)   ?
+                  'visible':'hidden'}">
+                  <svg t="1572855009994" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5047" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M341.013333 394.666667l27.754667 393.450666h271.829333l27.733334-393.450666h64.106666L704.426667 792.618667a64 64 0 0 1-63.829334 59.498666H368.768a64 64 0 0 1-63.829333-59.52L276.885333 394.666667h64.128z m139.306667 19.818666v298.666667h-64v-298.666667h64z m117.013333 0v298.666667h-64v-298.666667h64zM181.333333 288h640v64h-640v-64z m453.482667-106.666667v64h-256v-64h256z" p-id="5048"></path></svg>
+                  <span>删除</span>
+                </div> -->
+                <div class="comments-owo-item-del comments-icon-wrap" style="visibility:${
+                  (this.userdata.resource_userid==this.userdata.uid ||this.userdata.uid==item.user.uid)?'visible':'hidden'}" >
                   <svg t="1572855009994" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5047" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M341.013333 394.666667l27.754667 393.450666h271.829333l27.733334-393.450666h64.106666L704.426667 792.618667a64 64 0 0 1-63.829334 59.498666H368.768a64 64 0 0 1-63.829333-59.52L276.885333 394.666667h64.128z m139.306667 19.818666v298.666667h-64v-298.666667h64z m117.013333 0v298.666667h-64v-298.666667h64zM181.333333 288h640v64h-640v-64z m453.482667-106.666667v64h-256v-64h256z" p-id="5048"></path></svg>
                   <span>删除</span>
                 </div>
@@ -148,7 +178,6 @@ import './emojiReply.css'
           ]
 
           var reply = Reply($item.querySelector('.comments-owo-twolevel-reply'), {userdata:item})
-          
 
           $like.addEventListener('click',
             this.handleLikeClick.bind(this, 
@@ -159,13 +188,19 @@ import './emojiReply.css'
                   $like.querySelector('span').innerHTML = ++n
      
                   $like.querySelector('div').innerHTML = goodfill
+
+                  //heartBeat animated
+                  $like.querySelector('div').className = 'heartBeat animated'
+
                   this.liked = true
                 },
                 dislike(){
                   let n = $like.querySelector('span').innerHTML*1
                   $like.querySelector('span').innerHTML = --n
-
                   $like.querySelector('div').innerHTML = good
+
+                  $like.querySelector('div').className = ''
+
                   this.liked = false
                 }
                })
@@ -215,18 +250,25 @@ import './emojiReply.css'
                  ${content}
                </div>
                <div class="comments-owo-twolevel-child-list">
-                 <div class="comments-owo-item-zan  comments-icon-wrap">
+                 <div class="comments-owo-item-zan  comments-icon-wrap" style="min-width:30px;">
                    <div>${liked?goodfill:good}</div>
                    <span>${like}</span>
                  </div>
                  <div class="comments-owo-item-reply comments-icon-wrap">
                    <svg t="1572854853296" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4929" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M810.666667 213.333333a64 64 0 0 1 64 64v426.666667a64 64 0 0 1-64 64H478.336l-146.645333 96.106667A21.333333 21.333333 0 0 1 298.666667 846.250667V768h-85.333334a64 64 0 0 1-64-64V277.333333a64 64 0 0 1 64-64h597.333334z m0 64H213.333333v426.666667h149.333334v63.296L459.242667 704H810.666667V277.333333zM539.306667 490.666667v64H362.666667v-64h176.64zM661.333333 362.666667v64H362.666667v-64h298.666666z" p-id="4930"></path></svg>
-                   <span>回复</span>
+                   <span data-id="${userb.id}">回复</span>
                  </div>
-                 <div class="comments-owo-item-del comments-icon-wrap" style="visibility:${this.userdata.uid===usera.uid?'visible':'hidden'}">
+                 <!-- <div class="comments-owo-item-del comments-icon-wrap" style="visibility:${
+                  (this.userdata.uid===item.user.uid||this.userdata.resource_userid===item.user.uid)?
+                   'visible':'hidden'}">
                    <svg t="1572855009994" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5047" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M341.013333 394.666667l27.754667 393.450666h271.829333l27.733334-393.450666h64.106666L704.426667 792.618667a64 64 0 0 1-63.829334 59.498666H368.768a64 64 0 0 1-63.829333-59.52L276.885333 394.666667h64.128z m139.306667 19.818666v298.666667h-64v-298.666667h64z m117.013333 0v298.666667h-64v-298.666667h64zM181.333333 288h640v64h-640v-64z m453.482667-106.666667v64h-256v-64h256z" p-id="5048"></path></svg>
                    <span>删除</span>
-                 </div>
+                 </div> -->
+                <div class="comments-owo-item-del comments-icon-wrap" style="visibility:${
+                  (this.userdata.resource_userid==this.userdata.uid ||this.userdata.uid==usera.uid)?'visible':'hidden'}" >
+                  <svg t="1572855009994" class="comments-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5047" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M341.013333 394.666667l27.754667 393.450666h271.829333l27.733334-393.450666h64.106666L704.426667 792.618667a64 64 0 0 1-63.829334 59.498666H368.768a64 64 0 0 1-63.829333-59.52L276.885333 394.666667h64.128z m139.306667 19.818666v298.666667h-64v-298.666667h64z m117.013333 0v298.666667h-64v-298.666667h64zM181.333333 288h640v64h-640v-64z m453.482667-106.666667v64h-256v-64h256z" p-id="5048"></path></svg>
+                  <span>删除</span>
+                </div>
                </div>
                <div class="comments-owo-twolevel-child-reply" style="display:none;" >
 
@@ -251,6 +293,8 @@ import './emojiReply.css'
                     $like.querySelector('span').innerHTML = ++n
       
                     $like.querySelector('div').innerHTML = goodfill
+
+                    $like.querySelector('div').className = 'heartBeat animated'
                     this.liked = true
                   },
                   dislike(){
@@ -258,6 +302,8 @@ import './emojiReply.css'
                     $like.querySelector('span').innerHTML = --n
 
                     $like.querySelector('div').innerHTML = good
+
+                    $like.querySelector('div').className = ''
                     this.liked = false
                   }
                 })
@@ -275,11 +321,7 @@ import './emojiReply.css'
                  })      
               )
             )
-
           })
-
-         
-          
         })
       },
       extendItem(o,o2={}){
@@ -323,6 +365,7 @@ import './emojiReply.css'
         this.handleLike = fn
       },
       onReply(fn){
+        // debugger
         this.handleReply = fn
       }
     }

@@ -11,7 +11,7 @@
                 <font-awesome-icon :icon="['fas','edit']"/>
             </span>
         </div>
-        <feedback :showFeedback='toShow' @hideDialog="toShow=false"></feedback>
+        <feedback v-if="toShow" @hideDialog="toShow=false"></feedback>
     </div>
 </template>
 <script>
@@ -54,6 +54,7 @@ export default {
         backToTop() {
             let distanceY = window.pageYOffset
             let i = 0
+            clearInterval(this.interval)
             this.interval = setInterval(() => {
                 let next = Math.floor(this.easeInOutQuad( 10*i, distanceY, -distanceY, 500))
                 if(next <= this.backPosition) {
@@ -111,6 +112,10 @@ export default {
     /*border: 1px solid #fff;
     background-color: gray;*/
     color: #1ebf73;
-
+}
+@media only screen and (max-width: 1366px) {
+    .corner {
+        right: 15px;
+    }
 }
 </style>

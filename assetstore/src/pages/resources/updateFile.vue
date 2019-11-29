@@ -13,7 +13,6 @@
               <a-form-item v-bind="formItemLayout" label="" style="">
                 <div class="dropbox" style="margin:10px 0;">
                   <a-upload-dragger
-
                     v-decorator="[
                       'dragger',
                       {
@@ -22,8 +21,11 @@
                       }
                     ]"
                     :beforeUpload="beforeUpload"
-                    name="files"
+                    @change="handleChange"
+                    name="file"
                     action="/api/file/upload"
+										:headers="{authorization:this.$store.state.token}"
+                    :data="{target:'resourceFile'}"
                     :multiple="false"
                   >
                     <p class="ant-upload-drag-icon">
@@ -44,15 +46,25 @@
             <section>
               <header class="uploadfile-header">STEP.2 <br/>更新信息编辑</header>
 
-
               <section class="curVer">
                 <div>当前版本号</div>
                 <div>Ver {{resource_ver}}</div>
               </section>
 
               <a-form-item v-bind="formItemLayout" label="更新版本号"  :label-col="labelCol" :wrapper-col="wrapperCol "> 
-                <a-input
-                  v-decorator="['resource-version', { rules: [{ required: true, message: '请填写版本号' }] }]"
+                 <a-input
+                  v-decorator="['resource-version', { rules: [
+                    { required: true, message: '请填写版本号' },{
+                      validator(rule,value,callback){
+                        let rg = /^[0-9\.]+$/.test(value)
+                        if(!rg) {
+                          callback('请填写正确的版本号')
+                          return 
+                        } 
+                        callback()
+                      }
+                    }
+                  ] }]"
                 />
               </a-form-item>
 
@@ -74,44 +86,79 @@
           </div>
 
           <section class="uploadfile-r">
-            <div class="uploadfile-r-wrap" >
+            <div class="uploadfile-r-wrap" style="position: sticky; top: 160px;">
               <header class="uploadfile-header">
                 其他设置
               </header>
             
-              <a-form-item v-bind="formItemLayout" label="是否公开" :label-col="{span:8}" :wrapperCol="{span:5,offset:11}">
-                <a-switch v-decorator="['public', { valuePropName: 'checked' }]" />
-              </a-form-item>
+              <!-- <a-form-item v-bind="formItemLayout" label="是否公开" :label-col="{span:8}" :wrapperCol="{span:5,offset:11}">
+                <a-switch v-decorator="['public', { valuePropName: 'defaultChecked' }]" />
+              </a-form-item> -->
+							<div class="file-public-switch">
+								<span>是否公开</span>
+								<a-switch :defaultChecked="this.isPublic" @change="onChangeSwitch" />
+							</div>
+							
               <p style="color:#7d7d7d;">* 开启该选项意味着其他用户可以自由浏览、下载和使用你的资源</p>
             </div>
             
           </section>
-
-
-         
         </div>
       </a-form>
     </section>
    </div>
 </template>
 
-<style>
-.ant-form-item-label{
-  display: flex;
+<style lang="less">
+
+.uploadfile{
+  .a .ant-form-item{
+    min-height: auto;
+  }
+  .ant-form-item{
+    min-height:60px;
+  }
+  .ant-form-item-label{
+    display: flex;
+  }
+  .ant-form-item-label label{
+    font-size:16px;
+    color:#7f7f7f;
+    font-weight: bold;
+  }
+  .ant-row{
+    margin:30px 0;
+  }
+  .ant-upload.ant-upload-drag{
+    padding:15px 0;
+  }
+
+  .ant-form-item-label{
+    display: flex;
+  }
+  .ant-form-item-label label{
+    font-size:16px;
+    color:#7f7f7f;
+    font-weight: bold;
+  }
+  .ant-row{
+    margin:30px 0;
+  }
+  .ant-upload.ant-upload-drag{
+    padding:15px 0;
+  }
 }
-.ant-form-item-label label{
-  font-size:16px;
-  color:#7f7f7f;
-  font-weight: bold;
-}
-.ant-row{
-  margin:30px 0;
-}
-.ant-upload.ant-upload-drag{
-  padding:15px 0;
-}
+
 </style>
 <style scoped lang="less">
+.file-public-switch{
+	margin: 30px 0;
+	display: flex;
+	font-size: 16px;
+	color: #7f7f7f;
+	font-weight: bold;
+	justify-content: space-between;
+}
 .curVer{
   display: flex;
   font-size: 16px;
@@ -228,8 +275,8 @@
 
     border-left: 1px solid #e5e5e5;
     height: 301px;
-    width: 363px;
-    margin-left: 84px;
+    width:335px;
+    margin-left: 72px;
     box-sizing: border-box;
     padding-left: 86px;
 
@@ -259,7 +306,8 @@ export default {
       },
       editor:null,
       resource_name:'',
-      resource_ver:'',
+			resource_ver:'',
+			isPublic :true,
       
       labelCol:{span:4},
       wrapperCol:{ span: 17 ,offset:3},
@@ -294,16 +342,12 @@ export default {
            let o = fields[keys[0]]
            that.showCheckBoxGroup = o.value
          }
-        
-
-
-        //  if(keys.length ===1 && keys[0] === 'checkbox-group-unreal' || keys[0] === 'checkbox-group-unity'){
-          
-        //  }    
        }
     })
   },
   mounted(){
+
+
 
     document.querySelector('#components-form-demo-validate-other').addEventListener('keydown',e=>{
 
@@ -335,19 +379,16 @@ export default {
 
     editor.create()
 
-
-    addEventListener('keydown',e=>{
-      //console.log(editor)
-      //editor.txt.html()
-    })
-
     axios.get(`/api/resource/${this.$route.params.resourceId}`).then(response=>{
       var res = response.data
       var data = res.data
       
       this.resource_name = data.name
-      this.resource_ver = data.ver[0].verNum
-
+			this.resource_ver = data.vers[0].verNum
+			this.isPublic = data.state === 'public' ? true:false
+			
+      // this.editor.txt.html(data.description)
+      this.editor.txt.html(data.vers[0].description)
     })
 
     // console.log('matched:', this.$route.matched)
@@ -371,44 +412,25 @@ export default {
     
   },
   methods:{
-    beforeUpload2(file){
-      // const isJPG = /jpg|jpeg|png/.test(file.type)
-
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-      // // return false
-      // const isLt5M = file.size / 1024 / 1024 < 5
-
-      // if (!isLt5M) {
-      //   this.$message.error('资源必须小于5MB')
-      // }
-
-      // return isJPG && isLt5M
-
-      return true
+		onChangeSwitch(e){
+			this.isPublic = e
     },
+    
+
     beforeUpload(file){
 
+      if(this.fileList&&this.fileList.length){
+        this.$message.warning('只能上传一个资源')
+        return Promise.reject()
+      } 
 
-      // console.log('type:',file.type)
-      // const isJPG = /zip/.test(file.type)
-      // //console.log(file.size) // 字节
-      // if (!isJPG) {
-      //   this.$message.error('文件格式不对')
-      // }
-
-      // // return false
-      // const isLt200M = file.size / 1024 / 1024 < 200
-
-      // if (!isLt200M) {
-      //   this.$message.error('资源必须小于200MB')
-      // }
-
-      // return isJPG && isLt200M
-
+			if(file.type != 'application/x-zip-compressed' && file.type!='application/zip'){
+				this.$message.warning('请上传一个zip')
+        return Promise.reject()
+        
+			}
       return true
+
     },
     handleUnityCheckBox(){
       this.unity_checkall ^= true
@@ -425,7 +447,6 @@ export default {
     },
     handleKeyDown(e){
       // debugger
-
     },
     handleResChange(val){
       this.art_v = val 
@@ -451,13 +472,12 @@ export default {
 
       e.preventDefault()
       this.form.validateFields((err, values) => {
-
-       console.log(values)
+       //console.log(values)
 
          //console.log(this.editor.txt.html(),this.editor.txt.html().length)
         
         // console.log('txt html:', this.editor.txt.html())
-        
+        // debugger
 
         if(err){ return  }
 
@@ -465,41 +485,29 @@ export default {
        
         //if(!this.editor.txt.text().length ) return this.$message.warning('请填写文件描述')
 
-        var tag1 = values['resource-cascader']?values['resource-cascader']:[]
-        var tag2 = [values['resource-art-type']]
-        var tag3 = 
-          values['checkbox-group-unity']?values['checkbox-group-unity']:
-          values['checkbox-group-unreal']
+    
         // debugger
 
         var file = values['dragger']?values['dragger'][0].response.data.fileId:null
-
-        debugger
-        var images = values['thumbnail']?  values['thumbnail'].map(o=>o.response.data.fileId):[]
-
-        axios.post(`/api/resource`,{
-          params:{
-            "state": values.public?'public':'private', // 是否公开
-            "type": values['resource-type']=="art_classify"?'art':'dev', // 资源分类
-            "name": values['resource-name'], //资源名称
-            "tags":[
-              ...tag1,
-              ...tag2,
-              ...tag3
-            ], // dropdown下的所有选项 风格，引擎选项
-            "file": file,  // 资源上传fileid
-            "version": values['resource-version'], //资源版本号
-            "label": [ //自定义标签
-              ...this.tags
-            ],
-            "images": [ // 资源缩略图fileid
-              ...images
-            ],
-            "descriptipon": this.editor.txt.html() //资源描述
-          }
+        // debugger
+        // /resource/:id/ver
+        // axios.put(`/api/resource/${this.$route.params.resourceId}`,{
+        axios.post(`/api/resource/${this.$route.params.resourceId}/ver`,{
+        // axios.put(`/api/resource/${this.$route.params.resourceId}`,{
+          "id": this.$route.params.resourceId,
+          "state": this.isPublic?'public':'private', // 是否公开
+          "version": values['resource-version'],
+          "file": file,  // 资源上传fileid
+          "description": this.editor.txt.html() //资源描述
         }).then(response=>{
-          
+          var res = response.data
+          if(res.code!=0)  return this.$message.warning(res.msg)
           this.$message.success('发布成功')
+          setTimeout(()=>{
+            this.$router.push(
+              `/resourceDetail/${this.$route.params.resourceId}`
+            )
+          },1000)
         })
 
 
@@ -533,6 +541,11 @@ export default {
       if(status =='done'){
         console.log('handleChange.',this.fileList)
       }
+
+      if(status == 'error'){
+        return this.$message.error('上传失败，请重试')
+      }
+
       //debugger
     },
     handleClose(removedTag) {
@@ -570,10 +583,7 @@ export default {
     },
     handleSave(){
       //console.log('tags:',this.tags,'fileList:',this.fileList, 'fileid:',this.fileid)
-
-      
     },
-
     handleChangex(info) {
       const status = info.file.status
 

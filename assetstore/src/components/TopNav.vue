@@ -130,13 +130,19 @@
                                                         </span>
                                                         评论了你的<span class="mark-green"> {{item.resource.name}} </span> 
                                                         <div class="time-slot">{{getTime(item.updatedAt)}}</div>
-                                                        <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                     </div>
                                                 </div>
-                                                <div v-else class="jump"  @click="goPage1(`/resourceDetail/${item.resource.id}`,item)">
+                                                <div v-else-if="item.targetType === 'starResourceCommented'" class="jump"  @click="goPage1(`/resourceDetail/${item.resource.id}`,item)">
                                                     <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                                     <div class="font-content">
                                                         你关注的资源<span class="mark-green"> {{item.resource.name}} </span>被评论
+                                                        <div class="time-slot">{{getTime(item.updatedAt)}}</div>
+                                                    </div>
+                                                </div>
+                                                <div v-else @click="goPage1(`/personal`,item)" class="font-container">
+                                                    <font-awesome-icon :icon="['fas', 'tag']" class="font-icon"/>
+                                                    <div class="font-content">
+                                                        你收到{{item.friendImpressionCount}}条新的<span> 好友印象</span> 
                                                         <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                                                     </div>
                                                 </div>
@@ -187,19 +193,19 @@
                         <div v-else class="topnav-user-image" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown" >
-                        <DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem>
-                        <DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem>
-                        <DropdownItem><router-link class="user-box-link-a" to="/editSetting">修改资料</router-link></DropdownItem>
-                        <DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="goLike('personal')">个人中心</DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="goLike('like')">我的关注</DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="goPage('/editSetting')">修改资料</DropdownItem>
+                        <DropdownItem class="user-box-link-a" @click.native="logout()">退出登录</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>
 
-            <div to='/login' class="topnav-box-user-login">
+            <!-- <div to='/login' class="topnav-box-user-login">
                 <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
                     <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
                 </Tooltip>
-            </div>
+            </div> -->
         </div>
     </div>
     <Divider class="divide"/>
@@ -238,20 +244,27 @@ export default {
     },
     computed:{
         getUser(){ 
-            let o = JSON.parse(this.$store.state.user)
-            this.profile = o.profilePic
-            if(o.nickName == null){
-                return o.name
-            }else{
-                return o.nickName
-            }
+            try{
+                console.log(typeof this.$store.state.user)
+                // debugger
+                let o = JSON.parse(this.$store.state.user)
+                console.log(o)
+                this.profile = o.profilePic
+                if(o.nickName == null){
+                    return o.name
+                }else{
+                    return o.nickName
+                }
+
+            }catch(e){console.log(e)}
         }
     },
     mounted(){
         axios.get('/api/remind', {
             params: {
                 page: 1,
-                pageSize: 5
+                pageSize: 5,
+                dropdown: true,
             }
         }).then(res=>{
             if(res.data.code === 0){
@@ -265,7 +278,8 @@ export default {
         axios.get('/api/bulletin', {
             params: {
                 page: 1,
-                pageSize: 5
+                pageSize: 5,
+                dropdown: true
             }
         }).then(res=>{
             if(res.data.code === 0){
@@ -301,7 +315,9 @@ export default {
         },
         /* 用于通知提醒icon dropdown跳转前通知后端已读 */
         goPage1(url, item){
-            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/remind/${item.id}/view`, {headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -322,7 +338,9 @@ export default {
             this.$router.push('/personal')
         },
         goLike1(item){
-            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/remind/${item.id}/view`, {headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -333,6 +351,14 @@ export default {
         },
         /* 由通知的dropdown点击跳转消息中心看详情 */
         goNotice(item){
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/bulletin/${item.id}/view`, {headers, data}).then(res=>{
+                if(res.data.code === 0){
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })  
             this.$store.commit('READ_NOTICE', item)
             if(this.$route.path==='/notice'){
                 location.reload()
@@ -354,7 +380,9 @@ export default {
                     this.totalUnreadInfo.splice(i, 1);
                     this.totalUnreadNum --
                     this.infoDropdownCount --
-                    axios.put(`/api/remind/${item.id}/ignore`).then(res=>{
+                    let headers = {"Content-Type": "application/json; charset=utf-8"}
+                    let data = {"id": item.id}
+                    axios.put(`/api/remind/${item.id}/ignore`, {headers, data}).then(res=>{
                         if(res.data.code === 0){
                             
                         }else if(res.data.code === 400){
@@ -385,7 +413,9 @@ export default {
                     this.totalUnreadNotice.splice(i, 1);
                     this.totalUnreadNum --
                     this.noticeDropdownCount --
-                    axios.put(`/api/bulletin/${item.id}/ignore`).then(res=>{
+                    let headers = {"Content-Type": "application/json; charset=utf-8"}
+                    let data = {"id": item.id}
+                    axios.put(`/api/bulletin/${item.id}/ignore`, {headers, data}).then(res=>{
                         if(res.data.code === 0){
                             
                         }else if(res.data.code === 400){
@@ -413,8 +443,9 @@ export default {
         },
         ignoreAllInfo(){
             this.totalUnreadNum -= this.infoDropdownCount
-            /*TODO 忽略全部 */
-            axios.put(`/api/remind/ignore`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {}
+            axios.put(`/api/remind/ignore`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                     
                 }else if(res.data.code === 400){
@@ -426,7 +457,9 @@ export default {
         },
         ignoreAllNotice(){
             this.totalUnreadNum -= this.noticeDropdownCount
-            axios.put(`/api/bulletin/ignore`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {}
+            axios.put(`/api/bulletin/ignore`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -504,7 +537,7 @@ export default {
 .topnav {
     overflow: hidden;
     position: fixed;
-    width: 100%;
+    width: 100vw;
     height: 80px;
     margin: 0;
     padding: 0;
@@ -540,6 +573,7 @@ export default {
     position: relative;
     cursor: pointer;
     width: 5%;
+    min-width: 20px;
     left: 4%;
     top: 10px;
     float:left;
@@ -594,8 +628,8 @@ export default {
 
 .topnav-box-user{
     position: relative;
-    width:15%;
-    min-width: 240px;
+    width:18%;
+    min-width: 270px;
     top: 10px;
     float:right;
     align-content: center;
@@ -618,9 +652,8 @@ export default {
 .topnav-user-image:hover{
     color: #1ebf73;
 }
-
 .topnav-user{
-    color:black;
+    color:#7d7d7d;
     z-index:inherit;
     margin-left: 30px;
 }
@@ -628,8 +661,6 @@ export default {
     color:black;
     z-index:inherit;
     text-align: center;
-    margin-left:5px;
-    /* margin-right: 30px; */
 }
 .topnav-user:hover, .user-box-link-a:hover{
     color: #1ebf73;
@@ -686,10 +717,11 @@ export default {
 }
 .ignore-all-btn-disabled{
     border: solid 1px #e5e5e5;
+    border-radius: 0px;
     font-size: 16px;
     letter-spacing: 1px;
     color: #d8d8d8;
-    width: 204px;
+    width: 204.5px;
     height: 62px;
 }
 .close-icon-btn{
@@ -722,7 +754,7 @@ export default {
     z-index: 100;
 }
 .topnav-dropdown-notice{
-    min-height: 284px;
+    /* min-height: 284px; */
     max-height: 900px;
 }
 .mark-green{
@@ -807,6 +839,15 @@ export default {
     left: 18px;
     font-size: 14px;
     font-family: MicrosoftYaHei;
+}
+@media only screen and (max-width: 1366px) {
+    .topnav-box-user{
+        width:23%;
+        min-width: 270px;
+    }
+    .nav-menu{
+        width: 99%;
+    }
 }
 </style>
 
