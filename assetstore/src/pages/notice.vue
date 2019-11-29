@@ -4,14 +4,14 @@
         <div class="middle-card-wrapper">
             <Menu active-name="1" class="leftside-menu" style="width:auto;min-width:281px;">
                 <MenuItem name="1" @click.native="showInfo">
-                    <div class="menu_left_part">
+                    <div class="menu-left-part">
                         <font-awesome-icon :icon="['fas','bell']" style="margin-right:23px;"/> 
                         提醒
                     </div>
                     <div v-if="infoNotRead!=0" class="not-read">{{infoNotRead}}</div>
                 </MenuItem>
                 <MenuItem name="2" @click.native="showNotice">
-                    <div class="menu_left_part">
+                    <div class="menu-left-part">
                         <font-awesome-icon :icon="['fas','bullhorn']" style="margin-right:20px;"/> 
                         通知
                     </div>
@@ -241,7 +241,39 @@ export default {
                 this.curNoticeItem = o
                 this.$store.commit('NOTICE_READED', o)
             }
-
+        }
+        const that = this
+        window.onresize = () => {
+            return (() => {
+                window.screenWidth = document.body.clientWidth
+                that.screenWidth = window.screenWidth
+            })()
+        }
+        if(this.scrrenWidth <= 1200){
+            this.menuDirection = 'horizontal'
+        }else{
+            this.menuDirection = 'vertical'
+        }
+    },
+    watch:{
+        screenWidth(val){
+            // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
+            if(!this.timer){
+                // 一旦监听到的screenWidth值改变，就将其重新赋给data里的screenWidth
+                this.screenWidth = val
+                this.timer = true
+                let that = this
+                setTimeout(function(){
+                    // 打印screenWidth变化的值
+                    console.log(that.screenWidth)
+                    if(that.screenWidth <= 1200){
+                        that.menuDirection = 'horizontal'
+                    }else{
+                        that.menuDirection = 'vertical'
+                    }
+                    that.timer = false
+                },400)
+            }
         }
     },
     data () {
@@ -264,6 +296,8 @@ export default {
             ifMoreInfo: false,
             loadingInfo: false,
             loadingNotice: false,
+            menuDirection: 'vertical',
+            screenWidth: document.body.clientWidth
         }
     },
     methods:{
@@ -478,7 +512,7 @@ export default {
     color: black;
     z-index: 0;
 }
-.menu_left_part{
+.menu-left-part{
     display: inline-block;
     /* font-size: 16px; */
     margin-right: 50px;
@@ -676,7 +710,13 @@ export default {
         margin-left: 650px;
     }
 }
-@media only screen and (max-width: 1200px) {
-
+@media only screen and (max-width: 1200px){
+    .leftside-menu{
+        /* height: 78px; */
+        margin-bottom: 30px;
+        position: sticky;
+        z-index: 1;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 4, 0.1);
+    }
 }
 </style>

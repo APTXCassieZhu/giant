@@ -556,6 +556,14 @@ export default {
     margin-top: 70px;
     cursor: pointer;
 }
-
+@media only screen and (max-width: 1200px){
+    .leftside-menu{
+        /* height: 78px; */
+        margin-bottom: 30px;
+        position: sticky;
+        z-index: 1;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 4, 0.1);
+    }
+}
 </style>
 

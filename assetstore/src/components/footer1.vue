@@ -37,16 +37,15 @@
                 </Col>
             </Row>
         </div>
-        <!-- <Divider style="color:rgba(0, 0, 0, 0.1)"/> -->
-        <Divider style="color: grey;"/>
-        <span style="margin-left: 10px; color:#FAFAFA">Copyright © 上海巨人网络科技有限公司（Giant Interactive Group Inc.）</span>
+        <Divider style="color:rgba(0, 0, 0, 0.1)"/>
+        <span style="margin-left: 10px;">Copyright © 上海巨人网络科技有限公司（Giant Interactive Group Inc.）</span>
         <br><br>
     </div>
 </template>
 
 <script>
 export default {
-    name: "Footer",
+    name: "Footer1",
 }
 </script>
 
@@ -54,12 +53,10 @@ export default {
 .footer{
     height: 350px;
     width: 100%;
-    /* background-color: rgb(5, 65, 93);
-    color: white; */
-    background-color: #000000D9;
-    color: #86A0B2;
-    /* background-color: #dee1e3;
-    color: #7f7f7f; */
+    /*background-color: rgb(5, 65, 93);
+    color: white;*/
+    background-color: #dee1e3;
+    color: #7f7f7f;
     font-size: 15px;
     padding: 20px 20px 20px 20px;
     font-family: MicrosoftYaHei;
@@ -77,7 +74,6 @@ export default {
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
-    /* color: #000000; */
-    color: #FAFAFA;
+    color: #000000;
 }
 </style>
