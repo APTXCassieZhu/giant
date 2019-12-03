@@ -41,17 +41,17 @@
 
     <Carousel autoplay arrow="always" trigger="hover" :autoplay-speed="speed" class="carousel-style">
         <CarouselItem>
-            <span v-for="item in this.fineArtList.slice(0,3)">
+            <span v-for="item in this.fineArtList.slice(0,4)">
                 <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
             </span>
         </CarouselItem>
         <CarouselItem>
-            <span v-for="item in this.fineArtList.slice(0,3)">
+            <span v-for="item in this.fineArtList.slice(0,4)">
                 <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
             </span>
         </CarouselItem>
         <CarouselItem>
-            <span v-for="item in this.fineArtList.slice(0,3)">
+            <span v-for="item in this.fineArtList.slice(0,4)">
                 <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
             </span>
         </CarouselItem>
@@ -254,6 +254,11 @@ export default {
 @media only screen and (max-width: 1366px) {
     .more{
         right: 10px;
+    }
+}
+@media only screen and (max-width: 1700px) {
+    .more{
+        right: 15px;
     }
 }
 </style>

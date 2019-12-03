@@ -13,7 +13,6 @@
                             <Icon type="ios-search" size="50"></Icon>
                         </Button>
                         <div class="home-search-card" id="content">
-                            <!--TODO 热门搜索的内容暂不知-->
                             <div id="history-search">
                                 <ul>
                                     <div class="home-clear-history" @mousedown="clearHistory()">
@@ -26,10 +25,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <!--TODO 目前借用了百度的库实现联想搜索，未来要用自己的库-->
-                        <div class="home-associate-card" id="associate" style="display:none">     
-                            <!--<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='???'">??????????</a>         
-                            <a style="display:block;" href ="https://www.baidu.com/s?wd='???'">??????????</a> -->        
+                        <div class="home-associate-card" id="associate" style="display:none">    
                         </div>
                     </Dropdown>
                 </div>
@@ -225,6 +221,8 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 400px;
 }
 .home-search-title{
     font-family: MicrosoftYaHeiLight;
