@@ -1,9 +1,27 @@
 <template>
     <div class="home-search-wrapper">
-        <Form id="search" ref="searchForm" :model="searchForm" :rules="searchRule">
+        <a-form :form="searchForm" @submit="searchSubmit" class="home-search-container">
+            <div class="home-search-title">欢迎回来，当前已收录了<span style="color:#FF7A45">{{totalCount}}</span>条美术资源</div>
+            <div class="search-inline-container">
+                <a-form-item>
+                    <a-select defaultValue="art" @change="handleChange" class="home-search-select">
+                        <a-select-option value="all">所有</a-select-option>
+                        <a-select-option value="art">美术</a-select-option>
+                        <a-select-option value="dev">研发</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item>
+                    <a-input id="searchcontent" class="home-search-input"
+                        v-decorator="[{required: true, trigger:'blur', validator: validateContent}]"
+                    >
+                    </a-input>
+                </a-form-item>
+            </div>
+        </a-form>
+        <!-- <Form id="search" ref="searchForm" :model="searchForm" :rules="searchRule">
             <FormItem prop="content">
                 <div class="home-search-container">
-                    <div class="home-search-title">欢迎回来，当前已收录了{{totalCount}}条美术资源</div>
+                    <div class="home-search-title">欢迎回来，当前已收录了<span style="color:#FF7A45">{{totalCount}}</span>条美术资源</div>
                     <Dropdown placement="bottom-start" trigger="custom" :visible="searchVisible" @on-clickoutside="hideAdvise()">
                         <Input id="searchcontent" size="large" type="text" clearable class="home-search-input" 
                         @click.native="changeAdvise()" @on-clear="hideAssociate()"
@@ -12,6 +30,11 @@
                         <Button type="primary" class="home-search-button" @click="searchSubmit()">
                             <Icon type="ios-search" size="50"></Icon>
                         </Button>
+                        <Input size="large" type="text" clearable class="home-search-input" 
+                        @click.native="changeAdvise()" @on-clear="hideAssociate()"
+                        v-on:input="handleInput()" v-model.trim="searchForm.content">
+                            <Icon type="ios-search" slot="prefix" />
+                        </Input>
                         <div class="home-search-card" id="content">
                             <div id="history-search">
                                 <ul>
@@ -30,7 +53,7 @@
                     </Dropdown>
                 </div>
             </FormItem>
-        </Form>
+        </Form> -->
     </div>
 </template>
 
@@ -62,7 +85,7 @@ export default {
             arr: [],                        //存放从原来的data array抽选的index，确保不重复
             num: '',                        //随机index,以便从data list中抽取
             searchHistory: [],              //存放历史搜索
-            searchForm: {content:""},
+            // searchForm: {content:""},
             searchRule: {
                 content: [{required: true, trigger:'blur', validator: validateContent}]
             },
@@ -173,6 +196,15 @@ export default {
 }
 </script>
 <style>
+.home-search-select > .ant-select-selection--single{
+    height: 50px;
+    border-radius: 25px 0% 0% 25px;
+    background-color:#FAFAFA;
+}
+.home-search-select > .ant-select-selection--single > .ant-select-selection__rendered {
+    line-height: 50px;
+}
+
 .home-search-input > .ivu-input{
     border-radius: 0;
     height: 54px;
@@ -224,11 +256,22 @@ export default {
     width: 100%;
     height: 400px;
 }
+.search-inline-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+}
 .home-search-title{
-    font-family: MicrosoftYaHeiLight;
+    font: Bold 26px/35px Microsoft YaHei;
+    letter-spacing: 0;
     font-size: 24px;
     font-weight: 300;
+    text-align: center;
     color: #FAFAFA;
+    margin-bottom: 30px;
 }
 .home-search-title2{
     font-family: MicrosoftYaHeiHeavy;
@@ -236,14 +279,23 @@ export default {
     font-weight: 900;
     color: #042c55;
 }
+.home-search-select{
+    position: relative;
+    border-radius: 25px 0% 0% 25px;
+    height: 50px;
+    background-color: #FAFAFA;
+}
 .home-search-input{
     position: relative;
     text-align: left;
-    float: left;
-    /*width: 80%;*/
-    width: 460px;
-    top: 26px;
+    /* width: 460px;*/
+    /* top: 30px;  */
+    width: 410px;
+    height: 50px;
     z-index: 0;
+    background: #E8E8E8 0% 0% no-repeat padding-box;
+    border-radius: 0% 25px 25px 0%;
+    opacity: 1;
 }
 
 .home-search-button{

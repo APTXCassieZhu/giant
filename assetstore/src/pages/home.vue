@@ -199,7 +199,7 @@ export default {
 .type-title{
     position: relative; 
     text-align: center; 
-    color: #1ebf73;
+    color: #531DAB;
     font-family: MicrosoftYaHei;
     font-size: 22px;
     font-weight: 600;
@@ -211,7 +211,7 @@ export default {
     top: 1.5px;
     right: 280px;
     /*color: rgb(0, 140, 255);*/
-    color: #1ebf73;
+    color: #531DAB;
     cursor: pointer;
     width: 100px;
     padding: 0;

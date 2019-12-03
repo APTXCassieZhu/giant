@@ -11,7 +11,7 @@
                     <Input ref="account" type = "text" placeholder="请输入域账户" v-model="loginForm.account" id="account" @on-change="fillIn()"/>
                 </FormItem>
                 <FormItem prop="password">                    
-                    <Input ref="password" type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password" class="my-login-input" @on-change="fillIn()"/>
+                    <Input ref="password" type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password" class="my-login-input" @on-change="fillIn()" @on-enter="loginSubmit"/>
                 </FormItem>
                 <FormItem class="text-center">
                     <Checkbox class="login-remember" v-model="expire">记住登录状态</Checkbox>
@@ -220,7 +220,7 @@ export default {
 }
 .my-login-btn{   
     position: relative;
-    background-image: linear-gradient(121deg, #5be9c5 1%, #7be3c3 14%, #37d89d 65%);
+    background-image: linear-gradient(121deg, rgb(128, 90, 189) 1%, rgb(147, 29, 171) 14%, #531DAB 65%);
     text-align: center;
     border: 0px;
     width: 100%;
@@ -228,9 +228,9 @@ export default {
     border-radius: 3px;
     color: white;
 }
-.my-login-btn:hover{
+/* .my-login-btn:hover{
     background-image: linear-gradient(121deg, #37d89d 35%, #7be3c3 86%, #5be9c5 99%);
-}
+} */
 .login-footer{
     font-size: 12px;
     letter-spacing: 0.86px;
