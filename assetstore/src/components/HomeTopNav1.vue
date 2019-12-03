@@ -8,6 +8,7 @@
                 <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="logo" @click="goPage('/home')">      
             </div>
             <span class="logo-text" @click="goPage('/home')">GDRC</span>
+            <!--不知道怎么清除之前div css-->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
             </div>
@@ -265,7 +266,7 @@
 
 <script>
 export default {
-    name: "HomeTopNavigation",
+    name: "HomeTopNavigation1",
     data(){
         return{
             profile: null,

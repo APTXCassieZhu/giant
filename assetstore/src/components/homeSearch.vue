@@ -4,56 +4,47 @@
             <div class="home-search-title">欢迎回来，当前已收录了<span style="color:#FF7A45">{{totalCount}}</span>条美术资源</div>
             <div class="search-inline-container">
                 <a-form-item>
-                    <a-select defaultValue="art" @change="handleChange" class="home-search-select">
+                    <a-select defaultValue="art" class="home-search-select" @change="handleChange">
                         <a-select-option value="all">所有</a-select-option>
                         <a-select-option value="art">美术</a-select-option>
                         <a-select-option value="dev">研发</a-select-option>
                     </a-select>
                 </a-form-item>
                 <a-form-item>
-                    <a-input id="searchcontent" class="home-search-input"
-                        v-decorator="[{required: true, trigger:'blur', validator: validateContent}]"
-                    >
-                    </a-input>
+                    <!-- <Dropdown placement="bottom-start" trigger="custom" :visible="searchVisible" @on-clickoutside="hideAdvise()"> -->
+                    <a-dropdown :trigger="['click']">
+                        <a-input id="searchcontent" class="home-search-input"
+                            v-decorator="['content', { rules: [
+                                    {required: true, trigger:'blur'},
+                                    {validator:this.validateContent.bind(this)}
+                                ] 
+                            }]"
+                            @click="changeAdvise()" 
+                            @change="handleInput()"
+                            @pressEnter="searchSubmit()"
+                            href="#"
+                        >
+                            <font-awesome-icon :icon="['fas','search']" slot="prefix"/>
+                            <span slot="suffix">Enter</span>
+                        </a-input>
+                        <div class="home-search-card" v-if="historyShow" slot="overlay">
+                            <ul>
+                                <div class="home-clear-history" @mousedown="clearHistory()">
+                                    <Icon size="30" type="ios-close"/><span class="home-clear-history-text">清空</span>
+                                </div>
+                            </ul>
+                            <ul v-for="(item,index) in searchHistory" :key="index">
+                                <Icon size="20" type="ios-time-outline"></Icon>
+                                <span class="tag-style" @click="searchTag(item)">{{item}}</span>
+                            </ul>
+                        </div>
+                        <div class="home-associate-card" v-if="guessShow" style="display:none" slot="overlay">    
+                        </div>
+                    </a-dropdown>
+                    <!-- </Dropdown> -->
                 </a-form-item>
             </div>
         </a-form>
-        <!-- <Form id="search" ref="searchForm" :model="searchForm" :rules="searchRule">
-            <FormItem prop="content">
-                <div class="home-search-container">
-                    <div class="home-search-title">欢迎回来，当前已收录了<span style="color:#FF7A45">{{totalCount}}</span>条美术资源</div>
-                    <Dropdown placement="bottom-start" trigger="custom" :visible="searchVisible" @on-clickoutside="hideAdvise()">
-                        <Input id="searchcontent" size="large" type="text" clearable class="home-search-input" 
-                        @click.native="changeAdvise()" @on-clear="hideAssociate()"
-                        v-on:input="handleInput()" v-model.trim="searchForm.content"
-                        placeholder="支持输入资源、用户、文章关键字" />
-                        <Button type="primary" class="home-search-button" @click="searchSubmit()">
-                            <Icon type="ios-search" size="50"></Icon>
-                        </Button>
-                        <Input size="large" type="text" clearable class="home-search-input" 
-                        @click.native="changeAdvise()" @on-clear="hideAssociate()"
-                        v-on:input="handleInput()" v-model.trim="searchForm.content">
-                            <Icon type="ios-search" slot="prefix" />
-                        </Input>
-                        <div class="home-search-card" id="content">
-                            <div id="history-search">
-                                <ul>
-                                    <div class="home-clear-history" @mousedown="clearHistory()">
-                                        <Icon size="30" type="ios-close"/><span class="home-clear-history-text">清空</span>
-                                    </div>
-                                </ul>
-                                <ul v-for="(item,index) in searchHistory" :key="index">
-                                    <Icon size="20" type="ios-time-outline"></Icon>
-                                    <span class="tag-style" @click="searchTag(item)">{{item}}</span>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="home-associate-card" id="associate" style="display:none">    
-                        </div>
-                    </Dropdown>
-                </div>
-            </FormItem>
-        </Form> -->
     </div>
 </template>
 
@@ -73,26 +64,21 @@ function contain(str, charset) {
 export default {
     name:"HomeSearch",
     data() {
-        const validateContent = (rule, value, callback) => {
-            if(contain(value, "^[!@#$%&*()-+=.~`]_{}?/<>,")) {
-                callback(new Error("含有非法字符"))
-            } else {
-                callback();
-            }
-        }
         return {
             tagList: [],                    //存放每次点击换一批放出来的5个对象
             arr: [],                        //存放从原来的data array抽选的index，确保不重复
             num: '',                        //随机index,以便从data list中抽取
             searchHistory: [],              //存放历史搜索
-            // searchForm: {content:""},
-            searchRule: {
-                content: [{required: true, trigger:'blur', validator: validateContent}]
-            },
             searchVisible: false,
             totalCount: 21738,
+            historyShow: false,
+            guessShow: false,
+            type: 'art',                    //默认搜索类别是美术
         }
-    },    
+    }, 
+    beforeCreate() {
+        this.searchForm = this.$form.createForm(this, { name: 'normal_search' });
+    },   
     mounted() {      
         // 页面加载时自动取出历史记录
         for(var i=1; i <= 3; i++) {
@@ -104,74 +90,101 @@ export default {
     methods: {
         searchSubmit() {
             // 清空
-            if(this.searchForm.content != ""){
-                this.searchHistory = []
-                if((storage.has(1)&&storage.has(2))) {
-                    storage.set(3, storage.get(2))
-                    storage.set(2, storage.get(1))
-                    storage.set(1, this.searchForm.content)
-                    this.searchHistory.push(storage.get(1))
-                    this.searchHistory.push(storage.get(2))
-                    this.searchHistory.push(storage.get(3));
-                }else{
-                    if(!storage.has(1)) {
-                        // empty history
-                        storage.set(1, this.searchForm.content)
-                        this.searchHistory.push(storage.get(1))
-                    } else {
-                        storage.set(2, storage.get(1))
-                        storage.set(1, this.searchForm.content)
-                        this.searchHistory.push(storage.get(1))
-                        this.searchHistory.push(storage.get(2))
+            this.searchForm.validateFields((err, values) => {
+                if (!err) {
+                    if(values.content != ""){
+                        this.searchHistory = []
+                        if((storage.has(1)&&storage.has(2))) {
+                            storage.set(3, storage.get(2))
+                            storage.set(2, storage.get(1))
+                            storage.set(1, values.content)
+                            this.searchHistory.push(storage.get(1))
+                            this.searchHistory.push(storage.get(2))
+                            this.searchHistory.push(storage.get(3));
+                        }else{
+                            if(!storage.has(1)) {
+                                // empty history
+                                storage.set(1, values.content)
+                                this.searchHistory.push(storage.get(1))
+                            } else {
+                                storage.set(2, storage.get(1))
+                                storage.set(1, this.searchForm.content)
+                                this.searchHistory.push(storage.get(1))
+                                this.searchHistory.push(storage.get(2))
+                            }
+                        }
+                        this.$router.push(`/searchresult?val=${values.content}`)
+                        // axios.post('/api/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
+                        //     //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
+                        //     this.$store.commit('SEARCH_COUNT', this.searchForm.content)
+                        //     this.$router.push(`/searchresult?val=${this.searchForm.content}`)
+                        // }, (response)=>{
+                        //     //alert("出错啦QAQ")
+                        // })
                     }
                 }
-                this.$router.push(`/searchresult?val=${this.searchForm.content}`)
-                // axios.post('/api/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
-                //     //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                //     this.$store.commit('SEARCH_COUNT', this.searchForm.content)
-                //     this.$router.push(`/searchresult?val=${this.searchForm.content}`)
-                // }, (response)=>{
-                //     //alert("出错啦QAQ")
-                // })
+            })
+        },
+        // 选择不同的种类
+        handleChange(e){
+
+        },
+        validateContent(rule, value, callback){
+            if(contain(value, "^[!@#$%&*()-+=.~`]_{}?/<>,")) {
+                callback(new Error("含有非法字符"))
+            } else {
+                callback();
             }
         },
         handleInput(e) {
-            document.getElementById("content").style.display="none"
-            document.getElementById("associate").style.display="block"
-            console.log(this.searchForm.content)
-            this.$http.jsonp("https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su", 
-            {params:{wd:this.searchForm.content},jsonp:"cb"}).then(function(res){
-                console.log("weisha "+res.data.s)
-                var result = res.data.s
-                var str = '';
-                var count = 0;
-                if (result.length > 0) {
-                    result.forEach(function (ele, index) {
-                        if(count == 0){
-                            str += '<a style="position:absolute;top:10px;" href ="https://www.baidu.com/s?wd='+ ele +  '">' + ele+'</a>';
-                        } else {
-                            str += '<a style="display:block;" href ="https://www.baidu.com/s?wd=' + ele +  '">' + ele+'</a>';
-                        }
-                        count += 1;
-                    })
-                    document.getElementById("associate").innerHTML = str;
-                }else { 
-                    document.getElementById("associate").style.display = 'none';
-                }    
-            }, function(res){
-                //alert(res.status)
+            this.historyShow = false
+            this.guessShow = true
+            this.searchForm.validateFields((err, values) => {
+                if (!err) {
+                    console.log(values)
+                    console.log('搜啥'+values.content)
+                    if(values.content.length > 2){
+                        axios.get('/api/search/sugrec',{params:{val:values.content}}).then(res=>{
+                            if(res.data.code == 0){
+                                var result = res.data.data
+                                var str = '';
+                                var count = 0;
+                                if (result.length > 0) {
+                                    result.forEach(function (ele, index) {
+                                        if(count == 0){
+                                            str += '<a style="position:absolute;top:10px;" @click="searchTag('+ ele +')">' +ele+'</a>';
+                                        } else {
+                                            str += '<a style="display:block;" @click="searchTag(' + ele + ')">' +ele+'</a>';
+                                        }
+                                        count += 1;
+                                    })
+                                    document.getElementById("associate").innerHTML = str;
+                                }else { 
+                                    this.guessShow = false;
+                                }    
+                            }
+                        });
+                    }
+                }
             })
         },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
-            this.searchVisible = true;
-            if(this.searchForm.content == ""){
-                document.getElementById("associate").style.display = "none";
-            }
+            this.searchForm.validateFields((err, values) => {
+                if (!err) {
+                    if(values.content == ""){
+                        this.guessShow = false
+                        this.historyShow = true
+                    }else{
+                        this.guessShow = true
+                        this.historyShow = false
+                    }
+                }
+            })
             // 判断是否有历史搜索
             if(this.searchHistory.length == 0) {
                 console.log("focus empty")
-                document.getElementById("history-search").style.display="none"
+                this.historyShow = false
             }
         },
         // user click the recommend tag and directly go to searchresult page
@@ -179,17 +192,8 @@ export default {
             this.searchForm.content = val;
             this.$options.methods.searchSubmit.bind(this)();
         },
-        hideAdvise() {
-            this.searchVisible = false;
-            document.getElementById("content").style.display='none';
-            document.getElementById("associate").style.display='none';
-        },
-        hideAssociate() {
-            document.getElementById("associate").style.display='none';
-            document.getElementById("searchcontent").focus();
-        },
         clearHistory() {
-            document.getElementById("history-search").style.display='none';
+            this.historyShow = false
             storage.clear();
         }
     }
@@ -199,12 +203,30 @@ export default {
 .home-search-select > .ant-select-selection--single{
     height: 50px;
     border-radius: 25px 0% 0% 25px;
-    background-color:#FAFAFA;
+    background-color: #E8E8E8;
 }
 .home-search-select > .ant-select-selection--single > .ant-select-selection__rendered {
     line-height: 50px;
 }
-
+.home-search-select > .ant-select-selection--single > .ant-select-selection__rendered > .ant-select-selection-selected-value{
+    font: Semibold 18px/24px Microsoft YaHei;
+    letter-spacing: 0;
+    color: #707070;
+}
+.home-search-input > .ant-input{
+    background: #E8E8E8 0% 0% no-repeat padding-box;
+    border-radius: 0% 25px 25px 0%;
+    padding-right: 50px;
+}
+.home-search-input > .ant-input:not(:last-child){
+    padding-right: 50px;
+}
+.home-search-input > .ant-input-suffix{
+    font: Semibold 14px/19px Microsoft YaHei;
+    letter-spacing: 0;
+    color: #000000A6;
+    opacity: 1;
+}
 .home-search-input > .ivu-input{
     border-radius: 0;
     height: 54px;
@@ -221,7 +243,7 @@ export default {
 }
 
 .home-search-card > span > .tag-style:hover > .ivu-tag-text{
-    color: #1ebf73;
+    color: rgb(103, 60, 172);
 }
 </style>
 
@@ -329,7 +351,6 @@ export default {
 }
 
 .home-search-card{
-    display: none;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     background: #fff;
@@ -338,14 +359,12 @@ export default {
     position: relative;
     transition: all 0.2s ease-in-out;
     /*width: 80%;*/
-    width: 460px; 
-    top: 82px; 
+    width: 360px; 
     padding: 10px 20px 10px 20px;
     z-index: 10;
 }
 
 .home-associate-card {
-    display: none;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     background: #fff;
@@ -354,8 +373,7 @@ export default {
     position: relative;
     transition: all 0.2s ease-in-out;
     /*width: 80%;*/
-    width: 460px; 
-    top: 82px; 
+    width: 360px; 
     padding: 0px 20px 0px 20px;
     z-index: 10;
 }
