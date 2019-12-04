@@ -15,7 +15,6 @@
                     <a-dropdown :trigger="['click']">
                         <a-input id="searchcontent" class="home-search-input"
                             v-decorator="['content', { rules: [
-                                    {required: true, trigger:'blur'},
                                     {validator:this.validateContent.bind(this)}
                                 ] 
                             }]"
@@ -27,19 +26,26 @@
                             <font-awesome-icon :icon="['fas','search']" slot="prefix"/>
                             <span slot="suffix">Enter</span>
                         </a-input>
-                        <div class="home-search-card" v-if="historyShow" slot="overlay">
-                            <ul>
+                        <a-menu class="home-search-card" v-if="historyShow" slot="overlay">
+                            <!-- <ul>
                                 <div class="home-clear-history" @mousedown="clearHistory()">
                                     <Icon size="30" type="ios-close"/><span class="home-clear-history-text">清空</span>
                                 </div>
-                            </ul>
-                            <ul v-for="(item,index) in searchHistory" :key="index">
-                                <Icon size="20" type="ios-time-outline"></Icon>
+                            </ul>-->
+                            <a-menu-item v-for="(item,index) in searchHistory" :key="index">
+                                <font-awesome-icon :icon="['fas', 'history']"/>
                                 <span class="tag-style" @click="searchTag(item)">{{item}}</span>
-                            </ul>
-                        </div>
-                        <div class="home-associate-card" v-if="guessShow" style="display:none" slot="overlay">    
-                        </div>
+                                <span v-if="index==0" @mousedown="clearHistory()" class="home-clear-history">
+                                    <font-awesome-icon :icon="['fas', 'times']"/>
+                                    <span class="home-clear-history-text">清空</span>
+                                </span>
+                            </a-menu-item>
+                        </a-menu>
+                        <a-menu class="home-associate-card" v-if="guessShow" slot="overlay" id="associate">  
+                            <a-menu-item v-for="(item, guess) in guessList" :key="guess">
+                                <a @click="searchTag(item)">{{item}}</a>
+                            </a-menu-item>
+                        </a-menu>
                     </a-dropdown>
                     <!-- </Dropdown> -->
                 </a-form-item>
@@ -69,6 +75,8 @@ export default {
             arr: [],                        //存放从原来的data array抽选的index，确保不重复
             num: '',                        //随机index,以便从data list中抽取
             searchHistory: [],              //存放历史搜索
+            guessList:[],                   //存放联想搜索
+            content: '',
             searchVisible: false,
             totalCount: 21738,
             historyShow: false,
@@ -91,6 +99,9 @@ export default {
         searchSubmit() {
             // 清空
             this.searchForm.validateFields((err, values) => {
+                if(this.content != ''){
+                    values.content = this.content;
+                }
                 if (!err) {
                     if(values.content != ""){
                         this.searchHistory = []
@@ -142,24 +153,12 @@ export default {
             this.searchForm.validateFields((err, values) => {
                 if (!err) {
                     console.log(values)
-                    console.log('搜啥'+values.content)
-                    if(values.content.length > 2){
-                        axios.get('/api/search/sugrec',{params:{val:values.content}}).then(res=>{
+                    if(values.content.trim().length >= 2){
+                        this.guessShow = true
+                        axios.get('/api/search/sugrec',{params:{val:values.content.trim()}}).then(res=>{
                             if(res.data.code == 0){
-                                var result = res.data.data
-                                var str = '';
-                                var count = 0;
-                                if (result.length > 0) {
-                                    result.forEach(function (ele, index) {
-                                        if(count == 0){
-                                            str += '<a style="position:absolute;top:10px;" @click="searchTag('+ ele +')">' +ele+'</a>';
-                                        } else {
-                                            str += '<a style="display:block;" @click="searchTag(' + ele + ')">' +ele+'</a>';
-                                        }
-                                        count += 1;
-                                    })
-                                    document.getElementById("associate").innerHTML = str;
-                                }else { 
+                                this.guessList = res.data.data
+                                if (this.guessList.length < 0) {
                                     this.guessShow = false;
                                 }    
                             }
@@ -170,15 +169,20 @@ export default {
         },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
+            this.historyShow = true
             this.searchForm.validateFields((err, values) => {
                 if (!err) {
-                    if(values.content == ""){
+                    if(values.content.trim().length == 0){
+                        console.log('history')
                         this.guessShow = false
                         this.historyShow = true
                     }else{
+                        console.log('guess')
                         this.guessShow = true
                         this.historyShow = false
                     }
+                }else{
+                    alert(err)
                 }
             })
             // 判断是否有历史搜索
@@ -189,12 +193,20 @@ export default {
         },
         // user click the recommend tag and directly go to searchresult page
         searchTag(val) {
-            this.searchForm.content = val;
+            console.log('search tag')
+            this.content = val;
             this.$options.methods.searchSubmit.bind(this)();
         },
         clearHistory() {
-            this.historyShow = false
-            storage.clear();
+            this.searchHistory = []
+            setTimeout(function(){
+                this.historyShow = false
+                for(var i=1; i<=3; i++){
+                    if(storage.has(i)){
+                        storage.remove(i)
+                    }
+                }
+            },10);
         }
     }
 }
@@ -341,10 +353,10 @@ export default {
     color:grey;
     float: right;
 }
-.home-clear-history-text {
+/* .home-clear-history-text {
     position: relative;
     top: -4px;
-}
+} */
 
 .home-clear-history:hover {
     color: orangered;
@@ -353,12 +365,11 @@ export default {
 .home-search-card{
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
-    background: #fff;
+    background: #E8E8E8;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 4px;
     position: relative;
     transition: all 0.2s ease-in-out;
-    /*width: 80%;*/
     width: 360px; 
     padding: 10px 20px 10px 20px;
     z-index: 10;
@@ -367,7 +378,7 @@ export default {
 .home-associate-card {
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
-    background: #fff;
+    background: #E8E8E8;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 4px;
     position: relative;
