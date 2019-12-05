@@ -5,9 +5,9 @@
             <div class="search-inline-container">
                 <a-form-item>
                     <a-select defaultValue="art" class="home-search-select" @change="handleChange">
-                        <a-select-option value="all">所有</a-select-option>
-                        <a-select-option value="art">美术</a-select-option>
-                        <a-select-option value="dev">研发</a-select-option>
+                        <a-select-option value="all"><span class="select-type">所 有</span></a-select-option>
+                        <a-select-option value="art"><span class="select-type">美 术</span></a-select-option>
+                        <a-select-option value="dev"><span class="select-type">研 发</span></a-select-option>
                     </a-select>
                 </a-form-item>
                 <a-form-item>
@@ -124,6 +124,7 @@ export default {
                                 this.searchHistory.push(storage.get(2))
                             }
                         }
+                        // TODO type
                         this.$router.push(`/searchresult?val=${values.content}`)
                         // axios.post('/api/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                         //     //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
@@ -137,8 +138,8 @@ export default {
             })
         },
         // 选择不同的种类
-        handleChange(e){
-
+        handleChange(value){
+            this.type = value
         },
         validateContent(rule, value, callback){
             if(contain(value, "^[!@#$%&*()-+=.~`]_{}?/<>,")) {
@@ -265,7 +266,6 @@ export default {
     height: 400px;
     top: 80px;
     width: 100%;
-    z-index: 10;
     font-family: MicrosoftYaHei;
     background-color: #eef2f5;
     background-image: url("../assets/搜索.svg");
@@ -282,7 +282,7 @@ export default {
 
 .home-search-container {
     position: absolute;
-    z-index: 0;
+    /* z-index: 0; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -317,7 +317,13 @@ export default {
     position: relative;
     border-radius: 25px 0% 0% 25px;
     height: 50px;
+    width: 102.5px;
     background-color: #FAFAFA;
+}
+.select-type{
+    margin-left: 15px;
+    font-size: 18px;
+    font-family: MicrosoftYaHei;
 }
 .home-search-input{
     position: relative;
@@ -326,7 +332,7 @@ export default {
     /* top: 30px;  */
     width: 410px;
     height: 50px;
-    z-index: 0;
+    /* z-index: 0; */
     background: #E8E8E8 0% 0% no-repeat padding-box;
     border-radius: 0% 25px 25px 0%;
     opacity: 1;
@@ -341,7 +347,7 @@ export default {
     cursor: pointer;
     height: 54px;
     top:26px;
-    z-index: 0;
+    /* z-index: 0; */
 }
 
 .tag-style{
@@ -372,7 +378,7 @@ export default {
     transition: all 0.2s ease-in-out;
     width: 360px; 
     padding: 10px 20px 10px 20px;
-    z-index: 10;
+    /* z-index: 10; */
 }
 
 .home-associate-card {
@@ -386,7 +392,7 @@ export default {
     /*width: 80%;*/
     width: 360px; 
     padding: 0px 20px 0px 20px;
-    z-index: 10;
+    /* z-index: 10; */
 }
 
 .home-Divider {

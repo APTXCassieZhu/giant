@@ -1,7 +1,7 @@
 <template>
 <div>
     <div style="position: relative; height: 480px;">
-        <HomeTopNavigation></HomeTopNavigation>   
+        <HomeTopNavigation style="position:fixed; z-index: 10000"></HomeTopNavigation>   
         <HomeSearch></HomeSearch>  
     </div>
     <br><br>
@@ -36,26 +36,7 @@
         <div class="advise-card" @click="goPage('/artshow/template')" :style="{backgroundImage: 'url(' + require('../assets/资源-模板.png') + ')'}"></div>
         <div class="advise-card" @click="goPage('/artshow/role')" :style="{backgroundImage: 'url(' + require('../assets/资源-角色.png') + ')'}"></div>
     </div>
-    <div class="type-title" @click="goPage('/artShow')">精选美术资源</div>
-    <div style="position: relative; text-align: center; color: gray;">-最具创意的美术项目精选-</div>
 
-    <Carousel autoplay arrow="always" trigger="hover" :autoplay-speed="speed" class="carousel-style">
-        <CarouselItem>
-            <span v-for="item in this.fineArtList.slice(0,4)">
-                <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
-            </span>
-        </CarouselItem>
-        <CarouselItem>
-            <span v-for="item in this.fineArtList.slice(0,4)">
-                <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
-            </span>
-        </CarouselItem>
-        <CarouselItem>
-            <span v-for="item in this.fineArtList.slice(0,4)">
-                <fine-source-card :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" :resource="item" class="fine-resource-card" :isLike="item.isStar"></fine-source-card>
-            </span>
-        </CarouselItem>
-    </Carousel>
     <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
     <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
     <div class="card-wrapper" style="margin-bottom: 0px;">
@@ -76,7 +57,7 @@
 </template>
 
 <script>
-import HomeTopNavigation from '../components/HomeTopNav.vue'
+import HomeTopNavigation from '../components/homeTopNav.vue'
 import HomeSearch from '../components/homeSearch.vue'
 import SourceCard from '../components/sourceCard.vue'
 import FineSourceCard from '../components/fineSourceCard.vue'
@@ -199,7 +180,7 @@ export default {
 .type-title{
     position: relative; 
     text-align: center; 
-    color: rgb(103, 60, 172);
+    color: #663399;
     font-family: MicrosoftYaHei;
     font-size: 22px;
     font-weight: 600;
@@ -210,7 +191,7 @@ export default {
     position: absolute;
     top: 1.5px;
     right: 280px;
-    color: rgb(103, 60, 172);
+    color: #663399;
     cursor: pointer;
     width: 100px;
     padding: 0;

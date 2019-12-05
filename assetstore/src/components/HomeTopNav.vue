@@ -1,13 +1,19 @@
 <template>
     <div id="top-nav" class="topnav">
         <div class="topnav-box">
+            <!-- 小屏幕显示尺寸的logo -->
             <div class="topnav-box-menu">
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
-            <div class="topnav-box-logo">
-                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="logo" @click="goPage('/home')">      
+            <!-- 正常屏幕显示尺寸的logo -->
+            <div class="topnav-box-logo"  @click="goPage('/home')">
+                <img src="../assets/logo.png" style="width:52px; height: 59px;" alt="logo">    
+                <div class="logo-text">
+                    <img src="../assets/logo-title.png" style="width: 127px; height: 29px; margin-bottom: 5px" alt="logo"> 
+                    <img src="../assets/logo-en.png" style="width: 79px; height: 13px;" alt="logo"> 
+                </div>  
             </div>
-            <span class="logo-text" @click="goPage('/home')">GDRC</span>
+            <!-- 稍小屏幕显示尺寸的logo -->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
             </div>
@@ -15,73 +21,36 @@
             <div class="topnav-box-link">               
                 <div class="topnav-box-link-a">
                     <Dropdown placement="bottom-start">
-                        <a href="javascript:void(0)">美术类资源
-                            <Icon size="28" type="md-arrow-dropdown" style="position:relative; top: 3px;"></Icon>
+                        <a href="javascript:void(0)">浏览目录
+                            <font-awesome-icon :icon="['fas', 'sort-down']" style="margin-bottom: 3px;color: #00000079"/>
                         </a>
-                        <DropdownMenu slot="list" class="topnav-dropdown">
-                            <!--TODO 超链接导向的网页还没建-->
-                            <ul v-for="(type, t) in this.artClassify" :key="t"><DropdownItem>{{type.name}}</DropdownItem></ul>                            
+                        <DropdownMenu slot="list" class="topnav-dropdown" style="width: 820px; height: 342px; display: block">
+                            <!-- <ul v-for="(type, t) in this.artClassify" :key="t"><DropdownItem>{{type.name}}</DropdownItem></ul> -->
+                            <div class="catalog-left-part">
+                                <Button :class="catalogArtBtn" @click="selectCatalog('art')"><font-awesome-icon :icon="['fas','palette']" style="margin-right: 20px"/>美术类资源</Button>
+                                <Button :class="catalogDevBtn" @click="selectCatalog('dev')"><font-awesome-icon :icon="['fas', 'code']" style="margin-right: 20px"/>研发类资源</Button>
+                                <div class="catalog-purple"></div>
+                            </div>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
                 <div class="topnav-box-link-a">
-                    <Dropdown placement="bottom-start">
-                        <a href="javascript:void(0)">研发类工具
-                            <Icon size="28" type="md-arrow-dropdown" style="position:relative; top: 3px;"></Icon>
-                        </a>
-                        <DropdownMenu slot="list" class="topnav-dropdown">
-                            <!--TODO 超链接导向的网页还没建-->
-                            <ul v-for="(dev, c) in this.devClassify" :key="c"><DropdownItem>{{dev.name}}</DropdownItem></ul>
-                        </DropdownMenu>
-                    </Dropdown>
+                    <span class="music">音乐站</span>
+                    <span class="coming-soon">敬请期待</span>
+                    <svg class="music-coming-soon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 32C114.59 32 0 125.09 0 240c0 49.59 21.41 95 57 130.7C44.5 421.09 2.69 466 2.19 466.5a8 8 0 0 0-1.5 8.7A7.87 7.87 0 0 0 8 480c66.31 0 116-31.8 140.59-51.41A304.63 304.63 0 0 0 256 448c141.41 0 256-93.09 256-208S397.41 32 256 32zm96 256c0 17.67-21.5 32-48 32s-48-14.33-48-32 21.5-32 48-32a69.89 69.89 0 0 1 16 2v-76.36l-96 37.52V320c0 17.67-21.5 32-48 32s-48-14.33-48-32 21.5-32 48-32a69.89 69.89 0 0 1 16 2V175.25A16 16 0 0 1 203.19 160l128-47.25A16 16 0 0 1 352 128z" fill="#FF7A45"/></svg>
                 </div>
-                <router-link class="topnav-box-link-a"  style="bottom:1px;" to="/software" exact-active-class="router-active">常用软件</router-link>
+                <div class="topnav-box-link-a">
+                    <span class="ask">问答</span>
+                    <span class="coming-soon">敬请期待</span>
+                </div>
             </div>
-            
-            <!--提交搜索内容-->
-            <div class="topnav-box-search">
-            </div>
-           
-            <!-- <div class="topnav-box-user">
-                <span class="welcome">欢迎回来，{{getUser}}</span>
-                <Dropdown placement="bottom-start">
-                    <a href="javascript:void(0)">
-                        <img v-if="profile" class="topnav-user" :src="profile" @click="goLike('personal')" alt="avatar">
-                        <div v-else class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
-                    </a>
-                    <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-25px;">
-                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
-                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem></ul>
-                        <ul><DropdownItem><router-link class="user-box-link-a" to="/editPersonal">修改资料</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
-                    </DropdownMenu>
-                </Dropdown>
-                
-            </div>
-
-            <div to='/login' class="topnav-box-user-login">
-                <Dropdown placement="bottom-start">
-                    <a href="javascript:void(0)">
-                        <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
-                            <img v-if="profile" class="topnav-user" :src="profile" @click="goLike('personal')" alt="avatar">
-                            <div v-else class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
-                        </Tooltip>
-                    </a>
-                    <DropdownMenu slot="list" class="topnav-dropdown" style="margin-left:-25px;">
-                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('personal')">个人中心</span></DropdownItem></ul>
-                        <ul><DropdownItem><span class="user-box-link-a" @click="goLike('like')">我的关注</span></DropdownItem></ul>
-                        <ul><DropdownItem><router-link class="user-box-link-a" to="/editPersonal">修改资料</router-link></DropdownItem></ul>
-                        <ul><DropdownItem><span class="user-box-link-a" @click="logout()">退出登录</span></DropdownItem></ul>
-                    </DropdownMenu>
-                </Dropdown>
-                
-            </div> -->
+        
             <div class="topnav-box-user">
-                <Icon class="topnav-user" type="md-cloud-upload" size="29" @click="goPage('/uploadFile')"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <Badge :count="totalUnreadNum" overflow-count="99">
-                            <Icon class="topnav-user" @click="goPage('/notice')" type="md-notifications" size="29"/>
+                            <font-awesome-icon :icon="['far', 'bell']" style="width: 22px; height: 20px;margin-top: 3px;"
+                            class="topnav-icon" @click="goPage('/notice')"/>
                         </Badge>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown-notice" style="margin-left: -250px;">
@@ -245,7 +214,8 @@
                         </Tabs>
                     </DropdownMenu>
                 </Dropdown>
-                <Icon class="topnav-user" @click="goPage('/editSetting')" type="md-settings" size="29"/>
+                <font-awesome-icon class="topnav-icon" style="width: 22px; height: 21px;"
+                :icon="['far', 'heart']" @click="goLike('like')"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <img v-if="profile" class="topnav-user-image" :src="profile" @click="goLike('personal')" alt="avatar">
@@ -278,13 +248,14 @@ export default {
             totalUnreadNotice: [],
             artClassify: [],
             devClassify: [],
+            catalogArtBtn: 'catalog-btn-active',
+            catalogDevBtn: 'catalog-btn'
         }
     },
     computed:{
         getUser(){ 
             try{
                 console.log(typeof this.$store.state.user)
-                // debugger
                 let o = JSON.parse(this.$store.state.user)
                 console.log(o)
                 this.profile = o.profilePic
@@ -347,6 +318,15 @@ export default {
         })
     },
     methods:{
+        selectCatalog(type){
+            if(type == 'art'){
+                this.catalogArtBtn = 'catalog-btn-active'
+                this.catalogDevBtn = 'catalog-btn'
+            }else{
+                this.catalogArtBtn = 'catalog-btn'
+                this.catalogDevBtn = 'catalog-btn-active'
+            }
+        },
         logout(){
             this.$store.commit('REMOVE_COUNT', this.$store.state.token);
             this.$router.push('/login')
@@ -586,20 +566,25 @@ export default {
 <style scoped>
 .topnav {
     width: 100%;
-    height: 80px;
+    height: 84px;
     margin: 0;
     padding: 0;
-    font-family: MicrosoftYaHei;
-    background-color: #eef2f5;
-    border-bottom: 1px, solid, rgb(181, 198, 230);
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    position: fixed;
+    z-index: 1000;
 }
 
 .topnav-box {
-    position: relative;
-    top: 15px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: row;
     width: 100%;
-    height: 80px;
-    color:black;
+    max-width: 1380px;
+    height: 84px;
 }
 
 .topnav-box router-link{
@@ -614,15 +599,20 @@ export default {
 .topnav-box-logo{
     position: relative;
     cursor: pointer;
-    width: 5%;
-    left: 4%;
-    top: 6px;
-    float: left;
+    display: flex;    
+    flex-direction: row;
+    align-items: center;
+}
+.logo-text{
+    margin-left: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .topnav-box-logo img {
-    width: 70px;
-    height: 50px;
+    width: 52px;
+    height: 59px;
     border-radius: 5%;
     border-color: black;
     border-width: 0px;  
@@ -630,80 +620,104 @@ export default {
     align-content: center;
 }
 
-.logo-text{
-    position: relative;
-    float:left;
-    left: 20px;
-    top: 7px;
-    text-align: center;
-    font-size: 22px;
-    font-family: MicrosoftYaHeiHeavy;
-    font-weight: bold;
-    cursor: pointer;
-    width: 62px;
-    height: 30px;
-    font-weight: 900;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    color: #2f2f2f;
-}
-
 .topnav-box-link {
     position: relative;
-    float:left;
-    left: 5%;
-    top: 10px;
-    width: 60%;
-    height: 80px;
+    margin-left: 4%;
+    margin-right: 30%;
     font-size: 18px;
     color: black;
+    float: left;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    align-items:center;
+    height: 84px;
+    min-width: 500px;
 }
 
 .topnav-box-link-a{
-    position: relative;
+    font-size: 18px;
+    font-weight: semibold;
     font-family: MicrosoftYaHei;
-    text-decoration: none;
-    width: 15%;
-    float: left;
-    padding-right: 3%;
-    text-align:center;    
-    color: black;
-    bottom: 4px;
+    letter-spacing: 0;
+    color: #000000D9;
+    opacity: 1;
+    margin-right: 80px;
 }
 
 .topnav-box-link-a a{
     color: black;
 }
+.catalog-left-part{
+    display: flex;
+    flex-direction: column;
+}
+.catalog-purple{
+    background-color: #663399;
+    width: 228px;
+    height: 220px;
+}
+.catalog-btn-active{
+    width: 228px;
+    height: 61px;
+    background-color: #FFFFFF;
+    font-size: 16px;
+    font-weight: semibold;
+    font-family: Microsoft YaHei;
+    color: #000000D9;
+    border-radius: 0px;
+    border-width: 0px;
+}
+.catalog-btn:hover{
+    color: #000000D9;
+    background-color: #FFFFFF;
+}
+.catalog-btn{
+    width: 228px;
+    height: 61px;
+    font-size: 16px;
+    background-color: #663399;
+    color: #ffffff;
+    border-radius: 0px;
+    border-width: 0px;
+}
+.music:hover + .coming-soon{
+    display: block;
+}
+.ask:hover + .coming-soon{
+    display: block;
+}
+.music-coming-soon{
+    position: absolute; 
+    top: 10px;
+    width: 20px;
+    height: 21px;
+    color: #FF7A45;
+}
 
-.topnav-box-search{
-    position: relative;
-    width: 20%;
-    float:left;
-    font-size: 15px;
-    top: 8.5px;
+.coming-soon{
+    display: none;
+    position: absolute; 
+    bottom: 5px;
+    font-size: 14px;
+    font-weight: regular;
+    font-family: MicrosoftYaHei;
+    letter-spacing: 0;
+    color: #FA541C;
 }
-.welcome{
-    position:relative;
-    bottom: 0px;
-    font-size:14px;
-    color: rgba(0, 0, 0, 0.5);
-}
+
 .topnav-box-user{
     position: relative;
     font-family: MicrosoftYaHei;
-    width:15%;
-    min-width: 300px;
-    float:right;
-    align-content: center;
-    color:black;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 .topnav-user-image{
     position: relative;
-    top: -5px;
-    width: 30px;
-    height: 30PX;
+    width: 50px;
+    height: 50px;
     color:rgba(0, 0, 0, 0.5);
     background-color: #eef2f5;
     line-height: 30px;
@@ -712,16 +726,11 @@ export default {
     margin-left:30px;
 }
 .topnav-user-image:hover{
-    color: #1ebf73;
+    color: #663399;
 }
-.topnav-user{
+.topnav-icon{
     color:rgba(0, 0, 0, 0.5);
-    background-color: #eef2f5;
-    width:35px;
-    height:35px;
-    line-height: 35px;
     text-align: center;
-    border-radius: 50%;
     margin-left: 30px;
 }
 
@@ -729,15 +738,15 @@ export default {
     color:black;
 }
 
-.topnav-box-link-a:hover, .topnav-user:hover, .user-box-link-a:hover{
+.topnav-box-link-a:hover, .topnav-icon:hover, .user-box-link-a:hover{
     /*color: #6495ED;
     border-top: 5px solid #6495ED;*/
-    color: #1ebf73;
+    color: #663399;
     cursor: pointer;
 }
 
 .topnav-box-link-a a:hover {
-    color: #1ebf73;
+    color: #663399;
     cursor: pointer;
 }
 
@@ -749,7 +758,8 @@ export default {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     background-color: rgba(255, 255, 255, 0.988);
     border-radius: 4px;
-    z-index: 100;
+    transition: all 0.01s ease-in-out;
+    /* z-index: 100; */
 }
 
 .topnav-dropdown router-link{
@@ -825,7 +835,7 @@ export default {
     height: 62px;
 }
 .ignore-all-btn:hover{
-    color: #1ebf73;
+    color: #663399;
 }
 .ignore-all-btn-disabled{
     border: solid 1px #e5e5e5;
@@ -837,7 +847,7 @@ export default {
     height: 62px;
 }
 .mark-green{
-    color: #1ebf73;
+    color: #663399;
 }
 .time-slot{
     font-size: 12px;
@@ -921,48 +931,10 @@ export default {
         float: left;
     }
 
-    .topnav-box-link, .topnav-box-search, .topnav-box-user, .topnav-box-logo, .logo-text{
+    .topnav-box-link, .topnav-box-user, .topnav-box-logo{
         display: none;
     }
 }
 
-@media only screen and (max-width: 800px) {
-    .topnav-box-logo {
-        left: 2%;
-    }
-
-    .topnav-box-link {
-        left: 10%;
-    }
-    
-}
-
-@media only screen and (max-width: 980px) {
-    .topnav-box-logo {
-        left: 3%;
-    }
-}
-
-@media only screen and (max-width: 1080px) {
-    .topnav-box-search input[type=search] {
-        width:70%;
-    }
-
-    .welcome{
-        display: none;
-    }
-}
-
-@media only screen and (max-width: 1700px) {
-    .topnav-box-link{
-        width: 50%;
-    }
-    .topnav-box-link-a{
-        width: 150px;
-    }
-    .topnav-box-user{
-        width: 12%;
-    }
-}
 </style>
 
