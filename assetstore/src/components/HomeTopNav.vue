@@ -24,12 +24,30 @@
                         <a href="javascript:void(0)">浏览目录
                             <font-awesome-icon :icon="['fas', 'sort-down']" style="margin-bottom: 3px;color: #00000079"/>
                         </a>
-                        <DropdownMenu slot="list" class="topnav-dropdown" style="width: 820px; height: 342px; display: block">
+                        <DropdownMenu slot="list" class="topnav-dropdown catalog-dropdown">
                             <!-- <ul v-for="(type, t) in this.artClassify" :key="t"><DropdownItem>{{type.name}}</DropdownItem></ul> -->
                             <div class="catalog-left-part">
-                                <Button :class="catalogArtBtn" @click="selectCatalog('art')"><font-awesome-icon :icon="['fas','palette']" style="margin-right: 20px"/>美术类资源</Button>
-                                <Button :class="catalogDevBtn" @click="selectCatalog('dev')"><font-awesome-icon :icon="['fas', 'code']" style="margin-right: 20px"/>研发类资源</Button>
+                                <Button ref="artid" :class="catalogArtBtn" @click="selectCatalog('art')"><font-awesome-icon :icon="['fas','palette']" style="margin-right: 20px"/>美术类资源</Button>
+                                <Button ref="devid" :class="catalogDevBtn" @click="selectCatalog('dev')"><font-awesome-icon :icon="['fas', 'code']" style="margin-right: 20px"/>研发类资源</Button>
                                 <div class="catalog-purple"></div>
+                            </div>
+                            <div class="catalog-right-part" v-if="showArt">
+                                <span v-for="(item, model) in modelList" :key="model" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
+                                    {{item.label}}
+                                </span>
+                                <Divider style="margin: 0"/>
+                                <span v-for="(item, el) in elseList" :key="'a'+el" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
+                                    {{item.label}}
+                                </span>
+                                <Divider style="margin: 0"/>
+                                <span v-for="(item, paint) in paintList" :key="'aa'+paint" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
+                                    {{item.label}}
+                                </span>
+                            </div>
+                            <div class="catalog-right-part" v-else>
+                                <div v-for="(item, dev) in devClassify" :key="'aaa'+dev" class="catalog-class" @click="goPage(`/devshow/${item.label}`)">
+                                    {{item.label}}
+                                </div>
                             </div>
                         </DropdownMenu>
                     </Dropdown>
@@ -248,8 +266,12 @@ export default {
             totalUnreadNotice: [],
             artClassify: [],
             devClassify: [],
+            modelList:[],
+            elseList: [],
+            paintList:[],
             catalogArtBtn: 'catalog-btn-active',
-            catalogDevBtn: 'catalog-btn'
+            catalogDevBtn: 'catalog-btn',
+            showArt: true,
         }
     },
     computed:{
@@ -301,17 +323,26 @@ export default {
                 alert('参数格式不正确')
             }
         })
-        // 获取一级目录
-        axios.get('/api/tag/lastitems', {params: {type: 'art_classify'}}).then(res =>{
+        axios.get('/api/tag/tree', {params: {type: 'art_classify'}}).then(res =>{
             if(res.data.code === 0){
-                this.artClassify = res.data.data
+                this.modelList = res.data.data[0].children
+                this.paintList = res.data.data[1].children
+                this.elseList = res.data.data[2].children
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
         })
-        axios.get('/api/tag/lastitems', {params: {type: 'dev_classify'}}).then(res =>{
+        axios.get('/api/tag/tree', {params: {type: 'dev_classify'}}).then(res =>{
             if(res.data.code === 0){
                 this.devClassify = res.data.data
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
+        // 获取一级目录
+        axios.get('/api/tag/lastitems', {params: {type: 'art_classify'}}).then(res =>{
+            if(res.data.code === 0){
+                this.artClassify = res.data.data
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -322,10 +353,16 @@ export default {
             if(type == 'art'){
                 this.catalogArtBtn = 'catalog-btn-active'
                 this.catalogDevBtn = 'catalog-btn'
+                this.showArt = true
+                // TODO 如何让button失去焦点
+                // this.$refs.devid.focus()
             }else{
                 this.catalogArtBtn = 'catalog-btn'
                 this.catalogDevBtn = 'catalog-btn-active'
+                this.showArt = false
+                // this.$refs.artid.focus()
             }
+            
         },
         logout(){
             this.$store.commit('REMOVE_COUNT', this.$store.state.token);
@@ -649,16 +686,35 @@ export default {
     color: black;
 }
 .catalog-left-part{
+    width: 228px;
     display: flex;
     flex-direction: column;
+}
+.catalog-right-part{
+    padding: 20px 80px;
+    width: 592px;
+    text-align: left;
 }
 .catalog-purple{
     background-color: #663399;
     width: 228px;
     height: 220px;
 }
+.catalog-class{
+    width: 120px;
+    margin-right: 80px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: #707070;
+    font-size: 16px;
+    text-align: left;
+    display: inline-block;
+}
+.catalog-class:hover{
+    color: #663399;
+}
 .catalog-btn-active{
-    width: 228px;
+    width: 227px;
     height: 61px;
     background-color: #FFFFFF;
     font-size: 16px;
@@ -666,7 +722,8 @@ export default {
     font-family: Microsoft YaHei;
     color: #000000D9;
     border-radius: 0px;
-    border-width: 0px;
+    border: none;
+    outline: none;
 }
 .catalog-btn:hover{
     color: #000000D9;
@@ -679,7 +736,8 @@ export default {
     background-color: #663399;
     color: #ffffff;
     border-radius: 0px;
-    border-width: 0px;
+    border: none;
+    outline: none;
 }
 .music:hover + .coming-soon{
     display: block;
@@ -749,7 +807,12 @@ export default {
     color: #663399;
     cursor: pointer;
 }
-
+.catalog-dropdown{
+    width: 820px; 
+    height: 342px;
+    display:flex;
+    flex-direction: row;
+}
 .topnav-dropdown, .topnav-dropdown-notice{
     color: black;
     font-size: 18px;

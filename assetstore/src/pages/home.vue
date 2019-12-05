@@ -5,19 +5,19 @@
         <HomeSearch></HomeSearch>  
     </div>
     <br><br>
-    <div class="type-title" @click="goPage('/artShow')">美术类资源</div>
+    <!-- <div class="type-title" @click="goPage('/artShow')">美术类资源</div>
     <div style="text-align:center;position:relative;">-最具创意的美术项目集合-
         <strong><div class="more" @click="goPage('/artShow')">查看更多
             <Icon size="23" style="position:absolute;bottom:0.4px;" type="md-arrow-dropright" /></div>
         </strong>
-    </div>
+    </div> -->
     <div class="card-wrapper">
         <!-- <source-card v-for="n in 5" :key="n" styname="美术类资源" :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card> -->
-        <span v-for="(item, n) in this.commonArtList" :key="n" >
+        <!-- <span v-for="(item, n) in this.commonArtList" :key="n" >
             <source-card :resource="item" :isLike="item.isStar"
             :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
             :sourceID="n+''" class="fine-resource-card"></source-card>
-        </span>
+        </span> -->
     </div>
     <div class="type-title" @click="goPage('/artFilter')">推荐分类</div>
     <div style="text-align:center;position:relative;">-各类高实用性的项目集合-

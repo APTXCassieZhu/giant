@@ -67,7 +67,7 @@ import searchResult from '../search/searchResult.vue'
 import breadCrumb from "@/widget/breadcrumb.vue";
 
 export default {
-    name:"ArtShow",
+    name:"DevShowSub",
     inject: ['reload'],
     components:{
         TopNavigation,
@@ -96,7 +96,7 @@ export default {
         }
     },
     mounted(){
-        this.route = `美术类资源 / ${this.$route.params.pathMatch}`
+        this.route = `研发类资源 / ${this.$route.params.pathMatch}`
     },
     methods:{
 
