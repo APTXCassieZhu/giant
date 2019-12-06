@@ -1,46 +1,48 @@
 <template>
     <div class="footer">
-        <div style="margin-left: 10px; padding: 10px;">
-            <div class="footer-title">GDRC</div>
-            <span>巨人网络公司 - 前沿技术部门开发</span>
-            <br><br>
-            <!--TODO 所有子分类超链接还没做-->
-            <Row>
-                <Col span="6">
-                    <div class="footer-subtitle">发现</div>
-                    <br>
-                    <ul>推荐分类</ul>
-                    <ul>推荐资源</ul>
-                    <ul>研发类资源</ul>
-                    <ul>美术类资源</ul>
-                </Col>
-                <Col span="6">
-                    <div class="footer-subtitle">使用帮助</div>
-                    <br>
-                    <ul>反馈</ul>
-                    <ul>常见问题</ul>
-                    <ul>新手指引</ul>
-                </Col>
-                <Col span="6">
-                    <div class="footer-subtitle">关于我们</div>
-                    <br>
-                    <ul>前沿技术部门</ul>
-                    <ul>GDRC巨人研发资源中心</ul>
-                    <ul>上海巨人网络科技有限公司</ul>
-                </Col>
-                <Col span="6">
-                    <div class="footer-subtitle">联系我们</div>
-                    <br>
-                    <ul>客服电话：021-61205656</ul>
-                    <ul>公司地址：松江区中辰路988号</ul>
-                    <ul>email：nidediannideguang@ztgame.com</ul>
-                </Col>
-            </Row>
+        <div class="footer-wrapper">
+            <div class="footer-upper">
+                <div class="footer-col">
+                    <ul class="footer-title">浏览目录</ul>
+                    <ul style="margin-bottom: 16px;">人类角色模型</ul>
+                    <ul style="margin-bottom: 16px;">建筑模型</ul>
+                    <ul style="margin-bottom: 16px;">特 效</ul>
+                    <ul style="margin-bottom: 16px;">材质贴图</ul>
+                    <ul style="margin-bottom: 16px;">角色原画</ul>
+                </div>
+                <div class="footer-col">
+                    <ul class="footer-title">&nbsp;</ul>
+                    <ul style="margin-bottom: 16px;">非人类角色模型</ul>
+                    <ul style="margin-bottom: 16px;">自然环境模型</ul>
+                    <ul style="margin-bottom: 16px;">动 画</ul>
+                    <ul style="margin-bottom: 16px;">界面GUI</ul>
+                    <ul style="margin-bottom: 16px;">场景原画</ul>
+                </div>
+                <div class="footer-col"></div>
+                <div class="footer-col">
+                    <ul class="footer-title">其他服务</ul>
+                    <ul style="margin-bottom: 16px;">音乐音效</ul>
+                    <ul style="margin-bottom: 16px;">问 答</ul>
+                    <ul style="margin-bottom: 16px;">知识管理</ul>
+                </div>
+                <div class="footer-col"></div>
+                <div class="footer-col">
+                    <ul class="footer-title">关于本项目</ul>
+                    <ul style="margin-bottom: 16px;">常见问题</ul>
+                    <ul style="margin-bottom: 16px;">版权事项</ul>
+                    <ul style="margin-bottom: 16px;">联系我们</ul>
+                </div>
+                <div class="footer-col"></div>
+                <div class="footer-col"></div>
+                <div class="footer-col"></div>
+                <div class="footer-col"></div>
+            </div>
+            <div>
+                <a-divider style="color: #E8E8E83E"/>
+                <span style="margin-left: 10px; color:#FAFAFA">GDRC Project by Front EDGE 2019 all rights reserved.</span>
+                <br><br>
+            </div>
         </div>
-        <!-- <Divider style="color:rgba(0, 0, 0, 0.1)"/> -->
-        <Divider style="color: grey;"/>
-        <span style="margin-left: 10px; color:#FAFAFA">Copyright © 上海巨人网络科技有限公司（Giant Interactive Group Inc.）</span>
-        <br><br>
     </div>
 </template>
 
@@ -52,32 +54,34 @@ export default {
 
 <style scoped>
 .footer{
-    height: 350px;
+    height: 380px;
     width: 100%;
-    /* background-color: rgb(5, 65, 93);
-    color: white; */
     background-color: #000000D9;
     color: #86A0B2;
-    /* background-color: #dee1e3;
-    color: #7f7f7f; */
-    font-size: 15px;
-    padding: 20px 20px 20px 20px;
+    font-size: 16px;
     font-family: MicrosoftYaHei;
+    display: flex;
+    justify-content: center;
+}
+.footer-wrapper{
+    max-width: 1380px;
+    width: 100%;
+    padding: 20px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-upper{
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+}
+.footer-col{
+    width: 10%;
 }
 .footer-title{
-    font-family: MicrosoftYaHei;
-    font-size: 24px;
-    font-weight: 1000;
-}
-.footer-subtitle{
-    font-family: MicrosoftYaHei;
-    font-size: 16px;
-    font-weight: 600;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    /* color: #000000; */
-    color: #FAFAFA;
+    color: #FAFAFA; 
+    font-size: 18px; 
+    margin-bottom: 33px;
 }
 </style>

@@ -1,55 +1,46 @@
 <template>
 <div>
-    <div style="position: relative; height: 480px;">
+    <div style="position: relative; height: 500px;">
         <HomeTopNavigation style="position:fixed; z-index: 10000"></HomeTopNavigation>   
-        <HomeSearch></HomeSearch>  
+        <HomeSearch style="position: relative; top: 84px;"></HomeSearch>  
     </div>
-    <br><br>
-    <!-- <div class="type-title" @click="goPage('/artShow')">美术类资源</div>
-    <div style="text-align:center;position:relative;">-最具创意的美术项目集合-
-        <strong><div class="more" @click="goPage('/artShow')">查看更多
-            <Icon size="23" style="position:absolute;bottom:0.4px;" type="md-arrow-dropright" /></div>
-        </strong>
-    </div> -->
-    <div class="card-wrapper">
-        <!-- <source-card v-for="n in 5" :key="n" styname="美术类资源" :sourceID="n+''" style="display: inline-block; margin-right: 30px; margin-bottom: 40px;"></source-card> -->
-        <!-- <span v-for="(item, n) in this.commonArtList" :key="n" >
-            <source-card :resource="item" :isLike="item.isStar"
-            :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
-            :sourceID="n+''" class="fine-resource-card"></source-card>
-        </span> -->
-    </div>
-    <div class="type-title" @click="goPage('/artFilter')">推荐分类</div>
-    <div style="text-align:center;position:relative;">-各类高实用性的项目集合-
-        <strong><div class="more" @click="goPage('/artFilter')">查看更多
-            <Icon size="23" style="position:absolute;bottom:0.4px" type="md-arrow-dropright" /></div>
-        </strong>
-    </div>
-    <div class="card-wrapper">
-        <!--TODO 点击advise-card会跳转到相应界面 home page 所有卡片相关跳转都没做-->
-        <!-- <span v-for="(item, x) in recommendClass" :key="x">
-            <div class="advise-card" :style="{backgroundImage: 'url(' + require(`../assets/资源-${item.name}.png`) + ')'}"></div>
-        </span> -->
-        <div class="advise-card" @click="goPage('/artshow/3d')" :style="{backgroundImage: 'url(' + require(`../assets/资源-3d.png`) + ')'}"></div>
-        <div class="advise-card" @click="goPage('/artshow/2d')" :style="{backgroundImage: 'url(' + require('../assets/资源-2d.png') + ')'}"></div>
-        <div class="advise-card" @click="goPage('/artshow/texture')" :style="{backgroundImage: 'url(' + require('../assets/资源-贴图与材质.png') + ')'}"></div>
-        <div class="advise-card" @click="goPage('/artshow/template')" :style="{backgroundImage: 'url(' + require('../assets/资源-模板.png') + ')'}"></div>
-        <div class="advise-card" @click="goPage('/artshow/role')" :style="{backgroundImage: 'url(' + require('../assets/资源-角色.png') + ')'}"></div>
-    </div>
-
-    <div class="type-title" @click="goPage('/toolFilter')">研发类资源</div>
-    <div style="position: relative; text-align: center; color: gray;">-程序员哥哥们的好伴侣-</div>
-    <div class="card-wrapper" style="margin-bottom: 0px;">
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="111" ref="child2" class="fine-resource-card"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="222" ref="child3" class="fine-resource-card"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="333" ref="child4" class="fine-resource-card"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="444" ref="child5" class="fine-resource-card"></special-card>
-    </div>
-    <div class="card-wrapper" style="margin-top: 0px; margin-bottom: 200px;">    
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="555" ref="child6" class="fine-resource-card"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="666" ref="child7" class="fine-resource-card"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="777" ref="child8" class="fine-resource-card"></special-card>
-        <special-card :breadlist="[{fullPath:'/home#dev',name:'研发类资源'}]" sourceID="999" ref="child9" class="fine-resource-card"></special-card>
+    <div class="middle-card-wrapper">
+        <div class="middle-card">
+            <div class="choice-select">
+                <div :class="choiceItem1" @click="chooseItem('推荐')">
+                    <span class="choice-cn">推荐</span>
+                    <span class="choice-en">Features</span>
+                    <!-- TODO  点击时，变长，原来的active慢慢变短到没有-->
+                    <div class="orange-underline" v-if="activeTab == '推荐'"></div>
+                </div>
+                <div :class="choiceItem2" @click="chooseItem('更新')">
+                    <span class="choice-cn">更新</span>
+                    <span class="choice-en">Update</span>
+                    <div class="orange-underline" v-if="activeTab == '更新'"></div>
+                </div>
+                <div :class="choiceItem3" @click="chooseItem('研发类')">
+                    <span class="choice-cn">研发类</span>
+                    <span class="choice-en">Dev Asset</span>
+                    <div class="orange-underline" v-if="activeTab == '研发类'"></div>
+                </div>
+                <div :class="choiceItem4" @click="chooseItem('美术类')">
+                    <span class="choice-cn">美术类</span>
+                    <span class="choice-en">Art Asset</span>
+                    <div class="orange-underline" v-if="activeTab == '美术类'"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card-wrapper" v-if="activeTab == '推荐'">
+            
+        </div>
+        <div class="card-wrapper" v-if="activeTab == '更新'">
+            
+        </div>
+        <div class="card-wrapper" v-if="activeTab == '研发类'">
+        </div>
+        <div class="card-wrapper" v-if="activeTab == '美术类'">
+            
+        </div>
     </div>
     <corner></corner>
     <Footer style="position: relative;"></Footer>
@@ -64,22 +55,22 @@ import FineSourceCard from '../components/fineSourceCard.vue'
 import SpecialCard from '../components/specialCard.vue'
 import Footer from '../components/footer.vue'
 import Corner from '../components/corner.vue'
-/*var searchContent = document.getElementById("search")
-addEventListener(searchContent, "focus", function() {
-
-})*/
 
 export default {
-    name:"Home1",
+    name:"Home",
     components: {HomeTopNavigation,HomeSearch,SourceCard,FineSourceCard,SpecialCard,Footer,Corner},
     data() {
         return {
-            speed: 5000,
             commonArtList: [],
             recommendClass: [],
             fineArtList: [],
             devList: [],
             curCarousel: 0,
+            choiceItem1: 'choice-item',
+            choiceItem2: 'choice-item-active',
+            choiceItem3: 'choice-item',
+            choiceItem4: 'choice-item',
+            activeTab: '更新',
         }
     },
     mounted() {
@@ -142,103 +133,81 @@ export default {
         goPage(url){
             this.$router.push(url)
         },
-        // unFavorite(lid){
-        //     for (var i = 0; i < this.commonArtList.length; i++) {
-        //         if (this.commonArtList[i].id == lid) {
-        //             this.commonArtList[i].isStar = false;
-        //             break;
-        //         }
-        //     }
-        // },
-        // favorite(lid){
-        //     for (var i = 0; i < this.commonArtList.length; i++) {
-        //         if (this.commonArtList[i].id == lid) {
-        //             this.commonArtList[i].isStar = true;
-        //             break;
-        //         }
-        //     }
-        // },
+        chooseItem(type){
+            if(type=='推荐'){
+                this.choiceItem1 = 'choice-item-active'
+                this.choiceItem2 = 'choice-item'
+                this.choiceItem3 = 'choice-item'
+                this.choiceItem4 = 'choice-item'
+                this.activeTab = '推荐'
+            }else if(type=='更新'){
+                this.choiceItem1 = 'choice-item'
+                this.choiceItem2 = 'choice-item-active'
+                this.choiceItem3 = 'choice-item'
+                this.choiceItem4 = 'choice-item'
+                this.activeTab = '更新'
+            }else if(type=='研发类'){
+                this.choiceItem1 = 'choice-item'
+                this.choiceItem2 = 'choice-item'
+                this.choiceItem3 = 'choice-item-active'
+                this.choiceItem4 = 'choice-item'
+                this.activeTab = '研发类'
+            }else{
+                this.choiceItem1 = 'choice-item'
+                this.choiceItem2 = 'choice-item'
+                this.choiceItem3 = 'choice-item'
+                this.choiceItem4 = 'choice-item-active'
+                this.activeTab = '美术类'
+            }
+        }
     }
 }
 
 </script>
 <style>
-.carousel-style > .ivu-carousel-arrow > .ivu-icon{
-    vertical-align: middle;
-    text-align: center;
-}
+
 </style>
 <style scoped>
-.card-wrapper{
-    position: relative;
-    /*left: 15%;*/
-    text-align:center;
-    /*width:80%;*/
-    margin-top: 20px;
-    margin-bottom: 50px;
+.middle-card-wrapper{
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
-.type-title{
-    position: relative; 
-    text-align: center; 
-    color: #663399;
-    font-family: MicrosoftYaHei;
-    font-size: 22px;
-    font-weight: 600;
-    /* z-index: 10; */
-    cursor:pointer;
+.middle-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1380px;
 }
-.more{
-    position: absolute;
-    top: 1.5px;
-    right: 280px;
-    color: #663399;
+.choice-select{
+    display: flex;
+    flex-direction: row;
+    min-width: 567px;
+    max-width: 530px;
+    margin-bottom: 24px;
+    justify-content: space-between;
+}
+.choice-item{
+    color: #707070;
     cursor: pointer;
-    width: 100px;
-    padding: 0;
-    margin: 0;
 }
-.carousel-style{
-    text-align:center; 
-    width: 80%; 
-    left: 10%;
-    margin-top: 20px;
-    margin-bottom: 50px;
-}
-.fine-resource-card{
-    display: inline-block;
-    margin-bottom: 40px;
-    margin-left: 15px;
-    margin-right: 15px;
-}
-.advise-card{
-    display: inline-block; 
+.choice-item-active{
+    color: #FA541C;
     cursor: pointer;
-    margin-left: 15px; 
-    margin-right: 15px; 
-    margin-bottom: 40px;
-    width: 240px;
-    height: 275px;
-    background-image: url('../assets/彩色.jpg');
-    background-size: 240px 275px;
-    background-repeat: no-repeat;
-    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
-    color: white;
 }
-.advise-des{
-    position:relative;
-    float: left;
-    top: 230px;
-    left: 10px;
-    font-size: 28px;
+.choice-cn{
+    font: 600 18px Microsoft YaHei;
+    
 }
-@media only screen and (max-width: 1366px) {
-    .more{
-        right: 10px;
-    }
+.choice-en{
+    font: 14px Microsoft YaHei;
 }
-@media only screen and (max-width: 1700px) {
-    .more{
-        right: 15px;
-    }
+.orange-underline{
+    width: 90px;
+    height: 5px;
+    border-radius: 5px;
+    color: #FA541C;
 }
 </style>

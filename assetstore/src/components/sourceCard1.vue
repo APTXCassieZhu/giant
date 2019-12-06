@@ -1,6 +1,7 @@
 <template>
     <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
         <div class="upper" :style="backgroundStyle">
+            <!-- <img :src="concatImgUrl" class="image"/> -->
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon v-show="this.isStar == undefined || !this.isStar" size="30" type="md-heart-outline" style="color: #ec5b6e;" />
                 <Icon v-show="this.isStar" size="30" type="md-heart" style="color: #ec5b6e;z-index:11" />
@@ -10,6 +11,7 @@
             <p style="font-weight: 600;color: black;">{{resource.name}}</p>
             <p style="min-height:45px">{{sourceDescription}}</p>
         </div>
+        <Divider style="margin: 15px 0px 5px 0px;"/>
         <div class="source-card-footer">
             <Rate disabled icon="md-star" v-model="getRateAvg" style="position:relative; left: 8px; bottom: 8px;"></Rate>
             <span class="source-card-footer-icon"> 
@@ -54,6 +56,7 @@ export default {
             document.body.removeChild($d)
             return text.length>=45? text.slice(0,45)+'...' : text
         },
+  
         concatImgUrl(){
             return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
         },

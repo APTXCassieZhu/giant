@@ -674,7 +674,7 @@ export default {
 
 .topnav-box-link-a{
     font-size: 18px;
-    font-weight: semibold;
+    font-weight: 600;
     font-family: MicrosoftYaHei;
     letter-spacing: 0;
     color: #000000D9;
@@ -718,7 +718,7 @@ export default {
     height: 61px;
     background-color: #FFFFFF;
     font-size: 16px;
-    font-weight: semibold;
+    font-weight: 600;
     font-family: Microsoft YaHei;
     color: #000000D9;
     border-radius: 0px;
