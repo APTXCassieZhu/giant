@@ -38,7 +38,7 @@
                 <div class="footer-col"></div>
             </div>
             <div>
-                <a-divider style="color: #E8E8E83E"/>
+                <a-divider style="color: #E8E8E83E "/>
                 <span style="margin-left: 10px; color:#FAFAFA">GDRC Project by Front EDGE 2019 all rights reserved.</span>
                 <br><br>
             </div>
