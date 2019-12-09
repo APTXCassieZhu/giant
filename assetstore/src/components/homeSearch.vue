@@ -27,11 +27,6 @@
                             <span slot="suffix">Enter</span>
                         </a-input>
                         <a-menu class="home-search-card" v-if="historyShow" slot="overlay">
-                            <!-- <ul>
-                                <div class="home-clear-history" @mousedown="clearHistory()">
-                                    <Icon size="30" type="ios-close"/><span class="home-clear-history-text">清空</span>
-                                </div>
-                            </ul>-->
                             <a-menu-item v-for="(item,index) in searchHistory" :key="index">
                                 <font-awesome-icon :icon="['fas', 'history']"/>
                                 <span class="tag-style" @click="searchTag(item)">{{item}}</span>
@@ -99,9 +94,6 @@ export default {
         searchSubmit() {
             // 清空
             this.searchForm.validateFields((err, values) => {
-                if(this.content != ''){
-                    values.content = this.content;
-                }
                 if (!err) {
                     if(values.content != ""){
                         this.searchHistory = []
@@ -119,13 +111,13 @@ export default {
                                 this.searchHistory.push(storage.get(1))
                             } else {
                                 storage.set(2, storage.get(1))
-                                storage.set(1, this.searchForm.content)
+                                storage.set(1, values.content)
                                 this.searchHistory.push(storage.get(1))
                                 this.searchHistory.push(storage.get(2))
                             }
                         }
                         // TODO type
-                        this.$router.push(`/searchresult?val=${values.content}`)
+                        this.$router.push(`/searchresult?type=${this.type}&val=${values.content}`)
                         // axios.post('/api/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                         //     //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
                         //     this.$store.commit('SEARCH_COUNT', this.searchForm.content)
@@ -196,7 +188,27 @@ export default {
         searchTag(val) {
             console.log('search tag')
             this.content = val;
-            this.$options.methods.searchSubmit.bind(this)();
+            this.searchHistory = []
+            if((storage.has(1)&&storage.has(2))) {
+                storage.set(3, storage.get(2))
+                storage.set(2, storage.get(1))
+                storage.set(1, this.content)
+                this.searchHistory.push(storage.get(1))
+                this.searchHistory.push(storage.get(2))
+                this.searchHistory.push(storage.get(3));
+            }else{
+                if(!storage.has(1)) {
+                    // empty history
+                    storage.set(1, this.content)
+                    this.searchHistory.push(storage.get(1))
+                } else {
+                    storage.set(2, storage.get(1))
+                    storage.set(1, this.content)
+                    this.searchHistory.push(storage.get(1))
+                    this.searchHistory.push(storage.get(2))
+                }
+            }
+            this.$router.push(`/searchresult?type=${this.type}&val=${this.content}`)       
         },
         clearHistory() {
             this.searchHistory = []

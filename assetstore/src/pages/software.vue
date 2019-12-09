@@ -523,6 +523,14 @@ export default {
     color: #1ebf73;
     background-color: #f0fff5;
 }
+@keyframes drive { 
+    from { 
+        transform: translateY(-210px); 
+    } 
+    to { 
+        transform: translateY(0); 
+    } 
+}
 .software-feedback{
     position: relative;
     animation-name: drive; 
@@ -585,14 +593,7 @@ export default {
     color: #ffffff;
     margin-top: 10px;
 }
-@keyframes drive { 
-    from { 
-        transform: translateY(-210px); 
-    } 
-    to { 
-        transform: translateY(0); 
-    } 
-}
+
 .fb-success-icon{
     width: 42px;
     height: 48px;

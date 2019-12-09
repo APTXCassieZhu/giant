@@ -89,14 +89,13 @@ export default {
         throttle() {
             this.jumpOrNot = false
             let _nowTime = + new Date()
-                console.log('time '+_nowTime)
-                console.log('time '+this._lastTime)
+            console.log('time1 '+_nowTime)
+            console.log('time2 '+this._lastTime)
             if (_nowTime - this._lastTime > 1000 || !this._lastTime) {
-                console.log('time '+_nowTime)
                 this.$options.methods.addFavorite.bind(this)();
                 this._lastTime = _nowTime
             }else{
-                this.$Message.warning('请勿频繁操作')
+                this.$message.warning('请勿频繁操作')
             }
         },
         addFavorite(){
@@ -104,21 +103,27 @@ export default {
             this.jumpOrNot = false
             /* 提示用户已关注 */
             if(!this.isStar || this.isStar == undefined){
-                this.$Message.success('已关注')
+                console.log(this.isStar)
+                this.$message.success('已关注')
                 this.isStar = true
+                console.log(this.isStar)
                 axios.post(`/api/resource/${this.resource.id}/star`, {'star':true},{emulateJSON:true}).then((res)=>{
                     if(res.data.code === 0){
                     }else{
                         alert(res)
+                        this.isStar = false
                     }
                 })
             }else{
-                this.$Message.success('已取消关注')
+                console.log('quguan '+this.isStar)
+                this.$message.success('已取消关注')
                 this.isStar = false
+                console.log(this.isStar)
                 axios.post(`/api/resource/${this.resource.id}/star`, {'star':false},{emulateJSON:true}).then((res)=>{
                     if(res.data.code === 0){
                     }else{
                         alert(res)
+                        this.isStar = true
                     }
                 })
             }

@@ -8,24 +8,31 @@
         <div class="middle-card">
             <div class="choice-select">
                 <div :class="choiceItem1" @click="chooseItem('推荐')">
-                    <span class="choice-cn">推荐</span>
-                    <span class="choice-en">Features</span>
-                    <!-- TODO  点击时，变长，原来的active慢慢变短到没有-->
+                    <div style="text-align:center">
+                        <span class="choice-cn">推荐</span>
+                        <span class="choice-en">Features</span>
+                    </div>
                     <div class="orange-underline" v-if="activeTab == '推荐'"></div>
                 </div>
                 <div :class="choiceItem2" @click="chooseItem('更新')">
-                    <span class="choice-cn">更新</span>
-                    <span class="choice-en">Update</span>
+                    <div style="text-align:center">
+                        <span class="choice-cn">更新</span>
+                        <span class="choice-en">Update</span>
+                    </div>
                     <div class="orange-underline" v-if="activeTab == '更新'"></div>
                 </div>
                 <div :class="choiceItem3" @click="chooseItem('研发类')">
-                    <span class="choice-cn">研发类</span>
-                    <span class="choice-en">Dev Asset</span>
+                    <div style="text-align:center">
+                        <span class="choice-cn">研发类</span>
+                        <span class="choice-en">Dev Asset</span>
+                    </div>
                     <div class="orange-underline" v-if="activeTab == '研发类'"></div>
                 </div>
                 <div :class="choiceItem4" @click="chooseItem('美术类')">
-                    <span class="choice-cn">美术类</span>
-                    <span class="choice-en">Art Asset</span>
+                    <div style="text-align:center">
+                        <span class="choice-cn">美术类</span>
+                        <span class="choice-en">Art Asset</span>
+                    </div>
                     <div class="orange-underline" v-if="activeTab == '美术类'"></div>
                 </div>
             </div>
@@ -272,8 +279,7 @@ export default {
 .choice-select{
     display: flex;
     flex-direction: row;
-    min-width: 567px;
-    max-width: 530px;
+    width: 600px;
     margin-bottom: 24px;
     justify-content: space-between;
 }
@@ -281,6 +287,9 @@ export default {
     color: #707070;
     cursor: pointer;
     transition: .2s linear;
+    width: 140px;
+    display: flex;
+    flex-direction: column-reverse;
 }
 .choice-item:hover{
     color: #FA541C;
@@ -288,6 +297,9 @@ export default {
 .choice-item-active{
     color: #FA541C;
     cursor: pointer;
+    width: 140px;
+    display: flex;
+    flex-direction: column-reverse;
 }
 .choice-cn{
     font: 600 18px Microsoft YaHei;
@@ -296,14 +308,28 @@ export default {
 .choice-en{
     font: 14px Microsoft YaHei;
 }
-.orange-underline{
-    width: 90px;
-    height: 5px;
-    border-radius: 5px;
-    color: #FA541C;
+@keyframes longer { 
+    from { 
+        transform: scaleX(0); 
+    } 
+    to { 
+        transform: scaleX(1); 
+    } 
 }
+.orange-underline{
+    position: absolute;
+    animation-name: longer; 
+    animation-duration: 0.3s;
+    margin-top: 10px;
+    width: 140px;
+    height: 3px;
+    border-radius: 5px;
+    background-color: #FA541C;
+}
+
 .card-wrapper{
     width: 100%;
+    max-width: 1380px;
     padding: 20px;
     display: flex;
     flex-direction: row;
