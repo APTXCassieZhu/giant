@@ -1,10 +1,12 @@
 <template>
     <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
-        <div class="upper" :style="backgroundStyle">
+        <div class="upper-mask">
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon v-show="this.isStar == undefined || !this.isStar" size="30" type="md-heart-outline" style="color: #ec5b6e;" />
                 <Icon v-show="this.isStar" size="30" type="md-heart" style="color: #ec5b6e;z-index:11" />
             </strong>
+        </div>
+        <div class="upper" :style="backgroundStyle">
         </div>
         <div class="source-content">
             <p>{{resource.name}}</p>
@@ -148,7 +150,9 @@ export default {
     background-color: #ffffff;
     cursor: pointer;
 }
-
+.upper:hover > .upper-mask{
+    display: block;
+}
 .upper {
     height: 66.67%; 
     width: 100%;
@@ -158,6 +162,17 @@ export default {
     box-shadow: 0px 3px 6px #00000029;
     /* border: 1px solid #707070; */
     border-radius: 5px;
+}
+.upper-mask {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    height: 66.67%; 
+    width: 100%;
+    background-color: black;
+    border-radius: 5px;
+    opacity: 0.5;
 }
 .image{
     width: 237px;

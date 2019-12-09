@@ -89,6 +89,7 @@ export default {
             choiceItem3: 'choice-item',
             choiceItem4: 'choice-item',
             activeTab: '更新',
+            action: '更新',
         }
     },
     mounted() {
@@ -165,24 +166,83 @@ export default {
                 this.choiceItem3 = 'choice-item'
                 this.choiceItem4 = 'choice-item'
                 this.activeTab = '推荐'
+                this.action = '推荐'
+                setTimeout(() => {
+                    if(this.action == '推荐'){
+                        axios.get('/api/resource',{
+                            params:{
+                                page: 1,
+                                pageSize: 30,
+                                recommend: true,
+                            }}).then((res)=>{
+                            if(res.data.code == 0){
+                                this.devList = res.data.data.list
+                            }
+                        })
+                    }
+                }, 3000);
             }else if(type=='更新'){
                 this.choiceItem1 = 'choice-item'
                 this.choiceItem2 = 'choice-item-active'
                 this.choiceItem3 = 'choice-item'
                 this.choiceItem4 = 'choice-item'
                 this.activeTab = '更新'
+                this.action = '更新'
+                setTimeout(() => {
+                    if(this.action == '更新'){
+                        axios.get('/api/resource',{
+                            params:{
+                                page: 1,
+                                pageSize: 30,
+                            }}).then((res)=>{
+                            if(res.data.code == 0){
+                                this.devList = res.data.data.list
+                            }
+                        })
+                    }
+                }, 3000);
             }else if(type=='研发类'){
                 this.choiceItem1 = 'choice-item'
                 this.choiceItem2 = 'choice-item'
                 this.choiceItem3 = 'choice-item-active'
                 this.choiceItem4 = 'choice-item'
                 this.activeTab = '研发类'
+                this.action = '研发'
+                setTimeout(() => {
+                    if(this.action == '研发'){
+                        axios.get('/api/resource',{
+                            params:{
+                                page: 1,
+                                pageSize: 30,
+                                type: 'dev',
+                            }}).then((res)=>{
+                            if(res.data.code == 0){
+                                this.devList = res.data.data.list
+                            }
+                        })
+                    }
+                }, 3000);
             }else{
                 this.choiceItem1 = 'choice-item'
                 this.choiceItem2 = 'choice-item'
                 this.choiceItem3 = 'choice-item'
                 this.choiceItem4 = 'choice-item-active'
                 this.activeTab = '美术类'
+                this.action = '美术'
+                setTimeout(() => {
+                    if(this.action == '美术'){
+                        axios.get('/api/resource',{
+                            params:{
+                                page: 1,
+                                pageSize: 30,
+                                type: 'art',
+                            }}).then((res)=>{
+                            if(res.data.code == 0){
+                                this.devList = res.data.data.list
+                            }
+                        })
+                    }
+                }, 3000);
             }
         }
     }
