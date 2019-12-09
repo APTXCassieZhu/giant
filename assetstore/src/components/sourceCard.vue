@@ -1,12 +1,17 @@
 <template>
-    <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
-        <div class="upper-mask">
-            <strong class="heart" id="heart" @click="addFavorite()">
-                <Icon v-show="this.isStar == undefined || !this.isStar" size="30" type="md-heart-outline" style="color: #ec5b6e;" />
-                <Icon v-show="this.isStar" size="30" type="md-heart" style="color: #ec5b6e;z-index:11" />
-            </strong>
+    <div class="source-card">
+        <div class="upper-mask" @click="goPage(`/resourceDetail/${resource.id}`)">
+            <div class="mask-icon">
+                <div class="mask-icon-item">
+                    <font-awesome-icon :icon="['fas','eye']"/>
+                </div>
+                <div class="mask-icon-item" @click="throttle()">
+                    <font-awesome-icon :icon="['far','heart']" v-show="this.isStar == undefined || !this.isStar" style="color: #ec5b6e;"/>
+                    <font-awesome-icon :icon="['fas','heart']" v-show="this.isStar" style="color: #ec5b6e; z-index:11"/>
+                </div>
+            </div>
         </div>
-        <div class="upper" :style="backgroundStyle">
+        <div class="upper" :style="backgroundStyle" @click="goPage(`/resourceDetail/${resource.id}`)">
         </div>
         <div class="source-content">
             <p>{{resource.name}}</p>
@@ -15,17 +20,6 @@
         <div class="source-card-footer">
             <div v-for="(item, n) in resource.tags" :key="n" class="tag-style"> {{item.name}} </div>
         </div>
-        <!-- <div class="source-card-footer">
-            <Rate disabled icon="md-star" v-model="getRateAvg" style="position:relative; left: 8px; bottom: 8px;"></Rate>
-            <span class="source-card-footer-icon"> 
-                <font-awesome-icon :icon="['fas','eye']"/>
-                <span> {{resource.viewCount||0}}</span>
-            </span>
-            <span class="source-card-footer-icon" style="position:relative; right: 8px;">
-                <font-awesome-icon :icon="['fas','comment']"/>
-                <span> {{resource.commentCount||0}}</span>
-            </span>
-        </div> -->
     </div>
 </template>
 <script>
@@ -75,6 +69,7 @@ export default {
             sourceTitle: '资源名称',
             sourceDescription: '描述文字帮助用户对资源快速预览以及理解文字',
 
+            _lastTime: null,
             jumpOrNot: true,
             isStar: this.isLike,
             backgroundStyle:{}
@@ -88,26 +83,40 @@ export default {
             }
         }
         $img.src = this.concatImgUrl
+
     },
     methods:{
+        throttle() {
+            this.jumpOrNot = false
+            let _nowTime = + new Date()
+                console.log('time '+_nowTime)
+                console.log('time '+this._lastTime)
+            if (_nowTime - this._lastTime > 1000 || !this._lastTime) {
+                console.log('time '+_nowTime)
+                this.$options.methods.addFavorite.bind(this)();
+                this._lastTime = _nowTime
+            }else{
+                this.$Message.warning('请勿频繁操作')
+            }
+        },
         addFavorite(){
             console.log('favorite')
             this.jumpOrNot = false
             /* 提示用户已关注 */
             if(!this.isStar || this.isStar == undefined){
+                this.$Message.success('已关注')
+                this.isStar = true
                 axios.post(`/api/resource/${this.resource.id}/star`, {'star':true},{emulateJSON:true}).then((res)=>{
                     if(res.data.code === 0){
-                        this.$Message.success('已关注')
-                        this.isStar = true
                     }else{
                         alert(res)
                     }
                 })
             }else{
+                this.$Message.success('已取消关注')
+                this.isStar = false
                 axios.post(`/api/resource/${this.resource.id}/star`, {'star':false},{emulateJSON:true}).then((res)=>{
                     if(res.data.code === 0){
-                        this.$Message.success('已取消关注')
-                        this.isStar = false
                     }else{
                         alert(res)
                     }
@@ -148,10 +157,6 @@ export default {
     /* border: 1px solid  #ffffff; */
     /* box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1); */
     background-color: #ffffff;
-    cursor: pointer;
-}
-.upper:hover > .upper-mask{
-    display: block;
 }
 .upper {
     height: 66.67%; 
@@ -162,17 +167,43 @@ export default {
     box-shadow: 0px 3px 6px #00000029;
     /* border: 1px solid #707070; */
     border-radius: 5px;
+    cursor: pointer;
+}
+.source-card:hover > .upper-mask{
+    opacity: 1;
 }
 .upper-mask {
     position: absolute;
-    display: none;
     top: 0;
     left: 0;
     height: 66.67%; 
     width: 100%;
-    background-color: black;
     border-radius: 5px;
-    opacity: 0.5;
+    background:rgba(0,0,0,0.5);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .1s linear;
+}
+.mask-icon{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+}
+.mask-icon-item{
+    opacity: 1;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    height: 48px;
+    width: 48px;
+    line-height: 48px;
+    text-align: center;
+    font-size: 25px;
+    margin-right: 8px;
+    margin-left: 8px;
 }
 .image{
     width: 237px;

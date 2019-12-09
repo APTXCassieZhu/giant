@@ -84,12 +84,13 @@ export default {
             recommendList: [],
             updateList: [],
             curCarousel: 0,
+            // choiceItem：tab active和不active的css class
             choiceItem1: 'choice-item',
             choiceItem2: 'choice-item-active',
             choiceItem3: 'choice-item',
             choiceItem4: 'choice-item',
             activeTab: '更新',
-            action: '更新',
+            action: '更新',                 // 反复切换tab时，这个是最新的请求，确保axios不要频发请求
         }
     },
     mounted() {
@@ -320,6 +321,7 @@ export default {
     }
     .fine-resource-card{
         width: 20%;
+        min-width: 140px;
         height: auto;
         margin: 1.5%;
     }
