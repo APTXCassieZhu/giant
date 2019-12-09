@@ -680,6 +680,7 @@ export default {
     color: #000000D9;
     opacity: 1;
     margin-right: 80px;
+    transition: .3s linear;
 }
 
 .topnav-box-link-a a{
@@ -740,10 +741,10 @@ export default {
     outline: none;
 }
 .music:hover + .coming-soon{
-    display: block;
+    opacity: 1;
 }
 .ask:hover + .coming-soon{
-    display: block;
+    opacity: 1;
 }
 .music-coming-soon{
     position: absolute; 
@@ -754,14 +755,16 @@ export default {
 }
 
 .coming-soon{
-    display: none;
     position: absolute; 
+    display: block;
     bottom: 5px;
     font-size: 14px;
     font-weight: regular;
     font-family: MicrosoftYaHei;
     letter-spacing: 0;
     color: #FA541C;
+    opacity: 0;
+    transition: opacity .3s linear;
 }
 
 .topnav-box-user{
@@ -782,6 +785,7 @@ export default {
     text-align: center;
     border-radius: 50%;
     margin-left:30px;
+    transition: .3s linear;
 }
 .topnav-user-image:hover{
     color: #663399;
@@ -790,10 +794,12 @@ export default {
     color:rgba(0, 0, 0, 0.5);
     text-align: center;
     margin-left: 30px;
+    transition: .3s linear;
 }
 
 .user-box-link-a{
     color:black;
+    transition: .3s linear;
 }
 
 .topnav-box-link-a:hover, .topnav-icon:hover, .user-box-link-a:hover{

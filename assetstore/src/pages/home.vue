@@ -280,6 +280,10 @@ export default {
 .choice-item{
     color: #707070;
     cursor: pointer;
+    transition: .2s linear;
+}
+.choice-item:hover{
+    color: #FA541C;
 }
 .choice-item-active{
     color: #FA541C;
