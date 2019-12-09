@@ -155,7 +155,6 @@ export default {
             val: this.$route.query.val
         }}).then((res)=>{
             if(res.data.code == 0){
-                debugger
             }
         }, (res)=>{
             alert(res)
