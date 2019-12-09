@@ -4,19 +4,19 @@
             <div class="footer-upper">
                 <div class="footer-col">
                     <ul class="footer-title">浏览目录</ul>
-                    <ul style="margin-bottom: 16px;">人类角色模型</ul>
-                    <ul style="margin-bottom: 16px;">建筑模型</ul>
-                    <ul style="margin-bottom: 16px;">特 效</ul>
-                    <ul style="margin-bottom: 16px;">材质贴图</ul>
-                    <ul style="margin-bottom: 16px;">角色原画</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/人类角色模型`)">人类角色模型</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/建筑模型`)">建筑模型</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/特效`)">特 效</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/材质贴图`)">材质贴图</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/角色原画`)">角色原画</ul>
                 </div>
                 <div class="footer-col">
                     <ul class="footer-title">&nbsp;</ul>
-                    <ul style="margin-bottom: 16px;">非人类角色模型</ul>
-                    <ul style="margin-bottom: 16px;">自然环境模型</ul>
-                    <ul style="margin-bottom: 16px;">动 画</ul>
-                    <ul style="margin-bottom: 16px;">界面GUI</ul>
-                    <ul style="margin-bottom: 16px;">场景原画</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/非人类角色模型`)">非人类角色模型</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/自然环境模型`)">自然环境模型</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/动画`)">动 画</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/界面GUI`)">界面GUI</ul>
+                    <ul style="margin-bottom: 16px; cursor: pointer" @click="goPage(`/artshow/场景原画`)">场景原画</ul>
                 </div>
                 <div class="footer-col"></div>
                 <div class="footer-col">
@@ -38,7 +38,7 @@
                 <div class="footer-col"></div>
             </div>
             <div>
-                <a-divider style="color: #E8E8E83E "/>
+                <a-divider style="color: #E8E8E83E;"/>
                 <span style="margin-left: 10px; color:#FAFAFA">GDRC Project by Front EDGE 2019 all rights reserved.</span>
                 <br><br>
             </div>
@@ -49,6 +49,15 @@
 <script>
 export default {
     name: "Footer",
+    methods:{
+        goPage(url){
+            if(this.$route.path===url){
+                location.reload()
+            }else{
+                this.$router.push(url)
+            }
+        },
+    }
 }
 </script>
 

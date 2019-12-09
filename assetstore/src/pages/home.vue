@@ -31,26 +31,43 @@
             </div>
         </div>
         <div class="card-wrapper" v-if="activeTab == '推荐'">
-            
+            <div v-for="(item, n) in this.recommendList" :key="n" class="fine-resource-card">
+                <source-card :resource="item" :isLike="item.isStar"
+                :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
+                :sourceID="n+''"></source-card>
+            </div>
         </div>
         <div class="card-wrapper" v-if="activeTab == '更新'">
-            
+            <div v-for="(item, n) in this.updateList" :key="'b'+n" class="fine-resource-card">
+                <source-card :resource="item" :isLike="item.isStar"
+                :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
+                :sourceID="n+''"></source-card>
+            </div>
         </div>
         <div class="card-wrapper" v-if="activeTab == '研发类'">
+            <div v-for="(item, n) in this.devList" :key="'bb'+n" class="fine-resource-card">
+                <source-card :resource="item" :isLike="item.isStar"
+                :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
+                :sourceID="n+''"></source-card>
+            </div>
         </div>
         <div class="card-wrapper" v-if="activeTab == '美术类'">
-            
+            <div v-for="(item, n) in this.artList" :key="'bbb'+n" class="fine-resource-card">
+                <source-card :resource="item" :isLike="item.isStar"
+                :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
+                :sourceID="n+''"></source-card>
+            </div>
         </div>
     </div>
     <corner></corner>
-    <Footer style="position: relative;"></Footer>
+    <Footer style="position: relative; margin-top: 200px;"></Footer>
 </div>
 </template>
 
 <script>
 import HomeTopNavigation from '../components/homeTopNav.vue'
 import HomeSearch from '../components/homeSearch.vue'
-import SourceCard from '../components/sourceCard.vue'
+import SourceCard from '../components/sourceCard.vue' 
 import FineSourceCard from '../components/fineSourceCard.vue'
 import SpecialCard from '../components/specialCard.vue'
 import Footer from '../components/footer.vue'
@@ -61,10 +78,11 @@ export default {
     components: {HomeTopNavigation,HomeSearch,SourceCard,FineSourceCard,SpecialCard,Footer,Corner},
     data() {
         return {
-            commonArtList: [],
             recommendClass: [],
-            fineArtList: [],
+            artList: [],
             devList: [],
+            recommendList: [],
+            updateList: [],
             curCarousel: 0,
             choiceItem1: 'choice-item',
             choiceItem2: 'choice-item-active',
@@ -74,37 +92,56 @@ export default {
         }
     },
     mounted() {
-        this.$refs.child2.special = "image-02";
-        this.$refs.child3.special = "image-03";
-        this.$refs.child4.special = "image-04";
-        this.$refs.child5.special = "image-05";
-        this.$refs.child6.special = "image-06";
-        this.$refs.child7.special = "image-07";
-        this.$refs.child8.special = "image-08";
-        this.$refs.child9.special = "image-09";
-        // 拿到普通美术资源
+        // this.$refs.child2.special = "image-02";
+        // this.$refs.child3.special = "image-03";
+        // this.$refs.child4.special = "image-04";
+        // this.$refs.child5.special = "image-05";
+        // this.$refs.child6.special = "image-06";
+        // this.$refs.child7.special = "image-07";
+        // this.$refs.child8.special = "image-08";
+        // this.$refs.child9.special = "image-09";
+        // 拿到推荐资源
         axios.get('/api/resource',{
             params:{
                 page: 1,
-                pageSize: 5,
-                type: 'art',
-                recommend: false,
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.commonArtList = res.data.data.list
-                }
-        })
-        // 拿到精选美术资源
-        axios.get('/api/resource',{
-            params:{
-                page: 1,
-                pageSize: 5,
-                type: 'art',
+                pageSize: 30,
                 recommend: true,
             }}).then((res)=>{
                 if(res.data.code == 0){
-                    this.fineArtList = res.data.data.list
+                    this.recommendList = res.data.data.list
                 }
+        })
+        // 拿到美术资源
+        axios.get('/api/resource',{
+            params:{
+                page: 1,
+                pageSize: 30,
+                type: 'art',
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.artList = res.data.data.list
+                }
+        })
+        // 拿到研发类资源
+        axios.get('/api/resource',{
+            params:{
+                page: 1,
+                pageSize: 30,
+                type: 'dev',
+            }}).then((res)=>{
+            if(res.data.code == 0){
+                this.devList = res.data.data.list
+            }
+        })
+        // 拿到最新更新资源
+        axios.get('/api/resource',{
+            params:{
+                page: 1,
+                pageSize: 30,
+            }}).then((res)=>{
+            if(res.data.code == 0){
+                this.updateList = res.data.data.list
+            }
         })
         // 拿到推荐分类
         axios.get('/api/tag/lastitems',{
@@ -114,18 +151,6 @@ export default {
                 if(res.data.code == 0){
                     this.recommendClass = res.data.data.list
                 }
-        })
-        // 拿到研发类资源
-        axios.get('/api/resource',{
-            params:{
-                page: 1,
-                pageSize: 5,
-                type: 'dev',
-                recommend: false,
-            }}).then((res)=>{
-            if(res.data.code == 0){
-                this.devList = res.data.data.list
-            }
         })
         console.log('matched:', this.$route.matched)
     },
@@ -169,9 +194,11 @@ export default {
 </style>
 <style scoped>
 .middle-card-wrapper{
+    margin-top: 24px;
     display:flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 .middle-card{
     display: flex;
@@ -209,5 +236,32 @@ export default {
     height: 5px;
     border-radius: 5px;
     color: #FA541C;
+}
+.card-wrapper{
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.fine-resource-card{
+    margin-right: 15px; 
+    margin-left: 15px; 
+    margin-bottom: 30px;
+    width: 360px;
+    height: 300px;
+}
+@media screen and (max-width: 1889px) {
+    .fine-resource-card::after{
+        content:'';
+        display:block;
+        width:100%;
+        padding-bottom: 83.33%;
+    }
+    .fine-resource-card{
+        width: 20%;
+        height: auto;
+        margin: 1.5%;
+    }
 }
 </style>

@@ -778,7 +778,7 @@ export default {
     height: 50px;
     color:rgba(0, 0, 0, 0.5);
     background-color: #eef2f5;
-    line-height: 30px;
+    line-height: 50px;
     text-align: center;
     border-radius: 50%;
     margin-left:30px;

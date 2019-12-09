@@ -7,10 +7,13 @@
             </strong>
         </div>
         <div class="source-content">
-            <p style="font-weight: 600;color: black;">{{resource.name}}</p>
-            <p style="min-height:45px">{{sourceDescription}}</p>
+            <p>{{resource.name}}</p>
+            <p style="font-size: 12px; margin-top: 6px;">By {{getUsername}}</p>
         </div>
         <div class="source-card-footer">
+            <div v-for="(item, n) in resource.tags" :key="n" class="tag-style"> {{item.name}} </div>
+        </div>
+        <!-- <div class="source-card-footer">
             <Rate disabled icon="md-star" v-model="getRateAvg" style="position:relative; left: 8px; bottom: 8px;"></Rate>
             <span class="source-card-footer-icon"> 
                 <font-awesome-icon :icon="['fas','eye']"/>
@@ -20,7 +23,7 @@
                 <font-awesome-icon :icon="['fas','comment']"/>
                 <span> {{resource.commentCount||0}}</span>
             </span>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -41,8 +44,12 @@ export default {
         }
     },
     computed:{
-        getRateAvg(){
-            return this.resource.rateAvg || 5;
+        getUsername(){
+            if(this.resource.user.nickName == null || this.resource.user.nickName == undefined){
+                return this.resource.user.name
+            }else{
+                return this.resource.user.nickName
+            }
         },
         getElText(){
             var text = ''
@@ -81,7 +88,6 @@ export default {
         $img.src = this.concatImgUrl
     },
     methods:{
-        
         addFavorite(){
             console.log('favorite')
             this.jumpOrNot = false
@@ -107,9 +113,6 @@ export default {
             }
         },
         goPage(url){
-            // debugger
-
-            //debugger
             this.$store.commit('SAVE_BREADLIST', {
                 // breadlist:[
                 //     {fullPath:'/home',name: this.styname}  
@@ -135,13 +138,26 @@ export default {
 }
 </style>
 <style scoped>
+.source-card{
+    position: relative;
+    width: 100%; 
+    height: 100%;
+    font-family: MicrosoftYaHei;
+    /* border: 1px solid  #ffffff; */
+    /* box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1); */
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
 .upper {
-    height: 140px; 
-    width: 240px;
+    height: 66.67%; 
+    width: 100%;
     background-image: url("../assets/白绿.jpg");
-    /* background-size: 237px 150px; */
     background-size: cover;
     background-repeat: no-repeat;
+    box-shadow: 0px 3px 6px #00000029;
+    /* border: 1px solid #707070; */
+    border-radius: 5px;
 }
 .image{
     width: 237px;
@@ -154,38 +170,40 @@ export default {
     right: 9px;
     cursor: pointer;
 }
-.source-card{
-    position: relative;
-    width: 240px; 
-    height: 275px;
-    font-family: MicrosoftYaHei;
-    border: 1px solid  #ffffff;
-    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
-    background-color: #ffffff;
-    cursor: pointer;
-}
 
 .source-content{
     text-align: left;
-    margin-top: 8px;
+    margin-top: 12px;
     margin-left: 12px;
-    margin-right: 5px;
-    margin-bottom: 27px;
+    margin-bottom: 16px;
     font-family: MicrosoftYaHei;
-    color: rgba(0, 0, 0, 0.5);
-    font-size: 14px;
+    color: #707070;
+    font-size: 16px;
 }
 .source-card-footer{
-    width:240px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.5);
-    /* text-align: left; */
+    text-align: left;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    margin-left: 12px;
 }
-.source-card-footer-icon{
-    position:relative;
-    /* bottom:2px; */
+.tag-style{
+    background: #EAEAEA 0% 0% no-repeat padding-box;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #707070;
+    margin-right: 6px;
+    min-width: 61px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
 }
+/* @media screen and (max-width: 1450px) {
+    .upper::after{
+        content:'';
+        display:block;
+        width:100%;
+        padding-bottom:55.56%;
+    }
+
+} */
 </style>
