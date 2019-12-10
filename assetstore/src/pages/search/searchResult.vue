@@ -4,13 +4,22 @@
             <div class="upper-container">
                 <TopNavigation style="position:relative; z-index: 100"></TopNavigation>
                 <div class="tab-choose">
-                    <span style="margin-left: 15px;">美术类资源</span>
-                    <span style="margin-left: 50px;">研发类资源</span>
-                    <span style="margin-left: 50px;">用 户</span>
+                    <div :class="tab1" style="margin-left: 15px;" @click="changeTab('tab1')">
+                        美术类资源
+                        <div class="orange-underline" v-if="activeTab == 'tab1'"></div>
+                    </div>
+                    <div :class="tab2" style="margin-left: 50px;" @click="changeTab('tab2')">
+                        研发类资源
+                        <div class="orange-underline" v-if="activeTab == 'tab2'"></div>
+                    </div>
+                    <div :class="tab3" style="margin-left: 50px;" @click="changeTab('tab3')">
+                        用 户
+                        <div class="orange-underline1" v-if="activeTab == 'tab3'"></div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="upper-bottom-wrapper">
+        <div class="upper-bottom-wrapper" v-if="activeTab != 'tab3'">
             <div class="bottom-container">
                 <div class="filter-con">
                     <span style="margin-left: 15px;">筛选方式：</span>
@@ -42,9 +51,9 @@
                             class="box-link-a" :name="item.label">{{item.label}}</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
-                    <Divider type="vertical" />
-                    <span style="margin-left: 20px; margin-right: 20px;" >参考类资源</span>
-                    <a-checkbox @change="onChange"></a-checkbox>
+                    <Divider type="vertical" v-if="activeTab == 'tab1'"/>
+                    <span style="margin-left: 20px; margin-right: 20px;" v-if="activeTab == 'tab1'">参考类资源</span>
+                    <a-checkbox @change="wantRefer" v-if="activeTab == 'tab1'"></a-checkbox>
                 </div>
                 <div class="order-con">
                     <span>排序按照：</span>
@@ -126,6 +135,10 @@ export default {
                     alert('参数格式不正确')
                 }
             })
+            this.activeTab = 'tab1'
+            this.tab1 = 'tab-active'
+            this.tab2 = 'tab'
+            this.tab3 = 'tab'
         }else if(this.$route.query.type == 'dev'){
             axios.get('/api/tag/tree', {params: {type: 'dev_classify'}}).then(res =>{
                 if(res.data.code === 0){
@@ -134,6 +147,15 @@ export default {
                     alert('参数格式不正确')
                 }
             })
+            this.activeTab = 'tab2'
+            this.tab1 = 'tab'
+            this.tab2 = 'tab-active'
+            this.tab3 = 'tab'
+        }else{
+            this.activeTab = 'tab3'
+            this.tab1 = 'tab'
+            this.tab2 = 'tab'
+            this.tab3 = 'tab-active'
         }
         axios.get('/api/tag/lastitems', {params: {type: 'project'}}).then(res =>{
             if(res.data.code === 0){
@@ -167,19 +189,14 @@ export default {
             projectList: [],
             engineList: [],
             curPage: 1,                       // 分页
+            tab1: 'tab-active',
+            tab2: 'tab',
+            tab3: 'tab',
+            activeTab: 'tab1',
+            refer: false,
         }
     },
     methods:{
-        changeFilter(name){
-            // TODO 根据用户选择的筛选，重新加载searchresult page显示资源
-            if(name === "所有"){
-                this.currentFilter = "所有"
-            }else if(name === "美术类资源"){
-                this.currentFilter = "美术类资源"
-            }else{
-                this.currentFilter = "研发类工具"
-            }
-        },
         changeCatalog(name){
             this.curCatalog = name
         },
@@ -191,6 +208,27 @@ export default {
         },
         changeOrder(name){
             this.currentOrder = name
+        },
+        wantRefer(e){
+            this.refer = e.target.checked
+            axios.get('/api/search', {params: {
+                val: this.$route.query.val,
+                type: this.$route.query.type,
+                page: this.curPage,
+                pageSize: this.pageSize,
+                refer: this.refer
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.resultCount = res.data.data.count
+                    this.searchList = res.data.data.list
+                    /* 如果搜索到的匹配的内容为空 */
+                    if(this.resultCount == 0){
+                        this.$router.push('/searchEmpty')
+                    }
+                }
+            }, (res)=>{
+                alert(res)
+            })
         },
         searchAdviseTag(val){
             console.log('爷爷call 孙子的method')
@@ -224,6 +262,62 @@ export default {
             })
 
         },
+        changeTab(tab){
+            if(this.activeTab != tab){
+                this.activeTab = tab
+                if(tab == 'tab1'){
+                    this.$router.push(`/searchresult?type=art&val=${this.content}`)   
+                    this.tab1 = 'tab-active'
+                    this.tab2 = 'tab'
+                    this.tab3 = 'tab'
+                    axios.get('/api/tag/tree', {params: {type: `art_classify`}}).then(res =>{
+                        if(res.data.code === 0){
+                            this.catalogList = []
+                            this.catalogList = this.catalogList.concat(res.data.data[0].children)
+                            this.catalogList = this.catalogList.concat(res.data.data[1].children)
+                            this.catalogList = this.catalogList.concat(res.data.data[2].children)
+                        }else if(res.data.code === 400){
+                            alert('参数格式不正确')
+                        }
+                    })
+                }else if(tab == 'tab2'){
+                    this.$router.push(`/searchresult?type=dev&val=${this.content}`)
+                    this.tab1 = 'tab'
+                    this.tab2 = 'tab-active'
+                    this.tab3 = 'tab'   
+                    axios.get('/api/tag/tree', {params: {type: 'dev_classify'}}).then(res =>{
+                        if(res.data.code === 0){
+                            this.catalogList = res.data.data
+                        }else if(res.data.code === 400){
+                            alert('参数格式不正确')
+                        }
+                    })
+                }else{
+                    this.$router.push(`/searchresult?type=user&val=${this.content}`)  
+                    this.tab1 = 'tab'
+                    this.tab2 = 'tab'
+                    this.tab3 = 'tab-active'  
+                }
+                axios.get('/api/search', {params: {
+                    val: this.$route.query.val,
+                    type: this.$route.query.type,
+                    page: this.curPage,
+                    pageSize: this.pageSize,
+                    refer: this.refer
+                }}).then((res)=>{
+                    if(res.data.code == 0){
+                        this.resultCount = res.data.data.count
+                        this.searchList = res.data.data.list
+                        /* 如果搜索到的匹配的内容为空 */
+                        if(this.resultCount == 0){
+                            this.$router.push('/searchEmpty')
+                        }
+                    }
+                }, (res)=>{
+                    alert(res)
+                }) 
+            }
+        },
         jumpPage(){
             axios.get('/api/search', {params: {
                 val: this.$route.query.val,
@@ -240,12 +334,6 @@ export default {
             })
         }
     },
-    computed:{
-        getSearchContent(){
-            return this.$store.state.searchContent;
-        }
-    },
-    
 }
 </script>
 <style>
@@ -309,6 +397,48 @@ export default {
     font-weight: 600;
     color: #707070;
     margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+}
+.tab-active{
+    color: #FA541C;
+    cursor: pointer;
+}
+.tab{
+    color: #707070;
+    cursor: pointer;
+    transition: .3s;
+}
+.tab:hover{
+    color: #FA541C;
+}
+@keyframes longer { 
+    from { 
+        transform: scaleX(0); 
+    } 
+    to { 
+        transform: scaleX(1); 
+    } 
+}
+.orange-underline{
+    position: absolute;
+    animation-name: longer; 
+    animation-duration: 0.3s;
+    margin-top: 5px;
+    width: 90px;
+    height: 3px;
+    border-radius: 5px;
+    background-color: #FA541C;
+}
+.orange-underline1{
+    position: absolute;
+    animation-name: longer; 
+    animation-duration: 0.3s;
+    margin-top: 5px;
+    width: 42px;
+    height: 3px;
+    border-radius: 5px;
+    background-color: #FA541C;
 }
 .box-link-a:hover{
     font-weight: 600;

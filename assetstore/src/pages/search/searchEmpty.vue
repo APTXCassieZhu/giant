@@ -40,11 +40,6 @@ export default {
     },
     methods:{
     },
-    computed:{
-        getSearchContent(){
-            return this.$store.state.searchContent;
-        }
-    },
     mounted(){
     },
 }
