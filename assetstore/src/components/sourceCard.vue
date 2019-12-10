@@ -17,14 +17,14 @@
             <p>{{resource.name}}</p>
             <p style="font-size: 12px; margin-top: 6px;">By {{getUsername}}</p>
         </div>
-        <div class="source-card-footer">
+        <div class="source-card-footer" v-show="showTag">
             <div v-for="(item, n) in resource.tags" :key="n" class="tag-style"> {{item.name}} </div>
         </div>
     </div>
 </template>
 <script>
 export default {
-    name: "SourceCard1",
+    name: "SourceCard",
     props: {
         resource: {
             type: Object,
@@ -37,6 +37,10 @@ export default {
         isLike:{
             type: Boolean,
             default: false,
+        },
+        showTag:{
+            type: Boolean,
+            default: true
         }
     },
     computed:{
@@ -161,7 +165,6 @@ export default {
     font-family: MicrosoftYaHei;
     /* border: 1px solid  #ffffff; */
     /* box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1); */
-    background-color: #ffffff;
 }
 .upper {
     height: 66.67%; 

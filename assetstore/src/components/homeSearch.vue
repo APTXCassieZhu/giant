@@ -5,7 +5,7 @@
             <div class="search-inline-container">
                 <a-form-item>
                     <a-select defaultValue="art" class="home-search-select" @change="handleChange">
-                        <a-select-option value="all"><span class="select-type">所 有</span></a-select-option>
+                        <a-select-option value="user"><span class="select-type">用 户</span></a-select-option>
                         <a-select-option value="art"><span class="select-type">美 术</span></a-select-option>
                         <a-select-option value="dev"><span class="select-type">研 发</span></a-select-option>
                     </a-select>

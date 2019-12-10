@@ -1,5 +1,5 @@
 <template>
-    <a-form :form="searchForm" @submit="searchSubmit" style="height: 50px;">
+    <a-form :form="searchForm" @submit="searchSubmit" style="height: 50px;" @clickoutside="hideCard()">
         <a-form-item>
             <a-dropdown :trigger="['click']">
                 <a-input id="searchcontent" class="search-input"
@@ -11,6 +11,7 @@
                     @change="handleInput()"
                     @pressEnter="searchSubmit()"
                     href="#"
+                    allowClear
                 >
                     <font-awesome-icon :icon="['fas','search']" slot="prefix"/>
                     <span slot="suffix">Enter</span>
@@ -148,7 +149,7 @@ export default {
         },
         // 每次点击换一批，更换推荐内容
         changeAdvise() {
-            this.historyShow = true
+            this.historyShow = true            
             this.searchForm.validateFields((err, values) => {
                 if (!err) {
                     if(values.content.trim().length == 0){
@@ -206,6 +207,10 @@ export default {
                     }
                 }
             },10);
+        },
+        hideCard(){
+            this.historyShow = false
+            this.guessShow = false
         }
     }
 }
@@ -216,7 +221,7 @@ export default {
     padding-right: 50px;
 }
 .search-input > .ant-input:not(:last-child){
-    padding-right: 50px;
+    padding-right: 60px;
 }
 .search-input > .ant-input-suffix{
     font: Semibold 14px/19px Microsoft YaHei;
@@ -256,7 +261,7 @@ export default {
 .search-input{
     position: relative;
     text-align: left;
-    width: 540px;
+    width: 100%;
     height: 50px;
     background: #FFFFFFE5 0% 0% no-repeat padding-box;
     /* border: 1px solid #70707077; */
@@ -298,7 +303,7 @@ export default {
     border-radius: 4px;
     position: relative;
     transition: all 0.2s ease-in-out;
-    width: 540px; 
+    width: 100%; 
     padding: 10px 20px 10px 20px;
 }
 
@@ -310,7 +315,7 @@ export default {
     border-radius: 4px;
     position: relative;
     transition: all 0.2s ease-in-out;
-    width: 540px; 
+    width: 100%; 
     padding: 0px 20px 0px 20px;
 }
 

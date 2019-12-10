@@ -41,28 +41,28 @@
             <div v-for="(item, n) in this.recommendList" :key="n" class="fine-resource-card">
                 <source-card :resource="item" :isLike="item.isStar"
                 :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
-                :sourceID="n+''"></source-card>
+                ></source-card>
             </div>
         </div>
         <div class="card-wrapper" v-if="activeTab == '更新'">
             <div v-for="(item, n) in this.updateList" :key="'b'+n" class="fine-resource-card">
                 <source-card :resource="item" :isLike="item.isStar"
                 :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
-                :sourceID="n+''"></source-card>
+                ></source-card>
             </div>
         </div>
         <div class="card-wrapper" v-if="activeTab == '研发类'">
             <div v-for="(item, n) in this.devList" :key="'bb'+n" class="fine-resource-card">
                 <source-card :resource="item" :isLike="item.isStar"
                 :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
-                :sourceID="n+''"></source-card>
+                ></source-card>
             </div>
         </div>
         <div class="card-wrapper" v-if="activeTab == '美术类'">
             <div v-for="(item, n) in this.artList" :key="'bbb'+n" class="fine-resource-card">
                 <source-card :resource="item" :isLike="item.isStar"
                 :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
-                :sourceID="n+''"></source-card>
+                ></source-card>
             </div>
         </div>
     </div>
@@ -115,6 +115,7 @@ export default {
                 page: 1,
                 pageSize: 30,
                 recommend: true,
+                refer: true
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.recommendList = res.data.data.list
@@ -126,6 +127,7 @@ export default {
                 page: 1,
                 pageSize: 30,
                 type: 'art',
+                refer: true
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.artList = res.data.data.list
@@ -137,6 +139,7 @@ export default {
                 page: 1,
                 pageSize: 30,
                 type: 'dev',
+                refer: true
             }}).then((res)=>{
             if(res.data.code == 0){
                 this.devList = res.data.data.list
@@ -147,6 +150,7 @@ export default {
             params:{
                 page: 1,
                 pageSize: 30,
+                refer: true
             }}).then((res)=>{
             if(res.data.code == 0){
                 this.updateList = res.data.data.list
@@ -182,6 +186,7 @@ export default {
                                 page: 1,
                                 pageSize: 30,
                                 recommend: true,
+                                refer: true
                             }}).then((res)=>{
                             if(res.data.code == 0){
                                 this.devList = res.data.data.list
@@ -202,6 +207,7 @@ export default {
                             params:{
                                 page: 1,
                                 pageSize: 30,
+                                refer: true
                             }}).then((res)=>{
                             if(res.data.code == 0){
                                 this.devList = res.data.data.list
@@ -223,6 +229,7 @@ export default {
                                 page: 1,
                                 pageSize: 30,
                                 type: 'dev',
+                                refer: true
                             }}).then((res)=>{
                             if(res.data.code == 0){
                                 this.devList = res.data.data.list
@@ -244,6 +251,7 @@ export default {
                                 page: 1,
                                 pageSize: 30,
                                 type: 'art',
+                                refer: true
                             }}).then((res)=>{
                             if(res.data.code == 0){
                                 this.devList = res.data.data.list

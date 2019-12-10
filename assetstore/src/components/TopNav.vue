@@ -17,45 +17,61 @@
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
             </div>
-            
-            <div class="topnav-box-link">               
-                <div class="topnav-box-link-a">
-                    <Dropdown placement="bottom-start">
-                        <a href="javascript:void(0)">浏览目录
-                            <font-awesome-icon :icon="['fas', 'sort-down']" style="margin-bottom: 3px;color: #00000079"/>
-                        </a>
-                        <DropdownMenu slot="list" class="topnav-dropdown catalog-dropdown">
-                            <!-- <ul v-for="(type, t) in this.artClassify" :key="t"><DropdownItem>{{type.name}}</DropdownItem></ul> -->
-                            <div class="catalog-left-part">
-                                <Button ref="artid" :class="catalogArtBtn" @click="selectCatalog('art')"><font-awesome-icon :icon="['fas','palette']" style="margin-right: 20px"/>美术类资源</Button>
-                                <Button ref="devid" :class="catalogDevBtn" @click="selectCatalog('dev')"><font-awesome-icon :icon="['fas', 'code']" style="margin-right: 20px"/>研发类资源</Button>
-                                <div class="catalog-purple"></div>
-                            </div>
-                            <div class="catalog-right-part" v-if="showArt">
-                                <span v-for="(item, model) in modelList" :key="model" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
-                                    {{item.label}}
-                                </span>
-                                <Divider style="margin: 0"/>
-                                <span v-for="(item, el) in elseList" :key="'a'+el" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
-                                    {{item.label}}
-                                </span>
-                                <Divider style="margin: 0"/>
-                                <span v-for="(item, paint) in paintList" :key="'aa'+paint" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
-                                    {{item.label}}
-                                </span>
-                            </div>
-                            <div class="catalog-right-part" v-else>
-                                <div v-for="(item, dev) in devClassify" :key="'aaa'+dev" class="catalog-class" @click="goPage(`/devshow/${item.label}`)">
-                                    {{item.label}}
+
+            <transition 
+                name="fade"
+                enter-class="fade-in-enter"
+                enter-active-class="fade-in-active"
+                leave-class="fade-out-enter"
+                leave-active-class="fade-out-active"
+            >
+                <div class="topnav-box-link" v-show="catalogShow">               
+                    <div class="topnav-box-link-a">
+                        <Dropdown placement="bottom-start">
+                            <a href="javascript:void(0)">浏览目录
+                                <font-awesome-icon :icon="['fas', 'sort-down']" style="margin-bottom: 3px;color: #00000079"/>
+                            </a>
+                            <DropdownMenu slot="list" class="topnav-dropdown catalog-dropdown">
+                                <!-- <ul v-for="(type, t) in this.artClassify" :key="t"><DropdownItem>{{type.name}}</DropdownItem></ul> -->
+                                <div class="catalog-left-part">
+                                    <Button ref="artid" :class="catalogArtBtn" @click="selectCatalog('art')"><font-awesome-icon :icon="['fas','palette']" style="margin-right: 20px"/>美术类资源</Button>
+                                    <Button ref="devid" :class="catalogDevBtn" @click="selectCatalog('dev')"><font-awesome-icon :icon="['fas', 'code']" style="margin-right: 20px"/>研发类资源</Button>
+                                    <div class="catalog-purple"></div>
                                 </div>
-                            </div>
-                        </DropdownMenu>
-                    </Dropdown>
+                                <div class="catalog-right-part" v-if="showArt">
+                                    <span v-for="(item, model) in modelList" :key="model" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
+                                        {{item.label}}
+                                    </span>
+                                    <Divider style="margin: 0"/>
+                                    <span v-for="(item, el) in elseList" :key="'a'+el" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
+                                        {{item.label}}
+                                    </span>
+                                    <Divider style="margin: 0"/>
+                                    <span v-for="(item, paint) in paintList" :key="'aa'+paint" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
+                                        {{item.label}}
+                                    </span>
+                                </div>
+                                <div class="catalog-right-part" v-else>
+                                    <div v-for="(item, dev) in devClassify" :key="'aaa'+dev" class="catalog-class" @click="goPage(`/devshow/${item.label}`)">
+                                        {{item.label}}
+                                    </div>
+                                </div>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
                 </div>
-            </div>
+            </transition>
             
             <div class="topnav-box-user">
-                <search style="width: 540px;"></search>
+                <transition
+                    name="longer"
+                    enter-class="enter-longer"
+                    enter-active-class="active-longer"
+                    leave-class="out-shorter"
+                    leave-active-class="active-shorter"
+                >
+                    <search :class="topnavSearch" @focus.native.capture="searchContainerLonger()" @blur.native.capture="searchContainerRecover()" id="search"></search>
+                </transition>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <Badge :count="totalUnreadNum" overflow-count="99">
@@ -266,7 +282,9 @@ export default {
             paintList:[],
             catalogArtBtn: 'catalog-btn-active',
             catalogDevBtn: 'catalog-btn',
+            catalogShow: true,
             showArt: true,
+            topnavSearch: "topnav-search",
         }
     },
     computed:{
@@ -571,7 +589,17 @@ export default {
                 return "刚刚"
             }
         },
-    }   
+        // 点击，search input变长
+        searchContainerLonger(){
+            this.catalogShow = false
+            this.topnavSearch = 'topnav-search1'
+        },
+        // search input失去焦点时恢复
+        searchContainerRecover(){
+            this.catalogShow = true
+            this.topnavSearch = 'topnav-search'
+        },
+    }
 }
 </script>
 <style>
@@ -668,6 +696,8 @@ export default {
     align-items:center;
     height: 84px;
     min-width: 100px;
+    opacity: 1;
+    transition: opacity .2s linear;
 }
 
 .topnav-box-link-a{
@@ -773,6 +803,34 @@ export default {
     justify-content: center;
     align-items: center;
 }
+.topnav-search{
+    width: 540px;
+}
+.topnav-search1{
+    width: 890px;
+    margin-left: 2%;
+}
+.topnav-search:active > .topnav-box-link{
+    opacity: 0;
+}
+/* 浏览目录transition的消失 */
+.fade-in-active, .fade-out-active{
+    transition: all 0.1s ease     
+}
+
+.fade-in-enter, .fade-out-active{
+    opacity: 0 
+}
+/* 搜索框随着点击变长，失去焦点变短 */
+.enter-longer{
+    width: 810px;
+}
+.out-shorter{
+    width: 540px;
+}
+.active-shorter, .active-shorter{
+    transition: .5s;
+}
 .topnav-user-image{
     position: relative;
     width: 50px;
@@ -801,8 +859,6 @@ export default {
 }
 
 .topnav-box-link-a:hover, .topnav-icon:hover, .user-box-link-a:hover{
-    /*color: #6495ED;
-    border-top: 5px solid #6495ED;*/
     color: #663399;
     cursor: pointer;
 }
