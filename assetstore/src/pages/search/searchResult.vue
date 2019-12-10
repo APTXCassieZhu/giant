@@ -13,10 +13,51 @@
         <div class="upper-bottom-wrapper">
             <div class="bottom-container">
                 <div class="filter-con">
-                    <span>筛选方式：</span>
+                    <span style="margin-left: 15px;">筛选方式：</span>
+                    <Dropdown @on-click="changeCatalog" trigger="click" style="margin-right: 30px;">
+                        <span href="javascript:void(0)" name="最后更新" class="order-style">
+                            {{curCatalog}}<Icon type='md-arrow-dropdown' size='20' />
+                        </span>
+                        <DropdownMenu slot="list">
+                            <DropdownItem class="box-link-a" name="所有目录">所有目录</DropdownItem>
+                            <DropdownItem v-for="(item, c) in this.catalogList" :key="'cc'+c" 
+                            class="box-link-a" :name="item.label">{{item.label}}</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                    <Dropdown @on-click="changeProject" trigger="click" style="margin-right: 30px;">
+                        <span href="javascript:void(0)" name="最后更新" class="order-style">
+                            {{curProject}}<Icon type='md-arrow-dropdown' size='20' />
+                        </span>
+                        <DropdownMenu slot="list">
+                            <DropdownItem v-for="(item, p) in this.projectList" :key="'pp'+p" 
+                            class="box-link-a" :name="item.label">{{item.label}}</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                    <Dropdown @on-click="changeEngine" trigger="click" style="margin-right: 20px;">
+                        <span href="javascript:void(0)" name="最后更新" class="order-style">
+                            {{curEngine}}<Icon type='md-arrow-dropdown' size='20' />
+                        </span>
+                        <DropdownMenu slot="list">
+                            <DropdownItem v-for="(item, e) in this.engineList" :key="'ee'+e" 
+                            class="box-link-a" :name="item.label">{{item.label}}</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                    <Divider type="vertical" />
+                    <span style="margin-left: 20px; margin-right: 20px;" >参考类资源</span>
+                    <a-checkbox @change="onChange"></a-checkbox>
                 </div>
                 <div class="order-con">
                     <span>排序按照：</span>
+                    <Dropdown @on-click="changeOrder" trigger="click">
+                        <span href="javascript:void(0)" name="最后更新" class="order-style">
+                            {{currentOrder}}<Icon type='md-arrow-dropdown' size='20' />
+                        </span>
+                        <DropdownMenu slot="list">
+                            <DropdownItem class="box-link-a" name="最后更新">最后更新</DropdownItem>
+                            <DropdownItem class="box-link-a" name="按关注度">按关注度</DropdownItem>
+                            <DropdownItem class="box-link-a" name="按浏览量">按浏览量</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </div>
             </div>
         </div>
@@ -67,23 +108,64 @@ export default {
             if(res.data.code == 0){
                 this.resultCount = res.data.data.count
                 this.searchList = res.data.data.list
+                /* 如果搜索到的匹配的内容为空 */
+                if(this.resultCount == 0){
+                    this.$router.push('/searchEmpty')
+                }
             }
         }, (res)=>{
             alert(res)
         })
-        /* 如果搜索到的匹配的内容为空 */
-        
+        if(this.$route.query.type == 'art'){
+            axios.get('/api/tag/tree', {params: {type: `art_classify`}}).then(res =>{
+                if(res.data.code === 0){
+                    this.catalogList = this.catalogList.concat(res.data.data[0].children)
+                    this.catalogList = this.catalogList.concat(res.data.data[1].children)
+                    this.catalogList = this.catalogList.concat(res.data.data[2].children)
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })
+        }else if(this.$route.query.type == 'dev'){
+            axios.get('/api/tag/tree', {params: {type: 'dev_classify'}}).then(res =>{
+                if(res.data.code === 0){
+                    this.catalogList = res.data.data
+                }else if(res.data.code === 400){
+                    alert('参数格式不正确')
+                }
+            })
+        }
+        axios.get('/api/tag/lastitems', {params: {type: 'project'}}).then(res =>{
+            if(res.data.code === 0){
+                this.project = res.data.data
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
+        axios.get('/api/tag/tree', {params: {type: 'engine_ver'}}).then(res =>{
+            if(res.data.code === 0){
+                this.engineList = res.data.data
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
     },
     data() {
         return {
             searchList: [],
             curPage: 1,                       // 当前搜索页数
-            pageSize: 20,                      // 一页多少资源
+            pageSize: 20,                     // 一页多少资源
             resultCount: 7021,
             currentFilter: "所有",            // 由用户选择需要什么类别的搜索结果
             searchHistory: [],                // 存放历史搜索
             searchForm: {content:""},
-            currentOrder: "按推荐排序",        // 筛选结果按这个currentOrder排序
+            currentOrder: "最后更新",          // 筛选结果按这个排序
+            curCatalog: '所有目录',            // 筛选目录按这个排序
+            curProject: '征途3 手游',          // 筛选项目按这个排序
+            curEngine: 'Unity',               // 筛选引擎按这个排序
+            catalogList: [],
+            projectList: [],
+            engineList: [],
             curPage: 1,                       // 分页
         }
     },
@@ -98,22 +180,21 @@ export default {
                 this.currentFilter = "研发类工具"
             }
         },
+        changeCatalog(name){
+            this.curCatalog = name
+        },
+        changeProject(name){
+            this.curProject = name
+        },
+        changeEngine(name){
+            this.curEngine = name
+        },
         changeOrder(name){
-            // TODO 根据用户选择的筛选，重新加载searchresult page显示资源
-            if(name === "按推荐排序"){
-                this.currentOrder = "按推荐排序"
-            }else if(name === "按热度排序"){
-                this.currentOrder = "按热度排序"
-            }else{
-                this.currentOrder = "按时间排序"
-            }
+            this.currentOrder = name
         },
         searchAdviseTag(val){
             console.log('爷爷call 孙子的method')
             this.searchForm.content = val;
-            /* TODO 下面这种可以直接call其他组件的method，但是不知道为什么一直说content not defined
-               所有直接把要call的method 复制过来了，待解决。。。
-               Search.methods.searchSubmit()*/
             this.searchHistory = []
             if((storage.has(1)&&storage.has(2))) {
                 storage.set(3, storage.get(2))
@@ -168,9 +249,15 @@ export default {
 }
 </script>
 <style>
-.card-wrapper > ul > div > .ivu-dropdown > .ivu-select-dropdown{
+.order-con > .ivu-dropdown > .ivu-select-dropdown{
     margin: 0px;
     padding: 0px;
+    font-size: 16px;
+}
+.filter-con > .ivu-dropdown > .ivu-select-dropdown{
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
 }
 </style>
 <style scoped>
@@ -222,6 +309,12 @@ export default {
     font-weight: 600;
     color: #707070;
     margin-top: 25px;
+}
+.box-link-a:hover{
+    font-weight: 600;
+}
+.order-style{
+    cursor: pointer;
 }
 .middle-card-wrapper{
     margin-top: 26px;

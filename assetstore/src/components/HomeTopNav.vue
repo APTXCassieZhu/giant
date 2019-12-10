@@ -21,7 +21,7 @@
             <div class="topnav-box-link">               
                 <div class="topnav-box-link-a">
                     <Dropdown placement="bottom-start">
-                        <a href="javascript:void(0)">浏览目录
+                        <a style="text-decoration: none;" href="javascript:void(0)">浏览目录
                             <font-awesome-icon :icon="['fas', 'sort-down']" style="margin-bottom: 3px;color: #00000079"/>
                         </a>
                         <DropdownMenu slot="list" class="topnav-dropdown catalog-dropdown">
