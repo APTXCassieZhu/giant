@@ -1,7 +1,7 @@
 <template>
     <div class="home-search-wrapper">
         <a-form :form="searchForm" @submit="searchSubmit" class="home-search-container">
-            <div class="home-search-title">欢迎回来，当前已收录了<span style="color:#FF7A45">{{totalCount}}</span>条美术资源</div>
+            <div class="home-search-title typing">欢迎回来，当前已收录了<span style="color:#FF7A45">{{totalCount}}</span>条美术类资源</div>
             <div class="search-inline-container">
                 <a-form-item>
                     <a-select defaultValue="art" class="home-search-select" @change="handleChange">
@@ -89,6 +89,13 @@ export default {
                 this.searchHistory.push(storage.get(i));
             }
         }
+        axios.get('/api/resource/count',{params: {'type':'art'}}).then((res)=>{
+            if(res.data.code == 0){
+                this.totalCount = res.data.data
+            }
+        }, (res)=>{
+            alert(res)
+        })
     },
     methods: {
         searchSubmit() {
@@ -252,6 +259,9 @@ export default {
     color: #000000A6;
     opacity: 1;
 }
+.home-search-input, .ant-input-affix-wrapper:hover{
+    border: none;
+}
 .home-search-input > .ivu-input{
     border-radius: 0;
     height: 54px;
@@ -319,6 +329,29 @@ export default {
     color: #FAFAFA;
     margin-bottom: 30px;
 }
+.typing {
+    width: 19em;
+    height: 1.25em;
+    white-space: nowrap;
+    border-right: 2px solid transparent;
+    animation: typing 3.5s steps(15, end) infinite, blink-caret .75s step-end infinite;
+    overflow: hidden;
+}
+/* 打印效果 */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 19em; }
+}
+/* 光标闪啊闪 */
+@keyframes blink-caret {
+  from, to { box-shadow: 1px 0 0 0 transparent; }
+  50% { box-shadow: 1px 0 0 0; }
+}
+/*光标动画*/
+@keyframes caret {
+    50% {border-color: transparent;}
+}
+
 .home-search-title2{
     font-family: MicrosoftYaHeiHeavy;
     font-size: 24px;
@@ -417,4 +450,6 @@ export default {
 .home-close:hover {
     color: red;
 }
+
+
 </style>

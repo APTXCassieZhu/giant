@@ -51,9 +51,9 @@
                             class="box-link-a" :name="item.label">{{item.label}}</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
-                    <Divider type="vertical" v-if="activeTab == 'tab1'"/>
-                    <span style="margin-left: 20px; margin-right: 20px;" v-if="activeTab == 'tab1'">参考类资源</span>
-                    <a-checkbox @change="wantRefer" v-if="activeTab == 'tab1'"></a-checkbox>
+                    <Divider type="vertical" style="margin-right: 20px;" v-if="activeTab == 'tab1'"/>
+                    <!-- <span style="margin-left: 20px; margin-right: 20px;" v-if="activeTab == 'tab1'">参考类资源</span> -->
+                    <a-checkbox @change="wantRefer" v-if="activeTab == 'tab1'">参考类资源</a-checkbox>
                 </div>
                 <div class="order-con">
                     <span>排序按照：</span>
@@ -71,6 +71,11 @@
             </div>
         </div>
         <div class="middle-card-wrapper">
+            <div class="text-wrapper">
+                <div class="result-text" style="margin-left: 15px; text-align: left">{{resultCount}} 条结果</div>
+            </div>
+        </div>
+        <div class="middle-card-wrapper" style="margin-top: 0px;">
             <div class="middle-card">
                 <div class="card-wrapper">
                     <div v-for="(item, index) in this.searchList" :key="index" class="fine-resource-card">
@@ -424,7 +429,7 @@ export default {
     position: absolute;
     animation-name: longer; 
     animation-duration: 0.3s;
-    margin-top: 5px;
+    margin-top: 7px;
     width: 90px;
     height: 3px;
     border-radius: 5px;
@@ -434,7 +439,7 @@ export default {
     position: absolute;
     animation-name: longer; 
     animation-duration: 0.3s;
-    margin-top: 5px;
+    margin-top: 7px;
     width: 42px;
     height: 3px;
     border-radius: 5px;
@@ -460,16 +465,26 @@ export default {
     align-items: center;
     width: 100%;
 }
-
+.text-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1380px;
+}
 .card-wrapper {
     width: 100%;
     max-width: 1380px;
-    padding: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 }
+.result-text{
+    font-size: 16px;
+    font-weight: 500px;
+    color: #00000079;
 
+}
 .fine-resource-card{
     margin-right: 15px; 
     margin-left: 15px; 

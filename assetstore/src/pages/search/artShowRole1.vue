@@ -1,32 +1,54 @@
 <template>
     <div>
-        <TopNavigation style="position:relative; height: 84px; z-index: 100"></TopNavigation>
+        <TopNavigation style="z-index: 100"></TopNavigation>
         <div class="body-style">
-            <div class="middle-card-wrapper">
-                <div class="choice-wrapper">
-                    <div class="route-text" style=" margin-left: 15px;">
-                        美术类资源 / <span style="color: #003A8C">{{route}}</span>
-                    </div>
-                </div>
-                <div class="middle-card">
-                    <div class="card-wrapper">
-                        <!-- <source-card v-for="n in 15" :key="n" 
-                        :sourceID="n*1000"  
-                        :breadlist="[
-                        {fullPath:`/artShow/role#tags=['111','222','333']`,name:'美术类资源'},
-                        {fullPath:`/artShow/role#tags=['111','222','333']`,name:'角色'}
-                        ]"  
-                    class="card-style"></source-card>   -->
-                        <div v-for="(item, index) in this.searchList" :key="index" class="fine-resource-card">
-                            <source-card :resource="item" :isLike="item.isStar" :showTag="false"
-                            :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
-                            ></source-card>
-                        </div>
-                    </div>
-                    <a-pagination v-model="curPage" :pageSize='pageSize' :total="resultCount" style="text-align: center;"/>
+            <!-- <div style="margin:30px 0;font-size:14px;">
+                <bread-crumb></bread-crumb>
+            </div> -->
+            <div id='advise' class="advise-wrapper">
+                <div class="advise-container">
+                  <span>&emsp;推荐搜索&emsp;</span>
+                  <!--TODO 推荐搜索按照用户输入的搜索而得出的相关搜索-->
+                  <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索1')">推荐搜索1</Tag>
+                  <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索2')">推荐搜索2</Tag>
+                  <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索3')">推荐搜索3</Tag>
+                  <Tag size="medium" class="tag-style" @click.native="searchAdviseTag('推荐搜索4')">推荐搜索4</Tag>
+                  <Icon size="24" class="advise-close" type="md-close-circle" v-on:click="closeAdvise()" />  
                 </div>
             </div>
-            <corner></corner>
+            <div class="title-wrapper">
+                <strong>{{route}}</strong>
+            </div>
+            <div class="button-wrapper">
+              <choice></choice>
+            </div>
+            <div class="card-wrapper">
+                <ul>
+                    <span style="color: #1ebf73;">{{resultCount}}</span>条搜索结果
+                    <div style="float: right; margin-right: 125px;">
+                        <Dropdown @on-click="changeOrder" trigger="click" style="margin-left: 20px">
+                            <span href="javascript:void(0)" name="按推荐排序"  class="order-style">
+                                {{currentOrder}}<Icon type='md-arrow-dropdown' size='20' />
+                            </span>
+                            <DropdownMenu slot="list">
+                              <DropdownItem class="box-link-a" name="按推荐排序">推荐</DropdownItem>
+                                <DropdownItem class="box-link-a" name="按热度排序">热度</DropdownItem>
+                                <DropdownItem class="box-link-a" name="按时间排序">时间</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                </ul>
+                <br>
+                <!-- <source-card v-for="n in 15" :key="n" 
+                    :sourceID="n*1000"  
+                    :breadlist="[
+                      {fullPath:`/artShow/role#tags=['111','222','333']`,name:'美术类资源'},
+                      {fullPath:`/artShow/role#tags=['111','222','333']`,name:'角色'}
+                    ]"  
+                class="card-style"></source-card>   -->
+                <a-pagination v-model="curPage" :total="50" style="text-align: center;"/>
+                <corner></corner>
+            </div>
             <Footer style="position:relative;margin-top:200px;"></Footer>
         </div>
     </div>
@@ -45,7 +67,7 @@ import searchResult from '../search/searchResult.vue'
 import breadCrumb from "@/widget/breadcrumb.vue";
 
 export default {
-    name:"ArtShow",
+    name:"ArtShow1",
     inject: ['reload'],
     components:{
         TopNavigation,
@@ -65,18 +87,16 @@ export default {
     data() {
         return {
             minHeight: 0,
-            resultCount: 1314,
+            resultCount: 7021,
             searchHistory: [],              //存放历史搜索
             searchForm: {content:""},
             currentOrder: "按推荐排序",        //筛选结果按这个currentOrder排序
             route: "",
             curPage: 1,
-            pageSize: 20,
-            searchList: [],
         }
     },
     mounted(){
-        this.route = `${this.$route.params.pathMatch}`
+        this.route = `美术类资源 / ${this.$route.params.pathMatch}`
     },
     methods:{
 
@@ -152,6 +172,9 @@ export default {
 }
 </script>
 <style>
+.advise-container > .tag-style:hover > .ivu-tag-text{
+    color: #1ebf73;
+}
 .card-wrapper > ul > div > .ivu-dropdown > .ivu-select-dropdown{
     margin: 0px;
     padding: 0px;
@@ -159,62 +182,92 @@ export default {
 </style>
 <style scoped>
 .body-style{
+    position: absolute;
     width: 100%;
-    background-color: #F5F5F5;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    z-index: 0;
+    top: 140px;
 }
-.middle-card-wrapper{
+
+.advise-wrapper{
+    position: relative;
     width: 100%;
-    max-width: 1380px;
+    height: 50px;
+    background-color:rgba(0, 0, 0, 0.05);
 }
-.choice-wrapper{
-    margin-top: 48px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.advise-container {
+    position: relative;
+    left:3.3%;
+    width: 90vw;
+    top:10px;
+    height: 20px;
 }
-.route-text{
-    font-size: 20px;
-    color: #00000073;
+.advise-close{
+    position: absolute;
+    right: 0vw;
+    top: 5px;
+    color: rgba(0, 0, 0, 0.25);
 }
-.middle-card{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+.advise-close:hover{
+    color:silver;
+    cursor: pointer;
+    color: #1ebf73;
 }
-.card-wrapper {
-    width: 100%;
-    max-width: 1380px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-}
-.fine-resource-card{
-    margin-right: 15px; 
-    margin-left: 15px; 
+
+.title-wrapper{
+    position: relative;
+    left: 4%;
+    width: 50%;
+    top: 20px;
+    font-size: 24px;
+    color:#262626;
     margin-bottom: 30px;
-    width: 360px;
-    height: 300px;
 }
-@media screen and (max-width: 1889px) {
-    .fine-resource-card::after{
-        content:'';
-        display:block;
-        width:100%;
-        padding-bottom: 83.33%;
-    }
-    .fine-resource-card{
-        width: 20%;
-        min-width: 140px;
-        height: auto;
-        margin: 1.5%;
-    }
+
+.button-wrapper{
+    position: relative;
+    left: 4%;
+    width: 95%;
+}
+
+.card-wrapper {
+    position: relative;
+    left: 4%;
+    top: 50px;
+    width: 80%;
+    margin-right: 18px;
+}
+.card-style{
+    display: inline-block; 
+    margin-right: 50px; 
+    margin-bottom: 40px;
+}
+.elevator-wrapper{
+    position: relative;
+    margin-left: 30%;
+    top: 80px;
+}
+.tag-style{
+    cursor:pointer;
+    margin-left: 20px;
+}
+.box-link-a{
+    color:black;
+}
+.box-link-a:hover{
+    color:#1ebf73;
+    cursor: pointer;
+}
+.page-style{
+    position: relative; 
+    margin-left: 35%; 
+    margin-top: 90px;
+}
+.order-style{
+    cursor:pointer;
+    color: #7f7f7f;
+}
+.order-style:hover{
+    color: #1ebf73;
 }
 </style>
 

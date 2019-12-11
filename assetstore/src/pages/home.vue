@@ -341,7 +341,7 @@ export default {
     padding: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 }
 .fine-resource-card{
     margin-right: 15px; 

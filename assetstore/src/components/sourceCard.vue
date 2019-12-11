@@ -12,6 +12,7 @@
             </div>
         </div>
         <div class="upper" :style="backgroundStyle" @click="goPage(`/resourceDetail/${resource.id}`)">
+            <div class="refer-style" v-if="resource.refer">参 考</div>
         </div>
         <div class="source-content">
             <p>{{resource.name}}</p>
@@ -176,6 +177,17 @@ export default {
     /* border: 1px solid #707070; */
     border-radius: 5px;
     cursor: pointer;
+}
+.refer-style{
+    font-size: 12px;
+    font-weight: 600;
+    color: #FAFAFA;
+    background-color: #FA541C;
+    border-radius: 5px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    width: 35px;
 }
 .source-card:hover > .upper-mask{
     opacity: 1;
