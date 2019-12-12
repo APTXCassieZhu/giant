@@ -25,8 +25,59 @@
                                 筛选方法 <Icon type='md-arrow-dropdown' size='20' />
                             </span>
                             <DropdownMenu slot="list" class="dropdown-panel">
-                                <!-- <DropdownItem v-for="(item, e) in this.engineList" :key="'ee'+e" 
-                                class="box-link-a" :name="item.label">{{item.label}}</DropdownItem> -->
+                                <div class="divide-three-part">
+                                    <div class="divider-title">项目</div>
+                                    <div class="divider-checkbox1">
+                                        <div>不限</div>
+                                        <Checkbox
+                                            :indeterminate="pim"
+                                            :value="checkProject"
+                                            @click.prevent.native="checkAllProject">
+                                        </Checkbox>
+                                    </div>
+                                    <CheckboxGroup v-model="selectedProject" @on-change="projectChange">
+                                        <div class="divider-checkbox" v-for="(item, p) in this.projectList" :key="'p'+p">
+                                            <!-- <div>{{item.name}}</div> -->
+                                            <Checkbox :label="item.name"></Checkbox>
+                                        </div>
+                                    </CheckboxGroup>
+                                </div>
+                                <Divider type='vertical' style="height: 165px; margin-top: 50px;"/>
+                                <div class="divide-three-part">
+                                    <div class="divider-title">风格</div>
+                                    <div class="divider-checkbox1">
+                                        <div>不限</div>
+                                        <Checkbox
+                                            :indeterminate="sim"
+                                            :value="checkStyle"
+                                            @click.prevent.native="checkAllStyle">
+                                        </Checkbox>
+                                    </div>
+                                    <CheckboxGroup v-model="selectedStyle" @on-change="styleChange">
+                                        <div class="divider-checkbox" v-for="(item, p) in this.styleList" :key="'s'+p">
+                                            <!-- <div>{{item.label}}</div> -->
+                                            <Checkbox :label="item.label"></Checkbox>
+                                        </div>
+                                    </CheckboxGroup>
+                                </div>
+                                <Divider type='vertical' style="height: 165px; margin-top: 50px;"/>
+                                <div class="divide-three-part">
+                                    <div class="divider-title">引擎</div>
+                                    <div class="divider-checkbox1">
+                                        <div>不限</div>
+                                        <Checkbox
+                                            :indeterminate="eim"
+                                            :value="checkEngine"
+                                            @click.prevent.native="checkAllEngine">
+                                        </Checkbox>
+                                    </div>
+                                    <CheckboxGroup v-model="selectedEngine" @on-change="engineChange">
+                                        <div class="divider-checkbox" v-for="(item, p) in this.engineList" :key="'e'+p">
+                                            <!-- <div>{{item.label}}</div> -->
+                                            <Checkbox :label="item.label"></Checkbox>
+                                        </div>
+                                    </CheckboxGroup>
+                                </div>
                             </DropdownMenu>
                         </Dropdown>
                         <Divider type="vertical" style="margin-right: 10px;"/>
@@ -105,7 +156,19 @@ export default {
             orderClass1: 'order-style',
             orderClass2: 'order-style-active',
             orderClass3: 'order-style',   
-            tags: [],         
+            tags: '',   
+            pim: true,  
+            checkProject: false,
+            projectList: [],
+            selectedProject: [],
+            sim: true,
+            checkStyle: false,
+            styleList: [],
+            selectedStyle: [],
+            eim: true,
+            checkEngine: false,
+            engineList: [],    
+            selectedEngine: [],
         }
     },
     mounted(){
@@ -121,6 +184,27 @@ export default {
             if(res.data.code == 0){
                 this.searchList = res.data.data.list
                 this.resultCount = res.data.data.count
+            }
+        })
+        axios.get('/api/tag/lastitems', {params: {type: 'project'}}).then(res =>{
+            if(res.data.code === 0){
+                this.projectList = res.data.data
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
+        axios.get('/api/tag/tree', {params: {type: 'engine_ver'}}).then(res =>{
+            if(res.data.code === 0){
+                this.engineList = res.data.data
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
+        axios.get('/api/tag/tree', {params: {type: 'art_style'}}).then(res =>{
+            if(res.data.code === 0){
+                this.styleList = res.data.data
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
             }
         })
     },
@@ -182,7 +266,160 @@ export default {
                     this.resultCount = res.data.data.count
                 }
             })
-        }
+        },
+        checkAllProject(){
+            if (this.pim) {
+                this.checkProject = false;
+            } else {
+                this.checkProject = !this.checkProject;
+            }
+            this.pim = false;
+
+            if (this.checkProject) {
+                this.selectedProject = [];
+                for(var i=0; i<this.projectList.length; i++){
+                    this.selectedProject.push(this.projectList[i].name)
+                }
+            } else {
+                this.selectedProject = [];
+            }
+        },
+        projectChange(data){
+            if (data.length === this.projectList.length) {
+                this.pim = false;
+                this.checkProject = true;
+            } else if (data.length > 0) {
+                this.pim = true;
+                this.checkProject = false;
+            } else {
+                this.pim = false;
+                this.checkProject = false;
+            }
+            var searchTags = `${this.tags},`
+            for(var i=0; i<this.selectedProject.length; i++){
+                searchTags+=this.selectedProject[i]+','
+            }
+            for(var i=0; i<this.selectedStyle.length; i++){
+                searchTags+=this.selectedStyle[i]+','
+            }
+            for(var i=0; i<this.selectedEngine.length; i++){
+                searchTags+=this.selectedEngine[i]+','
+            }
+            axios.get('/api/resource',{
+                params:{
+                    page: this.curPage,
+                    pageSize: this.pageSize,
+                    refer: this.refer,
+                    tags: searchTags,
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.searchList = res.data.data.list
+                    this.resultCount = res.data.data.count
+                }
+            })
+        },
+        checkAllStyle(){
+            if (this.sim) {
+                this.checkStyle = false;
+            } else {
+                this.checkStyle = !this.checkStyle;
+            }
+            this.sim = false;
+
+            if (this.checkStyle) {
+                this.selectedStyle = [];
+                for(var i=0; i<this.styleList.length; i++){
+                    this.selectedStyle.push(this.styleList[i].label)
+                }
+            } else {
+                this.selectedStyle = [];
+            }
+        },
+        styleChange(data){
+            if (data.length === this.styleList.length) {
+                this.sim = false;
+                this.checkStyle = true;
+            } else if (data.length > 0) {
+                this.sim = true;
+                this.checkStyle = false;
+            } else {
+                this.sim = false;
+                this.checkStyle = false;
+            }
+            var searchTags = `${this.tags},`
+            for(var i=0; i<this.selectedProject.length; i++){
+                searchTags+=this.selectedProject[i]+','
+            }
+            for(var i=0; i<this.selectedStyle.length; i++){
+                searchTags+=this.selectedStyle[i]+','
+            }
+            for(var i=0; i<this.selectedEngine.length; i++){
+                searchTags+=this.selectedEngine[i]+','
+            }
+            axios.get('/api/resource',{
+                params:{
+                    page: this.curPage,
+                    pageSize: this.pageSize,
+                    refer: this.refer,
+                    tags: searchTags,
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.searchList = res.data.data.list
+                    this.resultCount = res.data.data.count
+                }
+            })
+        },
+        checkAllEngine(){
+            if (this.eim) {
+                this.checkEngine = false;
+            } else {
+                this.checkEngine = !this.checkEngine;
+            }
+            this.eim = false;
+
+            if (this.checkEngine) {
+                this.selectedEngine = [];
+                for(var i=0; i<this.engineList.length; i++){
+                    this.selectedEngine.push(this.engineList[i].label)
+                }
+            } else {
+                this.selectedEngine = [];
+            }
+        },
+        engineChange(data){
+            if (data.length === this.engineList.length) {
+                this.eim = false;
+                this.checkEngine = true;
+            } else if (data.length > 0) {
+                this.eim = true;
+                this.checkEngine = false;
+            } else {
+                this.eim = false;
+                this.checkEngine = false;
+            }
+            var searchTags = `${this.tags},`
+            for(var i=0; i<this.selectedProject.length; i++){
+                searchTags+=this.selectedProject[i]+','
+            }
+            for(var i=0; i<this.selectedStyle.length; i++){
+                searchTags+=this.selectedStyle[i]+','
+            }
+            for(var i=0; i<this.selectedEngine.length; i++){
+                searchTags+=this.selectedEngine[i]+','
+            }
+            axios.get('/api/resource',{
+                params:{
+                    page: this.curPage,
+                    pageSize: this.pageSize,
+                    refer: this.refer,
+                    tags: searchTags,
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.searchList = res.data.data.list
+                    this.resultCount = res.data.data.count
+                }
+            })
+        },
     }
 }
 </script>
@@ -198,6 +435,28 @@ export default {
 .choice-part > .ivu-dropdown > .ivu-select-dropdown{
     margin: 0px;
     padding: 0px;
+}
+.divider-checkbox> .ivu-checkbox-wrapper > .ivu-checkbox-indeterminate > .ivu-checkbox-inner{
+    border-color: #707070;
+    background-color: #707070;
+}
+.divider-checkbox> .ivu-checkbox-wrapper > .ivu-checkbox-checked > .ivu-checkbox-inner{
+    border-color: #707070;
+    background-color: #707070;
+}
+.divider-checkbox1> .ivu-checkbox-wrapper > .ivu-checkbox-indeterminate > .ivu-checkbox-inner{
+    border-color: #707070;
+    background-color: #707070;
+}
+.divider-checkbox1> .ivu-checkbox-wrapper > .ivu-checkbox-checked > .ivu-checkbox-inner{
+    border-color: #707070;
+    background-color: #707070;
+}
+.divider-checkbox > .ivu-checkbox-wrapper{
+    display: flex;
+    width: 100%;
+    flex-direction: row-reverse;
+    justify-content: space-between;
 }
 </style>
 <style scoped>
@@ -256,6 +515,24 @@ export default {
     box-shadow: 0px 3px 6px #00000029;
     display:flex;
     flex-direction: row;
+}
+.divide-three-part{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 11px 15px;
+    width: 196.33px;
+}
+.divider-title{
+    color: #000000D9;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+.divider-checkbox, .divider-checkbox1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
 }
 .middle-card{
     display: flex;
