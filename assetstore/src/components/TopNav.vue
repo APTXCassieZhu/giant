@@ -34,8 +34,8 @@
                             <DropdownMenu slot="list" class="topnav-dropdown catalog-dropdown">
                                 <!-- <ul v-for="(type, t) in this.artClassify" :key="t"><DropdownItem>{{type.name}}</DropdownItem></ul> -->
                                 <div class="catalog-left-part">
-                                    <Button ref="artid" :class="catalogArtBtn" @click="selectCatalog('art')"><font-awesome-icon :icon="['fas','palette']" style="margin-right: 20px"/>美术类资源</Button>
-                                    <Button ref="devid" :class="catalogDevBtn" @click="selectCatalog('dev')"><font-awesome-icon :icon="['fas', 'code']" style="margin-right: 20px"/>研发类资源</Button>
+                                    <div ref="artid" :class="catalogArtBtn" @click="selectCatalog('art')"><font-awesome-icon :icon="['fas','palette']" style="margin-right: 20px"/>美术类资源</div>
+                                    <div ref="devid" :class="catalogDevBtn" @click="selectCatalog('dev')"><font-awesome-icon :icon="['fas', 'code']" style="margin-right: 20px"/>研发类资源</div>
                                     <div class="catalog-purple"></div>
                                 </div>
                                 <div class="catalog-right-part" v-if="showArt">
@@ -770,6 +770,9 @@ export default {
     border-radius: 0px;
     border: none;
     outline: none;
+    line-height: 61px;
+    text-align: center;
+    transition: .5s;
 }
 .catalog-btn:hover{
     color: #000000D9;
@@ -784,6 +787,9 @@ export default {
     border-radius: 0px;
     border: none;
     outline: none;
+    line-height: 61px;
+    text-align: center;
+    transition: .5s;
 }
 .music:hover + .coming-soon{
     opacity: 1;

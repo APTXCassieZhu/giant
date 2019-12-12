@@ -157,6 +157,7 @@ export default {
             orderClass2: 'order-style-active',
             orderClass3: 'order-style',   
             tags: '',   
+            totalTags: '',
             pim: true,  
             checkProject: false,
             projectList: [],
@@ -238,12 +239,15 @@ export default {
                 this.orderClass2 = 'order-style'
                 this.orderClass3 = 'order-style-active'
             }
+            if(this.totalTags === ''){
+                this.totalTags = `${this.tags}`
+            }
             axios.get('/api/resource',{
                 params:{
                     page: this.curPage,
                     pageSize: this.pageSize,
                     refer: this.refer,
-                    tags: this.tags,
+                    tags: this.totalTags,
                     order: this.curOrder
             }}).then((res)=>{
                 if(res.data.code == 0){
@@ -253,12 +257,15 @@ export default {
             })
         },
         wantRefer(){
+            if(this.totalTags === ''){
+                this.totalTags = `${this.tags}`
+            }
             axios.get('/api/resource',{
                 params:{
                     page: this.curPage,
                     pageSize: this.pageSize,
                     refer: this.refer,
-                    tags: this.tags,
+                    tags: this.totalTags,
                     order: this.curOrder
             }}).then((res)=>{
                 if(res.data.code == 0){
@@ -305,12 +312,14 @@ export default {
             for(var i=0; i<this.selectedEngine.length; i++){
                 searchTags+=this.selectedEngine[i]+','
             }
+            this.totalTags = searchTags
             axios.get('/api/resource',{
                 params:{
                     page: this.curPage,
                     pageSize: this.pageSize,
                     refer: this.refer,
                     tags: searchTags,
+                    order: this.curOrder
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.searchList = res.data.data.list
@@ -356,12 +365,14 @@ export default {
             for(var i=0; i<this.selectedEngine.length; i++){
                 searchTags+=this.selectedEngine[i]+','
             }
+            this.totalTags = searchTags
             axios.get('/api/resource',{
                 params:{
                     page: this.curPage,
                     pageSize: this.pageSize,
                     refer: this.refer,
                     tags: searchTags,
+                    order: this.curOrder
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.searchList = res.data.data.list
@@ -407,12 +418,14 @@ export default {
             for(var i=0; i<this.selectedEngine.length; i++){
                 searchTags+=this.selectedEngine[i]+','
             }
+            this.totalTags = searchTags
             axios.get('/api/resource',{
                 params:{
                     page: this.curPage,
                     pageSize: this.pageSize,
                     refer: this.refer,
                     tags: searchTags,
+                    order: this.curOrder
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.searchList = res.data.data.list

@@ -215,14 +215,13 @@ export default {
         },
         changeOrder(name){
             this.currentOrder = name
-        },
-        wantRefer(){
             axios.get('/api/search', {params: {
                 val: this.$route.query.val,
                 type: this.$route.query.type,
                 page: this.curPage,
                 pageSize: this.pageSize,
-                refer: this.refer
+                refer: this.refer,
+                order: this.currentOrder
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.resultCount = res.data.data.count
@@ -236,37 +235,26 @@ export default {
                 alert(res)
             })
         },
-        searchAdviseTag(val){
-            console.log('爷爷call 孙子的method')
-            this.searchForm.content = val;
-            this.searchHistory = []
-            if((storage.has(1)&&storage.has(2))) {
-                storage.set(3, storage.get(2))
-                storage.set(2, storage.get(1))
-                storage.set(1, this.searchForm.content)
-                this.searchHistory.push(storage.get(1))
-                this.searchHistory.push(storage.get(2))
-                this.searchHistory.push(storage.get(3));
-            }else{
-                if(!storage.has(1)) {
-                    // empty history
-                    storage.set(1, this.searchForm.content)
-                    this.searchHistory.push(storage.get(1))
-                } else {
-                    storage.set(2, storage.get(1))
-                    storage.set(1, this.searchForm.content)
-                    this.searchHistory.push(storage.get(1))
-                    this.searchHistory.push(storage.get(2))
+        wantRefer(){
+            axios.get('/api/search', {params: {
+                val: this.$route.query.val,
+                type: this.$route.query.type,
+                page: this.curPage,
+                pageSize: this.pageSize,
+                refer: this.refer,
+                order: this.currentOrder
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.resultCount = res.data.data.count
+                    this.searchList = res.data.data.list
+                    /* 如果搜索到的匹配的内容为空 */
+                    if(this.resultCount == 0){
+                        this.$router.push('/searchEmpty')
+                    }
                 }
-            }
-            axios.post('/api/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
-                //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                this.$store.commit('SEARCH_COUNT', this.searchForm.content)
-                this.reload()
-                //this.$router.push('/searchResult')
-            }, (response)=>{
+            }, (res)=>{
+                alert(res)
             })
-
         },
         changeTab(tab){
             if(this.activeTab != tab){
@@ -309,7 +297,8 @@ export default {
                     type: this.$route.query.type,
                     page: this.curPage,
                     pageSize: this.pageSize,
-                    refer: this.refer
+                    refer: this.refer,
+                    order: this.currentOrder
                 }}).then((res)=>{
                     if(res.data.code == 0){
                         this.resultCount = res.data.data.count
@@ -329,7 +318,9 @@ export default {
                 val: this.$route.query.val,
                 type: this.$route.query.type,
                 page: this.curPage,
-                pageSize: this.pageSize
+                pageSize: this.pageSize,
+                refer: this.refer,
+                order: this.currentOrder
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.resultCount = res.data.data.count
