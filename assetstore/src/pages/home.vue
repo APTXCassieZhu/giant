@@ -110,47 +110,43 @@ export default {
         // this.$refs.child8.special = "image-08";
         // this.$refs.child9.special = "image-09";
         // 拿到推荐资源
-        axios.get('/api/resource',{
+        axios.get('/api/resource/home',{
             params:{
                 page: 1,
                 pageSize: 30,
                 recommend: true,
-                refer: true
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.recommendList = res.data.data.list
                 }
         })
         // 拿到美术资源
-        axios.get('/api/resource',{
+        axios.get('/api/resource/home',{
             params:{
                 page: 1,
                 pageSize: 30,
                 type: 'art',
-                refer: true
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.artList = res.data.data.list
                 }
         })
         // 拿到研发类资源
-        axios.get('/api/resource',{
+        axios.get('/api/resource/home',{
             params:{
                 page: 1,
                 pageSize: 30,
                 type: 'dev',
-                refer: true
             }}).then((res)=>{
             if(res.data.code == 0){
                 this.devList = res.data.data.list
             }
         })
         // 拿到最新更新资源
-        axios.get('/api/resource',{
+        axios.get('/api/resource/home',{
             params:{
                 page: 1,
                 pageSize: 30,
-                refer: true
             }}).then((res)=>{
             if(res.data.code == 0){
                 this.updateList = res.data.data.list
@@ -181,12 +177,11 @@ export default {
                 this.action = '推荐'
                 setTimeout(() => {
                     if(this.action == '推荐'){
-                        axios.get('/api/resource',{
+                        axios.get('/api/resource/home',{
                             params:{
                                 page: 1,
                                 pageSize: 30,
                                 recommend: true,
-                                refer: true
                             }}).then((res)=>{
                             if(res.data.code == 0){
                                 this.devList = res.data.data.list
@@ -203,11 +198,10 @@ export default {
                 this.action = '更新'
                 setTimeout(() => {
                     if(this.action == '更新'){
-                        axios.get('/api/resource',{
+                        axios.get('/api/resource/home',{
                             params:{
                                 page: 1,
                                 pageSize: 30,
-                                refer: true
                             }}).then((res)=>{
                             if(res.data.code == 0){
                                 this.devList = res.data.data.list
@@ -224,12 +218,11 @@ export default {
                 this.action = '研发'
                 setTimeout(() => {
                     if(this.action == '研发'){
-                        axios.get('/api/resource',{
+                        axios.get('/api/resource/home',{
                             params:{
                                 page: 1,
                                 pageSize: 30,
                                 type: 'dev',
-                                refer: true
                             }}).then((res)=>{
                             if(res.data.code == 0){
                                 this.devList = res.data.data.list
@@ -246,12 +239,11 @@ export default {
                 this.action = '美术'
                 setTimeout(() => {
                     if(this.action == '美术'){
-                        axios.get('/api/resource',{
+                        axios.get('/api/resource/home',{
                             params:{
                                 page: 1,
                                 pageSize: 30,
                                 type: 'art',
-                                refer: true
                             }}).then((res)=>{
                             if(res.data.code == 0){
                                 this.devList = res.data.data.list

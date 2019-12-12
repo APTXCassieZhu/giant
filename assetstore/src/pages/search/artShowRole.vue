@@ -7,6 +7,34 @@
                     <div class="route-text" style=" margin-left: 15px;">
                         美术类资源 / <span style="color: #003A8C">{{route}}</span>
                     </div>
+                    <div class="choice-part">
+                        <a-tooltip placement="top">
+                            <template slot="title">
+                                <span>
+                                    <font-awesome-icon :icon="['fas','question-circle']"/>
+                                    这是什么？参考类资源仅供在研发工作中参考 学习使用，<span style="color: red">绝对禁止</span>使用在正式商用项目中。
+                                </span>
+                            </template>
+                            <font-awesome-icon :icon="['fas','question-circle']" style="width: 14px; height: 14px; color: #000000D9"/>
+                        </a-tooltip>
+                        显示参考类资源 
+                        <Checkbox v-model="refer" @on-change="wantRefer" style="margin-left:20px;"></Checkbox>
+                        <Divider type="vertical" style="margin-right: 30px;"/>
+                        <Dropdown trigger="click" placement="bottom-end">
+                            <span href="javascript:void(0)" name="筛选方法" class="order-style">
+                                筛选方法 <Icon type='md-arrow-dropdown' size='20' />
+                            </span>
+                            <DropdownMenu slot="list" class="dropdown-panel">
+                                <!-- <DropdownItem v-for="(item, e) in this.engineList" :key="'ee'+e" 
+                                class="box-link-a" :name="item.label">{{item.label}}</DropdownItem> -->
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Divider type="vertical" style="margin-right: 10px;"/>
+                        <span style="margin-right: 10px;">排序方式</span>
+                        <font-awesome-icon :icon="['fas','eye']" :class="orderClass1" @click="changeOrder('view')"/>
+                        <font-awesome-icon :icon="['far','clock']" :class="orderClass2" @click="changeOrder('time')"/>
+                        <font-awesome-icon :icon="['fas','heart']" :class="orderClass3" @click="changeOrder('star')"/>
+                    </div>
                 </div>
                 <div class="middle-card">
                     <div class="card-wrapper">
@@ -45,7 +73,7 @@ import searchResult from '../search/searchResult.vue'
 import breadCrumb from "@/widget/breadcrumb.vue";
 
 export default {
-    name:"ArtShow",
+    name:"DevShow1",
     inject: ['reload'],
     components:{
         TopNavigation,
@@ -68,20 +96,36 @@ export default {
             resultCount: 1314,
             searchHistory: [],              //存放历史搜索
             searchForm: {content:""},
-            currentOrder: "按推荐排序",        //筛选结果按这个currentOrder排序
+            curOrder: "time",               //筛选结果按这个currentOrder排序
             route: "",
             curPage: 1,
             pageSize: 20,
             searchList: [],
+            refer: false,
+            orderClass1: 'order-style',
+            orderClass2: 'order-style-active',
+            orderClass3: 'order-style',   
+            tags: [],         
         }
     },
     mounted(){
         this.route = `${this.$route.params.pathMatch}`
+        this.tags = this.$route.query.tags
+        axios.get('/api/resource',{
+            params:{
+                page: this.curPage,
+                pageSize: this.pageSize,
+                refer: this.refer,
+                tags: this.tags,
+        }}).then((res)=>{
+            if(res.data.code == 0){
+                this.searchList = res.data.data.list
+                this.resultCount = res.data.data.count
+            }
+        })
     },
     methods:{
-
-        xgoPage(url){
-          
+        xgoPage(url){          
             //debugger
             this.$store.commit('SAVE_BREADLIST', {
                 // breadlist:[
@@ -92,67 +136,66 @@ export default {
                 ],
                 resourceId:this.sourceID
                 
-            })
-
-            
+            })          
             this.$router.push(`/resourceDetail/${132}`)
-     
-        
         },
-        changeOrder(name){
-            // TODO 根据用户选择的筛选，重新加载searchresult page显示资源
-            if(name === "按推荐排序"){
-                this.currentOrder = "按推荐排序"
-            }else if(name === "按热度排序"){
-                this.currentOrder = "按热度排序"
+        changeOrder(order){
+            this.curOrder = order
+            if(order === 'view'){
+                this.orderClass1 = 'order-style-active'
+                this.orderClass2 = 'order-style'
+                this.orderClass3 = 'order-style'
+            }else if(order === 'time'){
+                this.orderClass1 = 'order-style'
+                this.orderClass2 = 'order-style-active'
+                this.orderClass3 = 'order-style'
             }else{
-                this.currentOrder = "按时间排序"
+                this.orderClass1 = 'order-style'
+                this.orderClass2 = 'order-style'
+                this.orderClass3 = 'order-style-active'
             }
-        },
-        closeAdvise(){
-            document.getElementById("advise").style.display = 'none'
-        },
-        searchAdviseTag(val){
-            console.log('爷爷call 孙子的method')
-            this.searchForm.content = val
-            /* TODO 下面这种可以直接call其他组件的method，但是不知道为什么一直说content not defined
-               所有直接把要call的method 复制过来了，待解决。。。
-               Search.methods.searchSubmit()*/
-
-            this.searchHistory = []
-            if((storage.has(1)&&storage.has(2))) {
-                storage.set(3, storage.get(2))
-                storage.set(2, storage.get(1))
-                storage.set(1, this.searchForm.content)
-                this.searchHistory.push(storage.get(1))
-                this.searchHistory.push(storage.get(2))
-                this.searchHistory.push(storage.get(3));
-            }else{
-                if(!storage.has(1)) {
-                    // empty history
-                    storage.set(1, this.searchForm.content)
-                    this.searchHistory.push(storage.get(1))
-                } else {
-                    storage.set(2, storage.get(1))
-                    storage.set(1, this.searchForm.content)
-                    this.searchHistory.push(storage.get(1))
-                    this.searchHistory.push(storage.get(2))
+            axios.get('/api/resource',{
+                params:{
+                    page: this.curPage,
+                    pageSize: this.pageSize,
+                    refer: this.refer,
+                    tags: this.tags,
+                    order: this.curOrder
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.searchList = res.data.data.list
+                    this.resultCount = res.data.data.count
                 }
-            }
-            axios.post('/api/user/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
-                //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)
-                this.$store.commit('SEARCH_COUNT', this.searchForm.content)
-                this.reload()
-                this.$router.push('/searchEmpty')
-            }, (response)=>{
             })
-
         },
+        wantRefer(){
+            axios.get('/api/resource',{
+                params:{
+                    page: this.curPage,
+                    pageSize: this.pageSize,
+                    refer: this.refer,
+                    tags: this.tags,
+                    order: this.curOrder
+            }}).then((res)=>{
+                if(res.data.code == 0){
+                    this.searchList = res.data.data.list
+                    this.resultCount = res.data.data.count
+                }
+            })
+        }
     }
 }
 </script>
 <style>
 .card-wrapper > ul > div > .ivu-dropdown > .ivu-select-dropdown{
+    margin: 0px;
+    padding: 0px;
+}
+.choice-part > .ivu-checkbox-wrapper > .ivu-checkbox-checked > .ivu-checkbox-inner{
+    border-color: #FA541C;
+    background-color: #FA541C;
+}
+.choice-part > .ivu-dropdown > .ivu-select-dropdown{
     margin: 0px;
     padding: 0px;
 }
@@ -181,12 +224,46 @@ export default {
     font-size: 20px;
     color: #00000073;
 }
+.choice-part{
+    font-size: 16px;
+    font-weight: 600;
+    color: #00000073;
+}
+.order-style{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    transition: .5s;
+}
+.order-style:hover{
+    color: #FF8900;
+}
+.order-style-active{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    color: #FF8900;
+    cursor: pointer;
+}
+.dropdown-panel{
+    width: 589px;
+    height: 237px;
+    color: #707070;
+    font-size: 14px;
+    box-shadow: 0px 3px 6px #00000029;
+    display:flex;
+    flex-direction: row;
+}
 .middle-card{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
+    margin-top: 26px;
 }
 .card-wrapper {
     width: 100%;

@@ -39,22 +39,30 @@
                                     <div class="catalog-purple"></div>
                                 </div>
                                 <div class="catalog-right-part" v-if="showArt">
-                                    <span v-for="(item, model) in modelList" :key="model" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
-                                        {{item.label}}
+                                    <span v-for="(item, model) in modelList" :key="model" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
                                     </span>
                                     <Divider style="margin: 0"/>
-                                    <span v-for="(item, el) in elseList" :key="'a'+el" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
-                                        {{item.label}}
+                                    <span v-for="(item, el) in elseList" :key="'a'+el" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
                                     </span>
                                     <Divider style="margin: 0"/>
-                                    <span v-for="(item, paint) in paintList" :key="'aa'+paint" class="catalog-class" @click="goPage(`/artshow/${item.label}`)">
-                                        {{item.label}}
+                                    <span v-for="(item, paint) in paintList" :key="'aa'+paint" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
                                     </span>
                                 </div>
                                 <div class="catalog-right-part" v-else>
-                                    <div v-for="(item, dev) in devClassify" :key="'aaa'+dev" class="catalog-class" @click="goPage(`/devshow/${item.label}`)">
-                                        {{item.label}}
-                                    </div>
+                                    <span v-for="(item, engine) in engineList" :key="engine" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    </span>
+                                    <Divider style="margin: 0"/>
+                                    <span v-for="(item, tool) in toolList" :key="'t'+tool" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    </span>
+                                    <Divider style="margin: 0"/>
+                                    <span v-for="(item, other) in otherList" :key="'tt'+other" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    </span>
                                 </div>
                             </DropdownMenu>
                         </Dropdown>
@@ -280,11 +288,15 @@ export default {
             modelList:[],
             elseList: [],
             paintList:[],
+            engineList: [],
+            toolList: [],
+            otherList: [],
             catalogArtBtn: 'catalog-btn-active',
             catalogDevBtn: 'catalog-btn',
             catalogShow: true,
             showArt: true,
             topnavSearch: "topnav-search",
+            // tags: [],
         }
     },
     computed:{
@@ -305,9 +317,6 @@ export default {
     },
     mounted(){
         console.log(`aa ${this.$route.query}`)
-        if(this.$route.path == '/searchresult'){
-
-        }
         // 拿到提醒列表
         axios.get('/api/remind', {
             params: {
@@ -340,18 +349,18 @@ export default {
                 alert('参数格式不正确')
             }
         })
-        axios.get('/api/tag/tree', {params: {type: 'art_classify'}}).then(res =>{
+        axios.get('/api/composetag', {params: {type: 'art'}}).then(res =>{
             if(res.data.code === 0){
-                this.modelList = res.data.data[0].children
-                this.paintList = res.data.data[1].children
-                this.elseList = res.data.data[2].children
-            }else if(res.data.code === 400){
-                alert('参数格式不正确')
+                this.modelList = res.data.data[0]
+                this.paintList = res.data.data[1]
+                this.elseList = res.data.data[2]
             }
         })
-        axios.get('/api/tag/tree', {params: {type: 'dev_classify'}}).then(res =>{
+        axios.get('/api/composetag', {params: {type: 'dev'}}).then(res =>{
             if(res.data.code === 0){
-                this.devClassify = res.data.data
+                this.engineList = res.data.data[0]
+                this.toolList = res.data.data[1]
+                this.otherList = res.data.data[2]
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -599,6 +608,14 @@ export default {
             this.catalogShow = true
             this.topnavSearch = 'topnav-search'
         },
+        // 拿到tag id list用于搜索
+        getTags(list){
+            const tags = []
+            for(var i=0; i<list.length; i++){
+                tags.push(list[i].id)
+            }
+            return tags
+        },
     }
 }
 </script>
@@ -695,7 +712,7 @@ export default {
     /* justify-content: center; */
     align-items:center;
     height: 84px;
-    min-width: 100px;
+    min-width: 109px;
     opacity: 1;
     transition: opacity .2s linear;
 }

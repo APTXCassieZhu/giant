@@ -39,7 +39,7 @@
                         </span>
                         <DropdownMenu slot="list">
                             <DropdownItem v-for="(item, p) in this.projectList" :key="'pp'+p" 
-                            class="box-link-a" :name="item.label">{{item.label}}</DropdownItem>
+                            class="box-link-a" :name="item.name">{{item.name}}</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <Dropdown @on-click="changeEngine" trigger="click" style="margin-right: 20px;">
@@ -52,8 +52,8 @@
                         </DropdownMenu>
                     </Dropdown>
                     <Divider type="vertical" style="margin-right: 20px;" v-if="activeTab == 'tab1'"/>
-                    <!-- <span style="margin-left: 20px; margin-right: 20px;" v-if="activeTab == 'tab1'">参考类资源</span> -->
-                    <a-checkbox @change="wantRefer" v-if="activeTab == 'tab1'">参考类资源</a-checkbox>
+                    <span style="margin-left: 20px; margin-right: 20px;" v-if="activeTab == 'tab1'">参考类资源</span>
+                    <Checkbox v-model="refer" @on-change="wantRefer" v-if="activeTab == 'tab1'"></Checkbox>
                 </div>
                 <div class="order-con">
                     <span>排序按照：</span>
@@ -75,7 +75,7 @@
                 <div class="result-text" style="margin-left: 15px; text-align: left">{{resultCount}} 条结果</div>
             </div>
         </div>
-        <div class="middle-card-wrapper" style="margin-top: 0px;">
+        <div class="middle-card-wrapper" style="margin-top: 16px;">
             <div class="middle-card">
                 <div class="card-wrapper">
                     <div v-for="(item, index) in this.searchList" :key="index" class="fine-resource-card">
@@ -164,7 +164,8 @@ export default {
         }
         axios.get('/api/tag/lastitems', {params: {type: 'project'}}).then(res =>{
             if(res.data.code === 0){
-                this.project = res.data.data
+                this.projectList = res.data.data
+                this.curProject = this.projectList[0].name
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -172,6 +173,7 @@ export default {
         axios.get('/api/tag/tree', {params: {type: 'engine_ver'}}).then(res =>{
             if(res.data.code === 0){
                 this.engineList = res.data.data
+                this.curEngine = this.engineList[0].label
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -214,8 +216,7 @@ export default {
         changeOrder(name){
             this.currentOrder = name
         },
-        wantRefer(e){
-            this.refer = e.target.checked
+        wantRefer(){
             axios.get('/api/search', {params: {
                 val: this.$route.query.val,
                 type: this.$route.query.type,
