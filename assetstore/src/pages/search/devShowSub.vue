@@ -5,7 +5,7 @@
             <div class="middle-card-wrapper">
                 <div class="choice-wrapper">
                     <div class="route-text" style=" margin-left: 15px;">
-                        美术类资源 / <span style="color: #003A8C">{{route}}</span>
+                        研发类资源 / <span style="color: #003A8C">{{route}}</span>
                     </div>
                     <div class="choice-part">
                         <a-tooltip placement="top">
@@ -20,7 +20,7 @@
                         显示参考类资源 
                         <Checkbox v-model="refer" @on-change="wantRefer" style="margin-left:20px;"></Checkbox>
                         <Divider type="vertical" style="margin-right: 30px;"/>
-                        <Dropdown trigger="click" placement="bottom-end">
+                        <Dropdown trigger="click">
                             <span href="javascript:void(0)" name="筛选方法" class="order-style">
                                 筛选方法 <Icon type='md-arrow-dropdown' size='20' />
                             </span>
@@ -47,7 +47,7 @@
                     class="card-style"></source-card>   -->
                         <div v-for="(item, index) in this.searchList" :key="index" class="fine-resource-card">
                             <source-card :resource="item" :isLike="item.isStar" :showTag="false"
-                            :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
+                            :breadlist="[{fullPath:'/artShow',name:'研发类资源'}]" 
                             ></source-card>
                         </div>
                     </div>
@@ -73,7 +73,7 @@ import searchResult from '../search/searchResult.vue'
 import breadCrumb from "@/widget/breadcrumb.vue";
 
 export default {
-    name:"DevShow1",
+    name:"DevShow",
     inject: ['reload'],
     components:{
         TopNavigation,
@@ -110,22 +110,24 @@ export default {
     },
     mounted(){
         this.route = `${this.$route.params.pathMatch}`
-        this.tags = this.$route.query.tags
-        axios.get('/api/resource',{
-            params:{
-                page: this.curPage,
-                pageSize: this.pageSize,
-                refer: this.refer,
-                tags: this.tags,
+        this.tags = this.$route.query.tags.split(',')
+        axios.get('/api/search', {params: {
+            tags: this.tags,
+            page: this.curPage,
+            pageSize: this.pageSize
         }}).then((res)=>{
             if(res.data.code == 0){
-                this.searchList = res.data.data.list
                 this.resultCount = res.data.data.count
+                this.searchList = res.data.data.list
             }
+        }, (res)=>{
+            alert(res)
         })
     },
     methods:{
-        xgoPage(url){          
+
+        xgoPage(url){
+          
             //debugger
             this.$store.commit('SAVE_BREADLIST', {
                 // breadlist:[
@@ -136,8 +138,12 @@ export default {
                 ],
                 resourceId:this.sourceID
                 
-            })          
+            })
+
+            
             this.$router.push(`/resourceDetail/${132}`)
+     
+        
         },
         changeOrder(order){
             this.curOrder = order
@@ -154,48 +160,16 @@ export default {
                 this.orderClass2 = 'order-style'
                 this.orderClass3 = 'order-style-active'
             }
-            axios.get('/api/resource',{
-                params:{
-                    page: this.curPage,
-                    pageSize: this.pageSize,
-                    refer: this.refer,
-                    tags: this.tags,
-                    order: this.curOrder
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.searchList = res.data.data.list
-                    this.resultCount = res.data.data.count
-                }
-            })
+            // axios.get
         },
         wantRefer(){
-            axios.get('/api/resource',{
-                params:{
-                    page: this.curPage,
-                    pageSize: this.pageSize,
-                    refer: this.refer,
-                    tags: this.tags,
-                    order: this.curOrder
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.searchList = res.data.data.list
-                    this.resultCount = res.data.data.count
-                }
-            })
+
         }
     }
 }
 </script>
 <style>
 .card-wrapper > ul > div > .ivu-dropdown > .ivu-select-dropdown{
-    margin: 0px;
-    padding: 0px;
-}
-.choice-part > .ivu-checkbox-wrapper > .ivu-checkbox-checked > .ivu-checkbox-inner{
-    border-color: #FA541C;
-    background-color: #FA541C;
-}
-.choice-part > .ivu-dropdown > .ivu-select-dropdown{
     margin: 0px;
     padding: 0px;
 }

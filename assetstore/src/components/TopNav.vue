@@ -1,28 +1,90 @@
 <template>
-<div>
     <div id="top-nav" class="topnav">
         <div class="topnav-box">
+            <!-- 小屏幕显示尺寸的logo -->
             <div class="topnav-box-menu">
                 <Icon type="ios-menu" size="48"></Icon>
             </div>
-            <div class="topnav-box-logo" >
-                <img src="../assets/logo.png" style="width:29px; height: 33px;" alt="首页" @click="goPage('/home')">
+            <!-- 正常屏幕显示尺寸的logo -->
+            <div class="topnav-box-logo"  @click="goPage('/home')">
+                <img src="../assets/logo.png" style="width:52px; height: 59px;" alt="logo">    
+                <div class="logo-text">
+                    <img src="../assets/logo-title.png" style="width: 127px; height: 29px; margin-bottom: 5px" alt="logo"> 
+                    <img src="../assets/logo-en.png" style="width: 79px; height: 13px;" alt="logo"> 
+                </div>  
             </div>
-            <span class="logo-text" @click="goPage('/home')">GDRC</span>
-            <!--不知道怎么清除之前div css-->
+            <!-- 稍小屏幕显示尺寸的logo -->
             <div class="topnav-box-image">
                 <img src="../assets/logo.png" alt="logo">
             </div>
+
+            <transition 
+                name="fade"
+                enter-class="fade-in-enter"
+                enter-active-class="fade-in-active"
+                leave-class="fade-out-enter"
+                leave-active-class="fade-out-active"
+            >
+                <div class="topnav-box-link" v-show="catalogShow">               
+                    <div class="topnav-box-link-a">
+                        <Dropdown placement="bottom-start">
+                            <a style="text-decoration: none;" href="javascript:void(0)">浏览目录
+                                <font-awesome-icon :icon="['fas', 'sort-down']" style="margin-bottom: 3px;color: #00000079"/>
+                            </a>
+                            <DropdownMenu slot="list" class="topnav-dropdown catalog-dropdown">
+                                <!-- <ul v-for="(type, t) in this.artClassify" :key="t"><DropdownItem>{{type.name}}</DropdownItem></ul> -->
+                                <div class="catalog-left-part">
+                                    <Button ref="artid" :class="catalogArtBtn" @click="selectCatalog('art')"><font-awesome-icon :icon="['fas','palette']" style="margin-right: 20px"/>美术类资源</Button>
+                                    <Button ref="devid" :class="catalogDevBtn" @click="selectCatalog('dev')"><font-awesome-icon :icon="['fas', 'code']" style="margin-right: 20px"/>研发类资源</Button>
+                                    <div class="catalog-purple"></div>
+                                </div>
+                                <div class="catalog-right-part" v-if="showArt">
+                                    <span v-for="(item, model) in modelList" :key="model" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    </span>
+                                    <Divider style="margin: 0"/>
+                                    <span v-for="(item, el) in elseList" :key="'a'+el" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    </span>
+                                    <Divider style="margin: 0"/>
+                                    <span v-for="(item, paint) in paintList" :key="'aa'+paint" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    </span>
+                                </div>
+                                <div class="catalog-right-part" v-else>
+                                    <span v-for="(item, engine) in engineList" :key="engine" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    </span>
+                                    <Divider style="margin: 0"/>
+                                    <span v-for="(item, tool) in toolList" :key="'t'+tool" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    </span>
+                                    <Divider style="margin: 0"/>
+                                    <span v-for="(item, other) in otherList" :key="'tt'+other" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
+                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    </span>
+                                </div>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                </div>
+            </transition>
             
-            <div class="topnav-box-link">
-                <Search style="z-index: 1000;"></Search>
-            </div>
             <div class="topnav-box-user">
-                <Icon class="topnav-user" type="md-cloud-upload" size="29" @click="goPage('/uploadFile')"/>
+                <transition
+                    name="longer"
+                    enter-class="enter-longer"
+                    enter-active-class="active-longer"
+                    leave-class="out-shorter"
+                    leave-active-class="active-shorter"
+                >
+                    <search :class="topnavSearch" @focus.native.capture="searchContainerLonger()" @blur.native.capture="searchContainerRecover()" id="search"></search>
+                </transition>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <Badge :count="totalUnreadNum" overflow-count="99">
-                            <Icon class="topnav-user" @click="goPage('/notice')" type="md-notifications" size="29"/>
+                            <font-awesome-icon :icon="['far', 'bell']" style="width: 22px; height: 20px;margin-top: 3px;"
+                            class="topnav-icon" @click="goPage('/notice')"/>
                         </Badge>
                     </a>
                     <DropdownMenu slot="list" class="topnav-dropdown-notice" style="margin-left: -250px;">
@@ -186,7 +248,8 @@
                         </Tabs>
                     </DropdownMenu>
                 </Dropdown>
-                <Icon class="topnav-user" @click="goPage('/editSetting')" type="md-settings" size="29"/>
+                <font-awesome-icon class="topnav-icon" style="width: 22px; height: 21px;"
+                :icon="['far', 'heart']" @click="goLike('like')"/>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
                         <img v-if="profile" class="topnav-user-image" :src="profile" @click="goLike('personal')" alt="avatar">
@@ -200,53 +263,46 @@
                     </DropdownMenu>
                 </Dropdown>
             </div>
-
-            <!-- <div to='/login' class="topnav-box-user-login">
-                <Tooltip content="个人中心" placement="top" style="position:fixed; z-index:1000;">
-                    <div class="topnav-user" @click="goLike('personal')">{{getUser.charAt(0)}}</div>
-                </Tooltip>
-            </div> -->
         </div>
     </div>
-    <Divider class="divide"/>
-    <div class="submenu">
-        <Menu mode="horizontal" :active-name="activenum" class="nav-menu">
-            <MenuItem name="1" @click.native="goPage('/artFilter')">
-                美术类资源
-            </MenuItem>
-            <MenuItem name="2" @click.native="goPage('/toolFilter')">
-                研发工具
-            </MenuItem>
-            <MenuItem name="3" @click.native="goPage('/software')">
-                常用软件
-            </MenuItem>
-        </Menu>
-    </div>
-</div>
 </template>
 
 <script>
 import Search from '../components/Search.vue'
+
 export default {
     name: "TopNavigation",
-    components: {Search},
+    components:{Search},
     data(){
         return{
-            activenum: 0,
             profile: null,
-            userName: '神',
+            userName: '神之子阿目',
+            activenum: 0,
             totalUnreadNum: 100,
             infoDropdownCount: 0,
             noticeDropdownCount: 0,
             totalUnreadInfo: [],
-            totalUnreadNotice: [],  
+            totalUnreadNotice: [],
+            artClassify: [],
+            devClassify: [],
+            modelList:[],
+            elseList: [],
+            paintList:[],
+            engineList: [],
+            toolList: [],
+            otherList: [],
+            catalogArtBtn: 'catalog-btn-active',
+            catalogDevBtn: 'catalog-btn',
+            catalogShow: true,
+            showArt: true,
+            topnavSearch: "topnav-search",
+            // tags: [],
         }
     },
     computed:{
         getUser(){ 
             try{
                 console.log(typeof this.$store.state.user)
-                // debugger
                 let o = JSON.parse(this.$store.state.user)
                 console.log(o)
                 this.profile = o.profilePic
@@ -260,6 +316,8 @@ export default {
         }
     },
     mounted(){
+        console.log(`aa ${this.$route.query}`)
+        // 拿到提醒列表
         axios.get('/api/remind', {
             params: {
                 page: 1,
@@ -275,6 +333,7 @@ export default {
                 alert('参数格式不正确')
             }
         })
+        // 拿到通知列表
         axios.get('/api/bulletin', {
             params: {
                 page: 1,
@@ -290,12 +349,52 @@ export default {
                 alert('参数格式不正确')
             }
         })
+        axios.get('/api/composetag', {params: {type: 'art'}}).then(res =>{
+            if(res.data.code === 0){
+                this.modelList = res.data.data[0]
+                this.paintList = res.data.data[1]
+                this.elseList = res.data.data[2]
+            }
+        })
+        axios.get('/api/composetag', {params: {type: 'dev'}}).then(res =>{
+            if(res.data.code === 0){
+                this.engineList = res.data.data[0]
+                this.toolList = res.data.data[1]
+                this.otherList = res.data.data[2]
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
+        // 获取一级目录
+        axios.get('/api/tag/lastitems', {params: {type: 'art_classify'}}).then(res =>{
+            if(res.data.code === 0){
+                this.artClassify = res.data.data
+            }else if(res.data.code === 400){
+                alert('参数格式不正确')
+            }
+        })
     },
     methods:{
+        selectCatalog(type){
+            if(type == 'art'){
+                this.catalogArtBtn = 'catalog-btn-active'
+                this.catalogDevBtn = 'catalog-btn'
+                this.showArt = true
+                // TODO 如何让button失去焦点
+                // this.$refs.devid.focus()
+            }else{
+                this.catalogArtBtn = 'catalog-btn'
+                this.catalogDevBtn = 'catalog-btn-active'
+                this.showArt = false
+                // this.$refs.artid.focus()
+            }
+            
+        },
         logout(){
             this.$store.commit('REMOVE_COUNT', this.$store.state.token);
             this.$router.push('/login')
         },
+        // 正常跳转
         goPage(url){
             if(url === '/artFilter'){
                 this.activenum = 1
@@ -329,6 +428,7 @@ export default {
                 this.$router.push(url)
             }
         },
+        // 点击头像dropdown跳转个人中心
         goLike(type){
             if(type === 'personal'){
                 this.$store.commit('PERSONAL_ACTIVE', "name1")
@@ -337,6 +437,7 @@ export default {
             }
             this.$router.push('/personal')
         },
+        // 由通知提醒跳转个人中心
         goLike1(item){
             let headers = {"Content-Type": "application/json; charset=utf-8"}
             let data = {"id": item.id}
@@ -366,13 +467,7 @@ export default {
                 this.$router.push('/notice')
             }
         },
-        mircophone(){
-            // let $parent = document.querySelectorAll('#top-nav .ivu-tabs-tab')[1]
-
-            // let $span = document.createElement('span')
-            // $span.className = 'iconX-bullhorn-solid'
-            // $parent.appendChild($parent)
-        },
+        // 删除消息并通知后端
         deleteUnread(item){
             for(var i = 0; i < this.totalUnreadInfo.length; i++) {
                 if(this.totalUnreadInfo[i] == item) {
@@ -441,6 +536,7 @@ export default {
                 }
             }
         },
+        // 忽略所有消息并通知后端
         ignoreAllInfo(){
             this.totalUnreadNum -= this.infoDropdownCount
             let headers = {"Content-Type": "application/json; charset=utf-8"}
@@ -455,6 +551,7 @@ export default {
             this.infoDropdownCount = 0
             this.totalUnreadInfo = [];
         },
+        // 忽略所有通知并通知后端
         ignoreAllNotice(){
             this.totalUnreadNum -= this.noticeDropdownCount
             let headers = {"Content-Type": "application/json; charset=utf-8"}
@@ -468,6 +565,7 @@ export default {
             this.noticeDropdownCount = 0
             this.totalUnreadNotice = [];
         },
+        // 计算时间
         getTime(t){
             var begin = new Date(t)
             var end = new Date()
@@ -500,7 +598,25 @@ export default {
                 return "刚刚"
             }
         },
-    }   
+        // 点击，search input变长
+        searchContainerLonger(){
+            this.catalogShow = false
+            this.topnavSearch = 'topnav-search1'
+        },
+        // search input失去焦点时恢复
+        searchContainerRecover(){
+            this.catalogShow = true
+            this.topnavSearch = 'topnav-search'
+        },
+        // 拿到tag id list用于搜索
+        getTags(list){
+            const tags = []
+            for(var i=0; i<list.length; i++){
+                tags.push(list[i].id)
+            }
+            return tags
+        },
+    }
 }
 </script>
 <style>
@@ -510,11 +626,6 @@ export default {
     margin-right: 3px;
     margin-left: 3px;
  }
- /* .topnav-dropdown-notice > .ivu-tabs > .ivu-tabs-bar > .ivu-tabs-nav-container
- > .ivu-tabs-nav-wrap > .ivu-tabs-nav-scroll > .ivu-tabs-nav > .ivu-tabs-tab {
-    width: 20px;
-    height: 20px;
- } */
  .topnav-dropdown-notice > .ivu-tabs > .ivu-tabs-content{
     position: relative;
  }
@@ -535,33 +646,30 @@ export default {
 </style>
 <style scoped>
 .topnav {
-    overflow: hidden;
-    position: fixed;
-    width: 100vw;
-    height: 80px;
+    width: 100%;
+    height: 84px;
     margin: 0;
     padding: 0;
-    border-color: grey;
-    background-color: #ffffff;
-    z-index: 100;
-    font-family: MicrosoftYaHei;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    position: fixed;
+    z-index: 1000;
 }
 
 .topnav-box {
-    overflow: hidden;
-    position: fixed;
-    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: row;
     width: 100%;
-    height: 80px;
-    color:black;
-    font-family: MicrosoftYaHei;
-    z-index:inherit;
+    max-width: 1380px;
+    height: 84px;
 }
 
 .topnav-box router-link{
     color: black;
-    z-index:inherit;
-    font-family: MicrosoftYaHei;
 }
 
 /*only show when the screen is small*/
@@ -572,100 +680,235 @@ export default {
 .topnav-box-logo{
     position: relative;
     cursor: pointer;
-    width: 5%;
-    min-width: 20px;
-    left: 4%;
-    top: 10px;
-    float:left;
-    z-index:inherit;
+    display: flex;    
+    flex-direction: row;
+    align-items: center;
+}
+.logo-text{
+    margin-left: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .topnav-box-logo img {
-    width: 70px;
-    height: 50px;
+    width: 52px;
+    height: 59px;
     border-radius: 5%;
     border-color: black;
     border-width: 0px;  
     border-style: solid;
     align-content: center;
-    z-index:inherit;
-}
-
-.logo-text{
-    position: relative;
-    float:left;
-    left: 20px;
-    top: 11px;
-    text-align: center;
-    font-size: 22px;
-    font-family: MicrosoftYaHeiHeavy;
-    font-weight: bold;
-    cursor: pointer;
-    width: 62px;
-    height: 30px;
-    font-weight: 900;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    z-index:inherit;
-    color: #2f2f2f;
 }
 
 .topnav-box-link {
     position: relative;
-    float:left;
-    left: 5%;
-    top: 5px;
-    width: 30%;
-    min-width: 400px;
-    height: 80px;
+    margin-left: 23.5%;
     font-size: 18px;
-    font-family: MicrosoftYaHei;
     color: black;
-    z-index:inherit;
+    float: left;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    align-items:center;
+    height: 84px;
+    min-width: 109px;
+    opacity: 1;
+    transition: opacity .2s linear;
+}
+
+.topnav-box-link-a{
+    font-size: 18px;
+    font-weight: 600;
+    font-family: MicrosoftYaHei;
+    letter-spacing: 0;
+    color: #000000D9;
+    opacity: 1;
+    margin-right: 20px;
+    transition: .3s linear;
+}
+
+.topnav-box-link-a a{
+    color: black;
+}
+.catalog-left-part{
+    width: 228px;
+    display: flex;
+    flex-direction: column;
+}
+.catalog-right-part{
+    padding: 20px 80px;
+    width: 592px;
+    text-align: left;
+}
+.catalog-purple{
+    background-color: #663399;
+    width: 228px;
+    height: 220px;
+}
+.catalog-class{
+    width: 120px;
+    margin-right: 80px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: #707070;
+    font-size: 16px;
+    text-align: left;
+    display: inline-block;
+}
+.catalog-class:hover{
+    color: #663399;
+}
+.catalog-btn-active{
+    width: 227px;
+    height: 61px;
+    background-color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Microsoft YaHei;
+    color: #000000D9;
+    border-radius: 0px;
+    border: none;
+    outline: none;
+}
+.catalog-btn:hover{
+    color: #000000D9;
+    background-color: #FFFFFF;
+}
+.catalog-btn{
+    width: 228px;
+    height: 61px;
+    font-size: 16px;
+    background-color: #663399;
+    color: #ffffff;
+    border-radius: 0px;
+    border: none;
+    outline: none;
+}
+.music:hover + .coming-soon{
+    opacity: 1;
+}
+.ask:hover + .coming-soon{
+    opacity: 1;
+}
+.music-coming-soon{
+    position: absolute; 
+    top: 10px;
+    width: 20px;
+    height: 21px;
+    color: #FF7A45;
+}
+
+.coming-soon{
+    position: absolute; 
+    display: block;
+    bottom: 5px;
+    font-size: 14px;
+    font-weight: regular;
+    font-family: MicrosoftYaHei;
+    letter-spacing: 0;
+    color: #FA541C;
+    opacity: 0;
+    transition: opacity .3s linear;
 }
 
 .topnav-box-user{
     position: relative;
-    width:18%;
-    min-width: 270px;
-    top: 10px;
-    float:right;
-    align-content: center;
-    color:black;
-    z-index:inherit;
+    font-family: MicrosoftYaHei;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.topnav-search{
+    width: 540px;
+}
+.topnav-search1{
+    width: 890px;
+    margin-left: 2%;
+}
+.topnav-search:active > .topnav-box-link{
+    opacity: 0;
+}
+/* 浏览目录transition的消失 */
+.fade-in-active, .fade-out-active{
+    transition: all 0.1s ease     
 }
 
+.fade-in-enter, .fade-out-active{
+    opacity: 0 
+}
+/* 搜索框随着点击变长，失去焦点变短 */
+.enter-longer{
+    width: 810px;
+}
+.out-shorter{
+    width: 540px;
+}
+.active-shorter, .active-shorter{
+    transition: .5s;
+}
 .topnav-user-image{
     position: relative;
-    top: -2px;
-    width: 30px;
-    height: 30PX;
+    width: 50px;
+    height: 50px;
     color:rgba(0, 0, 0, 0.5);
-    background-color: #e8f8f0;
-    line-height: 30px;
+    background-color: #eef2f5;
+    line-height: 50px;
     text-align: center;
     border-radius: 50%;
     margin-left:30px;
+    transition: .3s linear;
 }
 .topnav-user-image:hover{
-    color: #1ebf73;
+    color: #663399;
 }
-.topnav-user{
-    color:#7d7d7d;
-    z-index:inherit;
+.topnav-icon{
+    color:rgba(0, 0, 0, 0.5);
+    text-align: center;
     margin-left: 30px;
+    transition: .3s linear;
 }
+
 .user-box-link-a{
     color:black;
-    z-index:inherit;
-    text-align: center;
+    transition: .3s linear;
 }
-.topnav-user:hover, .user-box-link-a:hover{
-    color: #1ebf73;
-    /*border-top: 5px solid #6495ED;*/
+
+.topnav-box-link-a:hover, .topnav-icon:hover, .user-box-link-a:hover{
+    color: #663399;
     cursor: pointer;
+}
+
+.topnav-box-link-a a:hover {
+    color: #663399;
+    cursor: pointer;
+}
+.catalog-dropdown{
+    width: 820px; 
+    height: 342px;
+    display:flex;
+    flex-direction: row;
+}
+.topnav-dropdown, .topnav-dropdown-notice{
+    color: black;
+    font-size: 18px;
+    font-family: MicrosoftYaHei;
+    position: fixed;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background-color: rgba(255, 255, 255, 0.988);
+    border-radius: 4px;
+    transition: all 0.01s ease-in-out;
+    /* z-index: 100; */
+}
+
+.topnav-dropdown router-link{
+    font-size: 18px;
+}
+
+.topnav-dropdown-notice{
+    /* min-height: 284px; */
+    max-height: 900px;
 }
 .notice-content{
     color: black;
@@ -698,32 +941,6 @@ export default {
 .shorthand-content:hover{
     background-color: #e8f8f0;
 }
-.ignore-all-ul{
-    position: absolute;
-    bottom:0;
-    left:0;
-    display: flex;
-}
-.ignore-all-btn{
-    border-radius: 0px;
-    font-size: 18px;
-    letter-spacing: 1.13px;
-    color: #8a8a8a;
-    width: 204px;
-    height: 62px;
-}
-.ignore-all-btn:hover{
-    color: #1ebf73;
-}
-.ignore-all-btn-disabled{
-    border: solid 1px #e5e5e5;
-    border-radius: 0px;
-    font-size: 16px;
-    letter-spacing: 1px;
-    color: #d8d8d8;
-    width: 204.5px;
-    height: 62px;
-}
 .close-icon-btn{
     /* position: absolute;
     margin-top: -20px;*/
@@ -743,22 +960,34 @@ export default {
 .close-icon-btn:hover,.close-icon-btn1:hover{
     color: red;
 }
-.topnav-dropdown, .topnav-dropdown-notice{
-    color: black;
-    font-size: 18px;
-    font-family: MicrosoftYaHei;
-    position: fixed;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    background-color: rgba(255, 255, 255, 0.988);
-    border-radius: 4px;
-    z-index: 100;
+.ignore-all-ul{
+    position: absolute;
+    bottom:0;
+    left:0;
+    display: flex;
 }
-.topnav-dropdown-notice{
-    /* min-height: 284px; */
-    max-height: 900px;
+.ignore-all-btn{
+    border-radius: 0px;
+    font-size: 18px;
+    letter-spacing: 1.13px;
+    color: #8a8a8a;
+    width: 204px;
+    height: 62px;
+}
+.ignore-all-btn:hover{
+    color: #663399;
+}
+.ignore-all-btn-disabled{
+    border: solid 1px #e5e5e5;
+    border-radius: 0px;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #d8d8d8;
+    width: 204.5px;
+    height: 62px;
 }
 .mark-green{
-    color: #1ebf73;
+    color: #663399;
 }
 .time-slot{
     font-size: 12px;
@@ -807,47 +1036,45 @@ export default {
     /* height:32px; */
     width:300px;
 }
-.divide{
-    position: fixed;
-    top: 80px;
-    margin: 0px 0px; 
-    z-index: 20; 
-    color: gray;
-}
-.submenu{
-    border-top:1px, solid, #6495ED;
-    background-color:#ffffff;
-    width: 100%;
-    overflow: hidden;
-    position: fixed;
-    font-family: MicrosoftYaHei;
-    height: 60px;
-    top: 80px;
-    z-index: 10;
-    box-shadow: 0 1px 5px 0 rgba(141, 141, 141, 0.5)
-}
-.nav-menu{
-    float: right;
-    width: 98%;
-    background-color:#ffffff;
-    height: 60px;
-    line-height: 60px;
-    display: block;
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    left: 18px;
-    font-size: 14px;
-    font-family: MicrosoftYaHei;
-}
-@media only screen and (max-width: 1366px) {
-    .topnav-box-user{
-        width:23%;
-        min-width: 270px;
+
+@media only screen and (max-width: 720px) {
+    .topnav-box-image{
+        display: block;
+        position: relative;
+        text-align: center;
+        height: 55px;
+        float: center;
     }
-    .nav-menu{
-        width: 99%;
+
+    .topnav-box-image img {
+        width: 50px;
+        height: 50px;
+        /*border-radius: 50%;*/
+        border-color: black;
+        border-width: 0px;  
+        border-style: solid;
+        text-align: center;
+        position: relative;
+    }
+
+    .topnav-box-user-login {
+        display: block;
+        position: relative;
+        float: right;
+    }
+
+    .topnav-box-menu {
+        display: block;
+        position: relative;
+        margin-left: auto;
+        margin-right: 0px;
+        float: left;
+    }
+
+    .topnav-box-link, .topnav-box-user, .topnav-box-logo{
+        display: none;
     }
 }
+
 </style>
 

@@ -23,7 +23,7 @@
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/api/file/upload"
+                    action="/api/file/upload/profile"
                 >
                     <div v-if="finished" class="demo-upload-list">
                         <img class="camera" :src="this.imageUrl" alt="avatar" />
@@ -53,6 +53,8 @@
                             :canMoveBox="option.canMoveBox"
                             :original="option.original"
                             :autoCrop="option.autoCrop"
+                            :autoCropHeight="option.autoCropHeight"
+                            :autoCropWidth="option.autoCropWidth"
                             :fixed="option.fixed"
                             :fixedNumber="option.fixedNumber"
                             :centerBox="option.centerBox"
@@ -73,7 +75,7 @@
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/api/file/upload"
+                    action="/api/file/upload/profile"
                 >
                     <Button class="camera-btn" type="success"><font-awesome-icon :icon="['fas','upload']"/> 上传</Button>
                 </Upload>
@@ -235,9 +237,9 @@ export default {
                 outputType: 'png', // 裁剪生成图片的格式
                 canScale: true, // 图片是否允许滚轮缩放
                 autoCrop: true, // 是否默认生成截图框
-                autoCropWidth: 250, // 默认生成截图框宽度
-                autoCropHeight: 250, // 默认生成截图框高度
-                fixedBox: false, // 固定截图框大小 不允许改变
+                autoCropWidth: 116, // 默认生成截图框宽度
+                autoCropHeight: 116, // 默认生成截图框高度
+                fixedBox: true, // 固定截图框大小 不允许改变
                 fixed: true, // 是否开启截图框宽高固定比例
                 fixedNumber: [1, 1], // 截图框的宽高比例
                 full: false, // 是否输出原图比例的截图
@@ -340,8 +342,11 @@ export default {
             this.loading = false
         },
         submitPersonalForm(){
-            axios.put('/api/user',{profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
-            signature:this.personalForm.sign},{emulateJSON:true}).then(res => {
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            console.log(this.imageUrl.length)
+            let data = {profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
+            signature:this.personalForm.sign}
+            axios.put('/api/user',data,{emulateJSON:true}).then(res => {
                 if(res.data.code == 0){
                     // 更新全局变量信息
                     axios.get('/api/user/describe').then(res => {
@@ -351,14 +356,16 @@ export default {
                     })
                     
                     // 用户基本资料修改成功
-                    this.$Message.warning({
+                    this.$Message.success({
                         background: true,
                         content: '修改资料成功'
                     });
                 }
                 else if(res.data.code == 400){
                     console.log('400了')
-                    alert('bad request (form error)')
+                    this.$Message.error({
+                        content: '请截取小一点的头像，最大158*158'
+                    });
                 }
             }, res => {
                 // error callback
@@ -373,9 +380,10 @@ export default {
             // this.personalForm.nickname=this.personalForm.nickname.replace(/[/d]/g,'') 
         },
         submitSetting(){
-            axios.put('/api/user/remind/setting',{"starResourceUpgrade":this.switch1,"starSoftwareUpgrade": this.switch2,
+            let data = {"starResourceUpgrade":this.switch1,"starSoftwareUpgrade": this.switch2,
             "replyComment": this.switch3, "resourceCommented": this.switch4, 
-            "starResourceCommented": this.switch5, "friendImpression": this.switch6},
+            "starResourceCommented": this.switch5, "friendImpression": this.switch6}
+            axios.put('/api/user/remind/setting', data,
             {emulateJSON:true}).then((res)=>{
                 if(res.data.code == 0){
                     this.$Message.success({
