@@ -3,7 +3,8 @@
         <a-form-item>
             <a-dropdown :trigger="['click']">
                 <a-input id="searchcontent" class="search-input"
-                    v-decorator="['content', { rules: [
+                    v-decorator="['content', {initialValue: this.searchContent},
+                        { rules: [
                             {validator:this.validateContent.bind(this)}
                         ] 
                     }]"
@@ -51,6 +52,12 @@ function contain(str, charset) {
 
 export default {
     name: "Search",
+    props: {
+        searchContent: {
+            type: String,
+            default: '',
+        },
+    },
     data() {
         return {
             tagList: [],                    //存放每次点击换一批放出来的5个对象
@@ -103,7 +110,6 @@ export default {
                                 this.searchHistory.push(storage.get(2))
                             }
                         }
-                        // TODO type
                         this.$router.push(`/searchresult?type=${this.type}&val=${values.content}`)
                         // axios.post('/api/search',{searchcontent: this.searchForm.content},{emulateJSON:true}).then((response)=>{
                         //     //alert("提交成功^_^，刚刚提交内容是：" + response.body.search)

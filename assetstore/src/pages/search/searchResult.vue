@@ -2,7 +2,7 @@
     <div class="window-style">
         <div class="upper-wrapper">
             <div class="upper-container">
-                <TopNavigation style="position:relative; z-index: 100"></TopNavigation>
+                <TopNavigation :searchContent='content' style="position:relative; z-index: 100"></TopNavigation>
                 <div class="tab-choose">
                     <div :class="tab1" style="margin-left: 15px;" @click="changeTab('tab1')">
                         美术类资源
@@ -30,7 +30,7 @@
                         <DropdownMenu slot="list">
                             <DropdownItem class="box-link-a" name="所有目录">所有目录</DropdownItem>
                             <DropdownItem v-for="(item, c) in this.catalogList" :key="'cc'+c" 
-                            class="box-link-a" :name="item.label">{{item.label}}</DropdownItem>
+                            class="box-link-a" :name="item.name">{{item.name}}</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <Dropdown @on-click="changeProject" trigger="click" style="margin-right: 30px;">
@@ -48,7 +48,7 @@
                         </span>
                         <DropdownMenu slot="list">
                             <DropdownItem v-for="(item, e) in this.engineList" :key="'ee'+e" 
-                            class="box-link-a" :name="item.label">{{item.label}}</DropdownItem>
+                            class="box-link-a" :name="item.name">{{item.name}}</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <Divider type="vertical" style="margin-right: 20px;" v-if="activeTab == 'tab1'"/>
@@ -113,6 +113,7 @@ export default {
         Footer,
     },
     mounted(){
+        this.content = this.$route.query.val
         axios.get('/api/search', {params: {
             val: this.$route.query.val,
             type: this.$route.query.type,
@@ -131,11 +132,9 @@ export default {
             alert(res)
         })
         if(this.$route.query.type == 'art'){
-            axios.get('/api/tag/tree', {params: {type: `art_classify`}}).then(res =>{
+            axios.get('/api/tag/lastitems', {params: {type: `art_classify`}}).then(res =>{
                 if(res.data.code === 0){
-                    this.catalogList = this.catalogList.concat(res.data.data[0].children)
-                    this.catalogList = this.catalogList.concat(res.data.data[1].children)
-                    this.catalogList = this.catalogList.concat(res.data.data[2].children)
+                    this.catalogList = res.data.data
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
                 }
@@ -145,7 +144,7 @@ export default {
             this.tab2 = 'tab'
             this.tab3 = 'tab'
         }else if(this.$route.query.type == 'dev'){
-            axios.get('/api/tag/tree', {params: {type: 'dev_classify'}}).then(res =>{
+            axios.get('/api/tag/lastitems', {params: {type: 'dev_classify'}}).then(res =>{
                 if(res.data.code === 0){
                     this.catalogList = res.data.data
                 }else if(res.data.code === 400){
@@ -170,10 +169,10 @@ export default {
                 alert('参数格式不正确')
             }
         })
-        axios.get('/api/tag/tree', {params: {type: 'engine_ver'}}).then(res =>{
+        axios.get('/api/tag/lastitems', {params: {type: 'engine_ver'}}).then(res =>{
             if(res.data.code === 0){
                 this.engineList = res.data.data
-                this.curEngine = this.engineList[0].label
+                this.curEngine = this.engineList[0].name
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -181,17 +180,17 @@ export default {
     },
     data() {
         return {
+            content: '',                      //用户搜索的内容
             searchList: [],
             curPage: 1,                       // 当前搜索页数
             pageSize: 20,                     // 一页多少资源
             resultCount: 7021,
-            currentFilter: "所有",            // 由用户选择需要什么类别的搜索结果
             searchHistory: [],                // 存放历史搜索
-            searchForm: {content:""},
             currentOrder: "最后更新",          // 筛选结果按这个排序
             curCatalog: '所有目录',            // 筛选目录按这个排序
             curProject: '征途3 手游',          // 筛选项目按这个排序
             curEngine: 'Unity',               // 筛选引擎按这个排序
+            tags: '',                         // 筛选的条件标签
             catalogList: [],
             projectList: [],
             engineList: [],
@@ -206,43 +205,52 @@ export default {
     methods:{
         changeCatalog(name){
             this.curCatalog = name
+            this.curPage = 1
+            const catalogId = this.catalogList.find(item => item.name === this.curCatalog).id
+            const projectId = this.projectList.find(item => item.name === this.curProject).id
+            const engineId = this.engineList.find(item => item.name === this.curEngine).id
+            this.tags = `${catalogId}, ${projectId}, ${engineId}`
+            console.log(this.tags)
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         changeProject(name){
             this.curProject = name
+            this.curPage = 1
+            const catalogId = this.catalogList.find(item => item.name === this.curCatalog).id
+            const projectId = this.projectList.find(item => item.name === this.curProject).id
+            const engineId = this.engineList.find(item => item.name === this.curEngine).id
+            this.tags = `${catalogId}, ${projectId}, ${engineId}`
+            console.log(this.tags)
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         changeEngine(name){
             this.curEngine = name
+            this.curPage = 1
+            const catalogId = this.catalogList.find(item => item.name === this.curCatalog).id
+            const projectId = this.projectList.find(item => item.name === this.curProject).id
+            const engineId = this.engineList.find(item => item.name === this.curEngine).id
+            this.tags = `${catalogId}, ${projectId}, ${engineId}`
+            console.log(this.tags)
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         changeOrder(name){
+            this.curPage = 1
             this.currentOrder = name
-            axios.get('/api/search', {params: {
-                val: this.$route.query.val,
-                type: this.$route.query.type,
-                page: this.curPage,
-                pageSize: this.pageSize,
-                refer: this.refer,
-                order: this.currentOrder
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.resultCount = res.data.data.count
-                    this.searchList = res.data.data.list
-                    /* 如果搜索到的匹配的内容为空 */
-                    if(this.resultCount == 0){
-                        this.$router.push('/searchEmpty')
-                    }
-                }
-            }, (res)=>{
-                alert(res)
-            })
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         wantRefer(){
-            axios.get('/api/search', {params: {
+            this.curPage = 1
+            this.$options.methods.changeConAndSearch.bind(this)();
+        },
+        changeConAndSearch(){
+             axios.get('/api/search', {params: {
                 val: this.$route.query.val,
                 type: this.$route.query.type,
                 page: this.curPage,
                 pageSize: this.pageSize,
                 refer: this.refer,
-                order: this.currentOrder
+                order: this.currentOrder,
+                tags: this.tags
             }}).then((res)=>{
                 if(res.data.code == 0){
                     this.resultCount = res.data.data.count
@@ -256,20 +264,24 @@ export default {
                 alert(res)
             })
         },
+        // 切换tab时筛选器：类型，项目，引擎恢复默认设置
         changeTab(tab){
             if(this.activeTab != tab){
                 this.activeTab = tab
+                this.curPage = 1
+                this.tags = ''
+                this.curCatalog = '所有目录'
+                this.curProject = this.projectList[0].name
+                this.curEngine = this.engineList[0].name
+                this.refer = false
                 if(tab == 'tab1'){
                     this.$router.push(`/searchresult?type=art&val=${this.content}`)   
                     this.tab1 = 'tab-active'
                     this.tab2 = 'tab'
                     this.tab3 = 'tab'
-                    axios.get('/api/tag/tree', {params: {type: `art_classify`}}).then(res =>{
+                    axios.get('/api/tag/lastitems', {params: {type: `art_classify`}}).then(res =>{
                         if(res.data.code === 0){
-                            this.catalogList = []
-                            this.catalogList = this.catalogList.concat(res.data.data[0].children)
-                            this.catalogList = this.catalogList.concat(res.data.data[1].children)
-                            this.catalogList = this.catalogList.concat(res.data.data[2].children)
+                            this.catalogList = res.data.data
                         }else if(res.data.code === 400){
                             alert('参数格式不正确')
                         }
@@ -279,7 +291,7 @@ export default {
                     this.tab1 = 'tab'
                     this.tab2 = 'tab-active'
                     this.tab3 = 'tab'   
-                    axios.get('/api/tag/tree', {params: {type: 'dev_classify'}}).then(res =>{
+                    axios.get('/api/tag/lastitems', {params: {type: 'dev_classify'}}).then(res =>{
                         if(res.data.code === 0){
                             this.catalogList = res.data.data
                         }else if(res.data.code === 400){
@@ -298,7 +310,7 @@ export default {
                     page: this.curPage,
                     pageSize: this.pageSize,
                     refer: this.refer,
-                    order: this.currentOrder
+                    order: this.currentOrder,
                 }}).then((res)=>{
                     if(res.data.code == 0){
                         this.resultCount = res.data.data.count
@@ -314,21 +326,8 @@ export default {
             }
         },
         jumpPage(){
-            axios.get('/api/search', {params: {
-                val: this.$route.query.val,
-                type: this.$route.query.type,
-                page: this.curPage,
-                pageSize: this.pageSize,
-                refer: this.refer,
-                order: this.currentOrder
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.resultCount = res.data.data.count
-                    this.searchList = res.data.data.list
-                }
-            }, (res)=>{
-                alert(res)
-            })
+            this.curPage += 1
+            this.$options.methods.changeConAndSearch.bind(this)();
         }
     },
 }
@@ -478,13 +477,14 @@ export default {
 
 }
 .fine-resource-card{
+    position: relative;
     margin-right: 15px; 
     margin-left: 15px; 
     margin-bottom: 30px;
     width: 360px;
     height: 300px;
 }
-@media screen and (max-width: 1889px) {
+@media screen and (max-width: 2000px) {
     .fine-resource-card::after{
         content:'';
         display:block;

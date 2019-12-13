@@ -563,13 +563,14 @@ export default {
     justify-content: flex-start;
 }
 .fine-resource-card{
+    position: relative;
     margin-right: 15px; 
     margin-left: 15px; 
     margin-bottom: 30px;
     width: 360px;
     height: 300px;
 }
-@media screen and (max-width: 1889px) {
+@media screen and (max-width: 2000px) {
     .fine-resource-card::after{
         content:'';
         display:block;

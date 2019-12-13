@@ -40,28 +40,34 @@
                                 </div>
                                 <div class="catalog-right-part" v-if="showArt">
                                     <span v-for="(item, model) in modelList" :key="model" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                        <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                        {{item.name}}
                                     </span>
                                     <Divider style="margin: 0"/>
                                     <span v-for="(item, el) in elseList" :key="'a'+el" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                        <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                        {{item.name}}
                                     </span>
                                     <Divider style="margin: 0"/>
                                     <span v-for="(item, paint) in paintList" :key="'aa'+paint" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                        <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                        {{item.name}}
                                     </span>
                                 </div>
                                 <div class="catalog-right-part" v-else>
                                     <span v-for="(item, engine) in engineList" :key="engine" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                        <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                        {{item.name}}
                                     </span>
                                     <Divider style="margin: 0"/>
                                     <span v-for="(item, tool) in toolList" :key="'t'+tool" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                        <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                        {{item.name}}
                                     </span>
                                     <Divider style="margin: 0"/>
                                     <span v-for="(item, other) in otherList" :key="'tt'+other" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                        <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                        <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                        {{item.name}}
                                     </span>
                                 </div>
                             </DropdownMenu>
@@ -78,7 +84,9 @@
                     leave-class="out-shorter"
                     leave-active-class="active-shorter"
                 >
-                    <search :class="topnavSearch" @focus.native.capture="searchContainerLonger()" @blur.native.capture="searchContainerRecover()" id="search"></search>
+                    <search :class="topnavSearch" id="search" :searchContent="searchContent"
+                        @focus.native.capture="searchContainerLonger()" @blur.native.capture="searchContainerRecover()">
+                    </search>
                 </transition>
                 <Dropdown placement="bottom-start">
                     <a href="javascript:void(0)">
@@ -273,6 +281,12 @@ import Search from '../components/Search.vue'
 export default {
     name: "TopNavigation",
     components:{Search},
+    props: {
+        searchContent: {
+            type: String,
+            default: '',
+        },
+    },
     data(){
         return{
             profile: null,
@@ -406,7 +420,13 @@ export default {
                 this.activenum = 3
                 this.$store.commit('NOW_ACTIVE', this.activenum)
             }
+            console.log('111'+url)
+            console.log(url.substring(0,9))
+            console.log('222'+this.$route.path)
             if(this.$route.path===url){
+                location.reload()
+            }else if(url.length > 10 && this.$route.path.length > 10 && url.substring(0, 9) == this.$route.path.substring(0,9)){
+                this.$router.push(url)
                 location.reload()
             }else{
                 this.$router.push(url)
