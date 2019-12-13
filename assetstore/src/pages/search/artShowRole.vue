@@ -245,6 +245,7 @@ export default {
             if(this.totalTags === ''){
                 this.totalTags = `${this.tags}`
             }
+            console.log(this.totalTags)
             axios.get('/api/resource',{
                 params:{
                     page: this.curPage,
@@ -276,6 +277,18 @@ export default {
             } else {
                 this.selectedProject = [];
             }
+            var searchTags = `${this.tags},`
+            for(var i=0; i<this.selectedProject.length; i++){
+                searchTags += this.projectList.find(item => item.name === this.selectedProject[i]).id + ','
+            }
+            for(var i=0; i<this.selectedStyle.length; i++){
+                searchTags += this.styleList.find(item => item.name === this.selectedStyle[i]).id + ','
+            }
+            for(var i=0; i<this.selectedEngine.length; i++){
+                searchTags += this.engineList.find(item => item.name === this.selectedEngine[i]).id + ','
+            }
+            this.totalTags = searchTags
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         projectChange(data){
             if (data.length === this.projectList.length) {
@@ -317,6 +330,18 @@ export default {
             } else {
                 this.selectedStyle = [];
             }
+            var searchTags = `${this.tags},`
+            for(var i=0; i<this.selectedProject.length; i++){
+                searchTags += this.projectList.find(item => item.name === this.selectedProject[i]).id + ','
+            }
+            for(var i=0; i<this.selectedStyle.length; i++){
+                searchTags += this.styleList.find(item => item.name === this.selectedStyle[i]).id + ','
+            }
+            for(var i=0; i<this.selectedEngine.length; i++){
+                searchTags += this.engineList.find(item => item.name === this.selectedEngine[i]).id + ','
+            }
+            this.totalTags = searchTags
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         styleChange(data){
             if (data.length === this.styleList.length) {
@@ -358,6 +383,18 @@ export default {
             } else {
                 this.selectedEngine = [];
             }
+            var searchTags = `${this.tags},`
+            for(var i=0; i<this.selectedProject.length; i++){
+                searchTags += this.projectList.find(item => item.name === this.selectedProject[i]).id + ','
+            }
+            for(var i=0; i<this.selectedStyle.length; i++){
+                searchTags += this.styleList.find(item => item.name === this.selectedStyle[i]).id + ','
+            }
+            for(var i=0; i<this.selectedEngine.length; i++){
+                searchTags += this.engineList.find(item => item.name === this.selectedEngine[i]).id + ','
+            }
+            this.totalTags = searchTags
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         engineChange(data){
             if (data.length === this.engineList.length) {
