@@ -7,64 +7,64 @@
     <div class="middle-card-wrapper">
         <div class="middle-card">
             <div class="choice-select">
-                <div :class="choiceItem1" @click="chooseItem('推荐')">
+                <div :class="this.tabIndex===0?'choice-item-active':'choice-item'" @click="chooseItem(0)">
                     <div style="text-align:center">
                         <span class="choice-cn">推荐</span>
                         <span class="choice-en">Features</span>
                     </div>
-                    <div class="orange-underline" v-if="activeTab == '推荐'"></div>
+                    <div class="orange-underline" v-if="tabIndex === 0"></div>
                 </div>
-                <div :class="choiceItem2" @click="chooseItem('更新')">
+                <div :class="this.tabIndex===1?'choice-item-active':'choice-item'" @click="chooseItem(1)">
                     <div style="text-align:center">
                         <span class="choice-cn">更新</span>
                         <span class="choice-en">Update</span>
                     </div>
-                    <div class="orange-underline" v-if="activeTab == '更新'"></div>
+                    <div class="orange-underline" v-if="tabIndex === 1"></div>
                 </div>
-                <div :class="choiceItem3" @click="chooseItem('研发类')">
+                <div :class="this.tabIndex===2?'choice-item-active':'choice-item'" @click="chooseItem(2)">
                     <div style="text-align:center">
                         <span class="choice-cn">研发类</span>
                         <span class="choice-en">Dev Asset</span>
                     </div>
-                    <div class="orange-underline" v-if="activeTab == '研发类'"></div>
+                    <div class="orange-underline" v-if="tabIndex === 2"></div>
                 </div>
-                <div :class="choiceItem4" @click="chooseItem('美术类')">
+                <div :class="this.tabIndex===3?'choice-item-active':'choice-item'" @click="chooseItem(3)">
                     <div style="text-align:center">
                         <span class="choice-cn">美术类</span>
                         <span class="choice-en">Art Asset</span>
                     </div>
-                    <div class="orange-underline" v-if="activeTab == '美术类'"></div>
+                    <div class="orange-underline" v-if="tabIndex === 3"></div>
                 </div>
             </div>
         </div>
-        <div class="card-wrapper" v-if="activeTab == '推荐'">
-            <div v-for="(item, n) in this.recommendList" :key="n" class="fine-resource-card">
+        <div class="card-wrapper">
+            <div v-for="(item, n) in this.list" :key="n" class="fine-resource-card">
+                <source-card :resource="{...item}" :isLike="item.isStar"
+                :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
+                ></source-card>
+            </div>
+        </div>
+        <!-- <div class="card-wrapper" v-if="tabIndex === 1">
+            <div v-for="(item, n) in this.list" :key="'b'+n" class="fine-resource-card">
                 <source-card :resource="item" :isLike="item.isStar"
                 :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
                 ></source-card>
             </div>
         </div>
-        <div class="card-wrapper" v-if="activeTab == '更新'">
-            <div v-for="(item, n) in this.updateList" :key="'b'+n" class="fine-resource-card">
-                <source-card :resource="item" :isLike="item.isStar"
-                :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
-                ></source-card>
-            </div>
-        </div>
-        <div class="card-wrapper" v-if="activeTab == '研发类'">
+        <div class="card-wrapper" v-if="tabIndex === 2">
             <div v-for="(item, n) in this.devList" :key="'bb'+n" class="fine-resource-card">
                 <source-card :resource="item" :isLike="item.isStar"
                 :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
                 ></source-card>
             </div>
         </div>
-        <div class="card-wrapper" v-if="activeTab == '美术类'">
+        <div class="card-wrapper" v-if="tabIndex === 3">
             <div v-for="(item, n) in this.artList" :key="'bbb'+n" class="fine-resource-card">
                 <source-card :resource="item" :isLike="item.isStar"
                 :breadlist="[{fullPath:'/artShow',name:'美术类资源'}]" 
                 ></source-card>
             </div>
-        </div>
+        </div> -->
     </div>
     <corner></corner>
     <Footer style="position: relative; margin-top: 200px;"></Footer>
@@ -86,18 +86,9 @@ export default {
     data() {
         return {
             recommendClass: [],
-            artList: [],
-            devList: [],
-            recommendList: [],
-            updateList: [],
+            list: [],
             curCarousel: 0,
-            // choiceItem：tab active和不active的css class
-            choiceItem1: 'choice-item',
-            choiceItem2: 'choice-item-active',
-            choiceItem3: 'choice-item',
-            choiceItem4: 'choice-item',
-            activeTab: '更新',
-            action: '更新',                 // 反复切换tab时，这个是最新的请求，确保axios不要频发请求
+            tabIndex:1,
         }
     },
     mounted() {
@@ -110,38 +101,38 @@ export default {
         // this.$refs.child8.special = "image-08";
         // this.$refs.child9.special = "image-09";
         // 拿到推荐资源
-        axios.get('/api/resource/home',{
-            params:{
-                page: 1,
-                pageSize: 30,
-                recommend: true,
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.recommendList = res.data.data.list
-                }
-        })
-        // 拿到美术资源
-        axios.get('/api/resource/home',{
-            params:{
-                page: 1,
-                pageSize: 30,
-                type: 'art',
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.artList = res.data.data.list
-                }
-        })
+        // axios.get('/api/resource/home',{
+        //     params:{
+        //         page: 1,
+        //         pageSize: 30,
+        //         recommend: true,
+        //     }}).then((res)=>{
+        //         if(res.data.code == 0){
+        //             this.recommendList = res.data.data.list
+        //         }
+        // })
+        // // 拿到美术资源
+        // axios.get('/api/resource/home',{
+        //     params:{
+        //         page: 1,
+        //         pageSize: 30,
+        //         type: 'art',
+        //     }}).then((res)=>{
+        //         if(res.data.code == 0){
+        //             this.artList = res.data.data.list
+        //         }
+        // })
         // 拿到研发类资源
-        axios.get('/api/resource/home',{
-            params:{
-                page: 1,
-                pageSize: 30,
-                type: 'dev',
-            }}).then((res)=>{
-            if(res.data.code == 0){
-                this.devList = res.data.data.list
-            }
-        })
+        // axios.get('/api/resource/home',{
+        //     params:{
+        //         page: 1,
+        //         pageSize: 30,
+        //         type: 'dev',
+        //     }}).then((res)=>{
+        //     if(res.data.code == 0){
+        //         this.devList = res.data.data.list
+        //     }
+        // })
         // 拿到最新更新资源
         axios.get('/api/resource/home',{
             params:{
@@ -149,109 +140,117 @@ export default {
                 pageSize: 30,
             }}).then((res)=>{
             if(res.data.code == 0){
-                this.updateList = res.data.data.list
+                this.list = res.data.data.list
             }
         })
         // 拿到推荐分类
-        axios.get('/api/tag/lastitems',{
-            params:{
-                type: 'art_classify',
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.recommendClass = res.data.data.list
-                }
-        })
-        console.log('matched:', this.$route.matched)
+        // axios.get('/api/tag/lastitems',{
+        //     params:{
+        //         type: 'art_classify',
+        //     }}).then((res)=>{
+        //         if(res.data.code == 0){
+        //             this.recommendClass = res.data.data.list
+        //         }
+        // })
+        // console.log('matched:', this.$route.matched)
     },
     methods:{
         goPage(url){
             this.$router.push(url)
         },
         chooseItem(type){
-            if(type=='推荐'){
-                this.choiceItem1 = 'choice-item-active'
-                this.choiceItem2 = 'choice-item'
-                this.choiceItem3 = 'choice-item'
-                this.choiceItem4 = 'choice-item'
-                this.activeTab = '推荐'
-                this.action = '推荐'
-                setTimeout(() => {
-                    if(this.action == '推荐'){
-                        axios.get('/api/resource/home',{
-                            params:{
-                                page: 1,
-                                pageSize: 30,
-                                recommend: true,
-                            }}).then((res)=>{
-                            if(res.data.code == 0){
-                                this.devList = res.data.data.list
-                            }
-                        })
-                    }
-                }, 3000);
-            }else if(type=='更新'){
-                this.choiceItem1 = 'choice-item'
-                this.choiceItem2 = 'choice-item-active'
-                this.choiceItem3 = 'choice-item'
-                this.choiceItem4 = 'choice-item'
-                this.activeTab = '更新'
-                this.action = '更新'
-                setTimeout(() => {
-                    if(this.action == '更新'){
-                        axios.get('/api/resource/home',{
-                            params:{
-                                page: 1,
-                                pageSize: 30,
-                            }}).then((res)=>{
-                            if(res.data.code == 0){
-                                this.devList = res.data.data.list
-                            }
-                        })
-                    }
-                }, 3000);
-            }else if(type=='研发类'){
-                this.choiceItem1 = 'choice-item'
-                this.choiceItem2 = 'choice-item'
-                this.choiceItem3 = 'choice-item-active'
-                this.choiceItem4 = 'choice-item'
-                this.activeTab = '研发类'
-                this.action = '研发'
-                setTimeout(() => {
-                    if(this.action == '研发'){
-                        axios.get('/api/resource/home',{
-                            params:{
-                                page: 1,
-                                pageSize: 30,
-                                type: 'dev',
-                            }}).then((res)=>{
-                            if(res.data.code == 0){
-                                this.devList = res.data.data.list
-                            }
-                        })
-                    }
-                }, 3000);
-            }else{
-                this.choiceItem1 = 'choice-item'
-                this.choiceItem2 = 'choice-item'
-                this.choiceItem3 = 'choice-item'
-                this.choiceItem4 = 'choice-item-active'
-                this.activeTab = '美术类'
-                this.action = '美术'
-                setTimeout(() => {
-                    if(this.action == '美术'){
-                        axios.get('/api/resource/home',{
-                            params:{
-                                page: 1,
-                                pageSize: 30,
-                                type: 'art',
-                            }}).then((res)=>{
-                            if(res.data.code == 0){
-                                this.devList = res.data.data.list
-                            }
-                        })
-                    }
-                }, 3000);
+            this.tabIndex=type
+            const query={
+                 page: 1,
+                pageSize: 30,
             }
+            switch(type){
+                case 0:
+                    query.recommend=true
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    query.type="dev"
+                    break;
+                case 3:
+                default:
+                    query.type="art"
+                    break;
+            }
+            axios.get('/api/resource/home',{
+                    params:query
+                })
+                .then((res)=>{
+                    if(res.data.code == 0){
+                        this.list = res.data.data.list
+                    }
+                })
+            // if(type=='推荐'){
+            //     this.choiceItem1 = 'choice-item-active'
+            //     this.choiceItem2 = 'choice-item'
+            //     this.choiceItem3 = 'choice-item'
+            //     this.choiceItem4 = 'choice-item'
+            //     this.activeTab = '推荐'
+            //     axios.get('/api/resource/home',{
+            //         params:{
+            //             page: 1,
+            //             pageSize: 30,
+            //             recommend: true,
+            //         }
+            //     }).then((res)=>{
+            //         if(res.data.code == 0){
+            //             this.recommendList = res.data.data.list
+            //         }
+            //     })
+            // }else if(type=='更新'){
+            //     this.choiceItem1 = 'choice-item'
+            //     this.choiceItem2 = 'choice-item-active'
+            //     this.choiceItem3 = 'choice-item'
+            //     this.choiceItem4 = 'choice-item'
+            //     this.activeTab = '更新'
+            //     axios.get('/api/resource/home',{
+            //         params:{
+            //             page: 1,
+            //             pageSize: 30,
+            //         }}).then((res)=>{
+            //         if(res.data.code == 0){
+            //             this.updateList = res.data.data.list
+            //         }
+            //     })
+            // }else if(type=='研发类'){
+            //     this.choiceItem1 = 'choice-item'
+            //     this.choiceItem2 = 'choice-item'
+            //     this.choiceItem3 = 'choice-item-active'
+            //     this.choiceItem4 = 'choice-item'
+            //     this.activeTab = '研发类'
+            //     axios.get('/api/resource/home',{
+            //         params:{
+            //             page: 1,
+            //             pageSize: 30,
+            //             type: 'dev',
+            //         }}).then((res)=>{
+            //         if(res.data.code == 0){
+            //             this.devList = res.data.data.list
+            //         }
+            //     })
+            // }else{
+            //     this.choiceItem1 = 'choice-item'
+            //     this.choiceItem2 = 'choice-item'
+            //     this.choiceItem3 = 'choice-item'
+            //     this.choiceItem4 = 'choice-item-active'
+            //     this.activeTab = '美术类'
+            //     axios.get('/api/resource/home',{
+            //         params:{
+            //             page: 1,
+            //             pageSize: 30,
+            //             type: 'art',
+            //         }}).then((res)=>{
+            //         if(res.data.code == 0){
+            //             this.artList = res.data.data.list
+            //         }
+            //     })
+            // }
         }
     }
 }
@@ -333,7 +332,7 @@ export default {
     padding: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    align-content: flex-start;
 }
 .fine-resource-card{
     position: relative;

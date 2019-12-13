@@ -66,6 +66,10 @@ export default {
             return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
         },
     },
+    updated(){
+        console.log(this.resource);
+        
+    },
     data() {
         return {
             rate: 3.5,
