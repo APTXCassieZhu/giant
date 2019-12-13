@@ -37,7 +37,6 @@
                                     </div>
                                     <CheckboxGroup v-model="selectedProject" @on-change="projectChange">
                                         <div class="divider-checkbox" v-for="(item, p) in this.projectList" :key="'p'+p">
-                                            <!-- <div>{{item.name}}</div> -->
                                             <Checkbox :label="item.name"></Checkbox>
                                         </div>
                                     </CheckboxGroup>
@@ -55,8 +54,7 @@
                                     </div>
                                     <CheckboxGroup v-model="selectedStyle" @on-change="styleChange">
                                         <div class="divider-checkbox" v-for="(item, p) in this.styleList" :key="'s'+p">
-                                            <!-- <div>{{item.label}}</div> -->
-                                            <Checkbox :label="item.label"></Checkbox>
+                                            <Checkbox :label="item.name"></Checkbox>
                                         </div>
                                     </CheckboxGroup>
                                 </div>
@@ -73,8 +71,7 @@
                                     </div>
                                     <CheckboxGroup v-model="selectedEngine" @on-change="engineChange">
                                         <div class="divider-checkbox" v-for="(item, p) in this.engineList" :key="'e'+p">
-                                            <!-- <div>{{item.label}}</div> -->
-                                            <Checkbox :label="item.label"></Checkbox>
+                                            <Checkbox :label="item.name"></Checkbox>
                                         </div>
                                     </CheckboxGroup>
                                 </div>
@@ -194,14 +191,14 @@ export default {
                 alert('参数格式不正确')
             }
         })
-        axios.get('/api/tag/tree', {params: {type: 'engine_ver'}}).then(res =>{
+        axios.get('/api/tag/lastitems', {params: {type: 'engine_ver'}}).then(res =>{
             if(res.data.code === 0){
                 this.engineList = res.data.data
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
         })
-        axios.get('/api/tag/tree', {params: {type: 'art_style'}}).then(res =>{
+        axios.get('/api/tag/lastitems', {params: {type: 'art_style'}}).then(res =>{
             if(res.data.code === 0){
                 this.styleList = res.data.data
             }else if(res.data.code === 400){
@@ -239,24 +236,12 @@ export default {
                 this.orderClass2 = 'order-style'
                 this.orderClass3 = 'order-style-active'
             }
-            if(this.totalTags === ''){
-                this.totalTags = `${this.tags}`
-            }
-            axios.get('/api/resource',{
-                params:{
-                    page: this.curPage,
-                    pageSize: this.pageSize,
-                    refer: this.refer,
-                    tags: this.totalTags,
-                    order: this.curOrder
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.searchList = res.data.data.list
-                    this.resultCount = res.data.data.count
-                }
-            })
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         wantRefer(){
+            this.$options.methods.changeConAndSearch.bind(this)();
+        },
+        changeConAndSearch(){
             if(this.totalTags === ''){
                 this.totalTags = `${this.tags}`
             }
@@ -267,7 +252,8 @@ export default {
                     refer: this.refer,
                     tags: this.totalTags,
                     order: this.curOrder
-            }}).then((res)=>{
+                }
+            }).then((res)=>{
                 if(res.data.code == 0){
                     this.searchList = res.data.data.list
                     this.resultCount = res.data.data.count
@@ -304,28 +290,16 @@ export default {
             }
             var searchTags = `${this.tags},`
             for(var i=0; i<this.selectedProject.length; i++){
-                searchTags+=this.selectedProject[i]+','
+                searchTags += this.projectList.find(item => item.name === this.selectedProject[i]).id + ','
             }
             for(var i=0; i<this.selectedStyle.length; i++){
-                searchTags+=this.selectedStyle[i]+','
+                searchTags += this.styleList.find(item => item.name === this.selectedStyle[i]).id + ','
             }
             for(var i=0; i<this.selectedEngine.length; i++){
-                searchTags+=this.selectedEngine[i]+','
+                searchTags += this.engineList.find(item => item.name === this.selectedEngine[i]).id + ','
             }
             this.totalTags = searchTags
-            axios.get('/api/resource',{
-                params:{
-                    page: this.curPage,
-                    pageSize: this.pageSize,
-                    refer: this.refer,
-                    tags: searchTags,
-                    order: this.curOrder
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.searchList = res.data.data.list
-                    this.resultCount = res.data.data.count
-                }
-            })
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         checkAllStyle(){
             if (this.sim) {
@@ -338,7 +312,7 @@ export default {
             if (this.checkStyle) {
                 this.selectedStyle = [];
                 for(var i=0; i<this.styleList.length; i++){
-                    this.selectedStyle.push(this.styleList[i].label)
+                    this.selectedStyle.push(this.styleList[i].name)
                 }
             } else {
                 this.selectedStyle = [];
@@ -357,28 +331,16 @@ export default {
             }
             var searchTags = `${this.tags},`
             for(var i=0; i<this.selectedProject.length; i++){
-                searchTags+=this.selectedProject[i]+','
+                searchTags += this.projectList.find(item => item.name === this.selectedProject[i]).id + ','
             }
             for(var i=0; i<this.selectedStyle.length; i++){
-                searchTags+=this.selectedStyle[i]+','
+                searchTags += this.styleList.find(item => item.name === this.selectedStyle[i]).id + ','
             }
             for(var i=0; i<this.selectedEngine.length; i++){
-                searchTags+=this.selectedEngine[i]+','
+                searchTags += this.engineList.find(item => item.name === this.selectedEngine[i]).id + ','
             }
             this.totalTags = searchTags
-            axios.get('/api/resource',{
-                params:{
-                    page: this.curPage,
-                    pageSize: this.pageSize,
-                    refer: this.refer,
-                    tags: searchTags,
-                    order: this.curOrder
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.searchList = res.data.data.list
-                    this.resultCount = res.data.data.count
-                }
-            })
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
         checkAllEngine(){
             if (this.eim) {
@@ -391,7 +353,7 @@ export default {
             if (this.checkEngine) {
                 this.selectedEngine = [];
                 for(var i=0; i<this.engineList.length; i++){
-                    this.selectedEngine.push(this.engineList[i].label)
+                    this.selectedEngine.push(this.engineList[i].name)
                 }
             } else {
                 this.selectedEngine = [];
@@ -410,28 +372,16 @@ export default {
             }
             var searchTags = `${this.tags},`
             for(var i=0; i<this.selectedProject.length; i++){
-                searchTags+=this.selectedProject[i]+','
+                searchTags += this.projectList.find(item => item.name === this.selectedProject[i]).id + ','
             }
             for(var i=0; i<this.selectedStyle.length; i++){
-                searchTags+=this.selectedStyle[i]+','
+                searchTags += this.styleList.find(item => item.name === this.selectedStyle[i]).id + ','
             }
             for(var i=0; i<this.selectedEngine.length; i++){
-                searchTags+=this.selectedEngine[i]+','
+                searchTags += this.engineList.find(item => item.name === this.selectedEngine[i]).id + ','
             }
             this.totalTags = searchTags
-            axios.get('/api/resource',{
-                params:{
-                    page: this.curPage,
-                    pageSize: this.pageSize,
-                    refer: this.refer,
-                    tags: searchTags,
-                    order: this.curOrder
-            }}).then((res)=>{
-                if(res.data.code == 0){
-                    this.searchList = res.data.data.list
-                    this.resultCount = res.data.data.count
-                }
-            })
+            this.$options.methods.changeConAndSearch.bind(this)();
         },
     }
 }

@@ -33,28 +33,34 @@
                             </div>
                             <div class="catalog-right-part" v-if="showArt">
                                 <span v-for="(item, model) in modelList" :key="model" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                    <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                    {{item.name}}
                                 </span>
                                 <Divider style="margin: 0"/>
                                 <span v-for="(item, el) in elseList" :key="'a'+el" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                    <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                    {{item.name}}
                                 </span>
                                 <Divider style="margin: 0"/>
                                 <span v-for="(item, paint) in paintList" :key="'aa'+paint" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                    <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                    {{item.name}}
                                 </span>
                             </div>
                             <div class="catalog-right-part" v-else>
                                 <span v-for="(item, engine) in engineList" :key="engine" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                    <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                    {{item.name}}
                                 </span>
                                 <Divider style="margin: 0"/>
                                 <span v-for="(item, tool) in toolList" :key="'t'+tool" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                    <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                    {{item.name}}
                                 </span>
                                 <Divider style="margin: 0"/>
                                 <span v-for="(item, other) in otherList" :key="'tt'+other" class="catalog-class" @click="goPage(`/artshow/${item.name}?tags=${getTags(item.tags)}`)">
-                                    <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/> {{item.name}}
+                                    <!-- <font-awesome-icon :icon="[item.icon[0],item.icon[1]]"/>  -->
+                                    {{item.name}}
                                 </span>
                             </div>
                         </DropdownMenu>
