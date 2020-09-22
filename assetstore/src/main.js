@@ -52,7 +52,7 @@ import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 Vue.use(Antd)
 
-axios.defaults.baseURL = '/'
+axios.defaults.baseURL = 'https://localhost:3000'
 //axios post setting
 // axios.defaults.baseURL='http://192.168.94.135:8080'
 global.axios = axios

@@ -11,26 +11,26 @@ var file = require('./routers/file')
 var resource = require('./routers/resource')
 var remind = require('./routers/remind')
 var bulletin = require('./routers/bulletin')
-
+console.log("whywhywhy")
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded( {extended: false}))
-app.use('/user', user)
-app.use('/search', search)
-app.use('/feedback', feedback)
-app.use('/software', software)
-app.use('/file', file)
-app.use('/resource', resource)
-app.use('/remind', remind)
-app.use('/bulletin', bulletin)
-app.use('/script', express.static(__dirname +'/script'))
-app.use('/fonts', express.static(__dirname +'/fonts'))
+app.use('/api/user', user)
+app.use('/api/search', search)
+app.use('/api/feedback', feedback)
+app.use('/api/software', software)
+app.use('/api/file', file)
+app.use('/api/resource', resource)
+app.use('/api/remind', remind)
+app.use('/api/bulletin', bulletin)
+app.use('/api/script', express.static(__dirname +'/script'))
+app.use('/api/fonts', express.static(__dirname +'/fonts'))
 
 
 // -------------- o(=•ェ•=)m   start tag ------------------
 
 {
-	app.get('/tag/tree',(req,res)=>{
+	app.get('/api/tag/tree',(req,res)=>{
 
 		if(req.query.type==='engine_ver'){
 			res.status(200)
@@ -120,7 +120,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 
 // -------------- o(=•ェ•=)m   start 文件 ------------------
 {
-	app.post('/file/upload',(req,res)=>{
+	app.post('/api/file/upload',(req,res)=>{
 
 		console.log('#########################################################')
 		
@@ -142,7 +142,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 // -------------- o(=•ェ•=)m   start 资源 ------------------
 {
 
-	app.post(`/resource`,(req,res)=>{
+	app.post(`/api/resource`,(req,res)=>{
 		res.status(200)
 		res.json({
 			"msg": "string",
@@ -150,7 +150,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 		})
 	})
 
-	app.put('/resource',(req,res)=>{
+	app.put('/api/resource',(req,res)=>{
 		res.status(200)
 		res.json({
 			"msg": "string",
@@ -158,7 +158,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 		})
 	})
 
-	app.post('/resource/:id/star',(req,res)=>{
+	app.post('/api/resource/:id/star',(req,res)=>{
 		res.status(200)
 		res.json({
 			code:0
@@ -166,7 +166,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 	})
 
 
-	app.get('/resource/:id', (req, res) => {
+	app.get('/api/resource/:id', (req, res) => {
 		res.status(200)
 		
 		res.json({
@@ -261,7 +261,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 // -------------- o(=•ェ•=)m   start 评分 ------------------
 {
 	// 评分
-	app.post(`/rate/:id`,(req,res)=>{
+	app.post(`/api/rate/:id`,(req,res)=>{
 
 		res.status(200).json({
 			"msg": "string",
@@ -278,7 +278,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 	// 评论
 
 	// 删除评论
-	app.delete('/comment/:id',(req,res)=>{
+	app.delete('/api/comment/:id',(req,res)=>{
 		// {   [body]
 		// 	"resourceId": 0,
 		// 	"pid": 0,
@@ -292,7 +292,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 	})
 	
 	// 取消点赞评论
-	app.post('/comment/:id/star',(req,res)=>{
+	app.post('/api/comment/:id/star',(req,res)=>{
 		// [post]
 		// {
 		// 	"star": true
@@ -306,7 +306,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 	})
 
 	// 回复评论
-	app.post('/comment', (req, res) => {
+	app.post('/api/comment', (req, res) => {
 		// {   [body]
 		// 	"resourceId": 0,
 		// 	"pid": 0,
@@ -331,7 +331,7 @@ app.use('/fonts', express.static(__dirname +'/fonts'))
 	})
 
 	// 获取评论
-	app.get('/comment', (req, res) => {
+	app.get('/api/comment', (req, res) => {
 		// [query]
 		// resourceId
 		// pageSize
