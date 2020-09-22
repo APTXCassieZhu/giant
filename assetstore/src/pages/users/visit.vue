@@ -6,38 +6,49 @@
                 <div class="self">
                     <div v-if="this.profilePic != null"><img class="avatar" :src="profilePic"></div>
                     <div v-else class="font-avatar">{{this.resName.charAt(0)}}</div>
-                    <Icon size="20" class="edit-self" type="md-create" @click="goPage('/editSetting')"/>
                     <ul style="font-size: 21px;font-weight: bold;">{{this.resName}}</ul>
                     <ul style="font-size: 14px; color: #7f7f7f;">{{this.user.dept}}</ul>
                 </div>
                 <br>
-                <ul style="font-size: 14px; color: #7f7f7f;">{{this.signature}}</ul>
+                <ul style="font-size: 14px; color: #7f7f7f;text-align: center">{{this.signature}}</ul>
                 <Divider />
-                <ul style="font-size: 16px; font-weight: bold">标签</ul><br>
-                <div v-if="this.user.labels == null" class="empty-personal">
-                    <p>暂无好友印象哦～</p>
-                    <p>快邀请好友来为您添加第一条标签吧</p>
-                </div>
-                <div v-else>
-                    <span v-for="(item,index) in this.user.labels" :key="index">
-                        <Tag class="tag-style">&emsp;{{item}}&emsp;</Tag>
-                    </span>
-                    <a-input
-                        v-if="inputVisible"
-                        ref="input"
-                        type="text"
-                        size="small"
-                        :style="{ width: '78px' }"
-                        :value="inputValue"
-                        @change="handleInputChange"
-                        @blur="handleInputConfirm"
-                        @keyup.enter="handleInputConfirm"
-                    />
-                    <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
-                    <a-icon type="plus" /> New Tag
+                <ul style="font-size: 16px; font-weight: bold">印象</ul><br>
+    
+                <span v-for="(item,index) in this.user.labels" :key="index">
+                    <a-tag class="tag-style">
+                        &emsp;{{item.val}}&emsp;
+                        <font-awesome-icon :icon="['fas', 'times']" v-if="isMe(item.sourceUserId)" class="tag-style-close" @click="handleCloseTag(item)"/>
                     </a-tag>
+                </span>
+                
+                <a-form v-if="inputVisible" id="components-form-demo-validate-other" :form="form">
+                    <a-form-item class="form-ant-style">
+                        <!-- TODO validator 2-20为key enter时validate-->
+                        <a-input
+                            ref="input"
+                            type="text"
+                            size="small"
+                            :style="inputAnt"
+                            placeholder="请输入2-20个字符"
+                            @change="handleInputChange"
+                            @blur="handleInputConfirm"
+                            @keyup.enter="handleInputConfirm"
+                            v-decorator="['resource-version', { rules: [
+                                {type:'string', min: 2, max: 20, message:'请输入2-20个字符', trigger:'blur'},
+                                {validator:this.handleValidator.bind(this)}
+                                ] 
+                            }]"
+                        >
+                            <Icon slot="suffix" type="md-return-left" />
+                        </a-input>
+                    </a-form-item>
+                </a-form>
+                <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
+                    <a-icon type="plus" class="plus-ant-style"/> <span style="color: #1ebf73;font-size: 12px">增加标签</span>
+                </a-tag>
+                <div v-if="this.user.labels.length == 0" class="tag-hint">
+                    美术大佬？IT精英？为Ta添加第一条标签吧！
                 </div>
-
                 <Divider />
                 <ul style="font-size: 16px; font-weight: bold">优秀作品集</ul><br>
                 <div v-if="this.user.fineResources == null" class="empty-personal">
@@ -46,7 +57,7 @@
                 <div v-else v-for="(resource, i) in this.user.fineResources" :key="'a'+i">
                     <div class="personal-fine">
                         <div v-if="resource.images==null" class="font-image">{{resource.name.charAt(0)}}</div>
-                        <div v-else><img  class="font-image" :src="resource.images[0]"></div>
+                        <div v-else><img class="font-image" :src="concatImgUrl(resource.images[0].id)"></div>
                         <div class="font-name">{{resource.name}}</div>
                     </div>
                     <br><br>
@@ -57,10 +68,16 @@
             <div class="asset-card" >
                 <Tabs value="name" :animated="false">
                     <TabPane :label="tab" name="name">
-                        <div v-if="this.sourceList.length==0" class="like-btn-container">
-                        </div>
-                        <div v-else v-for="(item, n) in this.sourceList" :key="n" style="display:inline-block;">
-                            <like-box :softwareName="item" :whoShared="resName"></like-box>
+                        <div class="container">
+                            <div>
+                                <span v-for="(item, n) in this.sourceList" :key="n" style="display:inline-block;">
+                                    <others-box :source="item" :whoShared="resName" :isStar="item.isStar"></others-box>
+                                </span>
+                            </div>
+                            <div style="text-align: center">
+                                <cartoon v-if="loadingSource"></cartoon>
+                                <Button v-show="ifMoreSource && !loadingSource" id="more" class="more" @click="addMore()">加载更多</Button>
+                            </div>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -75,15 +92,26 @@
 import TopNavigation from '../../components/TopNav.vue'
 import Footer from '../../components/footer.vue'
 import Corner from '../../components/corner.vue'
-import LikeBox from '../../components/likeBox.vue'
-
+import OthersBox from '../../components/othersBox.vue'
+import cartoon from '../../components/cartoon.vue'
 export default {
     name:"Visit",
-    components:{TopNavigation, Footer, Corner, LikeBox},
+    components:{TopNavigation, Footer, Corner, OthersBox, cartoon},
     computed:{
     },
+    beforeCreate() {
+        // var that = this
+        // this.form = this.$form.createForm(this, {name: 'validate_other'})
+
+        var that = this
+        this.form = this.$form.createForm(this, {
+            name: 'validate_other' 
+        })
+    },
     mounted() {
-        axios.get(`/api/user/${this.$route.userId}`).then((res)=>{
+        // 拿到访问对象的基础信息
+        axios.get(`/api/user/${this.$route.params.userId}`,{params:{page: this.sourcePage,
+        pageSize: this.sourcePageSize,}}).then((res)=>{
             if(res.data.code == 0){
                 this.user = res.data.data
                 this.profilePic = res.data.data.profilePic
@@ -93,30 +121,157 @@ export default {
                     this.resName = res.data.data.nickName
                 }
                 if(res.data.data.signature == null){
-                    this.signature = '来都来了，留下点个性签名介绍下自己吧'
+                    this.signature = '该用户暂未填写描述'
                 }else{
                     this.signature = res.data.data.signature
                 }
+                if(res.data.data.labels == null){
+                    this.user.labels = []
+                }
             }
         }, (res)=>{
-            // 登录失败
             alert(res)
         })
-        this.tab = "资源("+this.sourceList.length+")"
+        // 拿到访问的用户上传的公开资源列表
+        axios.get(`/api/user/${this.$route.params.userId}/resource`, {
+            params: {
+                page: this.page,
+                pageSize: this.pageSize,
+            }
+        }).then((res)=>{
+            if(res.data.code == 0){
+                this.sourceList = res.data.data.list
+                this.tab = `资源(${res.data.data.count})`
+                if(res.data.data.count > this.sourceList.length){
+                    this.ifMoreSource = true
+                }
+            }
+        }, (res)=>{
+            alert(res)
+        })
+    },
+    computed:{
+        
     },
     data () {
         return {
+            user: {
+                labels:[],
+                fineResources:[]
+            },
+            labelLength: 0,
+            page: 1,
+            pageSize: 10,
             resName: "受访者张佳",
-            tab: "资源(3)",
+            profilePic: null,
+            tab: `资源(0)`,
+            signature: "",
             personalTagList: ['改需求狂人','纠结','evil','偶尔良心发现','冷酷无情','无理取闹','债主'],// 从后端拿
-            // TODO 这两个list还得修改。每一个都还有其他产品信息
-            productList: ['批判大会','忆往昔峥嵘岁月'],    
-            sourceList: ['受访者上传资源1', '受访者上传资源2','受访者上传资源3'],
+            sourceList: [],
+            inputVisible: false,
+            inputValue: '',
+            inputAnt: "{width: 315px; height: 31px;}",
+            ifMoreSource: false,
+            loadingSource: false,
+            page: 1,
+            pageSize: 20,
         }
     },
     methods:{
         goPage(url){
             this.$router.push(url)
+        },
+        handleValidator(rule,value,callback){
+            if(this.user.labels.length >= 20 || this.labelLength >= 20){
+                callback('不要超过20个噢~')
+                return 
+            }else{
+                callback()
+            }
+        },
+        showInput() {
+            this.inputVisible = true;
+            this.$nextTick(function() {
+                this.$refs.input.focus();
+            });
+        },
+        handleCloseTag(removedTag){
+            const tags = this.user.labels.filter(tag => tag !== removedTag);
+            console.log(tags);
+            this.user.labels = tags;
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": removedTag.id}
+            axios.delete(`/api/user/label/${removedTag.id}`, {headers, data}).then((res)=>{
+                if(res.data.code == 0){
+                }
+            }, (res)=>{
+                alert(res)
+            })
+        },
+        handleInputChange(e) {
+            this.inputValue = e.target.value;
+        },
+
+        handleInputConfirm() {
+            const inputValue = this.inputValue;
+            console.log(inputValue.length)
+            let personalTagList = this.user.labels;
+            let o = JSON.parse(this.$store.state.user)
+            if (inputValue && personalTagList.indexOf(inputValue) === -1 && inputValue.length <= 8 
+            && inputValue.length >= 2) {
+                personalTagList = [...personalTagList, {'val': inputValue, 'sourceUserId': o.id, 'userId': this.$route.params.userId}];
+                this.user.labels = personalTagList
+                console.log(this.user.labels)
+                Object.assign(this, {
+                    inputVisible: false,
+                    inputValue: '',
+                });
+                axios.post(`/api/user/${this.$route.params.userId}/label`,{'label': inputValue},{emulateJSON:true}).then((res)=>{
+                    if(res.data.code == 0){
+                    }
+                    else if(res.data.code == 40101){
+                        this.$Modal.error({
+                            title: '未找到用户',
+                        })
+                    }else if(res.data.code == 42202){
+                        // 超过20条
+                        this.labelLength = 20
+                    }
+                }, (res)=>{
+                    alert(res)
+                })
+            }
+        },
+        // 判断是不是用户打的标签，只有自己给别人打的标签，才有资格删除
+        isMe(sid){
+            let o = JSON.parse(this.$store.state.user)
+            return sid == o.id
+        },
+        addMore(){
+            this.page += 1
+            this.loadingSource = true
+            axios.get(`/api/${this.$route.params.userId}/resource`, {
+                params: {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                }
+            }).then((res)=>{
+                if(res.data.code == 0){
+                    this.loadingSource = false
+                    this.sourceList = this.sourceList.concat(res.data.data.list)
+                    if(res.data.data.count > this.sourceList.length){
+                        this.ifMoreSource = true
+                    }else{
+                        this.ifMoreSource = false
+                    }
+                }
+            }, (res)=>{
+                // 登录失败
+                alert(res)
+            })
+        },
+        concatImgUrl(url){
+            return `//192.168.94.238:3000/file/download/${url}?token=${this.$store.state.token}`         
         },
     },
 }
@@ -138,6 +293,12 @@ export default {
 > .ivu-tabs-nav-scroll{
     position: sticky;
 }
+.plus-ant-style > svg{
+    color: #1ebf73;
+}
+.form-ant-style,.ant-form-item {
+    margin-bottom: 0px;
+}
 </style>
 <style scoped>
 .middle-card-wrapper{
@@ -147,14 +308,12 @@ export default {
     /* align-items:center; */
 }
 .self-card{
-    position: relative;
-    display:inline-block;
     font-family: MicrosoftYaHei;
     width: 360px;
-    min-height: 730px;
-    left: 50px;
-    top: 50px;
-    padding: 30px 20px 40px 25px;
+    min-height: 660px;
+    margin-top: 30px;
+    /* top: 10px; */
+    padding: 30px 20px 30px 25px;
     border-radius: 3px;
     background-color: #ffffff;
 }
@@ -169,6 +328,18 @@ export default {
     height:104px;
     text-align: center;
 }
+.font-avatar{
+    border-radius: 50%; 
+    width: 104px; 
+    height:104px;
+    text-align: center;
+    line-height: 104px;
+    background-color: #e8f8f0;
+    color: #1ebf73;
+    font-size: 50px;
+    margin: auto;
+    margin-bottom: 15px;
+}
 .edit-self{
     position: absolute;
     top: 0px;
@@ -177,6 +348,12 @@ export default {
     /*color: rgb(0, 140, 255);*/
     color: #1ebf73;
     cursor: pointer;
+}
+.tag-hint{
+    font-size: 12px;
+    letter-spacing: 0.86px;
+    color: #7f7f7f;
+    margin-top: 5px;
 }
 .ask-btn{
     width: 316px;
@@ -191,14 +368,12 @@ export default {
     margin-top: 20px;
 }
 .asset-card{
-    position: relative;
-    display:inline-block;
     font-family: MicrosoftYaHei;
     font-size: 16px;
     width: 1200px;
-    height: 660px;
-    left: 100px;
-    top: 53px;
+    min-height: 700px;
+    margin-left: 30px;
+    margin-top: 30px;
     padding: 20px 28px 30px 28px;
     border-radius: 3px;
     background-color: #ffffff;
@@ -207,6 +382,19 @@ export default {
 .tag-style{
     margin-right:15px;
     margin-bottom: 10px;
+}
+.tag-style-close{
+    width: 10px;
+    height: 10px;
+    color: #7f7f7f;
+    line-height: 21px;
+    text-align: center;
+    top: -2px;
+    position: relative;
+}
+.tag-style-close:hover{
+    color: red;
+
 }
 .empty-personal{
     font-size: 14px;
@@ -241,18 +429,35 @@ export default {
 .tabpane:hover{
     color: #1ebf73;
 }
-.like-btn-container{
-    width: 1120px;
-    height: 560px;
+
+.container{
+    display:flex;
+    /* align-items:center; */
+    flex-direction: column;
 }
-.like-btn{
-    position: relative;
-    width: 250px;
-    height: 50px;
-    top: 230px;
-    left: 460px;
-    font-size: 16px;
-    float: center;
+.more{
+    text-align: center;
+    width: 193px;
+    height: 44px;
+    /* background-color: #e8f8f0; */
+    color: #1ebf73;
+    /* border: solid 1px #1ebf73; */
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 30px;
+}
+
+@media only screen and (max-width: 1600px) {
+    .asset-card {
+        width: 800px;
+        min-height: 620px;
+    }
+}
+@media only screen and (max-width: 1366px) {
+    .asset-card {
+        width: 830px;
+        min-height: 620px;
+    }
 }
 </style>
 

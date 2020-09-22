@@ -1,9 +1,9 @@
 <template>
-<div class="source-box-wrapper" v-if="!deleteOrNot">
+<div class="source-box-wrapper">
     <div class="source-box">
-        <div class="upper">
+        <div class="upper" @click="goPage(`/resourceDetail/${source.id}`)">
             <div class="upper-head">
-                <div v-if="source.images != null" ><img class="font-image" :src="source.images[0]"></div>
+                <div v-if="source.images != null" ><img class="font-image" :src="concatImgUrl"></div>
                 <div v-else class="font-image">{{source.name.charAt(0)}}</div>
                 <div class="font-wrapper">
                     <a-tooltip placement="top">
@@ -12,7 +12,7 @@
                         </template>
                         <div class="font-title">{{getResource}}</div>
                     </a-tooltip>
-                
+
                     <div class="font-switch">
                         <i-switch v-model="publicOrNot" size="large" @on-change="changeState()">
                             <span slot="open">公开</span>
@@ -22,19 +22,22 @@
                 </div>
             </div>
             <div class="font-content">下载次数&emsp;&emsp;&emsp;关注人数</div>
-            <div class="font-num">{{getDownloadCount}}<span style="margin-left: 63px;">{{getStars}}</span></div>
+            <div class="font-num">
+                <div style="min-width: 30px; display: inline-block;">{{source.downloadCount||0}}</div>
+                <div style="margin-left: 63px; display: inline-block;">{{source.starCount||0}}</div>
+            </div>
         </div>
         <Row class="font-footer">
-            <Col span="8" class="footer-col">
-                <font-awesome-icon :icon="['fas','sync-alt']" class="foot-icon" @click="goPage(`/updateFile/${source.id}`)"/>
+            <Col span="8" class="footer-col" @click.native="goPage(`/updateFile/${source.id}`)">
+                <font-awesome-icon :icon="['fas','sync-alt']" class="foot-icon" />
             </Col>
-            <Col span="8" class="footer-col">
+            <Col span="8" class="footer-col" @click.native="goPage(`/editFile/${source.id}`)">
                 <Divider type="vertical" class="foot-divider"/>
-                <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon" @click="goPage(`/editFile/${source.id}`)"/>
+                <font-awesome-icon :icon="['fas','pencil-alt']" class="foot-icon"/>
             </Col>
-            <Col span="8" class="footer-col1">
+            <Col span="8" class="footer-col" @click.native="deleteSource">
                 <Divider type="vertical" class="foot-divider"/>
-                <span class="foot-icon foot-icon-del" @click="deleteSource">删除</span>
+                <span class="foot-icon foot-icon-del">删除</span>
                 <!-- <Dropdown trigger="click" :visible="moreVisible" @on-clickoutside="closeDrop()">
                     <Button href="javascropt:void(0)" class="foot-btn" @click.native="openDrop()">
                         <Icon size="25" type="md-more" class="foot-icon"/>
@@ -64,42 +67,43 @@ export default {
         },
         // 给人数x,xxx （每三位数分个逗号）
         getStars(){
-            return this.source.stars > 1000 ? (this.source.stars).toString().slice(0,1)+','+ (this.source.stars).toString().slice(1): this.source.stars;
+            return this.source.starCount > 1000 ? (this.source.starCount).toString().slice(0,1)+','+ (this.source.starCount).toString().slice(1): this.source.starCount;
         },
         getDownloadCount(){
-            return this.source.stars > 1000 ? (this.source.downloadCount).toString().slice(0,1)+','+ (this.source.downloadCount).toString().slice(1): this.source.downloadCount;
-        }
+            return this.source.downloadCount > 1000 ? (this.source.downloadCount).toString().slice(0,1)+','+ (this.source.downloadCount).toString().slice(1): this.source.downloadCount;
+        },
+        concatImgUrl(){
+            return `//192.168.94.238:3000/file/download/${this.source.images[0].id}?token=${this.$store.state.token}`
+        },
     },
     data() {
         return {
-            publicOrNot: false,             // 默认隐藏
             // default
             moreVisible: false,
-            deleteOrNot: false,
+            jumpOrNot: true,
+            publicOrNot: false,
+        }
+    },
+    mounted(){
+        if(this.source.state == 'public'){
+            this.publicOrNot = false;
+        }else{
+            this.publicOrNot = true;
         }
     },
     methods:{
         goPage(url){
-            if(this.$route.path===url){
-                location.reload()
-            }else{
-                this.$router.push(url)
+            if(this.jumpOrNot){
+                if(this.$route.path===url){
+                    location.reload()
+                }else{
+                    this.$router.push(url)
+                }
             }
-        },
-        cancelFavorite(){
-            //TODO add user favourite to favorite list so that they can check in personal
-            console.log('favorite')
-            this.favoriteIcon = !this.favoriteIcon
-            /* 提示用户已关注 */
-            if(this.favoriteIcon){
-                this.$Message.success('已关注')
-                this.$store.commit('ADD_FAVORITE', this.sourceID);
-            }else{
-                this.$Message.success('已取消关注')
-                this.$store.commit('REMOVE_FAVORITE', this.sourceID);
-            }  
+            this.jumpOrNot = true
         },
         changeState(){
+            this.jumpOrNot = false
             if(this.publicOrNot){
                 this.$Modal.confirm({
                     title: '确认公开此条资源？',
@@ -133,7 +137,6 @@ export default {
                                     title: '资源已隐藏',
                                 })
                                 this.state = '隐藏'
-                                // TODO 告诉后端这个资源已隐藏
                             }, 1000);
                         })
                     },
@@ -149,13 +152,15 @@ export default {
                 okText: '确认',
                 cancelText: '取消',
                 onOk: () => {
-                    axios.delete(`/api/resource/${this.source.id}`).then((res)=>{
+                    let headers = {"Content-Type": "application/json; charset=utf-8"}
+                    let data = {"id": this.source.id}
+                    axios.delete(`/api/resource/${this.source.id}`,{headers, data}).then((res)=>{
                         if(res.data.code == 0){
                             setTimeout(() => {
                                 this.$Modal.success({
                                     title: '资源已删除',
                                 })
-                                this.deleteOrNot = true
+                                this.$emit('onDel',this.source.id)
                             }, 1000);
                         }
                     })
@@ -176,7 +181,7 @@ export default {
 <style scoped>
 .source-box-wrapper{
     float: left;
-    height:250px;
+    height:226px;
     width: 274px;
     margin-right: 30px;
     cursor: pointer;
@@ -254,7 +259,7 @@ export default {
     cursor: pointer;
 }
 
-.foot-icon:hover, .foot-icon1:hover, .footer-col:hover, .footer-col1:hover{
+.foot-icon:hover, .foot-icon1:hover, .footer-col:hover, .footer-col1:hover, .foot-icon-del:hover{
     color: #1ebf73;
 }
 .foot-icon-hover{
@@ -265,7 +270,6 @@ export default {
     font-weight: 600;
     line-height: 1;
     letter-spacing: 1px;
-    color: #7f7f7f;
 }
 .foot-divider{
     position:relative;

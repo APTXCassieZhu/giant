@@ -4,14 +4,14 @@
         <div class="middle-card-wrapper">
             <Menu active-name="1" class="leftside-menu" style="width:auto;min-width:281px;">
                 <MenuItem name="1" @click.native="showInfo">
-                    <div class="menu_left_part">
+                    <div class="menu-left-part">
                         <font-awesome-icon :icon="['fas','bell']" style="margin-right:23px;"/> 
-                         提醒
+                        提醒
                     </div>
                     <div v-if="infoNotRead!=0" class="not-read">{{infoNotRead}}</div>
                 </MenuItem>
                 <MenuItem name="2" @click.native="showNotice">
-                    <div class="menu_left_part">
+                    <div class="menu-left-part">
                         <font-awesome-icon :icon="['fas','bullhorn']" style="margin-right:20px;"/> 
                         通知
                     </div>
@@ -118,17 +118,24 @@
                                     评论了你的<span :class="markGreen(item.view)"> {{item.resource.name}} </span> 
                                 </div>
                             </div>
-                            <div v-else  @click="goPage(`/resourceDetail/${item.resource.id}`,item)" class="font-container">
+                            <div v-else-if="item.targetType === 'starResourceCommented'"  @click="goPage(`/resourceDetail/${item.resource.id}`,item)" class="font-container">
                                 <div class="font-image">{{item.resource.name.charAt(0)}}</div>
                                 <div class="font-content">
                                     你关注的资源<span :class="markGreen(item.view)"> {{item.resource.name}} </span>被评论
+                                </div>
+                            </div>
+                            <div v-else @click="goPage(`/personal`,item)" class="font-container">
+                                <font-awesome-icon :icon="['fas', 'tag']" class="font-icon"/>
+                                <div class="font-content">
+                                    你收到{{item.friendImpressionCount}}条新的<span :class="markGreen(item.view)"> 好友印象</span> 
                                 </div>
                             </div>
                             <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                         </div>
                         <Divider/>
                     </div>
-                    <Button style="color:#1ebf73;width:150px;" @click="addMoreInfo()" size="large">加载更多</Button>
+                    <cartoon v-if="loadingInfo"></cartoon>
+                    <Button v-show="ifMoreInfo && !loadinginfo" style="color:#1ebf73;width:150px;" @click="addMoreInfo()" size="large">加载更多</Button>
                 </div>
             </div>
             <!-- 通知 -->
@@ -147,11 +154,16 @@
                                 <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
                                 <div class="font-content">{{item.title}}</div>
                             </div>
+                            <div v-else-if="item.targetType === 'system'" class="font-container">
+                                <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
+                                <div class="font-content">{{item.title}}</div>
+                            </div>
                             <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                         </div>
                         <Divider/>
                     </div>
-                    <Button style="color:#1ebf73;width:150px;" @click="addMoreNotice()" size="large">加载更多</Button>
+                    <cartoon v-if="loadingNotice"></cartoon>
+                    <Button v-show="ifMoreNotice && !loadingNotice" style="color:#1ebf73;width:150px;" @click="addMoreNotice()" size="large">加载更多</Button>
                 </div>
             </div>
             <!-- 系统通知的具体内容 -->
@@ -175,9 +187,10 @@
 import TopNavigation from '../components/TopNav.vue'
 import Footer from '../components/footer.vue'
 import Corner from '../components/corner.vue'
+import cartoon from '../components/cartoon.vue'
 export default {
     name:"Notice",
-    components:{TopNavigation, Footer, Corner, },
+    components:{TopNavigation, Footer, Corner, cartoon},
     computed:{
         getUser(){
             return this.$store.state.token;
@@ -193,6 +206,12 @@ export default {
             if(res.data.code === 0){
                 this.infoNotRead = res.data.data.webCount
                 this.totalInfo = res.data.data.list
+                if(this.totalInfo.length < res.data.data.count){
+                    this.ifMoreInfo = true
+                }
+                if(this.infoNotRead == 0){
+                    this.markRead = 'mark-readed'
+                }
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -206,6 +225,12 @@ export default {
             if(res.data.code === 0){
                 this.noticeNotRead = res.data.data.webCount
                 this.totalNotice = res.data.data.list
+                if(this.totalNotice.length < res.data.data.count){
+                    this.ifMoreNotice = true
+                }
+                if(this.noticeNotRead == 0){
+                    this.markRead1 = 'mark-readed'
+                }
             }else if(res.data.code === 400){
                 alert('参数格式不正确')
             }
@@ -220,7 +245,39 @@ export default {
                 this.curNoticeItem = o
                 this.$store.commit('NOTICE_READED', o)
             }
-
+        }
+        const that = this
+        window.onresize = () => {
+            return (() => {
+                window.screenWidth = document.body.clientWidth
+                that.screenWidth = window.screenWidth
+            })()
+        }
+        if(this.scrrenWidth <= 1200){
+            this.menuDirection = 'horizontal'
+        }else{
+            this.menuDirection = 'vertical'
+        }
+    },
+    watch:{
+        screenWidth(val){
+            // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
+            if(!this.timer){
+                // 一旦监听到的screenWidth值改变，就将其重新赋给data里的screenWidth
+                this.screenWidth = val
+                this.timer = true
+                let that = this
+                setTimeout(function(){
+                    // 打印screenWidth变化的值
+                    console.log(that.screenWidth)
+                    if(that.screenWidth <= 1200){
+                        that.menuDirection = 'horizontal'
+                    }else{
+                        that.menuDirection = 'vertical'
+                    }
+                    that.timer = false
+                },400)
+            }
         }
     },
     data () {
@@ -239,12 +296,20 @@ export default {
             markRead1: 'mark-read',         // 通知的全部已读button
             showNoticeDetail: false,        // 是否展示具体的通知内容
             curNoticeItem: {},              // 展示的通知
+            ifMoreNotice: false,
+            ifMoreInfo: false,
+            loadingInfo: false,
+            loadingNotice: false,
+            menuDirection: 'vertical',
+            screenWidth: document.body.clientWidth
         }
     },
     methods:{
         goPage(url,item){
             /* 跳转之前告知后端已读 */
-            axios.put(`/api/remind/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/remind/${item.id}/view`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -278,7 +343,9 @@ export default {
                             this.totalInfo[i].view = true
                         }
                         /* 设置全部已读 */
-                        axios.put('/api/remind/view').then(res=>{
+                        let headers = {"Content-Type": "application/json; charset=utf-8"}
+                        let data = {}
+                        axios.put('/api/remind/view',{headers, data}).then(res=>{
                             if(res.data.code === 0){
                             }else if(res.data.code === 400){
                                 alert('参数格式不正确')
@@ -292,7 +359,9 @@ export default {
                             this.totalNotice[i].view = true
                         }
                         /* 设置全部已读 */
-                        axios.put('/api/bulletin/view').then(res=>{
+                        let headers = {"Content-Type": "application/json; charset=utf-8"}
+                        let data = {}
+                        axios.put('/api/bulletin/view',{headers,data}).then(res=>{
                             if(res.data.code === 0){
                             }else if(res.data.code === 400){
                                 alert('参数格式不正确')
@@ -359,7 +428,8 @@ export default {
             }
         },
         addMoreInfo(){
-            this.infoPage = this.infoPage+1
+            this.infoPage += 1
+            this.loadingInfo = true
             axios.get('/api/remind', {
                 params: {
                     page: this.infoPage,
@@ -367,15 +437,22 @@ export default {
                 }
             }).then(res=>{
                 if(res.data.code === 0){
+                    this.loadingInfo = false
                     this.infoNotRead = res.data.data.webCount
                     this.totalInfo = this.totalInfo.concat(res.data.data.list)
+                    if(this.totalInfo.length < res.data.data.count){
+                        this.ifMoreInfo = true
+                    }else{
+                        this.ifMoreInfo = false
+                    }
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
                 }
             })   
         },
         addMoreNotice(){
-            this.noticePage = this.noticePage+1
+            this.noticePage += 1
+            this.loadingNotice = true
             axios.get('/api/bulletin', {
                 params: {
                     page: this.noticePage,
@@ -383,8 +460,14 @@ export default {
                 }
             }).then(res=>{
                 if(res.data.code === 0){
+                    this.loadingNotice = false
                     this.noticeNotRead = res.data.data.webCount
                     this.totalNotice = this.totalNotice.concat(res.data.data.list)
+                    if(this.totalNotice.length < res.data.data.count){
+                        this.ifMoreNotice = true
+                    }else{
+                        this.ifMoreNotice = false
+                    }
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
                 }
@@ -395,7 +478,9 @@ export default {
             this.showNoticeDetail = true
             this.curNoticeItem = item
             /* 告知后端通知已读 */
-            axios.put(`/api/bulletin/${item.id}/view`).then(res=>{
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            let data = {"id": item.id}
+            axios.put(`/api/bulletin/${item.id}/view`,{headers, data}).then(res=>{
                 if(res.data.code === 0){
                 }else if(res.data.code === 400){
                     alert('参数格式不正确')
@@ -431,7 +516,7 @@ export default {
     color: black;
     z-index: 0;
 }
-.menu_left_part{
+.menu-left-part{
     display: inline-block;
     /* font-size: 16px; */
     margin-right: 50px;
@@ -534,8 +619,8 @@ export default {
     width:900px;
 }
 .time-slot{
-    float: right;
-    font-size: 18px;
+    /* float: right; */
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: 1.13px;
 }
@@ -543,6 +628,7 @@ export default {
     cursor: pointer;
     font-size: 18px;
     font-weight: 600;
+    width: 1104.01px;
     color: black;
 }
 .info-content-readed{
@@ -550,6 +636,7 @@ export default {
     color: #7f7f7f;
     font-size: 18px;
     font-weight: 600;
+    width: 1104.01px;
 }
 .empty{
     display: flex;
@@ -594,5 +681,46 @@ export default {
 .notice-detail-content{
     text-align:left;
     padding: 80px 141px 140px 260px;
+}
+@media only screen and (max-width: 1600px) {
+    .notice-card {
+        width: 850px;
+        min-height: 500px;
+    }
+
+    .info-content, .info-content-readed{
+        width: 800px;
+    }
+    .font-content{
+        width: 600px;
+    }
+    .mark-read, .mark-readed{
+        margin-left: 690px;
+    }
+}
+@media only screen and (max-width: 1366px) {
+    .notice-card {
+        width: 830px;
+        min-height: 500px;
+    }
+
+    .info-content, .info-content-readed{
+        width: 770px;
+    }
+    .font-content{
+        width: 520px;
+    }
+    .mark-read, .mark-readed{
+        margin-left: 650px;
+    }
+}
+@media only screen and (max-width: 1200px){
+    .leftside-menu{
+        /* height: 78px; */
+        margin-bottom: 30px;
+        position: sticky;
+        z-index: 1;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 4, 0.1);
+    }
 }
 </style>

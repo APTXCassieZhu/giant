@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>OwO</title>
+</head>
+<body>
+  <style>
+    *{margin:0;padding:0;}
+    body{width:100%;}
+    #app{
+      max-width:1366px;
+      width:100%;
+      display: flex;
+      margin:0 auto;
+      margin-top:20px;
+    }
+    .content{
+      width:calc(100% - 260px);
+      box-sizing: border-box;
+      border:1px solid red;
+    }
+    .slide{
+      width:260px;
+      border:1px solid pink;
+    }
+    .card{
+      position: relative;
+      border:1px solid black;
+    }
+    
+    .card>div{
+      position: absolute;
+      font-size:26px;
+      color:white;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+      text-align: center;
+      
+      background-size:cover;
+      background-repeat: no-repeat;
+    }
+    .card{
+      width:230px;
+      height:150px;
+      box-sizing: border-box;
+      
+      float:left;
+     
+      margin:2%;
+
+    }
+
+    @media screen and (max-width: 1366px) {
+
+      #app{
+        max-width:1100px;
+        width:100%;
+        display: flex;
+        margin:0 auto;
+        margin-top:20px;
+      }
+      .card{
+        width:230px;
+        height:150px;
+        box-sizing: border-box;
+        
+        float:left;
+        border:1px solid black;
+        margin:2%;
+
+      }
+    }
+
+    @media screen and (max-width: 1100px) {
+
+      #app{
+        max-width:750px;
+        width:100%;
+        margin:0 auto;
+        margin-top:20px;
+      }
+      .content{
+        flex:1;
+        box-sizing: border-box;
+        border:1px solid red;
+      }
+      .slide{
+        display:none;
+      }
+
+      .card::after{
+        content:'';
+        display:block;
+        width:100%;
+        /*
+          容器card在1366下定义的宽高是230*150
+          那么比例就为150/230=0.6521 
+          撑开这个容器的padding-bottom等于65.21%  =-=
+        */
+        padding-bottom:65.21%;
+      }
+      .card{
+        border:1px solid black;
+        width:40%;
+        margin:2%;
+        height:auto;
+      }
+    }
+
+    #banner{
+      width:100%;
+      height:150px;
+      border:1px solid blue;
+
+    }
+    
+  </style>
+  <section id="banner">banner..</section>
+  <section id="app">
+    <div class="content">
+      <div class="card"><div style="background-image:url('./d.jpg')">1</div></div>
+      <div class="card"><div style="background-image:url('./c.jpg')">2</div></div>
+      <div class="card"><div style="background-image:url('./b.jpg')">3</div></div>
+      <div class="card"><div style="background-image:url('./d.jpg')">4</div></div>
+      <div class="card"><div style="background-image:url('./c.jpg')">5</div></div>
+      <div class="card"><div style="background-image:url('./b.jpg')">6</div></div>
+      <div class="card"><div style="background-image:url('./d.jpg')">7</div></div>
+      <div class="card"><div style="background-image:url('./c.jpg')">8</div></div>
+      <div class="card"><div style="background-image:url('./b.jpg')">9</div></div>
+      <div class="card"><div style="background-image:url('./d.jpg')">0</div></div>
+      <div class="card"><div style="background-image:url('./c.jpg')">a</div></div>
+      <div class="card"><div style="background-image:url('./b.jpg')">b</div></div>
+    </div>
+    <div class="slide">
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+      <h3>内容!!!!</h3>
+    </div>
+  </section>
+
+
+  <div id="demo1"></div>
+  <style>
+  /* #demo1{
+    width:50%;
+    padding-bottom:50%;
+    border:1px solid black;
+    border:1px solid black;
+  } */
+  </style>
+  <script>
+    onresize = ()=>{
+      document.title = document.querySelector('#app').offsetWidth
+    }
+  </script>
+</body>
+</html>

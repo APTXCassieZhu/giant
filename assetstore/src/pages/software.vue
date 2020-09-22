@@ -1,11 +1,11 @@
 <template>
-    <div style="background-color: #eff2f5" >
-        <TopNavigation style="position:relative; height: 140px;"></TopNavigation>  
+    <div class="outest" style="background-color: #eff2f5;" >
+        <TopNavigation class="outest" style="position:relative; height: 140px;"></TopNavigation>  
         <div class="bread-container"> 
             <br>     
             <Breadcrumb>
                 <BreadcrumbItem to="/home">首页</BreadcrumbItem>
-                <BreadcrumbItem to="/home/software">软件</BreadcrumbItem>
+                <!-- <BreadcrumbItem to="/home/software">软件</BreadcrumbItem> -->
                 <BreadcrumbItem>当前内容</BreadcrumbItem>
             </Breadcrumb>
         </div>
@@ -38,7 +38,7 @@
                         <Form ref="softwareFBForm" :model="softwareFBForm" :rules="softwareFBRule">
                             <FormItem prop="softwareWant">
                                 <Input class="fb-title" type="textarea" maxlength="30" v-model="softwareFBForm.softwareWant" @on-change="needMoreSoftware()"
-                                show-word-limit placeholder="如 ADOBE CS SUITE 9.0.123" />
+                                placeholder="如 ADOBE CS SUITE 9.0.123" />
                             </FormItem>
                             <FormItem prop="softwareDetail">
                                 <Input class="fb-des" type="textarea" v-model="softwareFBForm.softwareDetail" maxlength="150" show-word-limit placeholder="提供下载网址可以帮助我们更快的收集您的需求"/>
@@ -65,8 +65,9 @@
                             <software-download :sw="item"></software-download>
                         </span>
                     </div>
-                    <div>
-                        <Button v-show="ifMoreGeneral" id="more" class="more" @click="addMore('general')">加载更多</Button>
+                    <div style="text-align: center">
+                        <cartoon v-if="loadingGeneral"></cartoon>
+                        <Button v-show="ifMoreGeneral && !loadingGeneral" id="more" class="more" @click="addMore('general')">加载更多</Button>
                     </div>
                 </div>
             </div>
@@ -80,8 +81,9 @@
                         <special-download :btn='btnList[1]'></special-download>
                         <special-download :btn='btnList[2]'></special-download>
                     </div>
-                    <div>
-                        <Button v-show="ifMoreSpecial" id="more" class="more" @click="addMore('special')">加载更多</Button>
+                    <div style="text-align: center">
+                        <cartoon v-if="loadingSpecial"></cartoon>
+                        <Button v-show="ifMoreSpecial && !loadingSpecial" id="more" class="more" @click="addMore('special')">加载更多</Button>
                     </div>
                 </div>
             </div> -->
@@ -94,8 +96,9 @@
                             <software-download :sw="item"></software-download>
                         </span>
                     </div>
-                    <div>
-                        <Button v-show="ifMoreFree" id="more" class="more" @click="addMore('free')">加载更多</Button>
+                    <div style="text-align: center">
+                        <cartoon v-if="loadingFree"></cartoon>
+                        <Button v-show="ifMoreFree && !loadingFree" id="more" class="more" @click="addMore('free')">加载更多</Button>
                     </div>
                 </div>
             </div>
@@ -108,8 +111,9 @@
                             <software-download :sw="item"></software-download>
                         </span>
                     </div>
-                    <div>
-                        <Button v-show="ifMoreSchedule" id="more" class="more" @click="addMore('schedule')">加载更多</Button>
+                    <div style="text-align: center">
+                        <cartoon v-if="loadingSchedule"></cartoon>
+                        <Button v-show="ifMoreSchedule && !ifMoreSchedule" id="more" class="more" @click="addMore('schedule')">加载更多</Button>
                     </div>
                 </div>
             </div>
@@ -122,8 +126,9 @@
                             <software-download :sw="item"></software-download>
                         </span>
                     </div>
-                    <div>
-                        <Button v-show="ifMoreDrive" id="more" class="more" @click="addMore('drive')">加载更多</Button>
+                    <div style="text-align: center">
+                        <cartoon v-if="loadingDrive"></cartoon>
+                        <Button v-show="ifMoreDrive && !loadingDrive" id="more" class="more" @click="addMore('drive')">加载更多</Button>
                     </div>
                 </div>
             </div>
@@ -140,10 +145,11 @@ import Corner from '../components/corner.vue'
 import SoftwareDownload from '../components/softwareDownload.vue'
 import SpecialDownload from '../components/specialDownload.vue'
 import specialDownloadVue from '../components/specialDownload.vue'
+import cartoon from '../components/cartoon.vue'
 import * as animationData from "../assets/misoon.json";
 export default {
     name:"software",
-    components:{TopNavigation, Footer, Corner, SoftwareDownload, SpecialDownload},
+    components:{TopNavigation, Footer, Corner, SoftwareDownload, SpecialDownload, cartoon},
     data(){
         return{
             // xxxPage : 向后端要数据的当前页数
@@ -180,6 +186,12 @@ export default {
             ifMoreFree: true,
             ifMoreSchedule: true,
             ifMoreDrive: true,
+            // loadingXXXX ：用于判断是否加载完成，显示loading动画
+            loadingGeneral: false,
+            loadingSpecial: false,
+            loadingFree: false,
+            loadingSchedule: false,
+            loadingDrive: false,
             // 软件反馈相关
             curShowFeedback: false,
             disableOrNot: true,
@@ -297,6 +309,7 @@ export default {
             switch(more){
                 case 'general':
                     this.generalPage += 1
+                    this.loadingGeneral = true
                     axios.get('/api/software', {
                         params: {
                             page: this.generalPage,
@@ -305,6 +318,7 @@ export default {
                         }
                     }).then(res=>{
                         if(res.data.code === 0){
+                            this.loadingGeneral = false
                             this.generalNum = res.data.data.count
                             this.generalSWList = this.generalSWList.concat(res.data.data.list)
                             // 判断是否还需要加载更多的这类软件
@@ -318,6 +332,7 @@ export default {
                     break;
                 case 'special':
                     this.specialPage += 1
+                    this.loadingSpecial = true
                     axios.get('/api/software', {
                         params: {
                             page: this.specialPage,
@@ -326,6 +341,7 @@ export default {
                         }
                     }).then(res=>{
                         if(res.data.code === 0){
+                            this.loadingSpecial = false
                             this.specialNum = res.data.data.count
                             this.specialSWList = this.specialSWList.concat(res.data.data.list)
                             // 判断是否还需要加载更多的这类软件
@@ -339,6 +355,7 @@ export default {
                     break;
                 case 'free':
                     this.freePage += 1
+                    this.loadingFree = true
                     axios.get('/api/software', {
                         params: {
                             page: this.freePage,
@@ -347,6 +364,7 @@ export default {
                         }
                     }).then(res=>{
                         if(res.data.code === 0){
+                            this.loadingFree = false
                             this.freeNum = res.data.data.count
                             this.freeSWList = this.freeSWList.concat(res.data.data.list)
                             // 判断是否还需要加载更多的这类软件
@@ -360,6 +378,7 @@ export default {
                     break;
                 case 'schedule':
                     this.schedulePage += 1
+                    this.loadingSchedule = true
                     axios.get('/api/software', {
                         params: {
                             page: this.schedulePage,
@@ -368,6 +387,7 @@ export default {
                         }
                     }).then(res=>{
                         if(res.data.code === 0){
+                            this.loadingSchedule = false
                             this.scheduleNum = res.data.data.count
                             this.scheduleSWList = this.scheduleSWList.concat(res.data.data.list)
                             // 判断是否还需要加载更多的这类软件
@@ -381,6 +401,7 @@ export default {
                     break;
                 case 'drive':
                     this.drivePage += 1
+                    this.loadingDrive = true
                     axios.get('/api/software', {
                         params: {
                             page: this.drivePage,
@@ -389,6 +410,7 @@ export default {
                         }
                     }).then(res=>{
                         if(res.data.code === 0){
+                            this.loadingDrive = false
                             this.driveNum = res.data.data.count
                             this.driveSWList = this.driveSWList.concat(res.data.data.list)
                             // 判断是否还需要加载更多的这类软件
@@ -414,7 +436,7 @@ export default {
             }
         },
         softwareFeedback(){
-            axios.post('/api/feedback',{title:this.softwareFBForm.softwareWant, details:this.softwareFBForm.softwareDetail},
+            axios.post('/api/feedback',{title:this.softwareFBForm.softwareWant, content:this.softwareFBForm.softwareDetail, type: 'software'},
             {emulateJSON:true}).then((res)=>{
                 if(res.data.code == 0){
                     this.$store.commit('ADD_COUNT', res.headers.Authorization);
@@ -464,6 +486,7 @@ export default {
 .bread-container {
     position: relative;
     left: 4%;
+    width: 200px;
 }
 .alert{
     position: relative;
@@ -500,6 +523,14 @@ export default {
     color: #1ebf73;
     background-color: #f0fff5;
 }
+@keyframes drive { 
+    from { 
+        transform: translateY(-210px); 
+    } 
+    to { 
+        transform: translateY(0); 
+    } 
+}
 .software-feedback{
     position: relative;
     animation-name: drive; 
@@ -527,9 +558,9 @@ export default {
 }
 .fb-title{
     width: 222px;
-    height: 49px;
+    /* height: 49px; */
     border-radius: 3px;
-    border: solid 1px #eaeaea;
+    /* border: solid 1px #eaeaea; */
     text-align: left;
     margin-top: 20px;
 }
@@ -537,7 +568,7 @@ export default {
     width: 222px;
     height: 208px;
     border-radius: 3px;
-    border: solid 1px #eaeaea;
+    /* border: solid 1px #eaeaea; */
     /* margin-top: 20px; */
 }
 .fb-btn-disable, .fb-btn-disable:hover{
@@ -562,14 +593,7 @@ export default {
     color: #ffffff;
     margin-top: 10px;
 }
-@keyframes drive { 
-    from { 
-        transform: translateY(-210px); 
-    } 
-    to { 
-        transform: translateY(0); 
-    } 
-}
+
 .fb-success-icon{
     width: 42px;
     height: 48px;
@@ -581,8 +605,9 @@ export default {
     position: relative;
     /* left: 130px; */
     top: 28px;
-    width: 1280px;
-    min-height: 660px;
+    /* width: 1200px; */
+    width: 70%;
+    min-height: 460px;
     border-radius: 3px;
     padding: 0px 0px 30px 30px;
     background-color: white;
@@ -590,7 +615,7 @@ export default {
 }
 .software-container{
     display:flex;
-    align-items:center;
+    /* align-items:center; */
     flex-direction: column;
 }
 .card-title{
@@ -603,15 +628,23 @@ export default {
     text-align: center;
     width: 193px;
     height: 44px;
-    /* background-color: #e8f8f0; */
     color: #1ebf73;
-    /* border: solid 1px #1ebf73; */
     font-size: 18px;
     font-weight: 600;
+    margin: auto;
 }
 /* .more:hover{
     color: white;
     background-color: #1ebf73;
 } */
+@media only screen and (max-width: 1366px) {
+    .software-page {
+        width: 800px;
+        min-height: 500px;
+    }
+    .outest{
+        width: 1366px;
+    }
+}
 </style>
 

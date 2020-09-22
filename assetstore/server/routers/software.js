@@ -284,6 +284,8 @@ router.get('/', jsonParser, function(req,res){
         }});        
     }
 });
-
-//export this router to use in our index.js
+router.delete('/:id', jsonParser, function(req,res){
+    console.log('delete software : '+req.params.id)
+    res.status(200).json({'code': 0})
+})//export this router to use in our index.js
 module.exports = router;

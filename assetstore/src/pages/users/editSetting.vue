@@ -13,22 +13,24 @@
             <div v-if="this.showPersonal" class="setting-card">
                 <Upload 
                     name='avatar'
+                    :data="{target:''}"
                     :format="['jpg','png']" 
                     :max-size="1024" 
+                    :headers="{authorization:this.$store.state.token}"
                     :before-upload="handleBeforeUpload"
                     :on-format-error="handleFormatError" 
                     :on-exceeded-size="handleMaxSize"
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/api/file/upload"
+                    action="/api/file/upload/profile"
                 >
                     <div v-if="finished" class="demo-upload-list">
-                        <img class="camera" :src="imageUrl" alt="avatar" />
+                        <img class="camera" :src="this.imageUrl" alt="avatar" />
                         <div class="demo-upload-list-cover">
                             <svg @mousedown="handleView()" style="position:relative; top: 5px;height:32px; width: 32px;cursor:pointer;" t="1572859566143" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4817"  width="200" height="200"><defs></defs><path d="M512 234.666667c131.946667 0 252.245333 80.512 360.874667 241.536a64 64 0 0 1 2.410666 67.712l-2.410666 3.882666-6.058667 8.853334C759.786667 711.765333 641.493333 789.333333 512 789.333333c-131.946667 0-252.245333-80.512-360.874667-241.536a64 64 0 0 1-2.410666-67.712l2.410666-3.882666 6.058667-8.853334C264.213333 312.234667 382.506667 234.666667 512 234.666667z m0 64c-105.770667 0-206.037333 65.749333-301.952 204.757333L204.181333 512l5.888 8.597333C306.069333 659.648 406.314667 725.333333 512 725.333333c105.770667 0 206.037333-65.749333 301.952-204.757333l5.866667-8.576-5.888-8.597333C717.930667 364.352 617.685333 298.666667 512 298.666667z m0 77.482666a141.482667 141.482667 0 1 1 0 282.944 141.482667 141.482667 0 0 1 0-282.944z m0 64a77.482667 77.482667 0 1 0 0 154.944 77.482667 77.482667 0 0 0 0-154.944z" p-id="4818" fill="#ffffff"></path></svg>
                             <Modal v-model="viewImage" :footer-hide="true" style="text-align:center">
-                                <img :src="imageUrl" alt="avatar" />
+                                <img :src="this.imageUrl" alt="avatar" />
                             </Modal>
                             <svg @mousedown="handleRemove()" style="height:23px; width: 23px; cursor:pointer;" t="1572861115099" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2153" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M426.65984 42.65984l170.65984 0q53.00224 0 90.50112 37.49888t37.49888 90.50112l0 42.65984 170.65984 0q17.67424 0 30.16704 12.4928t12.4928 30.16704-12.4928 30.16704-30.16704 12.4928l-42.65984 0 0 512q0 53.00224-37.49888 90.50112t-90.50112 37.49888l-426.65984 0q-53.00224 0-90.50112-37.49888t-37.49888-90.50112l0-512-42.65984 0q-17.67424 0-30.16704-12.4928t-12.4928-30.16704 12.4928-30.16704 30.16704-12.4928l170.65984 0 0-42.65984q0-53.00224 37.49888-90.50112t90.50112-37.49888zM768 810.65984l0-512-512 0 0 512q0 17.67424 12.4928 30.16704t30.16704 12.4928l426.65984 0q17.67424 0 30.16704-12.4928t12.4928-30.16704zM597.34016 128l-170.65984 0q-17.67424 0-30.16704 12.4928t-12.4928 30.16704l0 42.65984 256 0 0-42.65984q0-17.67424-12.4928-30.16704t-30.16704-12.4928z" p-id="2154" fill="#ffffff"></path></svg>
                         </div>
@@ -51,6 +53,8 @@
                             :canMoveBox="option.canMoveBox"
                             :original="option.original"
                             :autoCrop="option.autoCrop"
+                            :autoCropHeight="option.autoCropHeight"
+                            :autoCropWidth="option.autoCropWidth"
                             :fixed="option.fixed"
                             :fixedNumber="option.fixedNumber"
                             :centerBox="option.centerBox"
@@ -64,13 +68,14 @@
                     name='avatar'
                     :format="['jpg','png']" 
                     :max-size="1024" 
+                    :headers="{authorization:this.$store.state.token}"
                     :before-upload="handleBeforeUpload"
                     :on-format-error="handleFormatError" 
                     :on-exceeded-size="handleMaxSize"
                     :on-progress="handleUploading"
                     :on-success="handleSuccess" 
                     :show-upload-list="false"
-                    action="/api/file/upload"
+                    action="/api/file/upload/profile"
                 >
                     <Button class="camera-btn" type="success"><font-awesome-icon :icon="['fas','upload']"/> 上传</Button>
                 </Upload>
@@ -141,6 +146,13 @@
                         <span slot="close">关</span>
                     </i-switch>
                 </div>
+                <div class="info-content">
+                    <span class="info-text">好友印象提醒</span>
+                    <i-switch class="info-switch" v-model="switch6">
+                        <span slot="open">开</span>
+                        <span slot="close">关</span>
+                    </i-switch>
+                </div>
                 <Button class="save-btn" type="success" @click="submitSetting()">保存</Button>
             </div>
         </div>
@@ -171,25 +183,19 @@ export default {
         this.account = u.account
         this.personalForm.nickname = u.nickName
         this.personalForm.sign = u.signature
-        // axios.get('/user/describe').then((res)=>{
-        //     if(res.data.code == 0){
-        //         this.$store.commit('ADD_COUNT', res.headers.Authorization)
-        //         if(res.data.data.profilePic != null){
-        //             this.finished = true
-        //             this.imageUrl = res.data.data.profilePic
-        //         }
-        //         this.account = res.data.data.account
-        //         this.personalForm.nickname = res.data.data.nickName
-        //         this.personalForm.sign = res.data.data.signature
-        //     }
-        //     else if(res.data.code == 404){
-        //         alert('user not found')
-        //     }
-        // }, (res)=>{
-        //     // 请求失败
-        //     alert(res)
-        // })
-        /*TODO 从后端get setting的数据 */
+        axios.get('/api/user/remind/setting',{"starResourceUpgrade":this.switch1,"starSoftwareUpgrade": this.switch2,
+            "replyComment": this.switch3, "resourceCommented": this.switch4, "starResourceCommented": this.switch5 },{emulateJSON:true}).then((res)=>{
+                if(res.data.code == 0){
+                    this.switch1 = res.data.data.starResourceUpgrade
+                    this.switch2 = res.data.data.starSoftwareUpgrade
+                    this.switch3 = res.data.data.replyComment
+                    this.switch4 = res.data.data.resourceCommented
+                    this.switch5 = res.data.data.starResourceCommented
+                }
+            }, (res)=>{
+                // 请求失败
+                alert(res)
+            })
     },
     data () {
         /* TODO 检查是否含有敏感词 */
@@ -216,6 +222,7 @@ export default {
             switch3: false,
             switch4: true,
             switch5: true,
+            switch6: true,
             // 无需从后端读取
             loading: false,     // 判断图片是否加载完毕    
             finished: false,    // 判断图片已经加载完毕    
@@ -230,9 +237,9 @@ export default {
                 outputType: 'png', // 裁剪生成图片的格式
                 canScale: true, // 图片是否允许滚轮缩放
                 autoCrop: true, // 是否默认生成截图框
-                autoCropWidth: 250, // 默认生成截图框宽度
-                autoCropHeight: 250, // 默认生成截图框高度
-                fixedBox: false, // 固定截图框大小 不允许改变
+                autoCropWidth: 116, // 默认生成截图框宽度
+                autoCropHeight: 116, // 默认生成截图框高度
+                fixedBox: true, // 固定截图框大小 不允许改变
                 fixed: true, // 是否开启截图框宽高固定比例
                 fixedNumber: [1, 1], // 截图框的宽高比例
                 full: false, // 是否输出原图比例的截图
@@ -254,7 +261,6 @@ export default {
             }
         },
         showPerson(){
-            console.log(this.showPersonal)
             this.showPersonal = true
         },
         showInfo(){
@@ -318,8 +324,8 @@ export default {
         },
         // 实时预览函数
         realTime(data) {
-            console.dir(data)
-            this.imageUrl = data.url
+            // console.dir(data)
+            // this.imageUrl = data.url
         },
         cropFinish(){
             this.$refs.cropper.getCropData((data) => {
@@ -336,8 +342,11 @@ export default {
             this.loading = false
         },
         submitPersonalForm(){
-            axios.put('/api/user',{profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
-            signature:this.personalForm.sign},{emulateJSON:true}).then(res => {
+            let headers = {"Content-Type": "application/json; charset=utf-8"}
+            console.log(this.imageUrl.length)
+            let data = {profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
+            signature:this.personalForm.sign}
+            axios.put('/api/user',data,{emulateJSON:true}).then(res => {
                 if(res.data.code == 0){
                     // 更新全局变量信息
                     axios.get('/api/user/describe').then(res => {
@@ -347,13 +356,16 @@ export default {
                     })
                     
                     // 用户基本资料修改成功
-                    this.$Message.warning({
+                    this.$Message.success({
                         background: true,
                         content: '修改资料成功'
                     });
                 }
                 else if(res.data.code == 400){
-                    alert('bad request (form error)')
+                    console.log('400了')
+                    this.$Message.error({
+                        content: '请截取小一点的头像，最大158*158'
+                    });
                 }
             }, res => {
                 // error callback
@@ -368,22 +380,21 @@ export default {
             // this.personalForm.nickname=this.personalForm.nickname.replace(/[/d]/g,'') 
         },
         submitSetting(){
-            /* TODO swagger 接口还没写好 */
-            axios.put('/api/user',{profilePic:this.imageUrl, nickName:this.personalForm.nickname, 
-            signature:this.personalForm.sign},{emulateJSON:true}).then(res => {
+            let data = {"starResourceUpgrade":this.switch1,"starSoftwareUpgrade": this.switch2,
+            "replyComment": this.switch3, "resourceCommented": this.switch4, 
+            "starResourceCommented": this.switch5, "friendImpression": this.switch6}
+            axios.put('/api/user/remind/setting', data,
+            {emulateJSON:true}).then((res)=>{
                 if(res.data.code == 0){
-                    // 用户基本资料修改成功
-                    this.$Message.warning({
+                    this.$Message.success({
                         background: true,
                         content: '修改设置成功'
                     });
                 }
-                else if(res.data.code == 400){
-                    alert('bad request (form error)')
-                }
-            }, res => {
-                // error callback
-            });
+            }, (res)=>{
+                // 请求失败
+                alert(res)
+            })
         },
     },
 }
@@ -444,9 +455,9 @@ export default {
     overflow: auto;
 }
 .info-setting-card{
-    height: 650px;
+    height: 715px;
     width: 830px;
-    padding: 60px 98px 60px 98px;
+    padding: 40px 98px 60px 98px;
 }
 .info-content{
     height: 84px;
@@ -553,6 +564,14 @@ export default {
     margin-top: 70px;
     cursor: pointer;
 }
-
+@media only screen and (max-width: 1200px){
+    .leftside-menu{
+        /* height: 78px; */
+        margin-bottom: 30px;
+        position: sticky;
+        z-index: 1;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 4, 0.1);
+    }
+}
 </style>
 

@@ -1,6 +1,7 @@
 <template>
     <div class="source-card" @click="goPage(`/resourceDetail/${sourceID}`)">
         <div id="special" :class="special" style="height: 184px;width: 306px;background-size: 306px 184px;background-repeat: no-repeat;">
+            <!-- <img :src="concatImgUrl" class="resource-image"/> -->
             <strong class="heart" id="heart" @click="addFavorite()">
                 <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
                 <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
@@ -27,20 +28,40 @@ import { faComment, faEye } from '@fortawesome/free-solid-svg-icons'
 library.add(faComment, faEye)
 export default {
     name: "SpecialCard",
-    // props: {
-    //     sourceID: {
-    //         type: String,
-    //         default: 233,
-    //     },
-    //     styname:{
-    //         type:String,
-    //         default:'默认分类是？'
-    //     }
-    // },
-    props:['sourceID','breadlist'],
+    props: {
+        resource: {
+            type: Object,
+            default: () => {},
+        },
+        breadlist:{
+            type:Array,
+            default: []
+        },
+        sourceID:{
+
+        }
+    },
+    computed:{
+        getRateAvg(){
+            return this.resource.rateAvg || 5;
+        },
+        getElText(){
+            var text = ''
+            var $d = document.createElement('div')
+            document.body.appendChild($d)
+            $d.innerHTML = this.resource.description
+            
+            text = $d.textContent
+            document.body.removeChild($d)
+            return text.length>=45? text.slice(0,45)+'...' : text
+            
+        },
+        concatImgUrl(){
+            return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
+        },
+    },
     data() {
         return {
-            // TODO data里面的数据均需从后端拿到
             rate: 3.5,
             viewCount: 2019,
             chatCount: 12,
@@ -116,6 +137,10 @@ export default {
     top: 10px;
     right: 20px;
     cursor: pointer;
+}
+.resource-image{
+    width: 304px;
+    height: 184px;
 }
 .source-card{
     width: 306px; 

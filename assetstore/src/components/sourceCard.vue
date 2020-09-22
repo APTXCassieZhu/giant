@@ -1,74 +1,139 @@
 <template>
-    <div class="source-card" @click="goPage(`/resourceDetail/${sourceID}`)">
-        <div class="image">
-            <strong class="heart" id="heart" @click="addFavorite()">
-                <Icon size="30" type="md-heart-outline" style="color: #ec5b6e" v-show="!favoriteIcon"/>
-                <Icon size="30" type="md-heart" style="color: #ec5b6e" v-show="favoriteIcon"/>
-            </strong>
+    <div class="source-card">
+        <div class="upper-mask" @click="goPage(`/resourceDetail/${resource.id}`)">
+            <div class="mask-icon">
+                <div class="mask-icon-item">
+                    <font-awesome-icon :icon="['fas','eye']"/>
+                </div>
+                <div class="mask-icon-item" @click="throttle()">
+                    <font-awesome-icon :icon="['far','heart']" v-show="this.isStar == undefined || !this.isStar" style="color: #ec5b6e;"/>
+                    <font-awesome-icon :icon="['fas','heart']" v-show="this.isStar" style="color: #ec5b6e; z-index:11"/>
+                </div>
+            </div>
+        </div>
+        <div class="upper" :style="backgroundStyle" @click="goPage(`/resourceDetail/${resource.id}`)">
+            <div class="refer-style" v-if="resource.refer">参 考</div>
         </div>
         <div class="source-content">
-            <h3>{{sourceTitle}}</h3>
-            <span>{{sourceDescription}}</span>
+            <p>{{resource.name}}</p>
+            <p style="font-size: 12px; margin-top: 6px;">By {{getUsername}}</p>
         </div>
-        <Divider style="margin: 15px 0px 5px 0px;"/>
-        <div class="source-card-footer">
-            <Rate disabled icon="md-star" v-model="rate" style="position:relative; left: 8px; bottom: 8px;"></Rate>
-            <span class="source-card-footer-icon">
-                <font-awesome-icon :icon="['fas','eye']"/>
-                <span> {{viewCount}}&emsp;</span>
-                <font-awesome-icon :icon="['fas','comment']"/>
-                <span> {{chatCount}}</span>
-            </span>
+        <div class="source-card-footer" v-show="showTag">
+            <div v-for="(item, n) in resource.tags" :key="n" class="tag-style"> {{item.name}} </div>
         </div>
     </div>
 </template>
 <script>
 export default {
     name: "SourceCard",
-    // props: {
-    //     sourceID: {
-    //         type: String,
-    //         default: 233,
-    //     },
-    //     styname:{
-    //         type:String,
-    //         default:'默认分类是？'
-    //     }
-    // },
-    props:['sourceID','breadlist'],
-
-
+    props: {
+        resource: {
+            type: Object,
+            default: () => {},
+        },
+        breadlist:{
+            type:Array,
+            default: []
+        },
+        isLike:{
+            type: Boolean,
+            default: false,
+        },
+        showTag:{
+            type: Boolean,
+            default: true
+        }
+    },
+    computed:{
+        getUsername(){
+            if(this.resource.user.nickName == null || this.resource.user.nickName == undefined){
+                return this.resource.user.name
+            }else{
+                return this.resource.user.nickName
+            }
+        },
+        getElText(){
+            var text = ''
+            var $d = document.createElement('div')
+            document.body.appendChild($d)
+            $d.innerHTML = this.resource.description
+            
+            text = $d.textContent
+            document.body.removeChild($d)
+            return text.length>=45? text.slice(0,45)+'...' : text
+        },
+        concatImgUrl(){
+            return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
+        },
+    },
     data() {
         return {
-            // TODO data里面的数据均需从后端拿到
             rate: 3.5,
             viewCount: 2019,
             chatCount: 12,
             sourceTitle: '资源名称',
             sourceDescription: '描述文字帮助用户对资源快速预览以及理解文字',
-            favoriteIcon: false,            // defalut favourite is false
+
+            _lastTime: null,
             jumpOrNot: true,
+            isStar: this.isLike,
+            backgroundStyle:{}
         }
     },
+    mounted(){
+        let $img = document.createElement('img')
+        $img.onload = ()=>{
+            this.backgroundStyle = {
+                backgroundImage:`url(${this.concatImgUrl})`
+            }
+        }
+        $img.src = this.concatImgUrl
+
+    },
     methods:{
+        throttle() {
+            this.jumpOrNot = false
+            let _nowTime = + new Date()
+            console.log('time1 '+_nowTime)
+            console.log('time2 '+this._lastTime)
+            if (_nowTime - this._lastTime > 1000 || !this._lastTime) {
+                this.$options.methods.addFavorite.bind(this)();
+                this._lastTime = _nowTime
+            }else{
+                this.$message.warning('请勿频繁操作')
+            }
+        },
         addFavorite(){
-            //TODO add user favourite to favorite list so that they can check in personal
             console.log('favorite')
             this.jumpOrNot = false
-            this.favoriteIcon = !this.favoriteIcon
             /* 提示用户已关注 */
-            if(this.favoriteIcon){
-                this.$Message.success('已关注')
-                this.$store.commit('ADD_FAVORITE', this.sourceID);
+            if(!this.isStar || this.isStar == undefined){
+                console.log(this.isStar)
+                this.$message.success('已关注')
+                this.isStar = true
+                console.log(this.isStar)
+                axios.post(`/api/resource/${this.resource.id}/star`, {'star':true},{emulateJSON:true}).then((res)=>{
+                    if(res.data.code === 0){
+                    }else{
+                        alert(res)
+                        this.isStar = false
+                    }
+                })
             }else{
-                this.$Message.success('已取消关注')
-                this.$store.commit('REMOVE_FAVORITE', this.sourceID);
+                console.log('quguan '+this.isStar)
+                this.$message.success('已取消关注')
+                this.isStar = false
+                console.log(this.isStar)
+                axios.post(`/api/resource/${this.resource.id}/star`, {'star':false},{emulateJSON:true}).then((res)=>{
+                    if(res.data.code === 0){
+                    }else{
+                        alert(res)
+                        this.isStar = true
+                    }
+                })
             }
         },
         goPage(url){
-            // debugger
-
-            //debugger
             this.$store.commit('SAVE_BREADLIST', {
                 // breadlist:[
                 //     {fullPath:'/home',name: this.styname}  
@@ -94,47 +159,117 @@ export default {
 }
 </style>
 <style scoped>
-.image {
-    height: 140px; 
-    width: 250px;
-    background-image: url("../assets/白绿.jpg");
-    background-size: 240px 150px;
-    background-repeat: no-repeat;
+.source-card{
+    position: relative;
+    width: 100%; 
+    height: 100%;
+    font-family: MicrosoftYaHei;
+    /* border: 1px solid  #ffffff; */
+    /* box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1); */
 }
-.heart{
-    position: relative; 
-    float: right; 
-    top: 10px;
-    right: 20px;
+.upper {
+    height: 66.67%; 
+    width: 100%;
+    background-image: url("../assets/白绿.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-shadow: 0px 3px 6px #00000029;
+    /* border: 1px solid #707070; */
+    border-radius: 5px;
     cursor: pointer;
 }
-.source-card{
-    width: 240px; 
-    height: 275px;
-    font-family: MicrosoftYaHei;
-    border: 1px solid #ffffff;
-    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
-    background-color: #ffffff;
+.refer-style{
+    font-size: 12px;
+    font-weight: 600;
+    color: #FAFAFA;
+    background-color: #FA541C;
+    border-radius: 5px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    width: 35px;
+}
+.source-card:hover > .upper-mask{
+    opacity: 1;
+}
+.upper-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 66.67%; 
+    width: 100%;
+    border-radius: 5px;
+    background:rgba(0,0,0,0.5);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .1s linear;
+}
+.mask-icon{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+}
+.mask-icon-item{
+    opacity: 1;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border-radius: 5px;
+    height: 48px;
+    width: 48px;
+    line-height: 48px;
+    text-align: center;
+    font-size: 25px;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.image{
+    width: 237px;
+    height: 140px;
+}
+.heart{
+    position: absolute; 
+    float: right; 
+    top: 9px;
+    right: 9px;
     cursor: pointer;
 }
 
 .source-content{
     text-align: left;
-    margin-top: 8px;
+    margin-top: 12px;
     margin-left: 12px;
-    margin-right: 5px;
-    margin-bottom: 27px;
+    margin-bottom: 16px;
     font-family: MicrosoftYaHei;
+    color: #707070;
+    font-size: 16px;
 }
 .source-card-footer{
-    width:240px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.5);
     text-align: left;
+    display: flex;
+    flex-direction: row;
+    margin-left: 12px;
 }
-.source-card-footer-icon{
-    position:relative;
-    bottom:3px;
-    left:35px;
+.tag-style{
+    background: #EAEAEA 0% 0% no-repeat padding-box;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #707070;
+    margin-right: 6px;
+    min-width: 61px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
 }
+/* @media screen and (max-width: 1450px) {
+    .upper::after{
+        content:'';
+        display:block;
+        width:100%;
+        padding-bottom:55.56%;
+    }
+
+} */
 </style>

@@ -11,7 +11,7 @@
                     <Input ref="account" type = "text" placeholder="请输入域账户" v-model="loginForm.account" id="account" @on-change="fillIn()"/>
                 </FormItem>
                 <FormItem prop="password">                    
-                    <Input ref="password" type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password" class="my-login-input" @on-change="fillIn()"/>
+                    <Input ref="password" type = "password" password placeholder="请输入登录密码" v-model="loginForm.password" id="password" class="my-login-input" @on-change="fillIn()" @on-enter="loginSubmit"/>
                 </FormItem>
                 <FormItem class="text-center">
                     <Checkbox class="login-remember" v-model="expire">记住登录状态</Checkbox>
@@ -42,7 +42,7 @@ export default {
                 account: "",
                 password: ""
             },
-            loginRule: {
+            loginRule: { 
                 account: [{required: true, message:'*请填写您的域账号', trigger:'blur'}],
                 password:[{required: true, message:'*请填写您的密码', trigger:'blur'}]
                             //{type:'string', min: 6, message:'密码请不要太短', trigger:'blur'}]
@@ -57,6 +57,17 @@ export default {
        } else if(this.loginForm.password === '') {
            this.$refs.password.focus()
        }
+
+        var $el = document.querySelector('.my-container-login')
+        var [x,y] = [
+            innerWidth*.5,
+            innerHeight*.5
+        ]
+        var [w,h] = [400,460]
+        var [half_w,half_h] = [w*.5,h*.5]
+        
+        $el.style.backgroundPosition = `${x-half_w- w*.2}px ${y-half_h-h*.1}px`
+
     },
     methods:{
         fillIn(){
@@ -73,21 +84,25 @@ export default {
             if(!this.expire) {
                 this.expireTime = 2
             }
-            axios.post('/api/user/login',{account:this.loginForm.account, pwd:this.loginForm.password, 
-            expire:this.expireTime},{emulateJSON:true}).then((res)=>{
+            axios.post('/api/user/login',{account:this.loginForm.account, pwd:this.loginForm.password},{emulateJSON:true}).then((res)=>{
                 // 登录成功
+                // debugger
                 if(res.data.code == 0){
-                    this.$store.commit('ADD_COUNT', res.headers.Authorization);
+                    this.$store.commit('ADD_COUNT', res.headers.authorization);
                     this.$store.commit('ADD_USER', res.data.data);
                     this.$router.push('/')
                 }
                 else if(res.data.code == 40101){
                     this.$Modal.error({
                         title: '抱歉，账号或密码错误，请确认之后重试',
-                    });
+                    })
                 }else if(res.data.code == 40103){
                     this.$Modal.error({
                         title: '抱歉，连接域账号服务器失败，请稍后再试',
+                    });
+                }else{
+                    this.$Modal.error({
+                        title: '参数错误',
                     });
                 }
             }, (res)=>{
@@ -107,7 +122,7 @@ export default {
 <style scoped>
 .my-container-login{
     width:100%;
-    min-height:959px;
+    height:100%;
     /* display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-ms-flexbox;display:flex;flex-wrap:wrap; */
     display: flex;
     justify-content:center;
@@ -115,9 +130,12 @@ export default {
     flex-direction: column;
     padding:15px;
     background: #eff2f5 url('../../assets/transparentLogo.png') no-repeat;
-    background-position: 550px 200px;
+    /* background-position: 550px 200px; */
+    /* background-position: calc(50%-10px) calc(50%); */
     background-size: 400px 460px;
+  
 }
+
 .login-title{
     font-size: 21px;
     font-weight: 900;
@@ -168,6 +186,7 @@ export default {
 .text-center{
     position: relative;
     margin-top:35px;
+    clear: both;
 }
 
 .login-remember{
@@ -201,7 +220,7 @@ export default {
 }
 .my-login-btn{   
     position: relative;
-    background-image: linear-gradient(121deg, #5be9c5 1%, #7be3c3 14%, #37d89d 65%);
+    background-image: linear-gradient(121deg, rgb(128, 90, 189) 1%, rgb(147, 29, 171) 14%, #531DAB 65%);
     text-align: center;
     border: 0px;
     width: 100%;
@@ -209,9 +228,9 @@ export default {
     border-radius: 3px;
     color: white;
 }
-.my-login-btn:hover{
+/* .my-login-btn:hover{
     background-image: linear-gradient(121deg, #37d89d 35%, #7be3c3 86%, #5be9c5 99%);
-}
+} */
 .login-footer{
     font-size: 12px;
     letter-spacing: 0.86px;
