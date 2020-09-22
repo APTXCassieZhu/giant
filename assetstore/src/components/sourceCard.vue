@@ -1,25 +1,27 @@
 <template>
-    <div class="source-card">
-        <div class="upper-mask" @click="goPage(`/resourceDetail/${resource.id}`)">
-            <div class="mask-icon">
-                <div class="mask-icon-item">
-                    <font-awesome-icon :icon="['fas','eye']"/>
-                </div>
-                <div class="mask-icon-item" @click="throttle()">
-                    <font-awesome-icon :icon="['far','heart']" v-show="this.isStar == undefined || !this.isStar" style="color: #ec5b6e;"/>
-                    <font-awesome-icon :icon="['fas','heart']" v-show="this.isStar" style="color: #ec5b6e; z-index:11"/>
-                </div>
-            </div>
-        </div>
-        <div class="upper" :style="backgroundStyle" @click="goPage(`/resourceDetail/${resource.id}`)">
-            <div class="refer-style" v-if="resource.refer">参 考</div>
+    <div class="source-card" @click="goPage(`/resourceDetail/${resource.id}`)">
+        <div class="upper" :style="backgroundStyle">
+            <!-- <img :src="concatImgUrl" class="image"/> -->
+            <strong class="heart" id="heart" @click="addFavorite()">
+                <Icon v-show="this.isStar == undefined || !this.isStar" size="30" type="md-heart-outline" style="color: #ec5b6e;" />
+                <Icon v-show="this.isStar" size="30" type="md-heart" style="color: #ec5b6e;z-index:11" />
+            </strong>
         </div>
         <div class="source-content">
-            <p>{{resource.name}}</p>
-            <p style="font-size: 12px; margin-top: 6px;">By {{getUsername}}</p>
+            <p style="font-weight: 600;color: black;">{{resource.name}}</p>
+            <p style="min-height:45px">{{sourceDescription}}</p>
         </div>
-        <div class="source-card-footer" v-show="showTag">
-            <div v-for="(item, n) in resource.tags" :key="n" class="tag-style"> {{item.name}} </div>
+        <Divider style="margin: 15px 0px 5px 0px;"/>
+        <div class="source-card-footer">
+            <Rate disabled icon="md-star" v-model="getRateAvg" style="position:relative; left: 8px; bottom: 8px;"></Rate>
+            <span class="source-card-footer-icon"> 
+                <font-awesome-icon :icon="['fas','eye']"/>
+                <span> {{resource.viewCount||0}}</span>
+            </span>
+            <span class="source-card-footer-icon" style="position:relative; right: 8px;">
+                <font-awesome-icon :icon="['fas','comment']"/>
+                <span> {{resource.commentCount||0}}</span>
+            </span>
         </div>
     </div>
 </template>
@@ -38,19 +40,11 @@ export default {
         isLike:{
             type: Boolean,
             default: false,
-        },
-        showTag:{
-            type: Boolean,
-            default: true
         }
     },
     computed:{
-        getUsername(){
-            if(this.resource.user.nickName == null || this.resource.user.nickName == undefined){
-                return this.resource.user.name
-            }else{
-                return this.resource.user.nickName
-            }
+        getRateAvg(){
+            return this.resource.rateAvg || 5;
         },
         getElText(){
             var text = ''
@@ -62,6 +56,7 @@ export default {
             document.body.removeChild($d)
             return text.length>=45? text.slice(0,45)+'...' : text
         },
+  
         concatImgUrl(){
             return `//192.168.94.238:3000/file/download/${this.resource.images[0].id}?token=${this.$store.state.token}`
         },
@@ -74,7 +69,6 @@ export default {
             sourceTitle: '资源名称',
             sourceDescription: '描述文字帮助用户对资源快速预览以及理解文字',
 
-            _lastTime: null,
             jumpOrNot: true,
             isStar: this.isLike,
             backgroundStyle:{}
@@ -88,52 +82,37 @@ export default {
             }
         }
         $img.src = this.concatImgUrl
-
     },
     methods:{
-        throttle() {
-            this.jumpOrNot = false
-            let _nowTime = + new Date()
-            console.log('time1 '+_nowTime)
-            console.log('time2 '+this._lastTime)
-            if (_nowTime - this._lastTime > 1000 || !this._lastTime) {
-                this.$options.methods.addFavorite.bind(this)();
-                this._lastTime = _nowTime
-            }else{
-                this.$message.warning('请勿频繁操作')
-            }
-        },
+        
         addFavorite(){
             console.log('favorite')
             this.jumpOrNot = false
             /* 提示用户已关注 */
             if(!this.isStar || this.isStar == undefined){
-                console.log(this.isStar)
-                this.$message.success('已关注')
-                this.isStar = true
-                console.log(this.isStar)
                 axios.post(`/api/resource/${this.resource.id}/star`, {'star':true},{emulateJSON:true}).then((res)=>{
                     if(res.data.code === 0){
+                        this.$Message.success('已关注')
+                        this.isStar = true
                     }else{
                         alert(res)
-                        this.isStar = false
                     }
                 })
             }else{
-                console.log('quguan '+this.isStar)
-                this.$message.success('已取消关注')
-                this.isStar = false
-                console.log(this.isStar)
                 axios.post(`/api/resource/${this.resource.id}/star`, {'star':false},{emulateJSON:true}).then((res)=>{
                     if(res.data.code === 0){
+                        this.$Message.success('已取消关注')
+                        this.isStar = false
                     }else{
                         alert(res)
-                        this.isStar = true
                     }
                 })
             }
         },
         goPage(url){
+            // debugger
+
+            //debugger
             this.$store.commit('SAVE_BREADLIST', {
                 // breadlist:[
                 //     {fullPath:'/home',name: this.styname}  
@@ -159,71 +138,13 @@ export default {
 }
 </style>
 <style scoped>
-.source-card{
-    position: relative;
-    width: 100%; 
-    height: 100%;
-    font-family: MicrosoftYaHei;
-    /* border: 1px solid  #ffffff; */
-    /* box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1); */
-}
 .upper {
-    height: 66.67%; 
-    width: 100%;
+    height: 140px; 
+    width: 240px;
     background-image: url("../assets/白绿.jpg");
+    /* background-size: 237px 150px; */
     background-size: cover;
     background-repeat: no-repeat;
-    box-shadow: 0px 3px 6px #00000029;
-    /* border: 1px solid #707070; */
-    border-radius: 5px;
-    cursor: pointer;
-}
-.refer-style{
-    font-size: 12px;
-    font-weight: 600;
-    color: #FAFAFA;
-    background-color: #FA541C;
-    border-radius: 5px;
-    height: 20px;
-    line-height: 20px;
-    text-align: center;
-    width: 35px;
-}
-.source-card:hover > .upper-mask{
-    opacity: 1;
-}
-.upper-mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 66.67%; 
-    width: 100%;
-    border-radius: 5px;
-    background:rgba(0,0,0,0.5);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity .1s linear;
-}
-.mask-icon{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    width: 100%;
-    height: 100%;
-}
-.mask-icon-item{
-    opacity: 1;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
-    border-radius: 5px;
-    height: 48px;
-    width: 48px;
-    line-height: 48px;
-    text-align: center;
-    font-size: 25px;
-    margin-right: 8px;
-    margin-left: 8px;
 }
 .image{
     width: 237px;
@@ -236,40 +157,38 @@ export default {
     right: 9px;
     cursor: pointer;
 }
+.source-card{
+    position: relative;
+    width: 240px; 
+    height: 275px;
+    font-family: MicrosoftYaHei;
+    border: 1px solid  #ffffff;
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    cursor: pointer;
+}
 
 .source-content{
     text-align: left;
-    margin-top: 12px;
+    margin-top: 8px;
     margin-left: 12px;
-    margin-bottom: 16px;
+    margin-right: 5px;
+    margin-bottom: 27px;
     font-family: MicrosoftYaHei;
-    color: #707070;
-    font-size: 16px;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 14px;
 }
 .source-card-footer{
-    text-align: left;
+    width:240px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    /* text-align: left; */
     display: flex;
     flex-direction: row;
-    margin-left: 12px;
+    justify-content: space-between;
 }
-.tag-style{
-    background: #EAEAEA 0% 0% no-repeat padding-box;
-    border-radius: 12px;
-    font-size: 12px;
-    color: #707070;
-    margin-right: 6px;
-    min-width: 61px;
-    height: 18px;
-    line-height: 18px;
-    text-align: center;
+.source-card-footer-icon{
+    position:relative;
+    /* bottom:2px; */
 }
-/* @media screen and (max-width: 1450px) {
-    .upper::after{
-        content:'';
-        display:block;
-        width:100%;
-        padding-bottom:55.56%;
-    }
-
-} */
 </style>

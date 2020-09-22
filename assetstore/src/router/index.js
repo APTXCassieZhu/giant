@@ -22,7 +22,6 @@ import resourceDetail from '@/pages/resources/resourceDetail'
 import versionHistory from '@/pages/resources/versionHistory'
 import resourceComment from '@/pages/resources/comment'
 import artShowRole from '@/pages/search/artShowRole'
-import DevShowSub from '@/pages/search/devShowSub'
 
 
 Vue.use(Router)
@@ -218,14 +217,6 @@ export default new Router({
       path:'/artShow/*',
       name:'artShowRole',
       component:artShowRole,
-      meta: {
-        requireAuth: true
-      }
-    },
-    {
-      path:'/devShow/*',
-      name:'DevShowSub',
-      component:DevShowSub,
       meta: {
         requireAuth: true
       }

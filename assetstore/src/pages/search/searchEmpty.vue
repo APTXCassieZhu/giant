@@ -2,16 +2,27 @@
     <div>
         <TopNavigation style="z-index: 100"></TopNavigation>
         <div class="body-style">
+            <div class="title-wrapper">
+                "<span style="color: #1ebf73">{{getSearchContent}}</span>"的搜索结果
+            </div>
             <div class="empty-content">
                 <img src="../../assets/notFound.png" style="width:276px;height: 244px;"/>
-                <div class="apologize">抱歉，没有搜索到相关内容</div>
-                <div class="suggestion">
-                    请尝试更换关键词，或是切换
-                    <span style="color: #FA541C"> 筛选器 </span>和 
-                    <span style="color: #003A8C"> 筛选条件 </span> 试试看
-                </div>
+                <div class="apologize">很抱歉，未能找到“<span style="color: #1ebf73">{{getSearchContent}}</span>”相关内容，来看看这些资源吧～</div>
             </div>
-
+            <div class="subtitle-wrapper">
+                精选美术资源
+                <div style="font-size: 12px;font-weight: 300;color: #7f7f7f;">最具创意的美术项目精选</div>
+            </div>
+            <div class="card-wrapper">
+                <source-card v-for="n in 5" :key="n" class="card-style"></source-card>
+            </div>
+            <div class="subtitle-wrapper">
+                研发类资源
+                <div style="font-size: 12px;font-weight: 300;color: #7f7f7f;">程序员哥哥们的好助力</div>
+            </div>
+            <div class="card-wrapper">
+                <source-card v-for="n in 5" :key="n" class="card-style"></source-card>
+            </div>
             <corner></corner>
             <Footer style="position:relative;bottom: 0px;margin-top:200px"></Footer>
         </div>     
@@ -40,6 +51,11 @@ export default {
     },
     methods:{
     },
+    computed:{
+        getSearchContent(){
+            return this.$store.state.searchContent;
+        }
+    },
     mounted(){
     },
 }
@@ -65,16 +81,35 @@ export default {
     margin-top: 70px;
 }
 .apologize{
-    font-size: 18px;
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: #262626;
+    margin-bottom: 58px;
+    margin-top: 60px;
+}
+.subtitle-wrapper{
+    position: relative;
+    left: 4%;
+    top: 15px;
+    width: 80%;
+    font-size: 22px;
     font-weight: 600;
-    color: #707070;
-    margin-top: 30px;
+    color: #1ebf73;
 }
-.suggestion{
-    font-size: 16px;
-    color: #707070;
-    margin-top: 18px;
+.card-wrapper {
+    position: relative;
+    left: 4%;
+    top: 20px;
+    width: 80%;
+    margin-bottom: 30px;
+}
+.card-style{
+    display: inline-block; 
+    margin-right: 50px; 
+    margin-bottom: 40px;
+    text-align: center;
+}
 
-}
 </style>
 

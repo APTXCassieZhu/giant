@@ -154,10 +154,6 @@
                                 <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
                                 <div class="font-content">{{item.title}}</div>
                             </div>
-                            <div v-else-if="item.targetType === 'system'" class="font-container">
-                                <font-awesome-icon :icon="['fas', 'th-large']" class="font-icon"/>
-                                <div class="font-content">{{item.title}}</div>
-                            </div>
                             <div class="time-slot">{{getTime(item.updatedAt)}}</div>
                         </div>
                         <Divider/>

@@ -66,10 +66,10 @@
                                 <span v-for="(software, n) in softwareList" :key="n" style="display:inline-block;">
                                     <software-box :software='software' @swDel="swDel"></software-box>
                                 </span>
-                                <!-- <span>
+                                <span>
                                     <software-up-box v-bind:softwareName='this.softwareList1[1]'></software-up-box>
                                     <software-pend-box v-bind:softwareName='this.softwareList1[2]'></software-pend-box>
-                                </span> -->
+                                </span>
                             </div>
                             <div style="text-align: center;">
                                 <cartoon v-if="loadingSoftware"></cartoon>
@@ -79,7 +79,7 @@
                     </TabPane>
                     <TabPane :label="tab3" name="name3">
                         <div v-if="this.favoriteList.length==0" class="like-btn-container">
-                            <!-- <Button class="like-btn" @click="goPage('/')">去关注</Button> -->
+                            <Button class="like-btn" @click="goPage('/')">去关注</Button>
                         </div>
                         <div v-else class="container">
                             <div>
